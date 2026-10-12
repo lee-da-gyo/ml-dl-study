@@ -1,6 +1,6 @@
 # ML·DL 스터디 문제
 
-머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 10편 공개)로 정리하는 곳입니다.
+머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 11편 공개)로 정리하는 곳입니다.
 글로만 설명하지 않고, 값을 직접 조작하며 개념을 익힐 수 있는 **인터랙티브 실험**과 **핵심 퀴즈**를 함께 연결했습니다.
 
 👉 **웹페이지로 보기**: [https://lee-da-gyo.github.io/ml-dl-study/](https://lee-da-gyo.github.io/ml-dl-study/)
@@ -21,6 +21,7 @@
 | 08 | YOLO · mAP · 새 이미지 성능 저하 · 소규모 의료 이미지 | YOLO의 특징과 장점 / mAP의 개념과 활용 / 학습 정확도는 높은데 새 이미지에서 성능 저하 / 의료 이미지 300장으로 처음부터 학습 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%208.%20YOLO%20%C2%B7%20mAP%20%C2%B7%20%EC%83%88%20%EC%9D%B4%EB%AF%B8%EC%A7%80%20%EC%84%B1%EB%8A%A5%20%EC%A0%80%ED%95%98%20%C2%B7%20%EC%86%8C%EA%B7%9C%EB%AA%A8%20%EC%9D%98%EB%A3%8C%20%EC%9D%B4%EB%AF%B8%EC%A7%80.html) |
 | 09 | Semantic Segmentation · FCN · GAN · Diffusion · 객체 탐지 | Semantic Segmentation과 이미지 분류 / FCN과 분류 CNN의 차이 / GAN의 생성자와 판별자 / Diffusion 모델의 활용과 장점 / CCTV 진열대 상품의 개수와 위치 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%209.%20Semantic%20Segmentation%20%C2%B7%20FCN%20%C2%B7%20GAN%20%C2%B7%20Diffusion%20%C2%B7%20%EA%B0%9D%EC%B2%B4%20%ED%83%90%EC%A7%80.html) |
 | 10 | Semantic·Instance Segmentation · Panoptic · 객체 추적 | 자율주행 영상에서 픽셀의 클래스 구분과 차량 개체 구별 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%2010.%20Semantic%C2%B7Instance%20Segmentation%20%C2%B7%20Panoptic%20%C2%B7%20%EA%B0%9D%EC%B2%B4%20%EC%B6%94%EC%A0%81.html) |
+| 11 | GAN 모드 붕괴 · 원인 · 대응 · 평가 지표 | 학습할수록 비슷한 얼굴만 만드는 GAN의 모드 붕괴: 원인과 대응 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%2011.%20GAN%20%EB%AA%A8%EB%93%9C%20%EB%B6%95%EA%B4%B4%20%C2%B7%20%EC%9B%90%EC%9D%B8%20%C2%B7%20%EB%8C%80%EC%9D%91%20%C2%B7%20%ED%8F%89%EA%B0%80%20%EC%A7%80%ED%91%9C.html) |
 
 ## 위클리 페이퍼 01에서 해 볼 수 있는 것
 
@@ -122,6 +123,14 @@
 | Semantic 결과로 차 세기 | Semantic 마스크를 연결 요소로 나눠 차를 셀 때, 두 차가 맞닿거나 예측 경계가 1픽셀 번지면 한 대로 세는 이유 |
 | 픽셀 정확도 · mIoU · PQ | 두 차 합침·쪼갬·경계 번짐·작은 사람 놓침에서 세 지표가 어떻게 다르게 반응하는지, 개체 구분 실패가 PQ에서만 보이는 이유 |
 | 가려진 차의 ID 추적 | IoU 기준·트랙 유지 프레임·등속 위치 예측에 따라 가려졌다 나타난 차가 같은 ID를 유지하는지, ID 바뀜이 생기는 조건 |
+
+## 위클리 페이퍼 11에서 해 볼 수 있는 것
+
+| 실험 | 확인하는 개념 |
+| --- | --- |
+| 봉우리 두 개를 가우시안 하나로 맞추기 | 순방향 KL·역방향 KL·JSD·비포화 GAN 목적(KL − 2·JSD)이 고르는 해의 차이, 봉우리가 멀어질 때 한쪽만 고르는 모드 추구 성향 |
+| 작은 GAN 직접 학습 | 1차원 봉우리 4개를 학습하며 D:G 업데이트 비와 Minibatch StdDev에 따라 잡는 모드 수가 달라지는 것, 같은 설정의 시드별 결과 차이 |
+| FID · Precision · Recall | 모드 누락·완전 붕괴·과한 퍼짐·평균과 공분산만 맞춘 분포에서 세 지표가 각각 무엇을 놓치는지, FID의 표본 수 편향 |
 
 원래 답안에서 틀린 부분은 주황색 **정정**, 새로 더한 내용은 초록색 **보충**으로 표시했습니다.
 

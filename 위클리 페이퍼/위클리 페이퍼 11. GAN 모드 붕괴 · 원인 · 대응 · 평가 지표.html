@@ -1,0 +1,1035 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>위클리 페이퍼 11</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 위클리 #1~#5와 같은 모눈 노트 위의 학습 카드. 질문마다 [한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈] */
+:root{
+  --bg:#f3f5f8; --paper:#ffffff; --grid:#e3e8ef;
+  --ink:#1b2433; --muted:#5b6678; --line:#d5dce6;
+  --accent:#2448c9; --accent-soft:#e6ecfb;
+  --mark:#ffe36b; --add:#0f7a55; --add-soft:#e1f4ec; --fix:#c2410c; --fix-soft:#fdeee4;
+  --code-bg:#f0f2f6;
+  --f-display:"Black Han Sans","IBM Plex Sans KR",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4,h5{text-wrap:balance;margin:0}
+p{margin:0}
+header.top{display:flex;flex-direction:column;gap:10px}
+header.top .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+header.top h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,5vw,38px);line-height:1.25}
+header.top p{color:var(--muted);max-width:68ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:8px;flex-wrap:wrap;
+  background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+nav.toc a{text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--paper);
+  padding:5px 11px;border-radius:999px;font-size:13.5px;font-weight:500}
+nav.toc a.iv{border-style:dashed}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:4px;letter-spacing:.04em;vertical-align:2px;white-space:nowrap}
+.b-add{background:var(--add-soft);color:var(--add)}
+.b-fix{background:var(--fix-soft);color:var(--fix)}
+.b-core{background:var(--accent-soft);color:var(--accent)}
+.b-lab{background:var(--ink);color:var(--paper)}
+.tag-ex{display:inline-block;font-size:11px;font-weight:700;padding:0 7px;border-radius:4px;border:1px dashed var(--muted);color:var(--muted);letter-spacing:.04em;vertical-align:2px;line-height:1.7;white-space:nowrap}
+mark{background:var(--mark);color:inherit;padding:0 2px;border-radius:2px}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+
+section.q{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,4vw,36px);
+  display:flex;flex-direction:column;gap:28px;scroll-margin-top:64px}
+.qhead{display:flex;gap:16px;align-items:flex-start}
+.qnum{font-family:var(--f-display);font-size:44px;line-height:1;color:var(--accent);white-space:nowrap}
+.qnum.iv{font-size:30px;padding-top:4px}
+.qhead h2{font-size:clamp(18px,3vw,23px);font-weight:700;line-height:1.45}
+.qhead .min{min-width:0;display:flex;flex-direction:column;gap:4px}
+.qhead .kind{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.oneline{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 8px 8px 0;font-size:16.5px;font-weight:500}
+.oneline small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em;margin-bottom:2px}
+h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.part{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-bottom:-12px}
+.block{display:flex;flex-direction:column;gap:14px}
+.muted{color:var(--muted)}
+.fig{border:1px dashed var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+.fig figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+figure{margin:0}
+.formula{font-family:var(--f-mono);font-size:15px;text-align:center;padding:14px 10px;background:var(--code-bg);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.formula .fb{color:var(--accent);font-weight:600}.formula .fv{color:var(--fix);font-weight:600}.formula .fn{color:var(--muted);font-weight:600}
+
+/* demo shell */
+.demo{border:1.5px solid var(--ink);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--paper)}
+.demo-head{display:flex;flex-direction:column;gap:4px}
+.demo-head .t{font-weight:700;font-size:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.demo-head .how{font-size:13.5px;color:var(--muted)}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
+button.btn{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+button.btn:hover{border-color:var(--accent);color:var(--accent)}
+button.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{font:inherit;font-size:14px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+input[type=range]{accent-color:var(--accent);width:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px}
+.stat{background:var(--code-bg);border-radius:8px;padding:8px 10px;min-width:0}
+.stat .k{font-size:11.5px;color:var(--muted);font-weight:700;line-height:1.4}
+.stat .v{font-family:var(--f-mono);font-size:15px;font-variant-numeric:tabular-nums}
+.stat.em{background:var(--accent-soft)} .stat.em .v{color:var(--accent);font-weight:600}
+.stat.warn{background:var(--fix-soft)} .stat.warn .v{color:var(--fix);font-weight:600}
+.stat.ok{background:var(--add-soft)} .stat.ok .v{color:var(--add);font-weight:600}
+.insight{font-size:14.5px;border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:720px){.split{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.panels{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.panel h5{font-size:14px}
+.panel .cap{font-size:12.5px;color:var(--muted)}
+.svgbox svg{width:100%;height:auto;display:block}
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.sw.c{border-radius:50%}
+.sw.ln{height:3px;width:16px;border-radius:0;vertical-align:3px}
+.sw.dash{height:0;width:16px;border-radius:0;border-top:2px dashed var(--ink);vertical-align:3px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code-bg);font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td b{color:var(--accent)}
+table.num td,table.num th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 10px}
+table.num td:first-child{font-family:var(--f-body);font-weight:700}
+table.num td:last-child{font-family:var(--f-body)}
+.df{font-family:var(--f-mono);font-size:12.5px;min-width:620px}
+.df td,.df th{padding:6px 10px;white-space:nowrap}
+.df td.memo{font-family:var(--f-body);white-space:normal;min-width:180px}
+.df .na{color:var(--fix);font-weight:600}
+.df tr.drop td{text-decoration:line-through;opacity:.5}
+.df .chg{background:var(--mark);border-radius:3px;padding:0 3px}
+.df .fill{background:var(--add-soft);color:var(--add);border-radius:3px;padding:0 3px;font-weight:600}
+
+/* cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h4{font-size:15.5px}
+.card p,.card li{font-size:14.5px}
+.card ul{margin:0;padding-left:18px}
+.card .k{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em}
+.card.add{border-color:var(--add);background:var(--add-soft)} .card.add .k{color:var(--add)}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.mini{grid-template-columns:1fr}}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:s}
+.step{position:relative;border:1px solid var(--line);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--paper)}
+.step::before{counter-increment:s;content:"STEP " counter(s);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.step b{font-size:15px}
+.step span{font-size:13px;color:var(--muted);line-height:1.55}
+.step code{font-size:11.5px}
+.step.add{border-color:var(--add);background:var(--add-soft)} .step.add::before{color:var(--add)}
+@media (max-width:820px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.flow{grid-template-columns:1fr}}
+
+.codewrap{display:flex;flex-direction:column;gap:6px}
+.codecap{font-size:12.5px;color:var(--muted)}
+pre{margin:0;font-family:var(--f-mono);font-size:13px;line-height:1.65;background:var(--code-bg);border-radius:10px;padding:14px 16px;overflow-x:auto}
+pre .c{color:var(--muted)}
+pre .hl{background:var(--mark);border-radius:3px}
+.note{border-radius:10px;padding:14px 16px;font-size:14.5px;display:flex;flex-direction:column;gap:8px}
+.note.add{background:var(--add-soft)}
+.note.fix{background:var(--fix-soft)}
+.note b.t{font-size:13px;letter-spacing:.05em}
+.note.add b.t{color:var(--add)} .note.fix b.t{color:var(--fix)}
+.was{display:block;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--fix);text-decoration-thickness:1.5px}
+.now{display:block}
+.lbl-was,.lbl-now{font-weight:700;color:var(--fix);margin-right:4px}
+.pair{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:var(--paper);border-radius:8px}
+
+.speech{border:2px solid var(--ink);border-radius:12px;padding:18px 18px 16px;position:relative;font-size:15px}
+.speech::before{content:"면접 30초 답변";position:absolute;top:-11px;left:14px;background:var(--paper);padding:0 8px;font-size:12px;font-weight:700;letter-spacing:.06em}
+
+/* svg */
+svg text{font-family:var(--f-body);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+svg .ax{stroke:var(--line);stroke-width:1.5;fill:none}
+svg .gl{stroke:var(--grid);stroke-width:1;fill:none}
+svg .c0{fill:var(--accent)} svg .c1{fill:var(--add)} svg .c2{fill:var(--fix)}
+svg .cg{fill:var(--muted);fill-opacity:.55}
+svg .r0{fill:var(--accent);fill-opacity:.10} svg .r1{fill:var(--add);fill-opacity:.12} svg .r2{fill:var(--fix);fill-opacity:.12}
+svg .cent{stroke:var(--ink);stroke-width:3;fill:none}
+svg .pt{fill:var(--accent);fill-opacity:.85}
+svg .ptx{fill:var(--fix)}
+svg .fitln{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .mseln{stroke:var(--accent);stroke-width:2;stroke-dasharray:7 5;fill:none}
+svg .maeln{stroke:var(--add);stroke-width:2;stroke-dasharray:3 4;fill:none}
+svg .res{stroke:var(--fix);stroke-width:1.5;fill:none}
+svg .sq{fill:var(--fix);fill-opacity:.14;stroke:var(--fix);stroke-opacity:.45;stroke-width:1}
+svg .truef{stroke:var(--ink);stroke-width:2;stroke-dasharray:6 4;fill:none}
+svg .thin{stroke:var(--accent);stroke-width:1.2;stroke-opacity:.35;fill:none}
+svg .meanf{stroke:var(--add);stroke-width:3;fill:none}
+svg .lb{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .lv{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .lt{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .ln{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+svg .cur{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3}
+svg .ring{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .bull{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .shot{fill:var(--fix);stroke:var(--paper);stroke-width:1}
+svg .ftr{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+svg .fva{fill:var(--fix)}
+svg .pos-t{fill:var(--ink)} svg .pos-v{fill:var(--paper)}
+svg .bar-a{fill:var(--fix)} svg .bar-b{fill:var(--add)}
+svg .curve{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .curvefill{fill:var(--accent-soft)}
+svg .tail{fill:var(--fix);fill-opacity:.35}
+svg .vmean{stroke:var(--add);stroke-width:2.5}
+svg .vmed{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:5 3}
+svg .trl{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .val{stroke:var(--fix);stroke-width:2.5;fill:none}
+
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:12px}
+.qz{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.qz .qt{font-weight:600}
+.qz .qt span{color:var(--accent);margin-right:6px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:14.5px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;line-height:1.5}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--add);background:var(--add-soft)}
+.opt.wrong{border-color:var(--fix);background:var(--fix-soft)}
+.exp{font-size:14px;background:var(--code-bg);border-radius:8px;padding:10px 12px}
+.exp b.ok{color:var(--add)} .exp b.no{color:var(--fix)}
+
+footer{font-size:13px;color:var(--muted);text-align:center}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+nav.pager a,nav.pager span{display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;line-height:1.4;min-width:0}
+nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
+nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
+nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
+/* 위클리 03에서 이어 쓰는 스타일 */
+svg .leaf0{fill:var(--accent);fill-opacity:.13} svg .leaf1{fill:var(--add);fill-opacity:.17}
+svg .leafb{fill:none;stroke:var(--paper);stroke-width:1.2}
+svg .p0{fill:var(--accent)} svg .p1{fill:var(--add)}
+svg .p0,svg .p1{stroke:var(--paper);stroke-width:.8}
+svg .trueb{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+svg .box{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .boxa{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .boxg{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .boxf{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+svg .ahp{fill:var(--muted)}
+svg .edge{stroke:var(--line);stroke-width:2;fill:none}
+svg .edgea{stroke:var(--accent);stroke-width:2;fill:none}
+svg .tac{fill:var(--accent)} svg .tad{fill:var(--add)} svg .taf{fill:var(--fix)}
+svg .modelc{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .treec{stroke:var(--add);stroke-width:2.5;fill:none}
+svg .resp{fill:var(--fix);fill-opacity:.8}
+svg .zero{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+svg .nanl{stroke:var(--fix);stroke-width:2;stroke-dasharray:4 3}
+svg .barp{fill:var(--accent);fill-opacity:.75}
+svg .barm{fill:var(--fix)}
+table.ldt{min-width:680px;font-size:13.5px}
+table.ldt th,table.ldt td{padding:7px 10px;text-align:center;vertical-align:middle}
+table.ldt td:first-child,table.ldt th:first-child{text-align:left}
+table.ldt td:first-child{font-weight:700}
+td.ld{position:relative;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.ld .bar{position:absolute;left:4px;top:22%;height:56%;border-radius:3px;background:var(--accent);opacity:.2}
+td.ld .bar.neg{background:var(--fix)}
+td.ld .n{position:relative}
+td.ld.hi .n{font-weight:700;color:var(--accent)}
+td.ld.tr{color:var(--muted)}
+th.grp{text-align:center!important;border-left:1px solid var(--line)}
+td.gl,th.gl{border-left:1px solid var(--line)}
+table.heat{min-width:420px}
+table.heat td,table.heat th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 6px}
+table.heat td:first-child,table.heat th:first-child{font-family:var(--f-body)}
+table.dec td{font-variant-numeric:tabular-nums}
+table.dec td.best{color:var(--add);font-weight:700}
+.treebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;padding:6px}
+.treebox svg{display:block;max-width:none;margin:0 auto}
+svg .boxd{fill:var(--paper);stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+svg .lf0{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5} svg .lf1{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .trunc{fill:var(--code-bg);stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+pre.rules{font-size:12.5px;line-height:1.6;max-height:320px;overflow:auto;white-space:pre}
+.formula.left{text-align:left;white-space:pre;line-height:1.9}
+.sl5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sl5 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:440px){.sl5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.opt,.exp,.insight,.stat .v{overflow-wrap:anywhere}
+select{max-width:100%}
+/* 위클리 04 추가 스타일 */
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.tri{grid-template-columns:1fr}}
+.tri .panel .acc{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tri .panel .acc b{color:var(--accent)}
+.sl4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sl4 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+svg .gpt{fill:var(--ink)} svg .rpt{fill:var(--fix)}
+svg .gpt,svg .rpt{stroke:var(--paper);stroke-width:1}
+svg .bestr{fill:none;stroke:var(--ink);stroke-width:2}
+svg .opt{fill:none;stroke:var(--add);stroke-width:2.5}
+svg .hm{fill:var(--accent)}
+svg .venn0{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
+svg .venn1{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .venn2{fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:1.5}
+svg .venn3{fill:var(--add-soft);stroke:var(--add);stroke-width:2}
+.verdict{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.verdict .big{font-family:var(--f-mono);font-size:20px;font-variant-numeric:tabular-nums}
+.verdict ol,.verdict ul{margin:0;padding-left:20px;font-size:14px}
+.verdict .k{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+table.contrib{min-width:0;font-size:13.5px}
+table.contrib td,table.contrib th{padding:6px 8px}
+/* 위클리 05 추가 스타일 */
+.codecols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.codecols{grid-template-columns:1fr}}
+.codecols pre{font-size:12.3px}
+.codecols .codecap b{color:var(--ink)}
+pre.lines{white-space:pre}
+pre.lines .cnt{display:inline-block;min-width:3.2em;color:var(--muted);user-select:none}
+pre.lines .off{opacity:.38}
+pre.lines .rec{background:var(--accent-soft);border-radius:3px}
+svg .gn{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+svg .gx{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .go{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .gb{stroke:var(--fix);stroke-width:1.5;fill:none;stroke-dasharray:5 4}
+svg .ahf{fill:var(--fix)}
+svg .stg{fill:var(--code-bg);stroke:var(--line);stroke-width:1.5}
+svg .stgc{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .seg0{fill:var(--accent);fill-opacity:.85} svg .seg1{fill:var(--accent);fill-opacity:.5} svg .seg2{fill:var(--accent);fill-opacity:.28}
+svg .seg3{fill:var(--add);fill-opacity:.75} svg .seg4{fill:var(--muted);fill-opacity:.45} svg .seg5{fill:var(--code-bg);stroke:var(--line);stroke-width:1}
+svg .sgc{stroke:var(--accent);stroke-width:2.5;fill:none} svg .tnc{stroke:var(--add);stroke-width:2.5;fill:none} svg .rlc{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .satz{fill:var(--fix);fill-opacity:.08}
+svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
+.repl{font-family:var(--f-mono);font-size:13px;background:var(--code-bg);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.repl .in{color:var(--muted)}
+.repl .in::before{content:">>> ";color:var(--accent)}
+.repl .er{color:var(--fix);font-weight:600}
+.repl .okv{color:var(--add);font-weight:600}
+.sh{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:4px}
+.sh.y{background:var(--fix-soft);color:var(--fix)} .sh.n{background:var(--add-soft);color:var(--add)}
+.sl3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sl3 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl3{grid-template-columns:1fr}}
+/* 위클리 05 가독성: 문단·불릿 */
+.oneline p,.note p,.card p,.speech p,.how p{margin:0}
+.oneline{display:flex;flex-direction:column;gap:8px}
+.oneline small{margin-bottom:-4px}
+.oneline ul,.note ul,.card ul,.how ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.oneline ul{font-size:15.5px}
+.demo-head .how{display:flex;flex-direction:column;gap:8px;line-height:1.75}
+.note{gap:12px}
+.note p,.card p,.note li,.card li{line-height:1.8}
+.pair{gap:8px;padding:14px 16px}
+.now{display:flex;flex-direction:column;gap:10px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack .card{padding:18px 20px;gap:10px}
+.card pre{font-size:12px;padding:10px 12px;white-space:pre-wrap}
+.speech{display:flex;flex-direction:column;gap:12px;line-height:1.85}
+.insight{line-height:1.85;white-space:pre-line}
+header.top p.flowline{color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 14px;width:fit-content;max-width:100%}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px;white-space:nowrap}
+/* 위클리 05 코드 색 (Python 문법 강조) */
+:root{--sy-k:#8a3ffc;--sy-s:#0f7a55;--sy-n:#b4460c;--sy-f:#2448c9;--sy-d:#a15c00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}}
+:root[data-theme="dark"]{--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}
+pre .sy-k{color:var(--sy-k);font-weight:600} pre .sy-s{color:var(--sy-s)} pre .sy-n{color:var(--sy-n)}
+pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .sy-b{color:var(--sy-n);font-style:italic}
+/* 원래 답안은 취소선 없이 그대로 읽히게 */
+.was{text-decoration:none!important;color:var(--ink)!important}
+/* 수치 칸: 같은 줄의 칸끼리 제목 높이를 맞춰 값이 같은 높이에서 시작하게 한다 */
+.stats{grid-auto-rows:auto}
+.stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
+.stat .v .nw{white-space:nowrap}
+.stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
+.stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
+.stat .v .sub{white-space:normal}
+/* 위클리 11 추가 스타일: 얼굴 아이콘 */
+svg .fhead{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+svg .feye{fill:var(--ink)}
+svg .fmouth{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round}
+svg .fmouth.fill{fill:var(--ink)}
+svg .fglass{fill:none;stroke:var(--ink);stroke-width:1.2}
+</style>
+</head><body>
+
+<div class="wrap" id="top">
+  <nav class="pager" aria-label="위클리 이동">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%2010.%20Semantic·Instance%20Segmentation%20·%20Panoptic%20·%20객체%20추적.html" rel="prev">‹ 이전 · 10 Semantic·Instance Segmentation</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+  </nav>
+  <header class="top">
+    <div class="eyebrow">WEEKLY PAPER 11 · 생성 모델 GAN의 학습 실패, 진단과 평가</div>
+    <h1>GAN 모드 붕괴 · 원인 · 대응 · 평가 지표</h1>
+    <p>면접형 질문 1문항을 정리했습니다. 아래 순서로 읽으면 됩니다.</p>
+    <p class="flowline"><b>한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈</b></p>
+    <p>원래 답안(작성 답안)을 고친 부분은 아래 표시로 구분했습니다.</p>
+    <div class="legend">
+      <span><span class="badge b-core">핵심</span> 꼭 알아야 할 개념</span>
+      <span><span class="badge b-add">보충</span> 원래 답안에 새로 더한 내용</span>
+      <span><span class="badge b-fix">정정</span> 원래 답안에서 틀렸거나 과장된 부분</span>
+      <span><span class="badge b-lab">실험</span> 값을 바꿔 보는 인터랙티브</span>
+      <span><span class="tag-ex">예시</span> 설명용으로 만든 가상의 값</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="질문 바로가기">
+    <a href="#q1">Q1 GAN 모드 붕괴</a>
+    <a href="#sum">총정리</a>
+  </nav>
+
+  <!-- ===================== Q1 ===================== -->
+  <section class="q" id="q1">
+    <div class="qhead"><div class="qnum">Q1</div><div class="min"><div class="kind">면접형 질문 · 작성 답안 검토</div><h2>GAN으로 얼굴 이미지를 생성하는 모델을 학습시켰는데, 학습이 진행될수록 생성자가 비슷비슷한 얼굴만 계속 만들어내요. 어떤 문제가 생긴 것일까요? 어떻게 대응할 건가요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>서로 다른 잠재벡터 z를 넣어도 비슷한 얼굴만 나온다면 <mark>모드 붕괴(mode collapse)</mark>다. 생성자의 손실은 샘플 하나하나가 <b>"진짜 같은가"</b>만 묻고 <b>"서로 다른가"</b>는 묻지 않는다. 그래서 판별자가 지금 가장 진짜라고 믿는 몇 가지 얼굴로 몰리는 것이 생성자에게 가장 쉬운 해가 된다.</p>
+      <ul>
+        <li><b>진단</b>: 데이터와 z 샘플링 코드부터 확인하고, 고정 z 격자로 학습 경과를 보고, <b>Precision · Recall</b>로 다양성을 수치로 잰다.</li>
+        <li><b>대응</b>: 생성자 · 판별자 <b>균형</b>(TTUR), 안정적인 <b>손실과 정규화</b>(비포화 + R1, Hinge + Spectral Norm, WGAN-GP), 판별자가 다양성을 보게 하는 <b>Minibatch StdDev</b>, 데이터가 적으면 <b>ADA · DiffAugment</b>.</li>
+      </ul>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 정상 GAN과 모드 붕괴</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 680 240" role="img" aria-label="정상 GAN은 서로 다른 잠재벡터마다 다른 얼굴을 만들고, 모드 붕괴가 생긴 GAN은 잠재벡터가 달라도 거의 같은 얼굴을 만든다"><text x="158" y="20" text-anchor="middle" font-size="13.5" font-weight="700">정상</text><text x="158" y="37" text-anchor="middle" font-size="11.5" class="mut">z가 다르면 얼굴도 다르다</text><rect x="12" y="58" width="36" height="24" rx="6" class="boxa"/><text x="30" y="74.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₁</text><path class="arr" d="M48,70 C70,70 78,142 100,142"/><path class="arr" d="M176,142 C198,142 206,70 224,70"/><g transform="rotate(0 246 70)"><circle cx="246" cy="70" r="16" class="fhead"/><path class="c0" d="M230,67 Q229,51 246,51 Q263,51 262,67 Q252,58 230,67Z"/><circle cx="240" cy="71" r="1.8" class="feye"/><circle cx="252" cy="71" r="1.8" class="feye"/><path class="fmouth" d="M240,77 Q246,82 252,77"/></g><text x="272" y="74.5" font-size="12">얼굴 A</text><rect x="12" y="106" width="36" height="24" rx="6" class="boxa"/><text x="30" y="122.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₂</text><path class="arr" d="M48,118 C70,118 78,142 100,142"/><path class="arr" d="M176,142 C198,142 206,118 224,118"/><g transform="rotate(0 246 118)"><path class="c2" d="M225,134 Q222,96 246,95 Q270,96 267,134 L261,134 L261,114 L231,114 L231,134Z"/><circle cx="246" cy="118" r="16" class="fhead"/><path class="c2" d="M230,116 Q231,100 246,100 Q261,100 262,116 Q246,108 230,116Z"/><circle cx="240" cy="119" r="1.8" class="feye"/><circle cx="252" cy="119" r="1.8" class="feye"/><path class="fmouth" d="M241,127 L251,127"/></g><text x="272" y="122.5" font-size="12">얼굴 B</text><rect x="12" y="154" width="36" height="24" rx="6" class="boxa"/><text x="30" y="170.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₃</text><path class="arr" d="M48,166 C70,166 78,142 100,142"/><path class="arr" d="M176,142 C198,142 206,166 224,166"/><g transform="rotate(0 246 166)"><circle cx="246" cy="166" r="16" class="fhead"/><circle cx="246" cy="145" r="6" class="c1"/><path class="c1" d="M230,164 Q231,149 246,149 Q261,149 262,164 Q246,157 230,164Z"/><circle cx="240" cy="167" r="1.8" class="feye"/><circle cx="252" cy="167" r="1.8" class="feye"/><path class="fmouth fill" d="M242,174 Q246,179 250,174Z"/></g><text x="272" y="170.5" font-size="12">얼굴 C</text><rect x="12" y="202" width="36" height="24" rx="6" class="boxa"/><text x="30" y="218.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₄</text><path class="arr" d="M48,214 C70,214 78,142 100,142"/><path class="arr" d="M176,142 C198,142 206,214 224,214"/><g transform="rotate(0 246 214)"><circle cx="246" cy="214" r="16" class="fhead"/><path class="cg" d="M230,210 Q231,194 246,194 Q261,194 262,210Z"/><rect x="246" y="208" width="22" height="4" rx="2" class="cg"/><circle cx="240" cy="215" r="1.8" class="feye"/><circle cx="252" cy="215" r="1.8" class="feye"/><g class="fglass"><circle cx="240" cy="215" r="4.5"/><circle cx="252" cy="215" r="4.5"/><line x1="244.5" y1="215" x2="247.5" y2="215"/></g><path class="fmouth" d="M240,221 Q246,226 252,221"/></g><text x="272" y="218.5" font-size="12">얼굴 D</text><rect x="100" y="118" width="76" height="48" rx="10" class="boxg"/><text x="138" y="139" text-anchor="middle" font-size="12.5" font-weight="700">생성자</text><text x="138" y="155" text-anchor="middle" font-size="12" font-family="var(--f-mono)">G(z)</text><line x1="342" y1="12" x2="342" y2="232" class="gl" stroke-dasharray="4 4"/><text x="506" y="20" text-anchor="middle" font-size="13.5" font-weight="700" class="taf">모드 붕괴</text><text x="506" y="37" text-anchor="middle" font-size="11.5" class="mut">z가 달라도 거의 같은 얼굴</text><rect x="360" y="58" width="36" height="24" rx="6" class="boxa"/><text x="378" y="74.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₁</text><path class="arr" d="M396,70 C418,70 426,142 448,142"/><path class="arr" d="M524,142 C546,142 554,70 572,70"/><g transform="rotate(0 594 70)"><path class="c2" d="M573,86 Q570,48 594,47 Q618,48 615,86 L609,86 L609,66 L579,66 L579,86Z"/><circle cx="594" cy="70" r="16" class="fhead"/><path class="c2" d="M578,68 Q579,52 594,52 Q609,52 610,68 Q594,60 578,68Z"/><circle cx="588" cy="71" r="1.8" class="feye"/><circle cx="600" cy="71" r="1.8" class="feye"/><path class="fmouth" d="M588,77 Q594,82 600,77"/></g><text x="620" y="74.5" font-size="12" class="taf">얼굴 A</text><rect x="360" y="106" width="36" height="24" rx="6" class="boxa"/><text x="378" y="122.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₂</text><path class="arr" d="M396,118 C418,118 426,142 448,142"/><path class="arr" d="M524,142 C546,142 554,118 572,118"/><g transform="rotate(-4 594 118)"><path class="c2" d="M573,134 Q570,96 594,95 Q618,96 615,134 L609,134 L609,114 L579,114 L579,134Z"/><circle cx="594" cy="118" r="16" class="fhead"/><path class="c2" d="M578,116 Q579,100 594,100 Q609,100 610,116 Q594,108 578,116Z"/><circle cx="588" cy="119" r="1.8" class="feye"/><circle cx="600" cy="119" r="1.8" class="feye"/><path class="fmouth" d="M588,125 Q594,130 600,125"/></g><text x="620" y="122.5" font-size="12" class="taf">얼굴 A′</text><rect x="360" y="154" width="36" height="24" rx="6" class="boxa"/><text x="378" y="170.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₃</text><path class="arr" d="M396,166 C418,166 426,142 448,142"/><path class="arr" d="M524,142 C546,142 554,166 572,166"/><g transform="rotate(3 594 166)"><path class="c2" d="M573,182 Q570,144 594,143 Q618,144 615,182 L609,182 L609,162 L579,162 L579,182Z"/><circle cx="594" cy="166" r="16" class="fhead"/><path class="c2" d="M578,164 Q579,148 594,148 Q609,148 610,164 Q594,156 578,164Z"/><circle cx="588" cy="167" r="1.8" class="feye"/><circle cx="600" cy="167" r="1.8" class="feye"/><path class="fmouth" d="M588,173 Q594,178 600,173"/></g><text x="620" y="170.5" font-size="12" class="taf">얼굴 A″</text><rect x="360" y="202" width="36" height="24" rx="6" class="boxa"/><text x="378" y="218.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₄</text><path class="arr" d="M396,214 C418,214 426,142 448,142"/><path class="arr" d="M524,142 C546,142 554,214 572,214"/><g transform="rotate(0 594 214)"><path class="c2" d="M573,230 Q570,192 594,191 Q618,192 615,230 L609,230 L609,210 L579,210 L579,230Z"/><circle cx="594" cy="214" r="16" class="fhead"/><path class="c2" d="M578,212 Q579,196 594,196 Q609,196 610,212 Q594,204 578,212Z"/><circle cx="588" cy="215" r="1.8" class="feye"/><circle cx="600" cy="215" r="1.8" class="feye"/><path class="fmouth" d="M588,221 Q594,226 600,221"/></g><text x="620" y="218.5" font-size="12" class="taf">얼굴 A</text><rect x="448" y="118" width="76" height="48" rx="10" class="boxf"/><text x="486" y="139" text-anchor="middle" font-size="12.5" font-weight="700">생성자</text><text x="486" y="155" text-anchor="middle" font-size="12" font-family="var(--f-mono)">G(z)</text></svg></div>
+        <figcaption><b>모드(mode)</b>는 데이터 분포에서 확률이 높은 봉우리, 즉 대표적인 유형입니다. 얼굴 데이터라면 표정 · 얼굴 방향 · 나이대 · 머리 모양의 조합이 서로 다른 모드가 됩니다. 생성자는 이 봉우리를 모두 덮어야 하는데, 붕괴가 생기면 z가 무엇이든 몇 개의 봉우리에만 샘플을 보냅니다.</figcaption>
+      </figure>
+      <div class="tbl"><table style="min-width:700px">
+        <thead><tr><th style="width:20%">형태</th><th style="width:42%">보이는 모습</th><th>확인 방법</th></tr></thead>
+        <tbody>
+          <tr><td><b>완전 붕괴</b></td><td>모든 z가 거의 같은 얼굴 하나를 만든다</td><td>무작위 z 64개의 결과를 한 장에 모아 보면 바로 보인다</td></tr>
+          <tr><td><b>부분 붕괴 (모드 누락)</b></td><td>얼굴은 여러 가지지만 특정 유형(노인, 측면, 안경 등)이 아예 나오지 않는다</td><td>눈으로는 놓치기 쉽다. <b>Recall</b>, 속성 분류기로 본 속성 분포를 실제 데이터와 비교</td></tr>
+          <tr><td><b>모드 호핑</b></td><td>학습 시점마다 출력이 한 유형에서 다른 유형으로 통째로 옮겨 다닌다</td><td>같은 고정 z 격자를 체크포인트마다 저장해 나란히 비교</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 왜 생기나: 판별자는 샘플을 하나씩 채점한다</h3>
+      <div class="formula">L<sub>G</sub> = − 𝔼<sub>z</sub> [ log D(G(z)) ]&nbsp;&nbsp;&nbsp;<span class="fn" style="font-family:var(--f-body)">← 샘플마다 따로 매긴 점수의 평균</span></div>
+      <p>이 손실에는 <b>샘플끼리 비교하는 항이 없습니다.</b> 판별자 D를 고정한 채 생성자만 끝까지 최적화하면, 모든 z를 D가 가장 진짜라고 채점하는 점 x* = argmax D(x)로 보내는 것이 최적입니다. Goodfellow 외(2014)도 원 논문에서, D를 갱신하지 않은 채 G만 너무 많이 학습하면 G가 많은 z를 같은 x로 보내게 된다고 경고했습니다.</p>
+      <p>판별자가 뒤따라와 x*를 가짜로 배우면 생성자는 다음으로 점수가 높은 곳으로 통째로 옮깁니다. 이것이 <b>모드 호핑</b>이고, 이 술래잡기가 수렴하지 못한 채 한쪽으로 굳으면 <b>붕괴</b>입니다.</p>
+      <div class="formula">∇<sub>θ</sub> 𝔼<sub>z</sub>[ −log D*(G<sub>θ</sub>(z)) ] = ∇<sub>θ</sub> [ <span class="fv">KL(P<sub>g</sub> ‖ P<sub>r</sub>)</span> − 2·JSD(P<sub>g</sub> ‖ P<sub>r</sub>) ]</div>
+      <p>목적함수의 방향도 붕괴 쪽으로 기울어 있습니다. Arjovsky &amp; Bottou(2017)는 판별자가 최적일 때 실무에서 쓰는 <b>비포화 손실</b>의 기울기가 위 식과 같음을 보였습니다. 여기 들어 있는 <b>역방향 KL</b>은 다음처럼 벌점이 비대칭입니다.</p>
+      <ul>
+        <li>진짜 데이터가 없는 곳에 샘플을 만들면 <b>큰 벌점</b> (P<sub>r</sub> → 0이면 log(P<sub>g</sub>/P<sub>r</sub>) → ∞)</li>
+        <li>진짜 모드 하나를 통째로 빠뜨리면 <b>작은 벌점</b> (P<sub>g</sub> → 0이면 그 구간의 기여도 → 0)</li>
+      </ul>
+      <p>그래서 "확실한 몇 곳만 정확히" 만드는 해를 선호합니다. 실험 1에서 직접 확인해 보세요.</p>
+    </div>
+
+    <div class="demo" id="demo-kl">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 1</span> 봉우리 두 개를 가우시안 하나로 맞추면: 목적함수마다 고르는 해가 다르다 <span class="tag-ex">예시 분포 · 1차원</span></div>
+        <div class="how">
+          <p>실제 분포(P<sub>r</sub>)는 −d와 +d에 있는 봉우리 두 개(표준편차 1)입니다. 생성 분포는 가우시안 하나 N(μ, σ)라서 둘을 동시에 정확히 맞출 수 없습니다. 네 가지 목적함수를 각각 최소로 만드는 μ, σ를 이 페이지에서 격자 탐색으로 찾습니다.</p>
+          <ul>
+            <li><b>순방향 KL(P<sub>r</sub> ‖ P<sub>g</sub>)</b>: 최대우도 학습과 같은 목적 (VAE · 확산 모델 계열)</li>
+            <li><b>역방향 KL(P<sub>g</sub> ‖ P<sub>r</sub>)</b></li>
+            <li><b>JSD</b>: 원래 GAN 논문의 이론적 목적</li>
+            <li><b>비포화 GAN</b>: KL(P<sub>g</sub> ‖ P<sub>r</sub>) − 2·JSD, 실무 GAN 손실의 실제 목적</li>
+          </ul>
+          <p>d를 키우면서 어느 목적함수가 먼저 <b>한쪽 봉우리만</b> 고르는지 보세요.</p>
+        </div>
+      </div>
+      <div><label for="klD" style="font-size:14px;font-weight:600">봉우리 사이 거리의 절반 d: <output id="klDOut" for="klD">3.00</output></label><input type="range" id="klD" min="2" max="18" step="1" value="12"></div>
+      <div class="svgbox"><svg id="klSvg" viewBox="0 0 640 230" role="img" aria-label="실제 분포와 목적함수별로 맞춘 가우시안"></svg></div>
+      <div class="keyrow">
+        <span><span class="sw" style="background:var(--muted);opacity:.35"></span>실제 분포 P<sub>r</sub></span>
+        <span><span class="sw ln" style="background:var(--accent)"></span>순방향 KL</span>
+        <span><span class="sw ln" style="background:var(--fix)"></span>역방향 KL</span>
+        <span><span class="sw ln" style="background:var(--add)"></span>JSD</span>
+        <span><span class="sw dash"></span>비포화 GAN</span>
+        <span>굵은 반투명 선 위에 가는 선이 겹치면 두 목적함수가 같은 해를 고른 것</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">순방향 KL (최대우도)</div><div class="v" id="klF">–</div></div>
+        <div class="stat"><div class="k">역방향 KL</div><div class="v" id="klR">–</div></div>
+        <div class="stat"><div class="k">JSD</div><div class="v" id="klJ">–</div></div>
+        <div class="stat em"><div class="k">비포화 GAN (KL − 2·JSD)</div><div class="v" id="klN">–</div></div>
+      </div>
+      <p class="insight" id="klMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 관찰로 원인 좁히기</h3>
+      <div class="tbl"><table style="min-width:820px">
+        <thead><tr><th style="width:27%">관찰</th><th style="width:28%">해석</th><th>확인 방법</th></tr></thead>
+        <tbody>
+          <tr><td><b>학습 첫 스텝부터 출력이 비슷하다</b></td><td>붕괴보다 <b>구현 오류</b> 가능성이 크다</td><td>z를 배치마다 새로 뽑는지(<code>torch.randn</code>을 루프 밖에서 한 번만 부르지 않았는지), 데이터 로더가 같은 배치를 반복하지 않는지, 학습 데이터 자체가 단조롭지 않은지</td></tr>
+          <tr><td><b>초반엔 다양하다가 점점 비슷해진다</b></td><td>학습 중 <b>모드 붕괴</b></td><td>같은 고정 z 격자를 체크포인트마다 저장해 비교, Recall이 함께 떨어지는지</td></tr>
+          <tr><td><b>체크포인트마다 출력 유형이 통째로 바뀐다</b></td><td><b>모드 호핑</b>, 생성자 · 판별자 술래잡기</td><td>고정 z 격자를 시간순으로 나열, 생성자 학습률 · 업데이트 횟수 확인</td></tr>
+          <tr><td><b>판별자 정확도가 거의 100%, 생성자 손실이 계속 커진다</b></td><td>판별자가 생성자를 압도</td><td>실제 · 가짜에 대한 D 출력 분포를 따로 기록</td></tr>
+          <tr><td><b>이미지는 선명한데 종류가 적다</b></td><td>품질은 높고 다양성만 부족</td><td>Precision은 높고 Recall은 낮게 나온다(실험 3)</td></tr>
+          <tr><td><b>z를 보간해도 얼굴이 거의 안 바뀐다</b></td><td>생성자가 z의 차이를 무시</td><td>두 z 사이를 8단계로 보간한 결과를 한 줄로 저장</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="demo" id="demo-gan">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 2</span> 작은 GAN을 직접 학습시켜 모드가 사라지는 과정 보기 <span class="tag-ex">예시 데이터 · 1차원, 봉우리 4개</span></div>
+        <div class="how">
+          <p>실제 데이터는 −3, −1, 1, 3에 있는 봉우리 4개(표준편차 0.15)입니다. 생성자(z 1개 → 은닉 16 · 16 → 출력 1)와 판별자(입력 1 → 은닉 16 · 16 → 점수 1)를 이 페이지에서 비포화 손실과 Adam(학습률 0.001, β₁ = 0.5)으로 3,000스텝 학습합니다. 배치는 64개입니다.</p>
+          <ul>
+            <li><b>D:G 업데이트 비</b>: 한 스텝에서 판별자와 생성자를 몇 번씩 갱신할지 정합니다.</li>
+            <li><b>Minibatch StdDev</b>: 판별자 마지막 층 직전에 "배치 안 샘플들의 특징 표준편차 평균"을 특징 하나로 붙입니다.</li>
+          </ul>
+          <p>같은 설정을 <b>시드 4개</b>로 학습해, 결과가 시드에 따라 얼마나 흔들리는지도 함께 봅니다. 봉우리 중심에서 3σ(0.45) 안에 든 샘플을 "고품질"로 보고, 고품질 샘플이 5% 이상 모인 봉우리를 "잡은 모드"로 셉니다.</p>
+          <p class="muted">위클리 9의 1차원 GAN 실험이 원래 손실과 비포화 손실을 비교했다면, 여기서는 같은 비포화 손실에서 학습 균형과 다양성 장치를 바꿔 봅니다.</p>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="gnR" style="font-weight:600">D:G 업데이트 비</label>
+        <select id="gnR"><option value="1|1" selected>1 : 1 (기준)</option><option value="5|1">5 : 1 (판별자 과학습)</option><option value="1|5">1 : 5 (생성자 과학습)</option></select>
+        <label for="gnM" style="font-weight:600">Minibatch StdDev</label>
+        <select id="gnM"><option value="0" selected>끔</option><option value="1">켬</option></select>
+        <label for="gnS" style="font-weight:600">그림에 표시할 시드</label>
+        <select id="gnS"><option value="0" selected>1</option><option value="1">2</option><option value="2">3</option><option value="3">4</option></select>
+      </div>
+      <div class="panels">
+        <div class="panel"><h5>학습 경과: 생성 샘플의 위치 (진할수록 많음)</h5><div class="svgbox"><svg id="gnH" viewBox="0 0 320 220" role="img" aria-label="학습 스텝에 따른 생성 샘플 분포의 변화"></svg></div><div class="cap">가로 = 학습 스텝, 세로 = 생성된 값 · 점선 = 실제 봉우리 위치</div></div>
+        <div class="panel"><h5>3,000스텝 후 생성 분포와 실제 분포</h5><div class="svgbox"><svg id="gnF" viewBox="0 0 320 220" role="img" aria-label="학습 후 생성 샘플의 히스토그램과 실제 밀도"></svg></div><div class="cap">막대 = 생성 샘플 1,000개 히스토그램 · 선 = 실제 밀도</div></div>
+      </div>
+      <div class="stats">
+        <div class="stat em"><div class="k">잡은 모드 (이 시드)</div><div class="v" id="gnMode">–</div></div>
+        <div class="stat em"><div class="k">시드 4개의 잡은 모드</div><div class="v" id="gnSeeds">–</div></div>
+        <div class="stat"><div class="k">고품질 샘플 비율 (이 시드)</div><div class="v" id="gnHq">–</div></div>
+        <div class="stat"><div class="k">가장 많이 쓰인 봉우리의 몫 (이 시드)</div><div class="v" id="gnTop">–</div></div>
+      </div>
+      <p class="insight" id="gnMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 대응 기법 지도</h3>
+      <p>원인이 여러 겹이므로 한꺼번에 다 넣지 말고 <b>점검 → 균형 → 손실 · 정규화 → 다양성 장치 → 데이터</b> 순서로 하나씩 바꾸며 비교해야 무엇이 효과였는지 알 수 있습니다.</p>
+      <div class="tbl"><table style="min-width:840px">
+        <thead><tr><th style="width:12%">단계</th><th style="width:20%">기법</th><th style="width:38%">원리</th><th>주의</th></tr></thead>
+        <tbody>
+          <tr><td><b>점검</b></td><td>데이터 · 로더 · z 샘플링</td><td>붕괴처럼 보이는 구현 오류를 먼저 걸러 낸다</td><td>고정 z와 무작위 z를 둘 다 본다. 고정 z만 보면 전체 다양성을 판단할 수 없다</td></tr>
+          <tr><td rowspan="2"><b>균형</b></td><td><b>TTUR</b> (Heusel 외 2017)</td><td>생성자와 판별자에 서로 다른 학습률을 준다</td><td>대표 설정(SAGAN)은 오히려 판별자 쪽이 더 크다(<b>D 4×10⁻⁴, G 1×10⁻⁴</b>)</td></tr>
+          <tr><td>D:G 업데이트 비</td><td>한쪽이 너무 앞서 나가지 않게 갱신 횟수를 맞춘다</td><td>어느 쪽으로 기울어도 문제가 될 수 있다. 실험 2에서 판별자만 5번씩 갱신하면 모드가 줄어든다. 반면 WGAN 계열은 손실이 달라 비평자를 의도적으로 5번씩 갱신한다</td></tr>
+          <tr><td rowspan="3"><b>손실 · 정규화</b></td><td>비포화 손실 + <b>R1</b> (Mescheder 외 2018)</td><td>실제 이미지에서 판별자 기울기의 크기 ‖∇D(x)‖²에 벌점을 줘 판별자를 매끄럽게 한다</td><td>StyleGAN 계열 얼굴 생성의 기본 조합</td></tr>
+          <tr><td><b>Spectral Norm</b> (Miyato 외 2018) + <b>Hinge 손실</b></td><td>각 층의 가중치를 최대 특잇값으로 나눠 층마다 립시츠 상수를 1 이하로 묶는다</td><td>SAGAN · BigGAN이 쓴 조합</td></tr>
+          <tr><td><b>WGAN-GP</b> (Gulrajani 외 2017)</td><td>Wasserstein 거리를 쓰고, 실제 · 가짜 사이 보간점에서 ‖∇D‖가 1이 되도록 벌점을 준다</td><td>비평자에 배치 정규화를 쓰면 안 된다(샘플별 기울기 벌점과 충돌, 레이어 정규화로 대체). 붕괴를 없애 주는 보장은 없다</td></tr>
+          <tr><td rowspan="4"><b>다양성 장치</b></td><td><b>Minibatch StdDev</b> (Karras 외 2018)</td><td>판별자 마지막 블록 직전에 샘플 간 특징 표준편차의 평균을 특징 맵 한 장으로 붙여, 다양성이 낮은 배치를 판별자가 알아보게 한다</td><td>ProGAN · StyleGAN에 기본 포함, 비용이 거의 없다</td></tr>
+          <tr><td><b>Minibatch Discrimination</b> · <b>Feature Matching</b> (Salimans 외 2016)</td><td>배치 안 샘플끼리의 유사도를 판별자 특징으로 쓰거나, 생성자가 판별자 중간 특징의 평균을 실제 데이터와 맞추게 한다</td><td>Feature Matching은 다양성은 늘리지만 이미지 품질이 떨어질 수 있다</td></tr>
+          <tr><td><b>Unrolled GAN</b> (Metz 외 2017)</td><td>생성자가 판별자의 다음 몇 스텝 반응까지 미분해, 당장만 속이는 방향을 피한다</td><td>펼친 스텝 수만큼 계산이 늘어 큰 모델에는 잘 쓰지 않는다</td></tr>
+          <tr><td><b>Mode-seeking 손실</b> (Mao 외 2019)</td><td>두 z의 거리 대비 두 출력의 거리를 키워, 다른 z가 다른 출력을 만들게 한다</td><td>조건 입력이 강해 z를 무시하는 조건부 GAN을 위해 제안됐다</td></tr>
+          <tr><td><b>데이터</b></td><td><b>ADA</b> (Karras 외 2020) · <b>DiffAugment</b> (Zhao 외 2020)</td><td>판별자에 들어가는 실제 · 가짜 이미지에 같은 미분 가능한 증강을 적용해, 적은 데이터에서 판별자가 학습 이미지를 외우는 것을 막는다</td><td>실제 이미지에만 증강을 걸면 생성자가 증강까지 따라 한다(아래 정정)</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">판별자에 넣는 Minibatch StdDev 층 (StyleGAN2 구현과 같은 방식, 특징 맵 1장)</div>
+<pre>import torch
+from torch import nn
+
+class MinibatchStdDev(nn.Module):
+    def __init__(self, group_size=4):
+        super().__init__()
+        self.group_size = group_size
+
+    def forward(self, x):                                # x: (N, C, H, W), 판별자 마지막 블록 직전
+        n, c, h, w = x.shape
+        g = min(self.group_size, n)                      # N은 g로 나누어떨어져야 한다
+        y = x.reshape(g, -1, c, h, w)                    # (그룹 크기, 그룹 수, C, H, W)
+        y = (y.var(dim=0, unbiased=False) + 1e-8).sqrt() # 그룹 안 샘플 간 표준편차
+        y = y.mean(dim=[1, 2, 3])                        # 그룹마다 숫자 하나
+        y = y.reshape(-1, 1, 1, 1).repeat(g, 1, h, w)    # 같은 그룹 샘플에 되돌려 붙인다
+        return torch.cat([x, y], dim=1)                  # 채널 하나 추가: (N, C + 1, H, W)</pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">비포화 손실 + R1 규제, TTUR, 고정 z로 다양성 기록하기</div>
+<pre>import torch
+import torch.nn.functional as F
+
+opt_g = torch.optim.Adam(G.parameters(), lr=1e-4, betas=(0.0, 0.9))
+opt_d = torch.optim.Adam(D.parameters(), lr=4e-4, betas=(0.0, 0.9))   # TTUR: SAGAN 설정
+fixed_z = torch.randn(64, z_dim, device=device)          # 학습 내내 같은 z로 경과 비교
+
+def d_step(real, gamma=10.0):
+    real = real.detach().requires_grad_(True)
+    fake = G(torch.randn(real.size(0), z_dim, device=device)).detach()
+    out_real, out_fake = D(real), D(fake)
+    loss = F.softplus(-out_real).mean() + F.softplus(out_fake).mean()
+    grad, = torch.autograd.grad(out_real.sum(), real, create_graph=True)
+    r1 = grad.pow(2).flatten(1).sum(1).mean()            # 실제 이미지에서 ‖∇D(x)‖²
+    opt_d.zero_grad(set_to_none=True)
+    (loss + gamma / 2 * r1).backward()
+    opt_d.step()
+
+def g_step(batch_size):
+    z = torch.randn(batch_size, z_dim, device=device)    # 배치마다 새로 뽑는다
+    loss = F.softplus(-D(G(z))).mean()                   # 비포화 손실 −log D(G(z))
+    opt_g.zero_grad(set_to_none=True)
+    loss.backward()
+    opt_g.step()
+
+@torch.no_grad()
+def diversity_log():
+    fixed = G(fixed_z)                                   # 체크포인트끼리 나란히 저장해 비교
+    rand = G(torch.randn(64, z_dim, device=device))
+    spread = torch.pdist(rand.flatten(1)).mean().item()  # 배치 안 평균 거리: 계속 줄면 경고
+    return fixed, spread</pre>
+    </div>
+
+    <div class="demo" id="demo-metric">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 3</span> FID · Precision · Recall이 각각 무엇을 놓치는지 보기 <span class="tag-ex">예시 데이터 · 2차원, 봉우리 8개</span></div>
+        <div class="how">
+          <p>실제 데이터는 반지름 2인 원 위의 봉우리 8개(표준편차 0.1)입니다. 생성 분포를 골라 세 지표를 이 페이지에서 계산합니다. 실제 FID는 Inception 신경망의 2,048차원 특징으로 계산하지만, 여기서는 <b>좌표 자체를 특징</b>으로 씁니다.</p>
+          <ul>
+            <li><b>FID</b>: 두 특징 분포를 각각 가우시안으로 보고 평균과 공분산만 비교합니다. ‖μ<sub>r</sub> − μ<sub>g</sub>‖² + Tr(Σ<sub>r</sub> + Σ<sub>g</sub> − 2(Σ<sub>r</sub>Σ<sub>g</sub>)<sup>1/2</sup>), 낮을수록 좋습니다.</li>
+            <li><b>Precision</b>: 생성 샘플 중 실제 데이터 영역 안에 든 비율, 즉 <b>품질</b>입니다.</li>
+            <li><b>Recall</b>: 실제 샘플 중 생성 데이터 영역 안에 든 비율, 즉 <b>다양성 · 포괄 범위</b>입니다.</li>
+          </ul>
+          <p class="muted">영역은 Kynkäänniemi 외(2019) 방식으로, 각 샘플에서 같은 집합의 3번째 최근접 이웃까지를 반지름으로 하는 원들의 합집합입니다.</p>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="mtP" style="font-weight:600">생성 분포</label>
+        <select id="mtP"><option value="ok" selected>정상 (8개 고르게)</option><option value="half">모드 누락 (8개 중 4개)</option><option value="one">완전 붕괴 (1개)</option><option value="wide">과하게 퍼짐 (표준편차 3배)</option><option value="blob">한 덩어리 (평균 · 공분산만 일치)</option></select>
+        <label for="mtN" style="font-weight:600">샘플 수 (실제 = 생성)</label>
+        <select id="mtN"><option value="100">100</option><option value="500">500</option><option value="2000" selected>2,000</option></select>
+      </div>
+      <div class="split">
+        <div class="svgbox"><svg id="mtSvg" viewBox="0 0 300 300" role="img" aria-label="실제 샘플과 생성 샘플의 산점도"></svg></div>
+        <div class="side">
+          <div class="keyrow">
+            <span><span class="sw c" style="background:var(--muted);opacity:.6"></span>실제 샘플</span>
+            <span><span class="sw c" style="background:var(--accent)"></span>생성 샘플</span>
+          </div>
+          <div class="stats">
+            <div class="stat em"><div class="k">FID (좌표 특징)</div><div class="v" id="mtFid">–</div></div>
+            <div class="stat"><div class="k">실제 vs 실제 FID (같은 N)</div><div class="v" id="mtBase">–</div></div>
+            <div class="stat ok"><div class="k">Precision (품질)</div><div class="v" id="mtPr">–</div></div>
+            <div class="stat ok"><div class="k">Recall (다양성)</div><div class="v" id="mtRc">–</div></div>
+            <div class="stat"><div class="k">생성 샘플이 덮은 봉우리</div><div class="v" id="mtMode">–</div></div>
+          </div>
+        </div>
+      </div>
+      <p class="insight" id="mtMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">Minibatch Standard Deviation: 배치의 특징 분산을 판별자 입력에 추가</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>판별자 <b>입력</b>이 아니라 <b>마지막 블록 직전의 특징 맵</b>에 붙입니다. 또 분산 자체가 아니라 샘플 간 <b>표준편차를 모든 특징 · 위치에 걸쳐 평균한 숫자 하나</b>를 특징 맵 한 장으로 복제해 이어 붙입니다(ProGAN, Karras 외 2018).</p>
+          <p>작성 답안의 최종 요약표("판별자의 후반부 특징에 추가")는 맞게 썼으므로, 본문 표와 서로 어긋났던 부분입니다.</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">ADA나 DiffAugment를 사용할 수 있습니다. … 단, 얼굴의 의미를 훼손하는 지나친 회전이나 변형은 피해야 합니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>주의할 점은 의미 훼손이 아니라 <b>증강 누출(leaking)</b>입니다. ADA · DiffAugment는 판별자에 들어가는 <b>실제와 가짜 모두</b>에 같은 증강을 걸기 때문에, ADA 논문은 90° 회전 같은 강한 변형도 썼습니다. 적용 확률 p를 약 0.8보다 낮게 두면 생성자가 증강을 따라 하지 않습니다.</p>
+          <p>반대로 데이터셋의 <b>실제 이미지에만</b> 증강을 걸면 생성자는 "회전된 얼굴도 진짜"라고 배워 회전된 얼굴을 만들어 냅니다. 이때는 좌우 반전처럼 원래 분포에 실제로 있을 법한 변형만 써야 합니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 균형은 양방향으로 본다</div><h4>"판별자를 약하게"만이 답은 아니다</h4>
+        <p>작성 답안의 처방(판별자 학습률 · 업데이트 횟수 낮추기)은 판별자가 앞설 때 맞는 방향입니다. 실험 2에서도 판별자만 5번씩 갱신하면 모드가 줄어듭니다. 다만 반대 방향도 원인이 됩니다.</p>
+        <ul>
+          <li><b>판별자가 너무 앞설 때</b>: 생성자 기울기가 불안정해지고 모드를 놓친다.</li>
+          <li><b>생성자가 너무 앞설 때</b>: 생성자가 낡은 판별자의 최고점으로 몰린다. 원 논문(Goodfellow 외 2014)이 경고한 붕괴 경로다.</li>
+        </ul>
+        <p>그래서 TTUR의 대표 설정(SAGAN)은 오히려 판별자 학습률을 <b>4배 크게</b> 줍니다. TTUR은 "판별자를 늦추는 기법"이 아니라 두 학습률을 따로 맞추는 기법이고, 어느 쪽을 줄일지는 D 출력 분포와 고정 z 격자를 보고 정합니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 손실 값으로 균형을 판단하지 않는다</div><h4>숫자보다 출력과 지표</h4>
+        <p>GAN의 생성자 · 판별자 손실은 서로를 기준으로 매긴 값이라, 학습이 잘 돼도 내려가지 않고 붕괴가 진행돼도 멀쩡해 보일 수 있습니다. 두 손실이 비슷해야 정상이라는 기준도 없습니다.</p>
+        <p>그래서 <b>고정 z 격자 이미지</b>, 배치 안 평균 거리, 일정 간격의 <b>FID · Precision · Recall</b>을 함께 기록해 판단합니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 비교 실험은 시드 여러 개로</div><h4>GAN은 시드에 따라 결과가 크게 흔들린다</h4>
+        <p>Lucic 외(2018, "Are GANs Created Equal?")는 같은 모델도 시드와 하이퍼파라미터에 따라 FID가 크게 달라서, 충분히 탐색하면 여러 GAN 변형의 차이 대부분이 사라진다고 보고했습니다.</p>
+        <p>"시드 하나로 기준 모델과 기법 하나를 비교"하면 우연을 효과로 착각하기 쉽습니다. 설정마다 시드를 3개 이상 돌려 평균과 흩어짐을 같이 보세요. 실험 2의 "시드 4개" 칸이 그 차이를 보여 줍니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 지표를 잴 때의 함정</div><h4>FID는 표본 수와 특징 추출기에 따라 달라진다</h4>
+        <ul>
+          <li><b>표본 수</b>: FID는 표본이 적을수록 커지는 편향이 있어, 같은 개수(보통 50,000장)로만 비교합니다. 실험 3에서 실제 vs 실제 FID가 0이 아닌 이유입니다.</li>
+          <li><b>구현</b>: 이미지 크기 조정 방식이나 Inception 가중치가 다르면 숫자가 달라지므로, 같은 구현으로 잰 값끼리만 비교합니다.</li>
+          <li><b>두 숫자로</b>: FID 하나로는 품질과 다양성 중 무엇이 문제인지 모릅니다. Precision과 Recall을 나눠 봐야 붕괴를 특정할 수 있습니다.</li>
+        </ul>
+      </div>
+      <div class="card add"><div class="k">보충 · 다양성이 최우선이라면</div><h4>우도 기반 생성 모델이라는 선택지</h4>
+        <p>VAE와 확산 모델은 데이터 우도(또는 그 하한)를 키우는 <b>순방향 KL 계열</b> 목적으로 학습합니다. 실험 1에서 보듯 모드를 빠뜨리면 손해가 커서 모드 붕괴가 잘 생기지 않습니다.</p>
+        <p>대신 VAE는 흐릿해지기 쉽고, 확산 모델은 샘플링에 여러 단계가 필요해 느립니다. GAN의 장점(한 번에 생성 · 선명함)이 꼭 필요한지 먼저 따져 볼 만합니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>서로 다른 잠재벡터를 넣어도 비슷한 얼굴만 나온다면 <b>모드 붕괴</b>로 보겠습니다. 생성자의 손실은 샘플마다 판별자가 진짜라고 보는지만 따지고 샘플끼리 다른지는 따지지 않아서, 판별자가 가장 진짜라고 믿는 몇 가지 얼굴로 몰리는 것이 생성자에게 가장 쉬운 해이기 때문입니다.</p>
+      <p>먼저 처음부터 비슷했는지 확인해서, z를 매번 새로 뽑는지와 데이터 로더 같은 <b>구현 문제</b>를 걸러 내겠습니다. 그다음 고정 z 격자를 체크포인트마다 저장해 붕괴인지 모드 호핑인지 보고, <b>Precision과 Recall</b>을 따로 재서 품질과 다양성 중 무엇이 무너졌는지 수치로 확인하겠습니다.</p>
+      <p>대응은 하나씩 바꾸며 비교하겠습니다. 생성자와 판별자의 <b>학습률과 업데이트 균형</b>을 출력을 보며 조정하고, 비포화 손실과 <b>R1</b>, 또는 Hinge 손실과 <b>Spectral Normalization</b> 조합으로 판별자를 안정시키겠습니다. 그리고 판별자가 배치의 다양성을 볼 수 있도록 <b>Minibatch StdDev</b>를 넣고, 데이터가 적다면 <b>ADA</b>를 쓰겠습니다. 비교는 시드 여러 개로 하겠습니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 총정리 ===================== -->
+  <section class="q" id="sum">
+    <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 문제 해석 · 원인 (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>모드 붕괴라는 진단, 모드의 뜻, 비슷한 출력만으로 확정하지 말고 데이터 · 구현부터 확인하라는 점</td><td>손실에 다양성 항이 없다는 근본 원인, 비포화 손실의 역방향 KL 성향(Arjovsky &amp; Bottou 2017), 완전 붕괴 · 모드 누락 · 모드 호핑 구분 추가</td></tr>
+        <tr><td>Q1 대응 기법 (작성 답안)</td><td><span class="badge b-fix">오류</span></td><td>WGAN-GP · Hinge · R1 · Spectral Norm · Minibatch Discrimination · Feature Matching · Unrolled GAN · ADA 등 기법 목록과 "하나씩 비교" 원칙</td><td>Minibatch StdDev는 판별자 입력이 아니라 마지막 블록 직전 특징에 붙인다. 증강의 위험은 의미 훼손이 아니라 누출. 균형 조정은 양방향(TTUR 대표 설정은 D 학습률이 더 크다)이라는 점 보충</td></tr>
+        <tr><td>Q1 진단 실험 · 평가 (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>고정 z 비교, 판별자 영향 확인, FID와 Precision · Recall을 함께 쓰라는 점, FID만으로 원인을 알 수 없다는 점</td><td>시드 하나 비교의 위험, FID의 표본 수 편향과 평균 · 공분산만 본다는 한계, 손실 값으로 균형을 판단하지 않는다는 점 추가</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <nav class="pager" aria-label="위클리 이동 (하단)">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%2010.%20Semantic·Instance%20Segmentation%20·%20Panoptic%20·%20객체%20추적.html" rel="prev">‹ 이전 · 10 Semantic·Instance Segmentation</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+    <a href="#top">↑ 맨 위로</a>
+  </nav>
+
+  <footer>위클리 페이퍼 11 · GAN 모드 붕괴의 원인 · 대응 · 평가 · <span class="tag-ex">예시</span> 표시가 있는 값은 설명용 가상 데이터입니다</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){let u=0;while(!u)u=r();const v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const minus=s=>String(s).replace(/-/g,"−");
+const f3=v=>minus(v.toFixed(3));
+const pct=v=>(v*100).toFixed(1)+"%";
+const sig=z=>1/(1+Math.exp(-z));
+const sup=n=>String(n).split("").map(c=>"⁰¹²³⁴⁵⁶⁷⁸⁹"["0123456789".indexOf(c)]||(c==="-"?"⁻":c)).join("");
+function sci(v){if(!isFinite(v))return "발산";if(v===0)return "0";const e=Math.floor(Math.log10(Math.abs(v)));const m=v/Math.pow(10,e);if(e>=-2&&e<=3)return minus(+v.toPrecision(3)+"");return minus(m.toFixed(1))+"×10"+sup(e);}
+function clear(s){while(s.firstChild)s.removeChild(s.firstChild);}
+function safe(name,fn){try{fn();}catch(e){console.error(name,e);}}
+const later=fn=>setTimeout(()=>safe("later",fn),20);
+const fmtN=n=>n.toLocaleString("ko-KR");
+
+/* Python 문법 강조: 주석·키워드·내장 함수·문자열·숫자·호출·데코레이터 */
+const SY_KW=new Set("import from as def return for in if elif else with try except finally while class lambda not and or is None True False yield pass break continue raise global assert".split(" "));
+const SY_BI=new Set("print range len enumerate zip min max sum abs dict list tuple set int float str bool isinstance super open map sorted".split(" "));
+const SY_RE=/(#.*)|(@[A-Za-z_][\w.]*)|([rbfu]?"(?:[^"\\n]|\.)*"|[rbfu]?'(?:[^'\\n]|\.)*')|(\b\d+(?:\.\d+)?(?:e[-+]?\d+)?\b)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)/g;
+function hlPre(pre){
+  if(pre.closest(".card"))return;   // 오류 메시지 블록은 그대로
+  const w=document.createTreeWalker(pre,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".c,.cnt,[class^='sy-']")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{const t=n.nodeValue,frag=document.createDocumentFragment();let last=0,m;SY_RE.lastIndex=0;
+    while((m=SY_RE.exec(t))){let cls=null;
+      if(m[1])cls="c";else if(m[2])cls="sy-d";else if(m[3])cls="sy-s";else if(m[4])cls="sy-n";
+      else if(m[5])cls=SY_KW.has(m[5])?"sy-k":SY_BI.has(m[5])?"sy-b":"sy-f";
+      else if(SY_KW.has(m[6]))cls="sy-k";else if(m[6]==="self")cls="sy-b";
+      if(!cls)continue;
+      if(m.index>last)frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+      const sp=document.createElement("span");sp.className=cls;sp.textContent=m[0];frag.appendChild(sp);last=m.index+m[0].length;}
+    if(!last)return;if(last<t.length)frag.appendChild(document.createTextNode(t.slice(last)));n.parentNode.replaceChild(frag,n);});
+}
+
+/* ---------- 실험 1: 목적함수별로 맞춘 가우시안 ---------- */
+safe("kl",function(){
+  const X0=-14,DX=0.035,NX=801,xs=new Float64Array(NX);for(let i=0;i<NX;i++)xs[i]=X0+i*DX;
+  const npdf=(x,m,s)=>Math.exp(-0.5*((x-m)/s)*((x-m)/s))/(s*Math.sqrt(2*Math.PI));
+  const E=1e-300;
+  function divs(P,lP,mu,s){let f=0,r=0,j=0;for(let i=0;i<NX;i++){const p=P[i],q=npdf(xs[i],mu,s),lq=Math.log(q+E),m=0.5*(p+q),lm=Math.log(m+E);
+      f+=p*(lP[i]-lq);r+=q*(lq-lP[i]);j+=0.5*p*(lP[i]-lm)+0.5*q*(lq-lm);}
+    f*=DX;r*=DX;j*=DX;return [f,r,j,r-2*j];}
+  const cache={};
+  function fit(d){if(cache[d])return cache[d];
+    const P=new Float64Array(NX),lP=new Float64Array(NX);for(let i=0;i<NX;i++){P[i]=0.5*npdf(xs[i],-d,1)+0.5*npdf(xs[i],d,1);lP[i]=Math.log(P[i]+E);}
+    // 거친 격자: 가운데 영역(μ < d/2)과 봉우리 영역(μ ≥ d/2)에서 따로 최솟값을 찾고, 각각 주변을 촘촘히 다듬는다
+    const best=[0,1,2,3].map(()=>[null,null]);
+    for(let mu=0;mu<=6.0001;mu+=0.25)for(let s=0.3;s<=6.0001;s+=0.25){const v=divs(P,lP,mu,s),reg=mu<d/2?0:1;
+      for(let k=0;k<4;k++)if(!best[k][reg]||v[k]<best[k][reg][0])best[k][reg]=[v[k],mu,s];}
+    const out=best.map((b,k)=>{let top=null;
+      b.forEach(c=>{if(!c)return;let cur=c;for(let mu=Math.max(0,c[1]-0.25);mu<=c[1]+0.2501;mu+=0.05)for(let s=Math.max(0.3,c[2]-0.25);s<=c[2]+0.2501;s+=0.05){const v=divs(P,lP,mu,s)[k];if(v<cur[0])cur=[v,mu,s];}
+        if(!top||cur[0]<top[0])top=cur;});
+      return {v:top[0],mu:top[1],s:top[2],one:top[1]>=d/2};});
+    return cache[d]={P,out};}
+  const NAMES=["순방향 KL","역방향 KL","JSD","비포화 GAN"],IDS=["#klF","#klR","#klJ","#klN"];
+  const STY=[{stroke:"var(--accent)"},{stroke:"var(--fix)"},{stroke:"var(--add)"},{stroke:"var(--ink)","stroke-dasharray":"6 4"}];
+  const dOf=v=>v/4;
+  let switches=null;
+  function render(){
+    const d=dOf(+$("#klD").value);$("#klDOut").textContent=d.toFixed(2);
+    const R=fit(d),S=$("#klSvg");clear(S);
+    const L=40,Rx=630,T=12,B=196,xmin=-8,xmax=8;
+    const sx=x=>L+(x-xmin)/(xmax-xmin)*(Rx-L);
+    let ymax=0.45;R.out.forEach(o=>{ymax=Math.max(ymax,1/(o.s*Math.sqrt(2*Math.PI))*1.05);});ymax=Math.min(ymax,1.4);
+    const sy=y=>B-Math.min(y,ymax)/ymax*(B-T);
+    for(let x=-8;x<=8;x+=2){el("line",{x1:sx(x),y1:T,x2:sx(x),y2:B,class:"gl"},S);el("text",{x:sx(x),y:B+15,"text-anchor":"middle","font-size":10.5,class:"mut"},S,minus(x));}
+    el("line",{x1:L,y1:B,x2:Rx,y2:B,class:"ax"},S);
+    el("text",{x:(L+Rx)/2,y:224,"text-anchor":"middle","font-size":11,class:"mut"},S,"x");
+    const pts=[];for(let i=0;i<NX;i++){const x=xs[i];if(x<xmin||x>xmax)continue;pts.push(sx(x).toFixed(1)+","+sy(R.P[i]).toFixed(1));}
+    el("polygon",{points:sx(xmin)+","+B+" "+pts.join(" ")+" "+sx(xmax)+","+B,fill:"var(--muted)","fill-opacity":0.25,stroke:"none"},S);
+    R.out.forEach((o,k)=>{const q=[];for(let x=xmin;x<=xmax+1e-9;x+=0.04)q.push(sx(x).toFixed(1)+","+sy(npdf(x,o.mu,o.s)).toFixed(1));
+      el("polyline",Object.assign({points:q.join(" "),fill:"none","stroke-width":k<2?5.5:2.2,"stroke-opacity":k<2?0.45:1},STY[k]),S);});
+    R.out.forEach((o,k)=>{$(IDS[k]).innerHTML='<span class="pr"><span class="pl">μ</span>'+o.mu.toFixed(2)+'</span><span class="pr"><span class="pl">σ</span>'+o.s.toFixed(2)+'</span><span class="sub">'+(o.one?"한쪽 봉우리만 덮음":"두 봉우리 사이를 넓게 덮음")+"</span>";});
+    const one=R.out.map((o,k)=>o.one?NAMES[k]:null).filter(Boolean),both=R.out.map((o,k)=>o.one?null:NAMES[k]).filter(Boolean);
+    let msg="d = "+d.toFixed(2)+"에서 ";
+    if(!one.length)msg+="네 목적함수 모두 두 봉우리 가운데(μ ≈ 0)에 σ를 넓힌 가우시안을 고릅니다. 봉우리가 가까우면 가운데를 덮어도 손해가 작기 때문입니다.";
+    else if(!both.length)msg+="네 목적함수 모두 한쪽 봉우리만 덮습니다.";
+    else msg+=both.join(" · ")+" 목적은 두 봉우리 사이를 넓게 덮고(데이터가 없는 가운데에도 확률을 둠), "+one.join(" · ")+" 목적은 한쪽 봉우리만 정확히 덮고 다른 봉우리를 통째로 버립니다.";
+    if(switches){const parts=[];switches.map((v,k)=>[v,k]).filter(x=>x[0]!=null).sort((x,y)=>x[0]-y[0]).forEach(([v,k])=>parts.push(NAMES[k]+" d ≥ "+v.toFixed(2)));
+      const never=switches.map((v,k)=>v==null?NAMES[k]:null).filter(Boolean);
+      msg+="\n이 범위(d = 0.50 ~ 4.50)에서 한쪽 봉우리로 바뀌는 지점: "+(parts.length?parts.join(", "):"없음")+(never.length?". "+never.join(" · ")+" 목적은 끝까지 가운데를 덮습니다.":".");
+      if(switches[3]!=null&&switches[1]!=null&&switches[3]<switches[1])msg+="\n비포화 GAN 목적이 역방향 KL보다도 먼저 한쪽을 고릅니다. JSD로 재면 가운데를 덮는 해가 더 가까운데(JSD가 작음), −2·JSD 항은 JSD가 클수록 목적값을 낮추므로 오히려 그 해를 불리하게 만듭니다. Arjovsky & Bottou(2017)가 이 항의 부호가 거꾸로라고 지적한 이유이고, 실무 GAN 손실이 모드 붕괴 쪽으로 기울어 있다는 뜻입니다.";}
+    else msg+="\n(전환 지점 계산 중…)";
+    $("#klMsg").textContent=msg;}
+  function computeSwitches(){const sw=[null,null,null,null];
+    for(let v=2;v<=18;v++){const R=fit(dOf(v));R.out.forEach((o,k)=>{if(o.one&&sw[k]==null)sw[k]=dOf(v);});}
+    switches=sw;render();}
+  $("#klD").addEventListener("input",()=>safe("kl",render));
+  render();later(computeSwitches);
+});
+
+/* ---------- 실험 2: 1차원 GAN 직접 학습 ---------- */
+safe("gan",function(){
+  const H=16,B=64,STEPS=3000,SNAP=100,NEVAL=1000,MU=[-3,-1,1,3],SD=0.15,NB=60,XL=-4.5,XH=4.5,LR=1e-3,B1=0.5,B2=0.999;
+  const lrelu=z=>z>0?z:0.2*z,dl=z=>z>0?1:0.2,sig=z=>1/(1+Math.exp(-z));
+  function adam(P){return {P,m:P.map(a=>new Float64Array(a.length)),v:P.map(a=>new Float64Array(a.length)),t:0};}
+  function adamStep(o,G){o.t++;const c1=1-Math.pow(B1,o.t),c2=1-Math.pow(B2,o.t);
+    for(let a=0;a<o.P.length;a++){const p=o.P[a],g=G[a],m=o.m[a],v=o.v[a];for(let i=0;i<p.length;i++){m[i]=B1*m[i]+(1-B1)*g[i];v[i]=B2*v[i]+(1-B2)*g[i]*g[i];p[i]-=LR*(m[i]/c1)/(Math.sqrt(v[i]/c2)+1e-8);}}}
+  const zeros=P=>P.map(a=>new Float64Array(a.length));
+  function make(seed,mb){const r=mulberry32(seed*7919+13);const N=(n,s)=>Float64Array.from({length:n},()=>gauss(r)*s);
+    const D=[N(H,1),N(H,1),N(H*H,Math.sqrt(2/H)),new Float64Array(H),N(H+mb,Math.sqrt(1/H)),new Float64Array(1)];
+    const G=[N(H,1),N(H,0.5),N(H*H,Math.sqrt(1/H)),new Float64Array(H),N(H,Math.sqrt(1/H)),new Float64Array(1)];
+    return {r,D,G,oD:adam(D),oG:adam(G),gD:zeros(D),gG:zeros(G)};}
+  // 버퍼
+  const n=B,z1=new Float64Array(n*H),h1=new Float64Array(n*H),z2=new Float64Array(n*H),h2=new Float64Array(n*H),out=new Float64Array(n),
+        dh2=new Float64Array(n*H),dz1=new Float64Array(n*H),dx=new Float64Array(n),mu=new Float64Array(H),sd=new Float64Array(H);
+  let sMb=0;
+  function dFwd(P,x,mb){const [W1,b1,W2,b2,W3,b3]=P;
+    for(let i=0;i<n;i++){for(let j=0;j<H;j++){const z=x[i]*W1[j]+b1[j];z1[i*H+j]=z;h1[i*H+j]=lrelu(z);}
+      for(let k=0;k<H;k++){let s=b2[k];for(let j=0;j<H;j++)s+=h1[i*H+j]*W2[j*H+k];z2[i*H+k]=s;h2[i*H+k]=lrelu(s);}}
+    sMb=0;if(mb){for(let k=0;k<H;k++){let m=0;for(let i=0;i<n;i++)m+=h2[i*H+k];m/=n;let v=0;for(let i=0;i<n;i++){const q=h2[i*H+k]-m;v+=q*q;}mu[k]=m;sd[k]=Math.sqrt(v/n+1e-8);sMb+=sd[k];}sMb/=H;}
+    for(let i=0;i<n;i++){let s=b3[0]+(mb?sMb*W3[H]:0);for(let k=0;k<H;k++)s+=h2[i*H+k]*W3[k];out[i]=s;}}
+  function dBack(P,G,x,dout,mb,acc){const [W1,b1,W2,b2,W3]=P;const [gW1,gb1,gW2,gb2,gW3,gb3]=G||[];
+    let sd0=0;for(let i=0;i<n;i++)sd0+=dout[i];
+    if(acc){gb3[0]+=sd0;if(mb)gW3[H]+=sMb*sd0;}
+    for(let i=0;i<n;i++)for(let k=0;k<H;k++){if(acc)gW3[k]+=h2[i*H+k]*dout[i];let d=dout[i]*W3[k];if(mb)d+=sd0*W3[H]*(1/H)*(h2[i*H+k]-mu[k])/(n*sd[k]);dh2[i*H+k]=d*dl(z2[i*H+k]);}
+    for(let i=0;i<n;i++){let gx=0;for(let j=0;j<H;j++){let s=0;for(let k=0;k<H;k++)s+=dh2[i*H+k]*W2[j*H+k];const dz=s*dl(z1[i*H+j]);dz1[i*H+j]=dz;gx+=dz*W1[j];
+        if(acc){gW1[j]+=x[i]*dz;gb1[j]+=dz;}}dx[i]=gx;}
+    if(acc)for(let j=0;j<H;j++)for(let k=0;k<H;k++){let s=0;for(let i=0;i<n;i++)s+=h1[i*H+j]*dh2[i*H+k];gW2[j*H+k]+=s;}
+    if(acc)for(let k=0;k<H;k++){let s=0;for(let i=0;i<n;i++)s+=dh2[i*H+k];gb2[k]+=s;}}
+  const ga1=new Float64Array(n*H),ga2=new Float64Array(n*H),gx=new Float64Array(n),gz=new Float64Array(n),gd2=new Float64Array(n*H);
+  function gFwd(P,z,m,a1,a2,xo){const [W1,b1,W2,b2,W3,b3]=P;
+    for(let i=0;i<m;i++){for(let j=0;j<H;j++)a1[i*H+j]=Math.tanh(z[i]*W1[j]+b1[j]);
+      for(let k=0;k<H;k++){let s=b2[k];for(let j=0;j<H;j++)s+=a1[i*H+j]*W2[j*H+k];a2[i*H+k]=Math.tanh(s);}
+      let s=b3[0];for(let k=0;k<H;k++)s+=a2[i*H+k]*W3[k];xo[i]=s;}}
+  function gBack(P,G,z,dxo){const [W1,,W2,,W3]=P;const [gW1,gb1,gW2,gb2,gW3,gb3]=G;
+    for(let i=0;i<n;i++){gb3[0]+=dxo[i];for(let k=0;k<H;k++){gW3[k]+=ga2[i*H+k]*dxo[i];gd2[i*H+k]=dxo[i]*W3[k]*(1-ga2[i*H+k]*ga2[i*H+k]);gb2[k]+=gd2[i*H+k];}}
+    for(let j=0;j<H;j++)for(let k=0;k<H;k++){let s=0;for(let i=0;i<n;i++)s+=ga1[i*H+j]*gd2[i*H+k];gW2[j*H+k]+=s;}
+    for(let i=0;i<n;i++)for(let j=0;j<H;j++){let s=0;for(let k=0;k<H;k++)s+=gd2[i*H+k]*W2[j*H+k];const d=s*(1-ga1[i*H+j]*ga1[i*H+j]);gW1[j]+=z[i]*d;gb1[j]+=d;}}
+  const xr=new Float64Array(n),xf=new Float64Array(n),dout=new Float64Array(n);
+  const zEval=(()=>{const r=mulberry32(999);return Float64Array.from({length:NEVAL},()=>gauss(r));})();
+  const ea1=new Float64Array(NEVAL*H),ea2=new Float64Array(NEVAL*H),ex=new Float64Array(NEVAL);
+  function evaluate(S){gFwd(S.G,zEval,NEVAL,ea1,ea2,ex);const hist=new Float64Array(NB),cnt=[0,0,0,0];let hq=0;
+    for(let i=0;i<NEVAL;i++){const x=ex[i];const b=Math.floor((x-XL)/(XH-XL)*NB);if(b>=0&&b<NB)hist[b]++;
+      let bk=0,bd=1e9;for(let k=0;k<4;k++){const d=Math.abs(x-MU[k]);if(d<bd){bd=d;bk=k;}}if(bd<3*SD){hq++;cnt[bk]++;}}
+    return {hist,cnt,hq:hq/NEVAL,modes:cnt.filter(c=>c>=0.05*NEVAL).length};}
+  function step(S,nd,ng,mb){
+    for(let t=0;t<nd;t++){for(let i=0;i<n;i++){xr[i]=MU[Math.floor(S.r()*4)]+gauss(S.r)*SD;gz[i]=gauss(S.r);}
+      gFwd(S.G,gz,n,ga1,ga2,xf);S.gD.forEach(a=>a.fill(0));
+      dFwd(S.D,xr,mb);for(let i=0;i<n;i++)dout[i]=-sig(-out[i])/n;dBack(S.D,S.gD,xr,dout,mb,true);
+      dFwd(S.D,xf,mb);for(let i=0;i<n;i++)dout[i]=sig(out[i])/n;dBack(S.D,S.gD,xf,dout,mb,true);
+      adamStep(S.oD,S.gD);}
+    for(let t=0;t<ng;t++){for(let i=0;i<n;i++)gz[i]=gauss(S.r);
+      gFwd(S.G,gz,n,ga1,ga2,xf);dFwd(S.D,xf,mb);for(let i=0;i<n;i++)dout[i]=-sig(-out[i])/n;
+      dBack(S.D,null,xf,dout,mb,false);S.gG.forEach(a=>a.fill(0));for(let i=0;i<n;i++)gx[i]=dx[i];gBack(S.G,S.gG,gz,gx);adamStep(S.oG,S.gG);}}
+  const results={};let job=null;
+  function key(){return $("#gnR").value+"|"+$("#gnM").value;}
+  function runAll(k,done){if(results[k]){done();return;}
+    const [nd,ng,mb]=k.split("|").map(Number);const seeds=[];let si=0,S=null,t=0;const my={};job=my;
+    function chunk(){if(job!==my)return;
+      if(!S){S=make(si+1,mb);seeds[si]={snaps:[]};t=0;}
+      const end=Math.min(STEPS,t+50*Math.max(1,Math.round(6/(nd+ng))));
+      for(;t<end;){step(S,nd,ng,mb);t++;if(t%SNAP===0)seeds[si].snaps.push(evaluate(S));}
+      if(t>=STEPS){si++;S=null;}
+      $("#gnMsg").textContent="학습 중… 시드 "+Math.min(si+1,4)+"/4 · "+(t>=STEPS?STEPS:t)+"스텝";
+      if(si<4)setTimeout(()=>safe("gan",chunk),0);else{results[k]=seeds;done();}}
+    chunk();}
+  function draw(){const k=key(),R=results[k];if(!R)return;const si=+$("#gnS").value,S=R[si],last=S.snaps[S.snaps.length-1];
+    // 왼쪽: 학습 경과 히트맵
+    const Hs=$("#gnH");clear(Hs);const L=34,Rx=312,T=8,Bt=184,cols=S.snaps.length,cw=(Rx-L)/cols,rh=(Bt-T)/NB;
+    const yOf=x=>Bt-(x-XL)/(XH-XL)*(Bt-T);
+    let mx=0;S.snaps.forEach(s=>{for(let b=0;b<NB;b++)mx=Math.max(mx,s.hist[b]);});
+    S.snaps.forEach((s,c)=>{for(let b=0;b<NB;b++){if(!s.hist[b])continue;el("rect",{x:(L+c*cw).toFixed(2),y:(Bt-(b+1)*rh).toFixed(2),width:(cw+0.3).toFixed(2),height:(rh+0.3).toFixed(2),fill:"var(--accent)","fill-opacity":Math.min(1,0.12+0.88*Math.sqrt(s.hist[b]/mx)).toFixed(3)},Hs);}});
+    MU.forEach(m=>el("line",{x1:L,y1:yOf(m),x2:Rx,y2:yOf(m),class:"ln"},Hs));
+    for(const v of [-4,-2,0,2,4])el("text",{x:L-5,y:yOf(v)+4,"text-anchor":"end","font-size":10.5,class:"mut"},Hs,minus(v));
+    el("line",{x1:L,y1:Bt,x2:Rx,y2:Bt,class:"ax"},Hs);
+    for(const s of [0,1000,2000,3000])el("text",{x:L+s/STEPS*(Rx-L),y:Bt+14,"text-anchor":s===STEPS?"end":s===0?"start":"middle","font-size":10.5,class:"mut"},Hs,fmtN(s));
+    el("text",{x:(L+Rx)/2,y:214,"text-anchor":"middle","font-size":11,class:"mut"},Hs,"학습 스텝");
+    // 오른쪽: 최종 히스토그램
+    const F=$("#gnF");clear(F);const bw=(Rx-L)/NB,sxF=x=>L+(x-XL)/(XH-XL)*(Rx-L);
+    const dens=x=>MU.reduce((a,m)=>a+0.25*Math.exp(-0.5*((x-m)/SD)**2)/(SD*Math.sqrt(2*Math.PI)),0);
+    const binW=(XH-XL)/NB,hmax=Math.max(dens(1)*1.1,...Array.from(last.hist,h=>h/NEVAL/binW));
+    const syF=v=>Bt-Math.min(v,hmax)/hmax*(Bt-T);
+    for(let b=0;b<NB;b++){const v=last.hist[b]/NEVAL/binW;if(v>0)el("rect",{x:(L+b*bw+0.4).toFixed(2),y:syF(v).toFixed(2),width:(bw-0.8).toFixed(2),height:(Bt-syF(v)).toFixed(2),class:"barp"},F);}
+    const pts=[];for(let x=XL;x<=XH+1e-9;x+=0.02)pts.push(sxF(x).toFixed(1)+","+syF(dens(x)).toFixed(1));
+    el("polyline",{points:pts.join(" "),class:"lt"},F);
+    el("line",{x1:L,y1:Bt,x2:Rx,y2:Bt,class:"ax"},F);
+    for(const v of [-4,-2,0,2,4])el("text",{x:sxF(v),y:Bt+14,"text-anchor":"middle","font-size":10.5,class:"mut"},F,minus(v));
+    el("text",{x:(L+Rx)/2,y:214,"text-anchor":"middle","font-size":11,class:"mut"},F,"생성된 값 x");
+    // 수치
+    const modesOf=r=>r.map(s=>s.snaps[s.snaps.length-1].modes);
+    const ms=modesOf(R),avg=ms.reduce((a,b)=>a+b,0)/4;
+    $("#gnMode").innerHTML=last.modes+" / 4";
+    $("#gnSeeds").innerHTML=ms.join(" · ")+'<span class="sub">평균 '+avg.toFixed(2)+"</span>";
+    $("#gnHq").textContent=pct(last.hq);
+    const tot=last.cnt.reduce((a,b)=>a+b,0);$("#gnTop").innerHTML=(tot?pct(Math.max(...last.cnt)/tot):"–")+'<span class="sub">고르게 덮으면 25%</span>';
+    // 문구
+    const [nd,ng,mb]=k.split("|").map(Number);const peak=Math.max(...S.snaps.map(s=>s.modes));
+    let peakAt=0;for(let i=0;i<S.snaps.length;i++)if(S.snaps[i].modes===peak){peakAt=(i+1)*SNAP;break;}
+    let msg="시드 "+(si+1)+": 학습 중 가장 많을 때 모드 "+peak+"개(처음 도달 "+fmtN(peakAt)+"스텝), 3,000스텝 후 "+last.modes+"개입니다. ";
+    msg+=last.modes<peak?"학습이 진행되면서 잡았던 봉우리를 잃었습니다. 질문 속 \"학습할수록 비슷한 얼굴만\"과 같은 현상입니다.":"잡은 봉우리를 끝까지 유지했습니다.";
+    const name={"1|1":"D:G 1 : 1","5|1":"D:G 5 : 1","1|5":"D:G 1 : 5"}[nd+"|"+ng]+(mb?" + Minibatch StdDev":"");
+    msg+="\n"+name+"의 시드 4개 결과는 "+ms.join(" · ")+"개(평균 "+avg.toFixed(2)+")입니다.";
+    if(Math.max(...ms)!==Math.min(...ms))msg+=" 같은 설정인데도 시드에 따라 "+Math.min(...ms)+"개에서 "+Math.max(...ms)+"개까지 갈립니다.";
+    const base=results["1|1|0"];
+    if(base&&k!=="1|1|0"){const b=modesOf(base),ba=b.reduce((a,c)=>a+c,0)/4;
+      msg+="\n기준(1 : 1, 끔)의 평균 "+ba.toFixed(2)+"과 비교하면 "+(avg<ba-0.25?"모드가 줄었습니다.":avg>ba+0.25?"모드가 늘었습니다.":"비슷합니다.");}
+    const pair=mb?results[nd+"|"+ng+"|0"]:results[nd+"|"+ng+"|1"];
+    if(pair){const pa=modesOf(pair).reduce((a,c)=>a+c,0)/4;
+      msg+="\n같은 업데이트 비에서 Minibatch StdDev를 "+(mb?"끈":"켠")+" 결과의 평균은 "+pa.toFixed(2)+"입니다. ";
+      const on=mb?avg:pa,off=mb?pa:avg;msg+=on>off+0.25?"판별자가 배치의 다양성을 볼 수 있게 되자 모드를 더 많이 잡았습니다.":on<off-0.25?"이 설정에서는 오히려 줄었습니다.":"이 설정에서는 차이가 작습니다.";}
+    msg+="\n1차원 장난감 문제라 숫자 자체는 실제 얼굴 GAN과 다릅니다. 설정을 바꿀 때 시드 4개의 평균이 어느 쪽으로 움직이는지와, 같은 설정에서도 시드마다 결과가 갈린다는 점을 보세요.";
+    $("#gnMsg").textContent=msg;}
+  function go(){const k=key();runAll(k,()=>safe("gan",draw));}
+  $("#gnR").addEventListener("change",go);$("#gnM").addEventListener("change",go);$("#gnS").addEventListener("change",()=>safe("gan",draw));
+  later(go);
+});
+
+/* ---------- 실험 3: FID · Precision · Recall ---------- */
+safe("metric",function(){
+  const R0=2,SD=0.1,K=8,MU=[...Array(K).keys()].map(k=>[R0*Math.cos(2*Math.PI*k/K),R0*Math.sin(2*Math.PI*k/K)]);
+  function sample(kind,N,seed){const r=mulberry32(seed),P=new Float64Array(2*N);
+    for(let i=0;i<N;i++){let x,y;
+      if(kind==="blob"){const s=Math.sqrt(R0*R0/2+SD*SD);x=gauss(r)*s;y=gauss(r)*s;}
+      else{const k=kind==="half"?Math.floor(r()*4):kind==="one"?0:Math.floor(r()*K);const s=kind==="wide"?3*SD:SD;x=MU[k][0]+gauss(r)*s;y=MU[k][1]+gauss(r)*s;}
+      P[2*i]=x;P[2*i+1]=y;}return P;}
+  function stats(P){const N=P.length/2;let mx=0,my=0;for(let i=0;i<N;i++){mx+=P[2*i];my+=P[2*i+1];}mx/=N;my/=N;let a=0,b=0,c=0;
+    for(let i=0;i<N;i++){const dx=P[2*i]-mx,dy=P[2*i+1]-my;a+=dx*dx;b+=dx*dy;c+=dy*dy;}return {m:[mx,my],S:[a/(N-1),b/(N-1),c/(N-1)]};}
+  function fid(A,B){const s=stats(A),t=stats(B);const dm=(s.m[0]-t.m[0])**2+(s.m[1]-t.m[1])**2;
+    const [a,b,c]=s.S,[d,e,f]=t.S;const p00=a*d+b*e,p01=a*e+b*f,p10=b*d+c*e,p11=b*e+c*f;   // Σr·Σg
+    const tr=p00+p11,det=Math.max(0,p00*p11-p01*p10);const trSqrt=Math.sqrt(Math.max(0,tr+2*Math.sqrt(det)));   // 2×2: Tr√M = √(tr + 2√det)
+    return dm+a+c+d+f-2*trSqrt;}
+  function kth(P,k){const N=P.length/2,out=new Float64Array(N),best=new Float64Array(k);
+    for(let i=0;i<N;i++){best.fill(Infinity);for(let j=0;j<N;j++){if(i===j)continue;const dx=P[2*i]-P[2*j],dy=P[2*i+1]-P[2*j+1],d=dx*dx+dy*dy;
+        if(d<best[k-1]){let q=k-1;while(q>0&&best[q-1]>d){best[q]=best[q-1];q--;}best[q]=d;}}out[i]=best[k-1];}return out;}
+  function cover(Q,P,rad){const N=P.length/2,M=Q.length/2;let c=0;for(let i=0;i<M;i++){for(let j=0;j<N;j++){const dx=Q[2*i]-P[2*j],dy=Q[2*i+1]-P[2*j+1];if(dx*dx+dy*dy<=rad[j]){c++;break;}}}return c/M;}
+  const NAMES={ok:"정상",half:"모드 누락",one:"완전 붕괴",wide:"과하게 퍼짐",blob:"한 덩어리"};
+  function render(){const kind=$("#mtP").value,N=+$("#mtN").value;
+    const real=sample("ok",N,11),gen=sample(kind,N,22),real2=sample("ok",N,33);
+    const F=fid(real,gen),F0=fid(real,real2);
+    const rr=kth(real,3),rg=kth(gen,3);const pr=cover(gen,real,rr),rc=cover(real,gen,rg);
+    const cnt=new Array(K).fill(0);for(let i=0;i<N;i++){let bk=0,bd=1e9;for(let k=0;k<K;k++){const d=Math.hypot(gen[2*i]-MU[k][0],gen[2*i+1]-MU[k][1]);if(d<bd){bd=d;bk=k;}}if(bd<3*SD)cnt[bk]++;}
+    const modes=cnt.filter(c=>c>=0.025*N).length;
+    const S=$("#mtSvg");clear(S);const sc=v=>150+v*50;
+    el("rect",{x:4,y:4,width:292,height:292,rx:8,fill:"none",stroke:"var(--line)"},S);
+    for(const v of [-2,0,2]){el("line",{x1:sc(v),y1:8,x2:sc(v),y2:292,class:"gl"},S);el("line",{x1:8,y1:sc(v),x2:292,y2:sc(v),class:"gl"},S);}
+    const lim=Math.min(N,1000);
+    for(let i=0;i<lim;i++)el("circle",{cx:sc(real[2*i]).toFixed(1),cy:sc(-real[2*i+1]).toFixed(1),r:1.6,fill:"var(--muted)","fill-opacity":0.5},S);
+    for(let i=0;i<lim;i++){const x=sc(gen[2*i]),y=sc(-gen[2*i+1]);if(x<6||x>294||y<6||y>294)continue;el("circle",{cx:x.toFixed(1),cy:y.toFixed(1),r:1.8,fill:"var(--accent)","fill-opacity":0.75},S);}
+    if(N>lim)el("text",{x:292,y:290,"text-anchor":"end","font-size":10.5,class:"mut"},S,"각 1,000개만 표시");
+    $("#mtFid").textContent=F.toFixed(3);$("#mtBase").textContent=F0.toFixed(3);
+    $("#mtPr").textContent=pr.toFixed(3);$("#mtRc").textContent=rc.toFixed(3);$("#mtMode").innerHTML=modes+" / 8";
+    let msg=NAMES[kind]+" 분포 · 샘플 "+fmtN(N)+"개: FID "+F.toFixed(3)+", Precision "+pr.toFixed(3)+", Recall "+rc.toFixed(3)+"입니다.";
+    const Fh=fid(real,sample("half",N,22)),Fo=fid(real,sample("one",N,22));
+    if(kind==="ok")msg+="\n같은 분포에서 뽑았으므로 FID가 실제 vs 실제 값("+F0.toFixed(3)+")보다 크지 않고, 두 지표 모두 높습니다. 표본이 유한해 FID가 정확히 0이 되지는 않습니다.";
+    if(kind==="half"||kind==="one")msg+="\nPrecision은 높게 유지되지만 Recall이 덮은 봉우리 비율("+modes+"/8 = "+(modes/8).toFixed(3)+") 근처로 떨어집니다. 이미지 한 장 한 장은 진짜 같은데 종류가 부족한 모드 붕괴의 지문입니다.";
+    if(kind==="wide")msg+="\n이번에는 반대로 Recall은 높고 Precision이 떨어집니다. 다양하긴 하지만 봉우리 밖의 '어색한' 샘플이 많다는 뜻으로, 붕괴와는 다른 문제입니다."+(F<=Math.max(2*F0,0.05)?" 이 경우 FID("+F.toFixed(3)+")도 실제 vs 실제 값 수준이라 품질 저하를 거의 잡지 못합니다. 공분산이 조금만 커지기 때문입니다.":"");
+    if(kind==="blob")msg+="\n샘플 대부분이 봉우리 밖, 원 안쪽에 퍼져 있어 Precision이 "+pr.toFixed(3)+"에 그칩니다. 그런데도 FID("+F.toFixed(3)+")는 모드 누락("+Fh.toFixed(3)+")이나 완전 붕괴("+Fo.toFixed(3)+")보다 훨씬 낮습니다. 평균과 공분산을 실제 데이터와 같게 만든 분포라, 두 통계량만 비교하는 FID로는 거의 구별되지 않기 때문입니다. 실제 FID는 고차원 Inception 특징을 쓰므로 이렇게 극단적이지는 않지만, 평균 · 공분산만 본다는 한계는 같습니다.";
+    if(N<=100)msg+="\n샘플이 100개뿐이면 실제 vs 실제 FID도 커집니다. FID는 표본 수에 따라 편향되므로 같은 개수끼리만 비교해야 합니다.";
+    $("#mtMsg").textContent=msg;}
+  const go=()=>{$("#mtMsg").textContent="계산 중…";later(render);};
+  $("#mtP").addEventListener("change",go);$("#mtN").addEventListener("change",go);
+  go();
+});
+
+/* ---------- 코드 블록 문법 강조 ---------- */
+safe("syntax",function(){document.querySelectorAll("pre:not(.rules)").forEach(hlPre);});
+
+/* ---------- 퀴즈 ---------- */
+safe("quiz",function(){
+  const Q={
+    q1:[
+      {q:"생성자의 비포화 손실 −log D(G(z))만으로는 다양한 얼굴이 보장되지 않는 가장 근본적인 이유는?",o:["판별자가 샘플을 하나씩 채점하므로, 모든 z가 같은 고득점 이미지를 내도 손실이 커지지 않는다","로그 때문에 기울기가 항상 0이 된다","잠재벡터 z의 차원이 항상 너무 작다","생성자는 판별자보다 항상 약하다"],a:0,e:"손실이 샘플별 점수의 평균이라 샘플끼리 비교하는 항이 없습니다. 판별자를 고정하면 모든 z를 argmax D로 보내는 것이 최적이 됩니다. Minibatch StdDev처럼 판별자가 배치 단위 통계를 보게 하는 기법이 이 빈틈을 막습니다."},
+      {q:"ProGAN · StyleGAN의 Minibatch StdDev 층에 대한 설명으로 맞는 것은?",o:["생성자 입력 z에 배치 표준편차를 더한다","판별자 입력 이미지를 배치 표준편차로 나눠 표준화한다","판별자 마지막 블록 직전에, 샘플 간 특징 표준편차의 평균을 특징 맵 한 장으로 붙인다","배치 정규화를 다르게 부르는 이름이다"],a:2,e:"특징 표준편차를 모든 특징 · 위치에 걸쳐 평균한 숫자 하나를 특징 맵 한 장으로 복제해 이어 붙입니다. 배치의 생성 샘플이 서로 비슷하면 이 값이 실제 배치보다 작아져 판별자가 알아챕니다."},
+      {q:"새 기법을 넣었더니 Precision 0.95, Recall 0.20이 나왔고 FID는 기준 모델보다 조금 나쁜 정도다. 가장 알맞은 해석은?",o:["품질과 다양성이 모두 충분하다","생성 이미지는 실제처럼 보이지만 실제 분포의 일부만 덮는다. 모드 누락 · 붕괴를 의심한다","이미지가 흐리고 어색하다","FID가 크게 나쁘지 않으므로 문제없다"],a:1,e:"Precision은 품질, Recall은 포괄 범위입니다. FID는 특징의 평균 · 공분산만 비교하는 숫자 하나라서 다양성 부족을 크게 드러내지 못할 수 있습니다(실험 3). 고정 z 격자와 함께 확인해야 합니다."}
+    ]
+  };
+  document.querySelectorAll(".quiz").forEach(host=>{
+    const list=Q[host.dataset.quiz]||[];
+    list.forEach((it,qi)=>{
+      const box=document.createElement("div");box.className="qz";
+      const t=document.createElement("div");t.className="qt";t.innerHTML="<span>Q"+(qi+1)+".</span>";t.appendChild(document.createTextNode(it.q));box.appendChild(t);
+      const opts=document.createElement("div");opts.className="opts";box.appendChild(opts);
+      const exp=document.createElement("div");exp.className="exp";exp.hidden=true;exp.setAttribute("aria-live","polite");
+      const btns=it.o.map((o,oi)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=String.fromCharCode(9312+oi)+" "+o;
+        b.addEventListener("click",()=>{btns.forEach((x,xi)=>{x.classList.remove("right","wrong");if(xi===it.a)x.classList.add("right");});if(oi!==it.a)b.classList.add("wrong");
+          exp.hidden=false;exp.innerHTML=(oi===it.a?'<b class="ok">정답입니다.</b> ':'<b class="no">오답입니다.</b> 정답은 '+String.fromCharCode(9312+it.a)+"번. ");exp.appendChild(document.createTextNode(it.e));});
+        opts.appendChild(b);return b;});
+      box.appendChild(exp);host.appendChild(box);
+    });
+  });
+});
+})();
+</script>
+<script>
+/* 나란히 놓인 그림 칸: 칸끼리 제목·그림·설명 줄을 같은 높이로 맞춘다 */
+(function(){try{document.querySelectorAll(".panels,.tri").forEach(function(g){
+  var ps=[].filter.call(g.children,function(c){return c.classList.contains("panel");});if(ps.length<2)return;
+  var n=Math.max.apply(null,ps.map(function(p){return p.children.length;}));
+  ps.forEach(function(p){p.style.display="grid";p.style.gridRow="span "+n;p.style.gridTemplateRows="subgrid";p.style.rowGap="6px";p.style.alignContent="start";});
+});}catch(e){console.error("panel align",e);}})();
+</script>
+</body></html>
