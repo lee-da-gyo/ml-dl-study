@@ -1,6 +1,6 @@
 # ML·DL 스터디 문제
 
-머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 4편 공개)로 정리하는 곳입니다.
+머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 5편 공개)로 정리하는 곳입니다.
 글로만 설명하지 않고, 값을 직접 조작하며 개념을 익힐 수 있는 **인터랙티브 실험**과 **핵심 퀴즈**를 함께 연결했습니다.
 
 👉 **웹페이지로 보기**: [https://lee-da-gyo.github.io/ml-dl-study/](https://lee-da-gyo.github.io/ml-dl-study/)
@@ -15,6 +15,7 @@
 | 02 | 지도·비지도 · 손실 함수 · 편향·분산 · K-폴드 | 지도와 비지도 학습의 차이 / 손실 함수란 / 편향과 분산의 관계 / K-폴드의 K 선택 + 면접 3문항 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%202.%20%EC%A7%80%EB%8F%84%C2%B7%EB%B9%84%EC%A7%80%EB%8F%84%20%C2%B7%20%EC%86%90%EC%8B%A4%20%ED%95%A8%EC%88%98%20%C2%B7%20%ED%8E%B8%ED%96%A5%C2%B7%EB%B6%84%EC%82%B0%20%C2%B7%20K-%ED%8F%B4%EB%93%9C.html) |
 | 03 | 결정 트리 · 부스팅 · PCA·요인 분석 | 결정 트리의 장단점 / 부스팅과 XGBoost·LightGBM·CatBoost / PCA와 요인 분석의 차이 + 면접 2문항 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%203.%20%EA%B2%B0%EC%A0%95%20%ED%8A%B8%EB%A6%AC%20%C2%B7%20%EB%B6%80%EC%8A%A4%ED%8C%85%20%C2%B7%20PCA%C2%B7%EC%9A%94%EC%9D%B8%20%EB%B6%84%EC%84%9D.html) |
 | 04 | 머신러닝과 딥러닝 · 하이퍼파라미터 · 과적합 진단 · 설명 가능한 모델 | 딥러닝과 머신러닝의 포함관계 / 딥러닝 하이퍼파라미터 + 면접 2문항 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%204.%20%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D%EA%B3%BC%20%EB%94%A5%EB%9F%AC%EB%8B%9D%20%C2%B7%20%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%20%C2%B7%20%EA%B3%BC%EC%A0%81%ED%95%A9%20%EC%A7%84%EB%8B%A8%20%C2%B7%20%EC%84%A4%EB%AA%85%20%EA%B0%80%EB%8A%A5%ED%95%9C%20%EB%AA%A8%EB%8D%B8.html) |
+| 05 | PyTorch·TensorFlow · 텐서 · 기울기 소실 · 배치 크기 | PyTorch와 TensorFlow 비교 / 텐서와 NumPy 배열 + 면접 2문항 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%205.%20PyTorch%C2%B7TensorFlow%20%C2%B7%20%ED%85%90%EC%84%9C%20%C2%B7%20%EA%B8%B0%EC%9A%B8%EA%B8%B0%20%EC%86%8C%EC%8B%A4%20%C2%B7%20%EB%B0%B0%EC%B9%98%20%ED%81%AC%EA%B8%B0.html) |
 
 ## 위클리 페이퍼 01에서 해 볼 수 있는 것
 
@@ -56,6 +57,16 @@
 | 격자 탐색 vs 랜덤 탐색 | 같은 시도 횟수에서 랜덤 탐색이 중요한 하이퍼파라미터를 더 촘촘히 보는 이유, 학습률을 로그 척도로 뽑아야 하는 이유 |
 | 훈련 99%·테스트 70% 진단 | k-NN으로 과적합·누수·분포 변화를 만들고, 훈련·CV·테스트 점수와 적대적 검증 AUC로 원인 구분 |
 | 대출 거절 사유 | 로지스틱 점수표와 깊이 제한 트리의 부도 확률·거절 사유·반사실 설명, 재학습 후 결정이 바뀌는 비율 |
+
+## 위클리 페이퍼 05에서 해 볼 수 있는 것
+
+| 실험 | 확인하는 개념 |
+| --- | --- |
+| 실행할 때마다 만들어지는 그래프 | while·if가 있는 함수에서 입력마다 기록되는 연산이 달라지는 define-by-run, autograd와 수치 미분 비교, tf.function의 재추적 |
+| 복사인가, 같은 메모리인가 | from_numpy·as_tensor·tensor·.float()·.to("cuda")의 메모리 공유와 dtype, 텐서 → NumPy 변환의 오류와 공유 여부 |
+| 20층 신경망 기울기 소실 | 활성화·초기화·잔차 연결·옵티마이저별 층별 기울기 노름과 가중치 변화율, Adam의 보상과 그 한계 |
+| GPU 메모리와 배치 크기 | 고정 메모리(파라미터·기울기·옵티마이저 상태)와 활성화를 나눠 최대 마이크로 배치·누적 단계·유효 배치 계산 |
+| 배치 크기와 학습률 규칙 | 고정·선형·제곱근 스케일링별 검증 loss, 미니배치 기울기의 잡음, 선형 규칙이 무너지는 임계 배치 |
 
 원래 답안에서 틀린 부분은 주황색 **정정**, 새로 더한 내용은 초록색 **보충**으로 표시했습니다.
 

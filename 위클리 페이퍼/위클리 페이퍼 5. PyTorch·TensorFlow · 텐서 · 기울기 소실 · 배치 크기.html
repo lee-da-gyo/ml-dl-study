@@ -1,0 +1,1441 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>위클리 페이퍼 05</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 위클리 #1~#4와 같은 모눈 노트 위의 학습 카드. 질문마다 [한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈] */
+:root{
+  --bg:#f3f5f8; --paper:#ffffff; --grid:#e3e8ef;
+  --ink:#1b2433; --muted:#5b6678; --line:#d5dce6;
+  --accent:#2448c9; --accent-soft:#e6ecfb;
+  --mark:#ffe36b; --add:#0f7a55; --add-soft:#e1f4ec; --fix:#c2410c; --fix-soft:#fdeee4;
+  --code-bg:#f0f2f6;
+  --f-display:"Black Han Sans","IBM Plex Sans KR",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4,h5{text-wrap:balance;margin:0}
+p{margin:0}
+header.top{display:flex;flex-direction:column;gap:10px}
+header.top .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+header.top h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,5vw,38px);line-height:1.25}
+header.top p{color:var(--muted);max-width:68ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:8px;flex-wrap:wrap;
+  background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+nav.toc a{text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--paper);
+  padding:5px 11px;border-radius:999px;font-size:13.5px;font-weight:500}
+nav.toc a.iv{border-style:dashed}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:4px;letter-spacing:.04em;vertical-align:2px;white-space:nowrap}
+.b-add{background:var(--add-soft);color:var(--add)}
+.b-fix{background:var(--fix-soft);color:var(--fix)}
+.b-core{background:var(--accent-soft);color:var(--accent)}
+.b-lab{background:var(--ink);color:var(--paper)}
+.tag-ex{display:inline-block;font-size:11px;font-weight:700;padding:0 7px;border-radius:4px;border:1px dashed var(--muted);color:var(--muted);letter-spacing:.04em;vertical-align:2px;line-height:1.7;white-space:nowrap}
+mark{background:var(--mark);color:inherit;padding:0 2px;border-radius:2px}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+
+section.q{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,4vw,36px);
+  display:flex;flex-direction:column;gap:28px;scroll-margin-top:64px}
+.qhead{display:flex;gap:16px;align-items:flex-start}
+.qnum{font-family:var(--f-display);font-size:44px;line-height:1;color:var(--accent);white-space:nowrap}
+.qnum.iv{font-size:30px;padding-top:4px}
+.qhead h2{font-size:clamp(18px,3vw,23px);font-weight:700;line-height:1.45}
+.qhead .min{min-width:0;display:flex;flex-direction:column;gap:4px}
+.qhead .kind{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.oneline{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 8px 8px 0;font-size:16.5px;font-weight:500}
+.oneline small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em;margin-bottom:2px}
+h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.part{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-bottom:-12px}
+.block{display:flex;flex-direction:column;gap:14px}
+.muted{color:var(--muted)}
+.fig{border:1px dashed var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+.fig figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+figure{margin:0}
+.formula{font-family:var(--f-mono);font-size:15px;text-align:center;padding:14px 10px;background:var(--code-bg);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.formula .fb{color:var(--accent);font-weight:600}.formula .fv{color:var(--fix);font-weight:600}.formula .fn{color:var(--muted);font-weight:600}
+
+/* demo shell */
+.demo{border:1.5px solid var(--ink);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--paper)}
+.demo-head{display:flex;flex-direction:column;gap:4px}
+.demo-head .t{font-weight:700;font-size:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.demo-head .how{font-size:13.5px;color:var(--muted)}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
+button.btn{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+button.btn:hover{border-color:var(--accent);color:var(--accent)}
+button.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{font:inherit;font-size:14px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+input[type=range]{accent-color:var(--accent);width:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px}
+.stat{background:var(--code-bg);border-radius:8px;padding:8px 10px;min-width:0}
+.stat .k{font-size:11.5px;color:var(--muted);font-weight:700;line-height:1.4}
+.stat .v{font-family:var(--f-mono);font-size:15px;font-variant-numeric:tabular-nums}
+.stat.em{background:var(--accent-soft)} .stat.em .v{color:var(--accent);font-weight:600}
+.stat.warn{background:var(--fix-soft)} .stat.warn .v{color:var(--fix);font-weight:600}
+.stat.ok{background:var(--add-soft)} .stat.ok .v{color:var(--add);font-weight:600}
+.insight{font-size:14.5px;border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:720px){.split{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.panels{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.panel h5{font-size:14px}
+.panel .cap{font-size:12.5px;color:var(--muted)}
+.svgbox svg{width:100%;height:auto;display:block}
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.sw.c{border-radius:50%}
+.sw.ln{height:3px;width:16px;border-radius:0;vertical-align:3px}
+.sw.dash{height:0;width:16px;border-radius:0;border-top:2px dashed var(--ink);vertical-align:3px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code-bg);font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td b{color:var(--accent)}
+table.num td,table.num th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 10px}
+table.num td:first-child{font-family:var(--f-body);font-weight:700}
+table.num td:last-child{font-family:var(--f-body)}
+.df{font-family:var(--f-mono);font-size:12.5px;min-width:620px}
+.df td,.df th{padding:6px 10px;white-space:nowrap}
+.df td.memo{font-family:var(--f-body);white-space:normal;min-width:180px}
+.df .na{color:var(--fix);font-weight:600}
+.df tr.drop td{text-decoration:line-through;opacity:.5}
+.df .chg{background:var(--mark);border-radius:3px;padding:0 3px}
+.df .fill{background:var(--add-soft);color:var(--add);border-radius:3px;padding:0 3px;font-weight:600}
+
+/* cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h4{font-size:15.5px}
+.card p,.card li{font-size:14.5px}
+.card ul{margin:0;padding-left:18px}
+.card .k{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em}
+.card.add{border-color:var(--add);background:var(--add-soft)} .card.add .k{color:var(--add)}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.mini{grid-template-columns:1fr}}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:s}
+.step{position:relative;border:1px solid var(--line);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--paper)}
+.step::before{counter-increment:s;content:"STEP " counter(s);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.step b{font-size:15px}
+.step span{font-size:13px;color:var(--muted);line-height:1.55}
+.step code{font-size:11.5px}
+.step.add{border-color:var(--add);background:var(--add-soft)} .step.add::before{color:var(--add)}
+@media (max-width:820px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.flow{grid-template-columns:1fr}}
+
+.codewrap{display:flex;flex-direction:column;gap:6px}
+.codecap{font-size:12.5px;color:var(--muted)}
+pre{margin:0;font-family:var(--f-mono);font-size:13px;line-height:1.65;background:var(--code-bg);border-radius:10px;padding:14px 16px;overflow-x:auto}
+pre .c{color:var(--muted)}
+pre .hl{background:var(--mark);border-radius:3px}
+.note{border-radius:10px;padding:14px 16px;font-size:14.5px;display:flex;flex-direction:column;gap:8px}
+.note.add{background:var(--add-soft)}
+.note.fix{background:var(--fix-soft)}
+.note b.t{font-size:13px;letter-spacing:.05em}
+.note.add b.t{color:var(--add)} .note.fix b.t{color:var(--fix)}
+.was{display:block;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--fix);text-decoration-thickness:1.5px}
+.now{display:block}
+.lbl-was,.lbl-now{font-weight:700;color:var(--fix);margin-right:4px}
+.pair{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:var(--paper);border-radius:8px}
+
+.speech{border:2px solid var(--ink);border-radius:12px;padding:18px 18px 16px;position:relative;font-size:15px}
+.speech::before{content:"면접 30초 답변";position:absolute;top:-11px;left:14px;background:var(--paper);padding:0 8px;font-size:12px;font-weight:700;letter-spacing:.06em}
+
+/* svg */
+svg text{font-family:var(--f-body);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+svg .ax{stroke:var(--line);stroke-width:1.5;fill:none}
+svg .gl{stroke:var(--grid);stroke-width:1;fill:none}
+svg .c0{fill:var(--accent)} svg .c1{fill:var(--add)} svg .c2{fill:var(--fix)}
+svg .cg{fill:var(--muted);fill-opacity:.55}
+svg .r0{fill:var(--accent);fill-opacity:.10} svg .r1{fill:var(--add);fill-opacity:.12} svg .r2{fill:var(--fix);fill-opacity:.12}
+svg .cent{stroke:var(--ink);stroke-width:3;fill:none}
+svg .pt{fill:var(--accent);fill-opacity:.85}
+svg .ptx{fill:var(--fix)}
+svg .fitln{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .mseln{stroke:var(--accent);stroke-width:2;stroke-dasharray:7 5;fill:none}
+svg .maeln{stroke:var(--add);stroke-width:2;stroke-dasharray:3 4;fill:none}
+svg .res{stroke:var(--fix);stroke-width:1.5;fill:none}
+svg .sq{fill:var(--fix);fill-opacity:.14;stroke:var(--fix);stroke-opacity:.45;stroke-width:1}
+svg .truef{stroke:var(--ink);stroke-width:2;stroke-dasharray:6 4;fill:none}
+svg .thin{stroke:var(--accent);stroke-width:1.2;stroke-opacity:.35;fill:none}
+svg .meanf{stroke:var(--add);stroke-width:3;fill:none}
+svg .lb{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .lv{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .lt{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .ln{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+svg .cur{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3}
+svg .ring{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .bull{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .shot{fill:var(--fix);stroke:var(--paper);stroke-width:1}
+svg .ftr{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+svg .fva{fill:var(--fix)}
+svg .pos-t{fill:var(--ink)} svg .pos-v{fill:var(--paper)}
+svg .bar-a{fill:var(--fix)} svg .bar-b{fill:var(--add)}
+svg .curve{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .curvefill{fill:var(--accent-soft)}
+svg .tail{fill:var(--fix);fill-opacity:.35}
+svg .vmean{stroke:var(--add);stroke-width:2.5}
+svg .vmed{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:5 3}
+svg .trl{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .val{stroke:var(--fix);stroke-width:2.5;fill:none}
+
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:12px}
+.qz{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.qz .qt{font-weight:600}
+.qz .qt span{color:var(--accent);margin-right:6px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:14.5px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;line-height:1.5}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--add);background:var(--add-soft)}
+.opt.wrong{border-color:var(--fix);background:var(--fix-soft)}
+.exp{font-size:14px;background:var(--code-bg);border-radius:8px;padding:10px 12px}
+.exp b.ok{color:var(--add)} .exp b.no{color:var(--fix)}
+
+footer{font-size:13px;color:var(--muted);text-align:center}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+nav.pager a,nav.pager span{display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;line-height:1.4;min-width:0}
+nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
+nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
+nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
+/* 위클리 03에서 이어 쓰는 스타일 */
+svg .leaf0{fill:var(--accent);fill-opacity:.13} svg .leaf1{fill:var(--add);fill-opacity:.17}
+svg .leafb{fill:none;stroke:var(--paper);stroke-width:1.2}
+svg .p0{fill:var(--accent)} svg .p1{fill:var(--add)}
+svg .p0,svg .p1{stroke:var(--paper);stroke-width:.8}
+svg .trueb{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+svg .box{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .boxa{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .boxg{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .boxf{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+svg .ahp{fill:var(--muted)}
+svg .edge{stroke:var(--line);stroke-width:2;fill:none}
+svg .edgea{stroke:var(--accent);stroke-width:2;fill:none}
+svg .tac{fill:var(--accent)} svg .tad{fill:var(--add)} svg .taf{fill:var(--fix)}
+svg .modelc{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .treec{stroke:var(--add);stroke-width:2.5;fill:none}
+svg .resp{fill:var(--fix);fill-opacity:.8}
+svg .zero{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+svg .nanl{stroke:var(--fix);stroke-width:2;stroke-dasharray:4 3}
+svg .barp{fill:var(--accent);fill-opacity:.75}
+svg .barm{fill:var(--fix)}
+table.ldt{min-width:680px;font-size:13.5px}
+table.ldt th,table.ldt td{padding:7px 10px;text-align:center;vertical-align:middle}
+table.ldt td:first-child,table.ldt th:first-child{text-align:left}
+table.ldt td:first-child{font-weight:700}
+td.ld{position:relative;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.ld .bar{position:absolute;left:4px;top:22%;height:56%;border-radius:3px;background:var(--accent);opacity:.2}
+td.ld .bar.neg{background:var(--fix)}
+td.ld .n{position:relative}
+td.ld.hi .n{font-weight:700;color:var(--accent)}
+td.ld.tr{color:var(--muted)}
+th.grp{text-align:center!important;border-left:1px solid var(--line)}
+td.gl,th.gl{border-left:1px solid var(--line)}
+table.heat{min-width:420px}
+table.heat td,table.heat th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 6px}
+table.heat td:first-child,table.heat th:first-child{font-family:var(--f-body)}
+table.dec td{font-variant-numeric:tabular-nums}
+table.dec td.best{color:var(--add);font-weight:700}
+.treebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;padding:6px}
+.treebox svg{display:block;max-width:none;margin:0 auto}
+svg .boxd{fill:var(--paper);stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+svg .lf0{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5} svg .lf1{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .trunc{fill:var(--code-bg);stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+pre.rules{font-size:12.5px;line-height:1.6;max-height:320px;overflow:auto;white-space:pre}
+.formula.left{text-align:left;white-space:pre;line-height:1.9}
+.sl5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sl5 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:440px){.sl5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.opt,.exp,.insight,.stat .v{overflow-wrap:anywhere}
+select{max-width:100%}
+/* 위클리 04 추가 스타일 */
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.tri{grid-template-columns:1fr}}
+.tri .panel .acc{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tri .panel .acc b{color:var(--accent)}
+.sl4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sl4 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+svg .gpt{fill:var(--ink)} svg .rpt{fill:var(--fix)}
+svg .gpt,svg .rpt{stroke:var(--paper);stroke-width:1}
+svg .bestr{fill:none;stroke:var(--ink);stroke-width:2}
+svg .opt{fill:none;stroke:var(--add);stroke-width:2.5}
+svg .hm{fill:var(--accent)}
+svg .venn0{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
+svg .venn1{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .venn2{fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:1.5}
+svg .venn3{fill:var(--add-soft);stroke:var(--add);stroke-width:2}
+.verdict{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.verdict .big{font-family:var(--f-mono);font-size:20px;font-variant-numeric:tabular-nums}
+.verdict ol,.verdict ul{margin:0;padding-left:20px;font-size:14px}
+.verdict .k{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+table.contrib{min-width:0;font-size:13.5px}
+table.contrib td,table.contrib th{padding:6px 8px}
+/* 위클리 05 추가 스타일 */
+.codecols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.codecols{grid-template-columns:1fr}}
+.codecols pre{font-size:12.3px}
+.codecols .codecap b{color:var(--ink)}
+pre.lines{white-space:pre}
+pre.lines .cnt{display:inline-block;min-width:3.2em;color:var(--muted);user-select:none}
+pre.lines .off{opacity:.38}
+pre.lines .rec{background:var(--accent-soft);border-radius:3px}
+svg .gn{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+svg .gx{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .go{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .gb{stroke:var(--fix);stroke-width:1.5;fill:none;stroke-dasharray:5 4}
+svg .ahf{fill:var(--fix)}
+svg .stg{fill:var(--code-bg);stroke:var(--line);stroke-width:1.5}
+svg .stgc{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .seg0{fill:var(--accent);fill-opacity:.85} svg .seg1{fill:var(--accent);fill-opacity:.5} svg .seg2{fill:var(--accent);fill-opacity:.28}
+svg .seg3{fill:var(--add);fill-opacity:.75} svg .seg4{fill:var(--muted);fill-opacity:.45} svg .seg5{fill:var(--code-bg);stroke:var(--line);stroke-width:1}
+svg .sgc{stroke:var(--accent);stroke-width:2.5;fill:none} svg .tnc{stroke:var(--add);stroke-width:2.5;fill:none} svg .rlc{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .satz{fill:var(--fix);fill-opacity:.08}
+svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
+.repl{font-family:var(--f-mono);font-size:13px;background:var(--code-bg);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.repl .in{color:var(--muted)}
+.repl .in::before{content:">>> ";color:var(--accent)}
+.repl .er{color:var(--fix);font-weight:600}
+.repl .okv{color:var(--add);font-weight:600}
+.sh{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:4px}
+.sh.y{background:var(--fix-soft);color:var(--fix)} .sh.n{background:var(--add-soft);color:var(--add)}
+.sl3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sl3 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl3{grid-template-columns:1fr}}
+</style>
+</head><body>
+
+<div class="wrap" id="top">
+  <nav class="pager" aria-label="위클리 이동">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%204.%20머신러닝과%20딥러닝%20·%20하이퍼파라미터%20·%20과적합%20진단%20·%20설명%20가능한%20모델.html" rel="prev">‹ 이전 · 04 머신러닝과 딥러닝 · 하이퍼파라미터</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+  </nav>
+  <header class="top">
+    <div class="eyebrow">WEEKLY PAPER 05 · 딥러닝 프레임워크, 텐서, 학습 안정성과 GPU 메모리</div>
+    <h1>PyTorch·TensorFlow · 텐서 · 기울기 소실 · 배치 크기</h1>
+    <p>실습 해설 2문항과 면접 2문항을 정리했습니다. 각 문항은 <b>한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈</b> 순서로 읽으면 됩니다. 원래 답안(실습 해설과 작성 답안)에서 틀린 부분은 주황색 <b>정정</b>, 새로 더한 내용은 초록색 <b>보충</b>으로 표시했습니다. 프레임워크 상황은 2026년 10월 기준입니다.</p>
+    <div class="legend">
+      <span><span class="badge b-core">핵심</span> 꼭 알아야 할 개념</span>
+      <span><span class="badge b-add">보충</span> 원래 답안에 새로 더한 내용</span>
+      <span><span class="badge b-fix">정정</span> 원래 답안에서 틀렸거나 과장된 부분</span>
+      <span><span class="badge b-lab">실험</span> 값을 바꿔 보는 인터랙티브</span>
+      <span><span class="tag-ex">예시</span> 설명용으로 만든 가상의 값</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="질문 바로가기">
+    <a href="#q1">Q1 PyTorch vs TensorFlow</a>
+    <a href="#q2">Q2 텐서 vs NumPy 배열</a>
+    <a class="iv" href="#m1">면접 1 20층 시그모이드</a>
+    <a class="iv" href="#m2">면접 2 배치 크기와 GPU 메모리</a>
+    <a href="#sum">총정리</a>
+  </nav>
+
+  <!-- ===================== Q1 ===================== -->
+  <section class="q" id="q1">
+    <div class="qhead"><div class="qnum">Q1</div><div class="min"><div class="kind">실습 해설</div><h2>딥러닝 프레임워크인 PyTorch와 TensorFlow를 비교해보세요.</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      둘 다 <mark>텐서 연산 + 자동 미분 + GPU 가속 + 분산 학습 + 배포</mark>를 갖춘 프레임워크다. TensorFlow 2.0(2019)부터 둘 다 <b>즉시 실행(eager)이 기본이고 필요할 때 그래프로 컴파일</b>하므로 "PyTorch는 연구용, TensorFlow는 배포용"이라는 구분은 낡았다. 지금의 차이는 <mark>생태계와 배포 경로</mark>다. PyTorch는 논문·대형 언어 모델·Hugging Face의 사실상 표준이고, TensorFlow는 Keras·TFX·TF Serving·LiteRT로 이어지는 운영 도구와 TPU 지원이 강점이다. 그래서 고르는 기준은 인기보다 <b>팀의 기존 스택, 배포 대상, 쓰려는 사전 학습 모델</b>이다.
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 두 프레임워크가 서로 닮아 온 과정</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 680 236" role="img" aria-label="2015년부터 2025년까지 TensorFlow와 PyTorch의 주요 변화 연표">
+          <line class="ax" x1="40" y1="118" x2="660" y2="118"/>
+          <g font-size="11" class="mut">
+            <text x="40" y="136" text-anchor="middle" class="mut">2015</text><text x="164" y="136" text-anchor="middle" class="mut">2017</text><text x="288" y="136" text-anchor="middle" class="mut">2019</text><text x="412" y="136" text-anchor="middle" class="mut">2021</text><text x="536" y="136" text-anchor="middle" class="mut">2023</text><text x="660" y="136" text-anchor="middle" class="mut">2025</text>
+          </g>
+          <text x="8" y="22" font-size="12.5" font-weight="700" class="taf">TensorFlow</text>
+          <text x="8" y="226" font-size="12.5" font-weight="700" class="tac">PyTorch</text>
+          <!-- TF (위쪽) -->
+          <g font-size="11">
+            <line class="arr" x1="70" y1="118" x2="70" y2="62"/><circle cx="70" cy="118" r="4" class="c2"/>
+            <text x="58" y="40" font-weight="700">2015.11 공개</text><text x="58" y="55" class="mut">정적 그래프 + Session</text>
+            <line class="arr" x1="300" y1="118" x2="300" y2="62"/><circle cx="300" cy="118" r="4" class="c2"/>
+            <text x="230" y="40" font-weight="700">2019.09 TF 2.0</text><text x="230" y="55" class="mut">즉시 실행 기본, Keras 통합</text>
+            <line class="arr" x1="555" y1="118" x2="555" y2="62"/><circle cx="555" cy="118" r="4" class="c2"/>
+            <text x="440" y="40" font-weight="700">2023.11 Keras 3</text><text x="440" y="55" class="mut">JAX·TF·PyTorch 백엔드</text>
+            <line class="arr" x1="610" y1="118" x2="610" y2="86"/><circle cx="610" cy="118" r="4" class="c2"/>
+            <text x="574" y="80" font-weight="700">2024.09 LiteRT</text>
+          </g>
+          <!-- PyTorch (아래쪽) -->
+          <g font-size="11">
+            <line class="arr" x1="164" y1="118" x2="164" y2="168"/><circle cx="164" cy="118" r="4" class="c0"/>
+            <text x="110" y="184" font-weight="700">2017.01 공개</text><text x="110" y="199" class="mut">define-by-run (즉시 실행)</text>
+            <line class="arr" x1="272" y1="118" x2="272" y2="150"/><circle cx="272" cy="118" r="4" class="c0"/>
+            <text x="250" y="164" font-weight="700">2018.12 PyTorch 1.0</text>
+            <line class="arr" x1="536" y1="118" x2="536" y2="168"/><circle cx="536" cy="118" r="4" class="c0"/>
+            <text x="440" y="184" font-weight="700">2023.03 PyTorch 2.0</text><text x="440" y="199" class="mut">torch.compile (그래프 컴파일)</text>
+            <line class="arr" x1="640" y1="118" x2="640" y2="150"/><circle cx="640" cy="118" r="4" class="c0"/>
+            <text x="672" y="164" text-anchor="end" font-weight="700">2025 TorchServe 유지보수 중단</text>
+          </g>
+        </svg></div>
+        <figcaption>TensorFlow는 그래프 우선에서 즉시 실행 쪽으로, PyTorch는 즉시 실행 우선에서 컴파일 쪽으로 움직였습니다. 그래서 "정적 그래프 vs 동적 그래프"는 지금은 기본값과 도구의 차이이지 할 수 있는 일의 차이가 아닙니다.</figcaption>
+      </figure>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 기준별 비교 (2026년 10월 기준)</h3>
+      <div class="tbl"><table style="min-width:860px">
+        <thead><tr><th style="width:15%">기준</th><th style="width:42%">PyTorch</th><th>TensorFlow (Keras)</th></tr></thead>
+        <tbody>
+          <tr><td><b>실행 방식</b></td><td>즉시 실행(define-by-run). 연산을 실행하는 순간 autograd가 그래프를 기록하고, <code>backward()</code> 뒤에 버린다</td><td>TF 1.x는 그래프를 먼저 정의하고 Session으로 실행(define-and-run). TF 2.x부터 즉시 실행이 기본</td></tr>
+          <tr><td><b>그래프 컴파일</b></td><td><code>torch.compile</code>: TorchDynamo가 Python 바이트코드에서 그래프를 뽑고 Inductor가 GPU 커널을 생성. 텐서 값에 따른 분기에서는 그래프가 끊기고(graph break) 그 부분은 Python으로 실행</td><td><code>tf.function</code>: 함수를 추적(trace)해 그래프로 만들고, AutoGraph가 텐서 조건의 <code>while</code>·<code>if</code>를 <code>tf.while_loop</code>·<code>tf.cond</code>로 바꾼다. <code>jit_compile=True</code>로 XLA 컴파일</td></tr>
+          <tr><td><b>자동 미분</b></td><td><code>loss.backward()</code>가 잎(leaf) 텐서의 <code>.grad</code>에 <b>누적</b>한다. 그래서 매 스텝 <code>zero_grad()</code></td><td><code>tf.GradientTape</code> 안에서 기록한 연산을 <code>tape.gradient()</code>로 미분해 값으로 돌려준다</td></tr>
+          <tr><td><b>모델·학습 API</b></td><td><code>nn.Module</code> 상속, 학습 루프를 직접 쓴다(Lightning 같은 상위 도구는 별도)</td><td>Keras <code>Sequential</code>·<code>Model</code>, <code>compile()</code> + <code>fit()</code>이 루프를 제공. 직접 루프도 가능</td></tr>
+          <tr><td><b>장치 배치</b></td><td>모델과 텐서를 <code>.to(device)</code>로 명시해서 옮긴다</td><td>GPU가 있으면 연산을 자동 배치, 필요하면 <code>tf.device</code>로 지정</td></tr>
+          <tr><td><b>분산 학습</b></td><td>DDP(데이터 병렬), FSDP(파라미터·기울기·옵티마이저 상태 분할), 텐서·파이프라인 병렬</td><td><code>tf.distribute.Strategy</code>(Mirrored, MultiWorkerMirrored, TPUStrategy)</td></tr>
+          <tr><td><b>저장·서버 배포</b></td><td><code>state_dict</code> 저장, <code>torch.export</code>로 그래프 내보내기 → AOTInductor, ONNX → ONNX Runtime·TensorRT, Triton Inference Server, LLM은 vLLM·SGLang</td><td>SavedModel(그래프 + 가중치) → TensorFlow Serving, TFX 파이프라인. <code>.keras</code> 파일</td></tr>
+          <tr><td><b>모바일·엣지·웹</b></td><td>ExecuTorch</td><td>LiteRT(옛 TensorFlow Lite), TensorFlow.js</td></tr>
+          <tr><td><b>하드웨어</b></td><td>NVIDIA CUDA, AMD ROCm, Apple MPS. TPU는 PyTorch/XLA로</td><td>CUDA, TPU를 기본 지원. 다만 구글의 TPU 연구 주력은 JAX로 옮겨 감</td></tr>
+          <tr><td><b>생태계</b></td><td>논문 구현과 사전 학습 모델의 대부분. Hugging Face Transformers는 v5에서 TensorFlow·Flax 지원을 정리하고 PyTorch 중심으로 전환(2025년 발표)</td><td>Keras 생태계, 이미 운영 중인 TF 기반 파이프라인과 모바일 앱</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 같은 학습을 두 프레임워크로</h3>
+      <div class="codecols">
+        <div class="codewrap"><div class="codecap"><b>PyTorch</b> · 루프를 직접 쓰고 장치를 명시한다</div>
+<pre>import torch
+from torch import nn
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+model = nn.Sequential(nn.Linear(20, 64), nn.ReLU(),
+                      nn.Linear(64, 1)).to(device)
+opt = torch.optim.AdamW(model.parameters(), lr=1e-3)
+loss_fn = nn.BCEWithLogitsLoss()
+
+for x, y in loader:                   <span class="c"># DataLoader가 CPU에서 배치를 만든다</span>
+    x, y = x.to(device), y.to(device) <span class="c"># 장치 이동은 직접</span>
+    loss = loss_fn(model(x).squeeze(1), y)
+    opt.zero_grad(set_to_none=True)   <span class="c"># .grad는 누적되므로 비운다</span>
+    loss.backward()                   <span class="c"># autograd</span>
+    opt.step()
+
+compiled = torch.compile(model)       <span class="c"># 선택: 그래프 컴파일</span></pre></div>
+        <div class="codewrap"><div class="codecap"><b>TensorFlow · Keras</b> · <code>fit()</code>이 루프를 돌리고 장치는 자동</div>
+<pre>import tensorflow as tf
+import keras
+
+model = keras.Sequential([keras.Input((20,)),
+    keras.layers.Dense(64, activation="relu"),
+    keras.layers.Dense(1)])
+loss_fn = keras.losses.BinaryCrossentropy(from_logits=True)
+opt = keras.optimizers.AdamW(learning_rate=1e-3)
+
+model.compile(optimizer=opt, loss=loss_fn)
+model.fit(dataset, epochs=10)         <span class="c"># 루프를 Keras가 제공</span>
+
+@tf.function                          <span class="c"># 직접 루프: 그래프로 추적</span>
+def train_step(x, y):
+    with tf.GradientTape() as tape:
+        loss = loss_fn(y, model(x, training=True))
+    grads = tape.gradient(loss, model.trainable_variables)
+    opt.apply_gradients(zip(grads, model.trainable_variables))
+    return loss</pre></div>
+      </div>
+    </div>
+
+    <div class="demo" id="demo-graph">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 1</span> 실행할 때마다 그래프가 새로 만들어진다 (define-by-run) <span class="tag-ex">예시 함수 · 이 페이지의 작은 autograd로 계산</span></div>
+        <div class="how">아래 함수는 <code>while</code>의 반복 횟수와 <code>if</code>의 분기가 입력 x에 따라 달라집니다. x를 바꾸면 이번 호출에서 실제로 실행된 연산만 그래프로 기록되고, 역전파는 그 경로를 거꾸로 따라갑니다. 이 페이지 안의 작은 autograd(PyTorch와 같은 방식)로 미분하고, 수치 미분 (f(x+ε) − f(x−ε)) / 2ε 과 비교합니다. 여러 x를 시도하면 TensorFlow <code>tf.function</code>이 그래프를 몇 개 만들지도 셉니다.</div>
+      </div>
+      <div class="split">
+        <div class="side">
+          <div class="codecap">PyTorch 코드 · 왼쪽 숫자 = 이번 호출에서 그 줄이 실행된 횟수, 파란 줄 = 그래프에 연산을 기록한 줄</div>
+          <pre class="lines" id="dgCode"></pre>
+        </div>
+        <div class="side">
+          <div><label for="dgX" style="font-size:14px;font-weight:600">입력 x: <output id="dgXOut" for="dgX">1.5</output></label><input type="range" id="dgX" min="-39" max="39" step="1" value="15"></div>
+          <div class="stats">
+            <div class="stat em"><div class="k">이번에 기록된 연산 수</div><div class="v" id="dgOps">–</div></div>
+            <div class="stat em"><div class="k">autograd df/dx</div><div class="v" id="dgAuto">–</div></div>
+            <div class="stat"><div class="k">수치 미분 (ε = 10⁻⁶)</div><div class="v" id="dgNum">–</div></div>
+            <div class="stat"><div class="k">tf.function 그래프 수 · Python float / 텐서</div><div class="v" id="dgTF">–</div></div>
+          </div>
+          <button type="button" class="btn" id="dgReset">시도 기록 지우기</button>
+        </div>
+      </div>
+      <div class="svgbox"><svg id="dgSvg" viewBox="0 0 660 176" role="img" aria-label="이번 호출에서 기록된 계산 그래프와 각 노드의 값, 기울기"></svg></div>
+      <div class="keyrow">
+        <span><span class="sw" style="background:var(--accent-soft);border:1px solid var(--accent)"></span>입력 x</span>
+        <span><span class="sw" style="background:var(--paper);border:1px solid var(--ink)"></span>기록된 연산 (순전파 값)</span>
+        <span><span class="sw" style="background:var(--add-soft);border:1px solid var(--add)"></span>출력 f(x)</span>
+        <span style="color:var(--fix)">주황 숫자 = 역전파로 구한 ∂f/∂(그 노드)</span>
+      </div>
+      <p class="insight" id="dgMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 실습 해설의 오래된 정보와 이분법</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">최근에는 배포 도구인 TorchServe로 프로덕션 환경에서도 많이 사용되고 있습니다.</span></span>
+        <span class="now"><span class="lbl-now">정정</span>TorchServe는 2025년부터 <b>제한적 유지보수(Limited Maintenance)</b> 상태로, 공식 문서에 새 기능·버그 수정·보안 패치 계획이 없다고 공지되어 있습니다. 지금 PyTorch 모델을 서버에 올린다면 <code>torch.export</code>로 그래프를 내보내 AOTInductor로 컴파일하거나, ONNX로 바꿔 ONNX Runtime·TensorRT로 실행하거나, NVIDIA Triton Inference Server를 씁니다. 대형 언어 모델은 vLLM·SGLang 같은 전용 서빙 엔진이 표준이고, 모바일은 ExecuTorch입니다. 작성 답안은 이 점을 이미 바르게 지적했습니다.</span>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">PyTorch는 유연성과 사용성이 강점이고, TensorFlow는 배포와 확장성에서 더 유리하다고 볼 수 있습니다.</span></span>
+        <span class="now"><span class="lbl-now">정정</span>"확장성"은 PyTorch의 약점이 아닙니다. DDP·FSDP·텐서 병렬로 수천 개 GPU에서 학습하며, Meta의 Llama 같은 대형 언어 모델 다수가 PyTorch로 학습됩니다. TensorFlow가 앞서는 것은 확장성 일반이 아니라 <b>TFX·TF Serving·LiteRT로 이어진 운영 도구와 TPU 통합</b>입니다. 둘 다 학습부터 배포까지 할 수 있고, 차이는 생태계와 기존 스택입니다.</span>
+      </div>
+    </div>
+
+    <div class="mini">
+      <div class="card add"><div class="k">보충 · "초기 TensorFlow가 복잡했던" 이유</div><h4>그래프를 먼저 만들고 나중에 실행했다</h4><p>TF 1.x는 <code>tf.placeholder</code>로 빈 그래프를 정의한 뒤 <code>Session.run()</code>에 값을 넣어야 결과가 나왔습니다. 중간값을 <code>print</code>로 볼 수 없고 Python <code>if</code>를 쓸 수 없어 디버깅이 어려웠습니다. PyTorch는 처음부터 코드를 실행하는 순간 계산이 일어나 Python 디버거를 그대로 쓸 수 있었고, 이것이 연구자들이 옮겨 간 핵심 이유입니다.</p></div>
+      <div class="card add"><div class="k">보충 · 세 번째 선택지</div><h4>JAX와 Keras 3</h4><p>구글 내부 연구(Gemini 등)는 JAX를 주로 씁니다. JAX는 NumPy와 같은 문법에 <code>grad</code>·<code>jit</code>·<code>vmap</code> 같은 함수 변환을 더한 방식입니다. Keras 3는 같은 Keras 코드를 JAX·TensorFlow·PyTorch 백엔드에서 돌릴 수 있어서, "Keras = TensorFlow"도 이제는 정확하지 않습니다.</p></div>
+      <div class="card add"><div class="k">보충 · 실무에서 걸리는 지점</div><h4>Windows GPU와 사전 학습 모델</h4><p>TensorFlow는 2.10이 Windows 네이티브에서 GPU를 지원한 마지막 버전이라, 그 뒤로는 WSL2가 필요합니다. 또 쓰려는 사전 학습 모델과 예제 코드가 어느 프레임워크에 있는지가 선택을 사실상 결정하는 경우가 많습니다. 새 프로젝트라면 이 두 가지를 먼저 확인합니다.</p></div>
+    </div>
+
+    <div class="speech">
+      PyTorch와 TensorFlow는 둘 다 텐서 연산, 자동 미분, GPU 가속, 분산 학습, 배포를 갖춘 딥러닝 프레임워크입니다. 원래 TensorFlow 1은 그래프를 먼저 정의하고 Session으로 실행해서 디버깅이 어려웠고, PyTorch는 코드를 실행하는 순간 그래프를 기록하는 즉시 실행 방식이라 연구자들이 선호했습니다. 지금은 TensorFlow 2가 즉시 실행을 기본으로 하고 tf.function으로 컴파일하며, PyTorch도 torch.compile로 그래프를 컴파일하기 때문에 실행 방식의 차이는 거의 사라졌습니다. 남은 차이는 생태계입니다. PyTorch는 논문 구현과 Hugging Face, 대형 언어 모델 학습의 표준이고, TensorFlow는 Keras, TF Serving, LiteRT로 이어지는 운영 도구와 TPU 지원이 강점입니다. 참고로 TorchServe는 유지보수가 중단돼서 PyTorch 배포는 torch.export, ONNX, vLLM 같은 경로를 씁니다. 그래서 저는 팀의 기존 스택, 배포 대상, 쓰려는 사전 학습 모델을 기준으로 고르겠습니다.
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== Q2 ===================== -->
+  <section class="q" id="q2">
+    <div class="qhead"><div class="qnum">Q2</div><div class="min"><div class="kind">실습 해설</div><h2>PyTorch에서 텐서란 무엇이고, NumPy의 Array(배열)과 어떤 차이가 있나요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      텐서는 <b>dtype·shape·device</b>를 가진 다차원 배열이고, 인덱싱·브로드캐스팅 규칙은 NumPy 배열과 거의 같다. 차이는 세 가지다. ① <mark>GPU 같은 가속기 메모리에 올라갈 수 있고</mark>, ② <mark>autograd가 연산을 기록해 기울기를 자동으로 계산</mark>하며, ③ <b>기본 실수 dtype이 float32</b>(NumPy는 float64)다. CPU에서는 <code>torch.from_numpy()</code>·<code>.numpy()</code>가 <b>메모리를 공유</b>하므로, 지금 만든 것이 복사본인지 같은 메모리인지 아는 것이 실수를 막는 핵심이다.
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 텐서 한 개가 들고 있는 정보</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 680 250" role="img" aria-label="PyTorch 텐서와 NumPy 배열이 각각 들고 있는 속성 비교">
+          <text x="10" y="20" font-size="13" font-weight="700" class="tac">torch.Tensor</text>
+          <rect class="boxa" x="10" y="30" width="300" height="208" rx="10"/>
+          <g font-size="12">
+            <text x="24" y="54">shape = (2, 3)</text>
+            <text x="24" y="76">stride = (3, 1)   <tspan class="mut">← 원소 개수 단위</tspan></text>
+            <text x="24" y="98">dtype = torch.float32   <tspan class="mut">← 기본값</tspan></text>
+            <text x="24" y="120" font-weight="700" class="taf">device = cuda:0</text>
+            <text x="24" y="142" font-weight="700" class="taf">requires_grad = True</text>
+            <text x="24" y="164" font-weight="700" class="taf">grad_fn = &lt;MulBackward0&gt;</text>
+            <text x="24" y="186" font-weight="700" class="taf">grad = (backward 후 채워짐)</text>
+            <text x="24" y="214" class="mut">데이터 → storage (CPU 또는 GPU 메모리)</text>
+          </g>
+          <text x="370" y="20" font-size="13" font-weight="700">numpy.ndarray</text>
+          <rect class="box" x="370" y="30" width="300" height="208" rx="10"/>
+          <g font-size="12">
+            <text x="384" y="54">shape = (2, 3)</text>
+            <text x="384" y="76">strides = (24, 8)   <tspan class="mut">← 바이트 단위</tspan></text>
+            <text x="384" y="98">dtype = float64   <tspan class="mut">← 기본값</tspan></text>
+            <text x="384" y="120" class="mut">device 없음 (항상 CPU 메모리)</text>
+            <text x="384" y="142" class="mut">미분 정보 없음</text>
+            <text x="384" y="164" class="mut">—</text>
+            <text x="384" y="186" class="mut">—</text>
+            <text x="384" y="214" class="mut">데이터 → CPU 메모리 버퍼</text>
+          </g>
+        </svg></div>
+        <figcaption>주황 글씨가 NumPy 배열에 없는 정보입니다. shape·stride·dtype으로 메모리를 해석하는 방식(뷰, 전치, 슬라이싱)은 둘이 같고, stride의 단위만 다릅니다. <code>grad_fn</code>은 이 텐서를 만든 연산으로, 역전파가 거꾸로 따라갈 고리입니다.</figcaption>
+      </figure>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 같은 점과 다른 점</h3>
+      <div class="tbl"><table style="min-width:820px">
+        <thead><tr><th style="width:17%">기준</th><th style="width:37%"><code>torch.Tensor</code></th><th style="width:28%"><code>numpy.ndarray</code></th><th>실수하기 쉬운 지점</th></tr></thead>
+        <tbody>
+          <tr><td><b>기본 실수 dtype</b></td><td><code>float32</code> (<code>torch.tensor([1.0])</code>)</td><td><code>float64</code> (<code>np.array([1.0])</code>)</td><td><code>from_numpy</code>는 float64를 그대로 가져와 모델(float32)과 dtype 오류</td></tr>
+          <tr><td><b>장치</b></td><td>CPU, CUDA, MPS 등. <code>x = x.to(device)</code></td><td>CPU만 (GPU 배열은 CuPy 같은 별도 라이브러리)</td><td>텐서의 <code>.to()</code>는 새 텐서를 돌려준다. 대입하지 않으면 그대로 CPU</td></tr>
+          <tr><td><b>자동 미분</b></td><td><code>requires_grad=True</code>인 텐서가 참여한 연산을 기록, <code>backward()</code></td><td>없음 (직접 미분하거나 JAX 같은 도구 사용)</td><td>기록 중인 텐서를 제자리 수정하면 역전파 때 오류</td></tr>
+          <tr><td><b>실행 시점</b></td><td>GPU 연산은 비동기로 큐에 쌓인다</td><td>호출이 끝나면 계산도 끝남</td><td>GPU 시간 측정은 <code>torch.cuda.synchronize()</code> 뒤에</td></tr>
+          <tr><td><b>제자리 연산</b></td><td>이름 끝에 <code>_</code> (<code>add_</code>, <code>mul_</code>)</td><td><code>+=</code>, <code>out=</code> 인수</td><td>공유 메모리면 상대 쪽도 바뀐다</td></tr>
+          <tr><td><b>인덱싱·브로드캐스팅·뷰</b></td><td colspan="2">규칙이 거의 같다. 슬라이싱과 <code>view</code>·<code>transpose</code>는 복사 없이 같은 메모리를 다른 모양으로 본다</td><td><code>view</code>는 연속 메모리에서만, 아니면 <code>reshape</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="demo" id="demo-share">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 2</span> 복사인가, 같은 메모리인가 <span class="tag-ex">PyTorch 규칙을 이 페이지에서 재현 · 공유는 실제로 같은 메모리 버퍼로 구현</span></div>
+        <div class="how">NumPy 배열 <code>a</code>를 여러 방법으로 텐서 <code>t</code>로 바꾼 뒤 한쪽을 고쳐 보세요. 공유하는 경우에는 이 페이지에서도 두 변수가 실제로 같은 메모리 버퍼를 가리키게 만들었기 때문에, 한쪽을 바꾸면 다른 쪽이 정말로 바뀝니다. 아래 두 번째 칸에서는 텐서를 NumPy로 되돌리는 방법별 결과와 오류를 확인합니다.</div>
+      </div>
+      <div class="ctrls">
+        <label for="shS" style="font-weight:600">a 만들기</label>
+        <select id="shS"><option value="float64" selected>np.array([1., 2., 3.]) · float64</option><option value="float32">np.array([1., 2., 3.], dtype=np.float32)</option></select>
+        <label for="shC" style="font-weight:600">텐서로 바꾸기</label>
+        <select id="shC">
+          <option value="from_numpy" selected>torch.from_numpy(a)</option>
+          <option value="as_tensor">torch.as_tensor(a)</option>
+          <option value="as_tensor32">torch.as_tensor(a, dtype=torch.float32)</option>
+          <option value="tensor">torch.tensor(a)</option>
+          <option value="float">torch.from_numpy(a).float()</option>
+          <option value="cuda">torch.from_numpy(a).to("cuda")</option>
+        </select>
+      </div>
+      <div class="ctrls">
+        <button type="button" class="btn pri" id="shA">a[0] = 10 실행</button>
+        <button type="button" class="btn pri" id="shT">t.add_(1) 실행</button>
+        <button type="button" class="btn" id="shR">처음으로</button>
+      </div>
+      <div class="split">
+        <div class="side"><div class="repl" id="shRepl" aria-live="polite"></div></div>
+        <div class="side"><div class="svgbox"><svg id="shSvg" viewBox="0 0 400 170" role="img" aria-label="변수 a와 t가 가리키는 메모리"></svg></div></div>
+      </div>
+      <p class="insight" id="shMsg" aria-live="polite"></p>
+      <div class="ctrls" style="border-top:1px dashed var(--line);padding-top:12px">
+        <b style="font-size:14px">텐서 → NumPy</b>
+        <label for="nbD">t의 장치</label><select id="nbD"><option value="cpu" selected>cpu</option><option value="cuda">cuda:0</option></select>
+        <label for="nbG">requires_grad</label><select id="nbG"><option value="0">False</option><option value="1" selected>True</option></select>
+        <label for="nbM">변환</label>
+        <select id="nbM">
+          <option value="m1" selected>t.numpy()</option>
+          <option value="m2">t.detach().numpy()</option>
+          <option value="m3">t.detach().cpu().numpy()</option>
+          <option value="m4">t.detach().cpu().numpy().copy()</option>
+          <option value="m5">t.numpy(force=True)</option>
+        </select>
+      </div>
+      <div class="repl" id="nbOut" aria-live="polite"></div>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note add">
+      <b class="t">보충 · 실습 해설을 더 정확하게</b>
+      <p>"requires_grad=True로 설정된 텐서는 계산 그래프를 기록하며"는 정확히 말하면 <b>그 텐서가 참여한 연산을 autograd 엔진이 기록</b>하는 것입니다. 결과 텐서마다 자신을 만든 연산(<code>grad_fn</code>)이 붙고, <code>backward()</code>가 이 고리를 거꾸로 따라가 잎 텐서의 <code>.grad</code>에 기울기를 <b>더합니다</b>. 그래프는 역전파가 끝나면 해제되므로 매 반복 새로 만들어지고(실험 1), 같은 그래프로 두 번 역전파하려면 <code>retain_graph=True</code>가 필요합니다. "텐서를 <code>.to(device)</code>로 이동시키면 된다"도 텐서에서는 <code>x = x.to(device)</code>처럼 <b>대입해야</b> 합니다. 모델(<code>nn.Module</code>)의 <code>.to()</code>만 제자리에서 파라미터를 옮깁니다.</p>
+    </div>
+
+    <div class="mini">
+      <div class="card add"><div class="k">보충 · dtype 기본값의 함정</div><h4>float64 텐서와 float32 모델</h4><p>NumPy로 전처리한 배열을 <code>torch.from_numpy()</code>로 바꾸면 float64 텐서가 되고, float32인 <code>nn.Linear</code>에 넣으면 <code>mat1 and mat2 must have the same dtype</code> 오류가 납니다. <code>.float()</code>를 붙이거나 처음부터 <code>np.float32</code>로 만듭니다. GPU는 float32·bfloat16 연산이 float64보다 훨씬 빠르기 때문에 딥러닝 기본값이 float32입니다.</p></div>
+      <div class="card add"><div class="k">보충 · 제자리 연산과 autograd</div><h4>역전파에 필요한 값을 덮어쓰면 오류</h4><p><code>y = x.sigmoid()</code> 뒤에 <code>y.mul_(2)</code>를 하면, 시그모이드의 역전파에 필요한 y가 바뀌어 <code>one of the variables needed for gradient computation has been modified by an inplace operation</code> 오류가 납니다. PyTorch는 텐서마다 버전 번호를 두어 이를 잡아냅니다. NumPy에는 없는 제약입니다.</p></div>
+      <div class="card add"><div class="k">보충 · 작성 답안 코드 확인</div><h4>결과와 해석이 정확하다</h4><p>작성 답안의 코드와 결과(기울기 2xᵢ/3 = [6.6667, 1.3333, 2.0000])는 맞습니다. GPU에서 돌리면 기울기가 <code>tensor([...], device='cuda:0')</code>로 출력되는 것만 다릅니다. <code>np.asarray(list, ...)</code>는 리스트에서 항상 새 배열을 만들므로 뒤의 <code>.copy()</code>는 없어도 됩니다.</p></div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">자주 쓰는 변환 정리 (주석 = 메모리 공유 여부)</div>
+<pre>import numpy as np, torch
+
+a = np.random.rand(4, 3)                    <span class="c"># float64</span>
+t1 = torch.from_numpy(a)                    <span class="c"># 공유, float64 유지</span>
+t2 = torch.from_numpy(a).float()            <span class="c"># 복사(dtype 변환), float32</span>
+t3 = torch.tensor(a)                        <span class="c"># 항상 복사</span>
+t4 = torch.as_tensor(a, device="cuda")      <span class="c"># 장치가 다르니 복사</span>
+
+x = torch.randn(3, requires_grad=True, device="cuda")
+y = (x ** 2).sum()
+y.backward()                                <span class="c"># x.grad = 2x</span>
+arr = x.grad.cpu().numpy()                  <span class="c"># grad 자체는 기록 대상이 아니라 detach 불필요</span>
+out = x.detach().cpu().numpy()              <span class="c"># 기록 중인 텐서는 detach → cpu → numpy</span>
+
+torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 전 대기</span></pre>
+    </div>
+
+    <div class="speech">
+      PyTorch 텐서는 dtype, shape, device를 가진 다차원 배열이고, 인덱싱이나 브로드캐스팅 규칙은 NumPy 배열과 거의 같습니다. 차이는 세 가지입니다. 첫째, 텐서는 to(device)로 GPU 메모리에 올려 병렬 연산을 할 수 있습니다. 둘째, requires_grad가 켜진 텐서가 참여한 연산은 autograd가 기록해서 backward 한 번으로 모든 파라미터의 기울기를 계산합니다. 셋째, 기본 실수 타입이 NumPy는 float64, PyTorch는 float32라서 from_numpy로 가져온 배열은 float으로 바꿔 줘야 합니다. 또 CPU에서는 from_numpy와 numpy 메서드가 메모리를 공유해서 한쪽을 바꾸면 다른 쪽도 바뀌고, GPU 텐서나 기울기를 추적 중인 텐서는 detach, cpu, numpy 순서로 변환해야 합니다.
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q2"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 면접 1 ===================== -->
+  <section class="q" id="m1">
+    <div class="qhead"><div class="qnum iv">면접 1</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>20층짜리 깊은 신경망을 만들고 활성화 함수로 시그모이드를 사용했어요. 학습을 돌려보니 출력층 근처 레이어는 잘 학습되는데, 입력층 근처 레이어의 가중치는 몇 에포크가 지나도 거의 그대로예요. 어떤 원인을 의심할 건가요? 어떻게 확인하고 해결할 건가요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      1순위는 <mark>시그모이드로 인한 기울기 소실</mark>이다. 역전파는 층을 하나 지날 때마다 <b>σ′(z) ≤ 0.25</b>와 가중치를 곱하므로, 20층이면 입력층의 기울기가 출력층보다 <b>지수적으로</b> 작아지고 포화되면(출력이 0이나 1 근처) 더 빨리 0이 된다. 확인은 <mark>층별 기울기 노름과 실제 갱신 비율 ‖ΔW‖/‖W‖, 활성화 포화 비율</mark>을 찍어 출력→입력 방향으로 지수적으로 줄어드는지 보는 것이다. 해결은 <b>은닉층 ReLU·GELU + He 초기화, 잔차 연결, 정규화 층</b>이고 시그모이드는 출력층(<code>BCEWithLogitsLoss</code>)에만 남긴다.
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 왜 입력 쪽만 작아지나</h3>
+      <div class="formula">∂L/∂h<sub>l−1</sub> = W<sub>l</sub><sup>T</sup> · ( <span class="fv">σ′(z<sub>l</sub>)</span> ⊙ ∂L/∂h<sub>l</sub> ) ,&nbsp;&nbsp; <span class="fv">σ′(z) = σ(z)(1 − σ(z)) ≤ 0.25</span></div>
+      <p>출력층의 기울기는 손실에서 바로 오지만, 층 1의 기울기는 이 곱셈을 19번 거친 값입니다. 가중치를 무시하고 σ′의 최댓값만 곱해도 0.25<sup>19</sup> ≈ 3.6 × 10<sup>−12</sup>입니다. 가중치를 크게 잡으면 곱이 커질 것 같지만, 가중치가 크면 z도 커져 시그모이드가 포화되고 σ′가 더 작아집니다. 그래서 시그모이드만으로는 이 균형을 맞출 수 없습니다.</p>
+      <figure class="fig">
+        <div class="svgbox"><svg id="sgPlot" viewBox="0 0 640 220" role="img" aria-label="시그모이드, tanh, ReLU의 도함수 그래프"></svg></div>
+        <div class="keyrow">
+          <span><span class="sw ln" style="background:var(--accent)"></span>σ′(z), 최대 0.25</span>
+          <span><span class="sw ln" style="background:var(--add)"></span>tanh′(z), 최대 1</span>
+          <span><span class="sw ln" style="background:var(--fix)"></span>ReLU′(z), 양수에서 1</span>
+          <span>주황 배경 = |z| &gt; 4, σ′ &lt; 0.018인 포화 구간</span>
+        </div>
+        <figcaption>tanh는 최대 기울기가 1이고 0을 중심으로 대칭이라 시그모이드보다 낫지만 역시 양쪽에서 포화됩니다. ReLU는 양수 구간에서 기울기가 정확히 1이라 곱해도 줄지 않습니다. 대신 음수 구간은 0이라, 입력이 계속 음수인 뉴런은 영영 학습되지 않습니다(죽은 ReLU).</figcaption>
+      </figure>
+    </div>
+
+    <div class="demo" id="demo-vanish">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 3</span> 20층 신경망을 직접 학습해 층별 기울기와 가중치 변화 재기 <span class="tag-ex">예시 데이터 · 입력 8개, 이진 분류 512개</span></div>
+        <div class="how">가중치 층 20개(은닉층 19개 × 뉴런 32개 + 출력층)인 신경망을 이 페이지에서 직접 만들어, 학습 전 층별 기울기 노름 ‖∂L/∂Wₗ‖과 미니배치 64개로 200스텝 학습한 뒤의 가중치 변화율 ‖Wₗ − Wₗ⁽⁰⁾‖ / ‖Wₗ⁽⁰⁾‖을 잽니다. 둘 다 로그 축입니다. 시그모이드에서 출발해 활성화, 초기화, 잔차 연결, 옵티마이저를 하나씩 바꿔 보세요. 학습률은 SGD 0.1, Adam 0.001로 고정했습니다.</div>
+      </div>
+      <div class="ctrls">
+        <label for="vnA" style="font-weight:600">은닉층 활성화</label>
+        <select id="vnA"><option value="sigmoid" selected>시그모이드</option><option value="tanh">tanh</option><option value="relu">ReLU</option></select>
+        <label for="vnI" style="font-weight:600">초기화</label>
+        <select id="vnI"><option value="xavier" selected>Xavier (Glorot)</option><option value="he">He (Kaiming)</option><option value="big">표준정규 N(0, 1)</option></select>
+        <label for="vnR" style="font-weight:600">잔차 연결</label>
+        <select id="vnR"><option value="0" selected>없음</option><option value="1">있음</option></select>
+        <label for="vnO" style="font-weight:600">옵티마이저</label>
+        <select id="vnO"><option value="sgd" selected>SGD</option><option value="adam">Adam</option></select>
+      </div>
+      <div class="panels">
+        <div class="panel"><h5>학습 전 층별 기울기 노름 (log₁₀)</h5><div class="svgbox"><svg id="vnG" viewBox="0 0 320 210" role="img" aria-label="층별 기울기 노름"></svg></div><div class="cap">층 1 = 입력 쪽, 층 20 = 출력층</div></div>
+        <div class="panel"><h5>200스텝 학습 후 가중치 변화율 (log₁₀)</h5><div class="svgbox"><svg id="vnU" viewBox="0 0 320 210" role="img" aria-label="층별 가중치 변화율"></svg></div><div class="cap">‖Wₗ − Wₗ⁽⁰⁾‖ / ‖Wₗ⁽⁰⁾‖ · "거의 그대로"를 수치로 본 것</div></div>
+      </div>
+      <div class="stats">
+        <div class="stat em"><div class="k">기울기 노름 비 (층 1 / 층 20)</div><div class="v" id="vnRatio">–</div></div>
+        <div class="stat em"><div class="k">변화율 비 (층 1 / 층 20)</div><div class="v" id="vnURatio">–</div></div>
+        <div class="stat"><div class="k">학습 전 포화 뉴런 비율 (ReLU는 죽은 뉴런)</div><div class="v" id="vnSat">–</div></div>
+        <div class="stat"><div class="k">훈련 loss 시작 → 끝</div><div class="v" id="vnLoss">–</div></div>
+        <div class="stat"><div class="k">훈련 정확도 (다수 클래스 기준선)</div><div class="v" id="vnAcc">–</div></div>
+      </div>
+      <p class="insight" id="vnMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 증상이 같아 보이는 원인 구분하기</h3>
+      <div class="tbl"><table style="min-width:860px">
+        <thead><tr><th style="width:19%">관찰</th><th style="width:20%">의심 원인</th><th style="width:30%">확인 방법</th><th>해결</th></tr></thead>
+        <tbody>
+          <tr><td><b>기울기가 있지만 입력 쪽으로 갈수록 지수적으로 작다</b></td><td>기울기 소실</td><td>층별 ‖grad‖가 로그 축에서 직선으로 감소, 시그모이드 출력이 0·1 근처에 몰림</td><td>ReLU·GELU + He 초기화, 잔차 연결, 정규화 층</td></tr>
+          <tr><td><b><code>p.grad is None</code></b></td><td>계산 그래프 단절, 파라미터가 순전파에 안 쓰임, <code>requires_grad=False</code></td><td>순전파 중 <code>.detach()</code>·<code>.item()</code>·NumPy 변환·<code>torch.no_grad()</code> 검색</td><td>그래프를 끊는 코드 제거, 고정할 의도였는지 확인</td></tr>
+          <tr><td><b>기울기는 정상인데 가중치가 안 바뀜</b></td><td>파라미터가 옵티마이저에 등록 안 됨, 학습률이 너무 작음</td><td><code>optimizer.param_groups</code>에 포함됐는지, <code>step()</code> 전후 값 비교</td><td>옵티마이저 생성 시점 확인(모델을 바꾼 뒤 생성), 학습률 탐색</td></tr>
+          <tr><td><b>입력 쪽 기울기가 지수적으로 크다, loss가 NaN</b></td><td>기울기 폭발</td><td>층별 ‖grad‖가 입력 쪽으로 갈수록 커짐</td><td>초기화 축소, 기울기 클리핑, 학습률 낮추기</td></tr>
+          <tr><td><b>ReLU인데 일부 뉴런 출력이 항상 0</b></td><td>죽은 ReLU</td><td>뉴런별로 배치 전체에서 0인 비율</td><td>학습률 낮추기, Leaky ReLU·GELU, 편향 초기화</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 해결책이 듣는 이유</h3>
+      <div class="tbl"><table style="min-width:760px">
+        <thead><tr><th style="width:22%">방법</th><th style="width:44%">기울기 흐름에 미치는 효과</th><th>주의</th></tr></thead>
+        <tbody>
+          <tr><td><b>은닉층 ReLU·GELU</b></td><td>활성 구간의 미분이 1(또는 1 근처)이라 층마다 0.25씩 깎이지 않는다</td><td>출력층의 시그모이드·소프트맥스는 문제 유형으로 정해지므로 그대로 둔다</td></tr>
+          <tr><td><b>He 초기화 (ReLU) · Xavier (tanh)</b></td><td>층을 지나도 활성화와 기울기의 분산이 유지되도록 Var(W) = 2/fan_in 또는 2/(fan_in + fan_out)로 맞춘다</td><td>초기화만으로는 학습 중 분포가 다시 틀어질 수 있다</td></tr>
+          <tr><td><b>잔차 연결</b></td><td>h<sub>l</sub> = h<sub>l−1</sub> + F(h<sub>l−1</sub>)이면 ∂h<sub>l</sub>/∂h<sub>l−1</sub> = I + ∂F/∂h, 항등 경로로 기울기가 곱셈 없이 전달된다</td><td>층이 깊으면 잔차 가지의 출력을 작게 시작해야 순전파 값이 폭주하지 않는다</td></tr>
+          <tr><td><b>배치·레이어 정규화</b></td><td>각 층 입력을 평균 0·분산 1 근처로 맞춰 포화 구간에 들어가지 않게 한다</td><td>배치 정규화는 작은 배치에서 불안정, 그때는 레이어·그룹 정규화</td></tr>
+          <tr><td><b>BCEWithLogitsLoss</b></td><td>시그모이드와 교차 엔트로피를 합치면 출력층 기울기가 p − y로 단순해져 출력에서의 포화가 없다</td><td>시그모이드 출력 + MSE는 출력층부터 기울기가 작아진다</td></tr>
+          <tr><td><b>기울기 클리핑</b></td><td>너무 큰 기울기만 잘라 낸다</td><td>폭발 대책이다. 작은 기울기를 키우지는 못한다</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">층별 기울기, 실제 갱신 비율, 시그모이드 포화를 한 스텝에서 함께 기록하기</div>
+<pre>import torch
+from torch import nn
+
+saturation = {}
+def hook(name):
+    def f(module, inputs, out):                       <span class="c"># 시그모이드 출력이 0·1에 붙은 비율</span>
+        saturation[name] = ((out &lt; 0.01) | (out &gt; 0.99)).float().mean().item()
+    return f
+for name, m in model.named_modules():
+    if isinstance(m, nn.Sigmoid):
+        m.register_forward_hook(hook(name))
+
+loss = criterion(model(x), y)
+optimizer.zero_grad(set_to_none=True)
+loss.backward()
+before = {n: p.detach().clone() for n, p in model.named_parameters()}
+grad_norm = {n: (p.grad.norm().item() if p.grad is not None else None)
+             for n, p in model.named_parameters()}         <span class="c"># None = 그래프 단절 의심</span>
+optimizer.step()
+for n, p in model.named_parameters():                   <span class="c"># 실제로 얼마나 바뀌었나 (권장 경험치 ≈ 1e-3)</span>
+    update = (p.detach() - before[n]).norm() / (before[n].norm() + 1e-12)
+    print(f"{n:24s} grad={grad_norm[n]} update/weight={update.item():.2e}")</pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline"><code>update_ratio = gradient_norm / (parameter_norm + 1e-12)</code> … 입력층에 가까워질수록 gradient와 ratio가 지수적으로 작아진다면 기울기 소실의 강한 증거입니다.</span></span>
+        <span class="now"><span class="lbl-now">정정</span>이 값은 <b>기울기/가중치 비율</b>이지 갱신 비율이 아닙니다. 실제 갱신량은 학습률과 옵티마이저가 정합니다. SGD라면 ‖ΔW‖ = 학습률 × ‖grad‖라서 두 비율이 비례하지만, <b>Adam은 기울기를 그 크기의 이동 평균으로 나누므로</b> 기울기가 작아도 갱신은 덜 작아집니다. 그래서 "입력층 가중치가 거의 그대로"라는 증상을 확인하려면 위 코드처럼 <code>step()</code> 전후 가중치 차이로 ‖ΔW‖/‖W‖를 직접 재야 합니다. 다만 Adam의 보상에도 한계가 있습니다. 분모에 더하는 ε(기본 10⁻⁸)보다 기울기가 작아지면 갱신도 함께 작아지고, 기울기가 잡음처럼 부호가 흔들리면 이동 평균이 상쇄되어 줄어듭니다. 실험 3에서 SGD와 Adam의 변화율 비를 비교해 보세요.</span>
+      </div>
+    </div>
+
+    <div class="mini">
+      <div class="card add"><div class="k">보충 · 출력층 근처만 학습되는 이유</div><h4>마지막 층은 곱셈을 거의 안 거친다</h4><p>출력층의 기울기는 손실에서 한 번만 곱해져 내려오므로 크기가 정상입니다. 그래서 겉으로는 loss가 조금씩 줄어 "학습은 된다"고 보이지만, 실제로는 무작위로 초기화된 앞쪽 19개 층의 출력 위에서 마지막 몇 층만 맞추고 있는 상태입니다. 깊이의 이점을 전혀 못 쓰는 셈입니다.</p></div>
+      <div class="card add"><div class="k">보충 · 시그모이드의 두 번째 문제</div><h4>출력이 항상 양수다</h4><p>시그모이드 출력은 0~1이라 평균이 0.5입니다. 다음 층 가중치의 기울기는 (뒤에서 온 기울기) × (이 입력)인데 입력이 모두 양수면 한 뉴런으로 들어가는 가중치들의 기울기 부호가 모두 같아집니다. 그래서 갱신이 지그재그로 움직여 느려집니다. tanh가 시그모이드보다 나은 이유가 0 중심이라는 점이고, Glorot &amp; Bengio(2010)도 시그모이드 깊은 망에서 위쪽 층이 0 근처로 포화되는 현상을 보고했습니다.</p></div>
+      <div class="card add"><div class="k">보충 · 시그모이드가 맞는 자리</div><h4>출력층과 게이트</h4><p>이진 분류 출력층, LSTM·GRU의 게이트, 어텐션 마스크처럼 "0~1 사이의 비율"이 필요한 곳에서는 시그모이드가 정답입니다. 문제는 깊이 방향으로 반복해서 곱해지는 은닉층에 쓰는 것입니다. 참고로 LSTM은 셀 상태를 더하기로 전달해 시간 방향의 기울기 소실을 줄인 구조입니다.</p></div>
+    </div>
+
+    <div class="speech">
+      입력층 쪽 가중치만 거의 안 바뀐다면 시그모이드 때문에 생기는 기울기 소실을 가장 먼저 의심하겠습니다. 역전파는 층마다 시그모이드 미분값과 가중치를 곱하는데, 시그모이드 미분은 최대 0.25이고 출력이 0이나 1에 가까우면 거의 0이라서, 20층을 지나면 입력층 기울기가 지수적으로 작아집니다. 확인은 loss.backward 직후 층별 기울기 노름을 찍어서 출력층에서 입력층으로 갈수록 로그 축에서 직선처럼 줄어드는지 보고, optimizer.step 전후 가중치 차이로 실제 갱신 비율도 재겠습니다. 활성화 히스토그램에서 출력이 0과 1에 몰려 있는지도 보고, grad가 None인 경우는 그래프가 끊긴 다른 문제이니 따로 구분하겠습니다. 해결은 은닉층을 ReLU나 GELU로 바꾸고 He 초기화를 쓰고, 잔차 연결과 배치나 레이어 정규화를 넣는 것입니다. 시그모이드는 출력층에만 두고 BCEWithLogitsLoss로 묶겠습니다. 기울기 클리핑은 폭발 대책이라 이 문제의 해결책은 아닙니다.
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="m1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 면접 2 ===================== -->
+  <section class="q" id="m2">
+    <div class="qhead"><div class="qnum iv">면접 2</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>100만 개의 학습 데이터를 GPU 메모리에 한 번에 다 올릴 수 없는 상황이에요. 배치 크기를 어떻게 정할 건가요? 배치 크기를 아주 작게 잡는 것과 아주 크게 잡는 것 각각의 문제도 함께 설명해 주세요.</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      데이터 전체를 GPU에 올릴 필요는 없다. 데이터는 디스크·CPU 메모리에 두고 <b>미니배치만</b> GPU로 보낸다. 배치 크기는 데이터 수가 아니라 <mark>GPU 메모리 = 고정 부분(파라미터·기울기·옵티마이저 상태) + 배치에 비례하는 활성화</mark>, 처리량, 학습 안정성으로 정한다. 2의 거듭제곱으로 늘리며 최대 메모리와 초당 샘플 수를 재고, 원하는 유효 배치가 안 들어가면 <b>기울기 누적·AMP·활성화 체크포인팅</b>을 쓴다. <mark>배치를 바꾸면 학습률도 다시 맞춘다.</mark> 너무 작으면 GPU가 놀고 기울기 잡음이 크며, 너무 크면 에포크당 업데이트가 줄고 어느 지점부터는 배치를 키워도 학습이 빨라지지 않는다.
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="flow">
+      <div class="step"><b>데이터는 밖에</b><span><code>Dataset</code>이 디스크에서 필요한 샘플만 읽고, <code>DataLoader</code>가 CPU에서 배치를 만든다</span></div>
+      <div class="step"><b>메모리 상한 재기</b><span>배치 16 → 32 → 64 …로 늘리며 <code>max_memory_allocated</code>와 처리량 측정, 가장 긴 입력으로 시험</span></div>
+      <div class="step"><b>유효 배치 정하기</b><span>목표 유효 배치 = 마이크로 배치 × 누적 단계 × GPU 수</span></div>
+      <div class="step"><b>학습률 다시 맞추기</b><span>배치를 바꾸면 학습률·warm-up을 검증 데이터로 다시 탐색</span></div>
+    </div>
+
+    <div class="demo" id="demo-mem">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 4</span> GPU 메모리에 들어가는 배치 크기 계산하기 <span class="tag-ex">예시 · 단순화한 메모리 모델</span></div>
+        <div class="how">학습 중 GPU 메모리를 <b>파라미터 + 기울기 + 옵티마이저 상태</b>(배치와 무관)와 <b>활성화</b>(배치에 비례)로 나눠 계산합니다. FP32 기준 파라미터 하나당 SGD(모멘텀)는 4 + 4 + 4 = 12바이트, Adam은 모멘트 두 개가 붙어 4 + 4 + 8 = 16바이트입니다. 샘플당 활성화 메모리는 모델·입력 크기마다 크게 달라서 직접 재야 하는 값이므로 슬라이더로 둡니다. AMP는 PyTorch autocast 기준으로 파라미터·기울기·옵티마이저 상태는 FP32 그대로, 활성화가 약 절반이 된다고 가정했고, 체크포인팅은 활성화를 35%만 저장하고 순전파를 한 번 더 한다고 가정했습니다. CUDA 컨텍스트와 할당기 단편화 몫으로 1.5GB를 남깁니다.</div>
+      </div>
+      <div class="sl3">
+        <label for="mmP">모델 파라미터 수<select id="mmP"><option value="11.7">1,170만 (ResNet-18 규모)</option><option value="25.6" selected>2,560만 (ResNet-50 규모)</option><option value="110">1억 1천만 (BERT-base 규모)</option><option value="350">3억 5천만</option></select></label>
+        <label for="mmO">옵티마이저<select id="mmO"><option value="12">SGD + 모멘텀 (12 B/파라미터)</option><option value="16" selected>Adam·AdamW (16 B/파라미터)</option></select></label>
+        <label for="mmG">GPU 메모리<select id="mmG"><option value="8">8 GB</option><option value="12">12 GB</option><option value="16">16 GB</option><option value="24" selected>24 GB</option><option value="40">40 GB</option><option value="80">80 GB</option></select></label>
+      </div>
+      <div class="sl3">
+        <label for="mmA">샘플당 활성화 (FP32, MB): <output id="mmAOut" for="mmA">80</output><input type="range" id="mmA" min="2" max="400" step="2" value="80"></label>
+        <label for="mmX">메모리 절약<select id="mmX"><option value="none" selected>없음 (FP32)</option><option value="amp">AMP (혼합 정밀도)</option><option value="ckpt">활성화 체크포인팅</option><option value="both">AMP + 체크포인팅</option></select></label>
+        <label for="mmT">목표 유효 배치 · GPU 수<select id="mmT"><option value="256|1" selected>256 · GPU 1대</option><option value="1024|1">1,024 · GPU 1대</option><option value="1024|4">1,024 · GPU 4대</option><option value="4096|8">4,096 · GPU 8대</option></select></label>
+      </div>
+      <div class="svgbox"><svg id="mmSvg" viewBox="0 0 640 110" role="img" aria-label="GPU 메모리 구성 막대"></svg></div>
+      <div class="keyrow">
+        <span><span class="sw" style="background:var(--accent)"></span>파라미터</span>
+        <span><span class="sw" style="background:var(--accent);opacity:.55"></span>기울기</span>
+        <span><span class="sw" style="background:var(--accent);opacity:.3"></span>옵티마이저 상태</span>
+        <span><span class="sw" style="background:var(--add)"></span>활성화 (마이크로 배치 비례)</span>
+        <span><span class="sw" style="background:var(--muted);opacity:.5"></span>예약 1.5GB</span>
+        <span><span class="sw" style="background:var(--code-bg);border:1px solid var(--line)"></span>남는 메모리</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">배치와 무관한 고정 메모리</div><div class="v" id="mmFix">–</div></div>
+        <div class="stat em"><div class="k">들어가는 최대 마이크로 배치</div><div class="v" id="mmMax">–</div></div>
+        <div class="stat em"><div class="k">사용할 마이크로 배치 × 누적 × GPU</div><div class="v" id="mmUse">–</div></div>
+        <div class="stat ok"><div class="k">100만 개 기준 에포크당 업데이트</div><div class="v" id="mmUpd">–</div></div>
+        <div class="stat"><div class="k">상대 계산 시간 (체크포인팅)</div><div class="v" id="mmTime">–</div></div>
+      </div>
+      <p class="insight" id="mmMsg" aria-live="polite"></p>
+    </div>
+
+    <div class="demo" id="demo-batch">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 5</span> 배치 크기와 학습률 규칙을 바꿔 같은 데이터로 학습하기 <span class="tag-ex">예시 데이터 · 특징 20개 로지스틱 회귀, 학습 8,192개 · 검증 4,096개</span></div>
+        <div class="how">배치 크기 6가지 × 학습률 규칙 3가지를 이 페이지에서 미니배치 SGD로 학습하고(무작위 시작 3번 평균) 검증 loss를 비교합니다. 기준 학습률은 배치 32에서 0.05이고, <b>고정</b>은 배치와 상관없이 0.05, <b>선형 스케일링</b>은 배치에 비례(Goyal 외, 2017), <b>제곱근 스케일링</b>은 √배치에 비례합니다. 오른쪽 그림은 학습 중간 지점에서 뽑은 미니배치 기울기가 전체 데이터 기울기와 얼마나 같은 방향인지(코사인 유사도, 200번 평균)입니다. 특징마다 척도가 0.3~3배로 달라 안정적으로 쓸 수 있는 학습률에 상한이 있습니다. 모델이 볼록 문제라 과적합은 거의 없고, 이 실험은 <b>최적화 속도와 기울기 잡음</b>만 보여 줍니다.</div>
+      </div>
+      <div class="ctrls">
+        <label for="btE" style="font-weight:600">학습 에포크</label>
+        <select id="btE"><option value="1">1</option><option value="4" selected>4</option><option value="16">16</option></select>
+        <label for="btR" style="font-weight:600">강조할 규칙</label>
+        <select id="btR"><option value="fixed" selected>고정 0.05</option><option value="linear">선형 스케일링</option><option value="sqrt">제곱근 스케일링</option></select>
+        <label for="btB" style="font-weight:600">살펴볼 배치</label>
+        <select id="btB"><option value="8">8</option><option value="32">32</option><option value="128">128</option><option value="512" selected>512</option><option value="2048">2,048</option><option value="8192">8,192 (전체)</option></select>
+      </div>
+      <div class="panels">
+        <div class="panel"><h5>에포크 후 검증 loss</h5><div class="svgbox"><svg id="btL" viewBox="0 0 320 220" role="img" aria-label="배치 크기별 검증 loss"></svg></div><div class="cap">점선 = 실제 규칙으로 예측할 때의 loss(도달 가능한 하한)</div></div>
+        <div class="panel"><h5>미니배치 기울기와 전체 기울기의 코사인 유사도</h5><div class="svgbox"><svg id="btC" viewBox="0 0 320 220" role="img" aria-label="배치 크기별 기울기 코사인 유사도"></svg></div><div class="cap">1에 가까울수록 미니배치 기울기가 전체 방향과 같다(잡음이 작다)</div></div>
+      </div>
+      <div class="keyrow">
+        <span><span class="sw ln" style="background:var(--accent)"></span>고정 0.05</span>
+        <span><span class="sw ln" style="background:var(--fix)"></span>선형 스케일링</span>
+        <span><span class="sw ln" style="background:var(--add)"></span>제곱근 스케일링</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">이 배치의 학습률</div><div class="v" id="btLr">–</div></div>
+        <div class="stat"><div class="k">에포크당 업데이트 (이 데이터 / 100만 개)</div><div class="v" id="btUpd">–</div></div>
+        <div class="stat em"><div class="k">이 배치의 검증 loss</div><div class="v" id="btVal">–</div></div>
+        <div class="stat ok"><div class="k">이 규칙에서 가장 좋은 배치</div><div class="v" id="btBest">–</div></div>
+      </div>
+      <p class="insight" id="btMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 배치가 너무 작을 때와 너무 클 때</h3>
+      <div class="tbl"><table style="min-width:820px">
+        <thead><tr><th style="width:14%">구분</th><th style="width:43%">문제</th><th>대응</th></tr></thead>
+        <tbody>
+          <tr><td><b>너무 작은 배치</b><br><span class="muted" style="font-size:12.5px">예: 1~8</span></td><td>GPU의 병렬 연산을 다 못 써서 초당 샘플 수가 낮고, 커널 실행·데이터 전송 같은 고정 비용 비중이 커진다. 기울기 잡음이 커서 학습률을 낮춰야 하고, 배치 정규화의 평균·분산 추정이 불안정하다</td><td>처리량이 포화될 때까지 키운다. 정규화는 레이어·그룹 정규화로, 원하는 배치가 안 들어가면 기울기 누적</td></tr>
+          <tr><td><b>너무 큰 배치</b><br><span class="muted" style="font-size:12.5px">예: 데이터의 수 %</span></td><td>메모리 부족(OOM). 에포크당 업데이트 수가 배치에 반비례해 줄어든다. 학습률을 같이 키우지 않으면 같은 에포크에서 덜 학습되고, 키우면 어느 지점(임계 배치 크기)부터는 불안정해지거나 더 빨라지지 않는다. 같은 에포크 수로 비교하면 일반화가 나빠졌다는 보고가 있다</td><td>학습률 스케일링 + warm-up, 필요한 스텝 수 확보. LAMB·LARS 같은 대형 배치용 옵티마이저</td></tr>
+          <tr><td><b>그 사이</b></td><td>메모리·처리량·검증 성능이 모두 허용 범위인 구간이 대개 넓다</td><td>그 안에서는 배치를 고정하고 학습률·규제를 튜닝(위클리 4 Q2)</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">배치 크기별 최대 메모리와 처리량 재기 (가장 긴 입력으로)</div>
+<pre>import time, torch
+
+def probe(batch_size, steps=20):
+    torch.cuda.empty_cache(); torch.cuda.reset_peak_memory_stats()
+    x = torch.randn(batch_size, *worst_case_shape, device="cuda")   <span class="c"># 가변 길이면 최대 길이로</span>
+    y = torch.randint(0, n_classes, (batch_size,), device="cuda")
+    try:
+        for i in range(steps + 3):
+            if i == 3:                                   <span class="c"># 워밍업 뒤부터 측정</span>
+                torch.cuda.synchronize(); t0 = time.perf_counter()
+            loss = criterion(model(x), y)
+            loss.backward(); optimizer.step(); optimizer.zero_grad(set_to_none=True)
+        torch.cuda.synchronize()                         <span class="c"># GPU는 비동기라 반드시 대기</span>
+        return batch_size * steps / (time.perf_counter() - t0), torch.cuda.max_memory_allocated() / 2**30
+    except torch.cuda.OutOfMemoryError:
+        return None
+    <span class="c"># 측정용 스텝이 가중치를 바꾸므로, 실제 학습 전에 모델·옵티마이저를 새로 만든다</span>
+
+for bs in [16, 32, 64, 128, 256, 512]:
+    print(bs, probe(bs))                                 <span class="c"># (초당 샘플 수, 최대 GB) 또는 None</span></pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">AMP + 기울기 누적 (분산 학습이면 누적 중에는 all-reduce를 건너뛴다)</div>
+<pre>import contextlib, torch
+
+accum = 4                                                <span class="c"># 유효 배치 = 마이크로 배치 × 4 × GPU 수</span>
+scaler = torch.amp.GradScaler("cuda")
+optimizer.zero_grad(set_to_none=True)
+for step, (x, y) in enumerate(loader, start=1):
+    x = x.to(device, non_blocking=True)                  <span class="c"># pin_memory=True와 짝: 전송을 계산과 겹침</span>
+    y = y.to(device, non_blocking=True)
+    sync = step % accum == 0 or step == len(loader)      <span class="c"># 에포크 끝의 남은 배치도 반영</span>
+    ctx = contextlib.nullcontext() if (sync or not is_ddp) else model.no_sync()
+    with ctx:
+        with torch.autocast("cuda", dtype=torch.float16):
+            loss = criterion(model(x), y) / accum        <span class="c"># 평균 loss라면 누적 횟수로 나눈다</span>
+        scaler.scale(loss).backward()
+    if sync:
+        scaler.unscale_(optimizer)
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        scaler.step(optimizer); scaler.update()
+        optimizer.zero_grad(set_to_none=True)</pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">GPU 메모리가 부족할 때의 해결책 … 추가 방법: <code>pin_memory=True</code>, <code>non_blocking=True</code>로 데이터 전송 최적화, 데이터 로딩과 GPU 연산을 겹치도록 prefetch 적용</span></span>
+        <span class="now"><span class="lbl-now">정정</span>이 세 가지는 <b>GPU 메모리를 줄이지 않습니다.</b> 고정(페이지 잠금) CPU 메모리에서 GPU로 비동기 전송해 데이터 대기 시간을 줄이는 <b>속도 최적화</b>이고, prefetch는 다음 배치를 미리 준비하므로 메모리를 오히려 조금 더 씁니다. 메모리를 줄이는 방법은 마이크로 배치 축소 + 기울기 누적, AMP, 활성화 체크포인팅, 입력 크기 축소, 그리고 고정 부분을 나누는 FSDP·ZeRO와 8비트 옵티마이저입니다.</span>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">큰 배치는 입력·활성화·기울기를 저장하기 위해 더 많은 GPU 메모리가 필요하고</span></span>
+        <span class="now"><span class="lbl-now">정정</span>배치에 비례하는 것은 <b>입력과 활성화(그리고 역전파 중의 활성화 기울기)</b>입니다. 파라미터의 기울기는 파라미터와 같은 크기라 배치가 1이든 1,000이든 같습니다. 배치를 늘릴 때 더 드는 메모리를 정확히 예측하려면 고정 부분과 배치 비례 부분을 나눠 생각해야 합니다(실험 4).</span>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline"><code>DataLoader</code>가 작은 미니배치만 순서대로 GPU에 전달하도록 구성합니다.</span></span>
+        <span class="now"><span class="lbl-now">정정</span><code>DataLoader</code>는 <b>CPU에서</b> 배치를 만들어 돌려줄 뿐이고, GPU로 옮기는 것은 학습 루프의 <code>.to(device)</code>입니다. 또 100만 개가 CPU 메모리에도 다 들어가지 않으면 <code>Dataset.__getitem__</code>이 필요한 샘플만 디스크에서 읽도록(메모리 매핑, 샤드 파일 스트리밍) 만들어야 합니다.</span>
+      </div>
+    </div>
+
+    <div class="mini">
+      <div class="card add"><div class="k">보충 · 학습률은 배치와 짝이다</div><h4>선형·제곱근 스케일링과 임계 배치</h4><p>SGD에서는 배치를 k배로 키우면 학습률도 k배로 하고 warm-up을 두는 선형 규칙이 출발점이고(Goyal 외, 2017), Adam 계열은 √k배가 이론적으로 더 맞다는 분석이 있습니다(Malladi 외, 2022). 어느 규칙이든 기울기 잡음이 충분히 작아지는 <b>임계 배치 크기</b>를 넘으면 배치를 키워도 필요한 스텝 수가 줄지 않습니다(McCandlish 외, 2018). 실험 5에서 선형 규칙이 큰 배치에서 무너지는 지점을 보세요.</p></div>
+      <div class="card add"><div class="k">보충 · 큰 배치의 일반화 논쟁</div><h4>배치 탓인가, 스텝 수 탓인가</h4><p>Keskar 외(2017)는 큰 배치가 날카로운 최솟값으로 가서 일반화가 나쁘다고 보고했지만, Hoffer 외(2017)와 Shallue 외(2018)는 학습률을 다시 맞추고 스텝 수를 충분히 주면 격차 대부분이 사라진다는 결과를 냈습니다. 그래서 "큰 배치는 일반화가 나쁘다"보다 "같은 에포크·같은 학습률로 비교하면 나빠 보인다"가 정확합니다.</p></div>
+      <div class="card add"><div class="k">보충 · 메모리를 잘못 재는 흔한 실수</div><h4>nvidia-smi와 짧은 입력</h4><p><code>nvidia-smi</code>는 PyTorch 캐싱 할당기가 잡아 둔 양(reserved)을 보여 주므로 실제 사용량(allocated)보다 큽니다. <code>torch.cuda.max_memory_allocated()</code>로 재고, 문장 길이나 이미지 크기가 변하는 데이터는 가장 긴 입력으로 시험해야 학습 도중 OOM이 나지 않습니다. 길이가 비슷한 샘플끼리 묶는 버킷팅도 낭비를 줄입니다.</p></div>
+    </div>
+
+    <div class="speech">
+      100만 개를 GPU에 다 올릴 필요는 없습니다. 데이터는 디스크나 CPU 메모리에 두고 DataLoader가 CPU에서 미니배치를 만들면, 학습 루프에서 그 배치만 GPU로 옮깁니다. 배치 크기는 데이터 수가 아니라 GPU 메모리로 먼저 정합니다. 학습 메모리는 파라미터, 기울기, 옵티마이저 상태처럼 배치와 무관한 부분과 배치에 비례하는 활성화로 나뉘기 때문에, 배치를 16, 32, 64로 두 배씩 늘리면서 가장 긴 입력으로 최대 메모리와 초당 샘플 수를 재고, 처리량이 더 늘지 않거나 OOM 직전인 값보다 여유 있게 고릅니다. 원하는 유효 배치가 안 들어가면 기울기 누적과 AMP, 활성화 체크포인팅을 씁니다. 배치가 너무 작으면 GPU를 다 못 쓰고 기울기 잡음이 커서 학습이 느리고 배치 정규화도 불안정합니다. 너무 크면 메모리가 부족하고, 에포크당 업데이트 수가 줄어서 학습률을 키워야 하는데 어느 지점부터는 키워도 빨라지지 않습니다. 그래서 배치를 바꾸면 학습률과 warm-up을 검증 데이터로 다시 맞추겠습니다.
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="m2"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 총정리 ===================== -->
+  <section class="q" id="sum">
+    <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 PyTorch vs TensorFlow (실습 해설)</td><td><span class="badge b-fix">오류</span></td><td>PyTorch의 Pythonic한 사용성, TF 2.0 이후 Keras 통합</td><td>TorchServe는 유지보수 중단 상태. "TensorFlow가 확장성에서 유리"는 틀림(PyTorch도 대규모 분산 학습의 표준)</td></tr>
+        <tr><td>Q1 작성 답안</td><td><span class="badge b-add">정확</span></td><td>실행 방식·자동 미분·컴파일·분산·배포 기준의 비교표, TorchServe·LiteRT·ExecuTorch 현황, 이분법 비판</td><td>TF 1.x의 그래프 우선 방식이 차이의 출발점이라는 배경, JAX·Keras 3, Hugging Face 생태계 추가</td></tr>
+        <tr><td>Q2 텐서 vs 배열 (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>GPU 가속과 autograd가 핵심 차이</td><td>기본 dtype 차이(float32 vs float64), 메모리 공유, 텐서의 <code>.to()</code>는 대입 필요, 그래프는 연산이 기록된다는 표현</td></tr>
+        <tr><td>Q2 작성 답안</td><td><span class="badge b-add">정확</span></td><td>메모리 공유 실험 코드와 기울기 2xᵢ/3 계산, <code>detach().cpu().numpy()</code></td><td>dtype 기본값 함정, 제자리 연산과 autograd 버전 검사, GPU 비동기 실행 추가</td></tr>
+        <tr><td>면접 1 20층 시그모이드 (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>기울기 소실 진단, 0.25²⁰ 계산, grad None과 작은 grad 구분, ReLU·초기화·잔차·정규화, 클리핑은 폭발 대책</td><td>기울기/가중치 비율을 갱신 비율이라 부른 점. 실제 갱신은 step 전후 차이로 재야 하고 Adam은 작은 기울기를 일부 보상함</td></tr>
+        <tr><td>면접 2 배치 크기 (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>미니배치 공급, 두 배씩 늘리며 측정, 업데이트 수 계산, 기울기 누적과 유효 배치, BN 차이</td><td><code>pin_memory</code>·<code>non_blocking</code>·prefetch는 메모리 절약이 아님. 파라미터 기울기는 배치와 무관. DataLoader는 GPU로 옮기지 않음. 학습률 스케일링 규칙과 임계 배치 추가</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <nav class="pager" aria-label="위클리 이동 (하단)">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%204.%20머신러닝과%20딥러닝%20·%20하이퍼파라미터%20·%20과적합%20진단%20·%20설명%20가능한%20모델.html" rel="prev">‹ 이전 · 04 머신러닝과 딥러닝 · 하이퍼파라미터</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+    <a href="#top">↑ 맨 위로</a>
+  </nav>
+
+  <footer>위클리 페이퍼 05 · PyTorch와 TensorFlow / 텐서와 NumPy 배열 / 면접 2문항 · <span class="tag-ex">예시</span> 표시가 있는 값은 설명용 가상 데이터입니다</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){let u=0;while(!u)u=r();const v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const minus=s=>String(s).replace(/-/g,"−");
+const f3=v=>minus(v.toFixed(3));
+const pct=v=>(v*100).toFixed(1)+"%";
+const sig=z=>1/(1+Math.exp(-z));
+const sup=n=>String(n).split("").map(c=>"⁰¹²³⁴⁵⁶⁷⁸⁹"["0123456789".indexOf(c)]||(c==="-"?"⁻":c)).join("");
+function sci(v){if(!isFinite(v))return "발산";if(v===0)return "0";const e=Math.floor(Math.log10(Math.abs(v)));const m=v/Math.pow(10,e);if(e>=-2&&e<=3)return minus(+v.toPrecision(3)+"");return minus(m.toFixed(1))+"×10"+sup(e);}
+function clear(s){while(s.firstChild)s.removeChild(s.firstChild);}
+function safe(name,fn){try{fn();}catch(e){console.error(name,e);}}
+const later=fn=>setTimeout(()=>safe("later",fn),20);
+const fmtN=n=>n.toLocaleString("ko-KR");
+
+/* ---------- 실험 1: define-by-run 그래프 ---------- */
+safe("graph",function(){
+  const LINES=["def f(x):","    h = x","    while h.abs() < 4:     # 반복 횟수가 x에 따라 다르다","        h = h * 2","    if h > 0:              # 분기도 x에 따라 다르다","        return h ** 2","    return -3 * h"];
+  const tried=new Set();
+  function run(x){const nodes=[{op:"x",v:x}];let h=x,k=0;
+    while(Math.abs(h)<4&&k<80){h=h*2;k++;nodes.push({op:"× 2",v:h});}
+    let out,br;if(h>0){out=h*h;br=1;nodes.push({op:"** 2",v:out});}else{out=-3*h;br=0;nodes.push({op:"× (−3)",v:out});}
+    const g=new Array(nodes.length);g[nodes.length-1]=1;
+    const last=nodes.length-1;g[last-1]=br?2*nodes[last-1].v:-3;
+    for(let i=last-2;i>=0;i--)g[i]=2*g[i+1];
+    return {nodes,k,br,out,g};}
+  const fx=x=>run(x).out;
+  const fv=v=>Math.abs(v)>=1e4?sci(v):minus((+v.toFixed(3)).toString());
+  function render(){
+    const x=+$("#dgX").value/10;$("#dgXOut").textContent=minus(x.toFixed(1));
+    const code=$("#dgCode");code.textContent="";
+    const svg=$("#dgSvg");clear(svg);
+    if(x===0){
+      LINES.forEach((ln,i)=>{const s=document.createElement("span");s.className=i===2||i===3?"rec":"";s.innerHTML='<span class="cnt">'+(i<2?"×1":(i<4?"×∞":"×0"))+"</span>";s.appendChild(document.createTextNode(ln));code.appendChild(s);code.appendChild(document.createTextNode("\n"));});
+      ["#dgOps","#dgAuto","#dgNum"].forEach(s=>$(s).textContent="–");
+      el("text",{x:330,y:90,"text-anchor":"middle","font-size":13,class:"taf"},svg,"h = 0 × 2 = 0 … while 조건이 영원히 참 → 함수가 끝나지 않음");
+      $("#dgMsg").textContent="x = 0이면 h를 아무리 2배 해도 0이라 while이 끝나지 않습니다. 즉시 실행 방식은 Python 코드를 그대로 돌리므로 Python에서 생길 일이 똑같이 생깁니다. 이런 무한 반복도 일반 Python 디버거로 바로 멈춰서 볼 수 있다는 것이 define-by-run의 장점입니다.";
+      return;}
+    tried.add(x.toFixed(1));
+    const R=run(x),n=R.nodes.length;
+    const cnt=[1,1,R.k+1,R.k,1,R.br,1-R.br];
+    LINES.forEach((ln,i)=>{const s=document.createElement("span");const recd=(i===3&&R.k>0)||(i===5&&R.br)||(i===6&&!R.br);s.className=cnt[i]?(recd?"rec":""):"off";
+      s.innerHTML='<span class="cnt">×'+cnt[i]+"</span>";s.appendChild(document.createTextNode(ln));code.appendChild(s);code.appendChild(document.createTextNode("\n"));});
+    // 그래프
+    const W=660,gap=14,nw=Math.min(78,(W-20-gap*(n))/(n+1));
+    const total=(n+1)*nw+n*gap,x0=(W-total)/2,y=46,h=44;
+    el("defs",null,svg).innerHTML='<marker id="ahG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker><marker id="ahB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahf" d="M0,0 L10,5 L0,10 z"/></marker>';
+    for(let i=0;i<=n;i++){const bx=x0+i*(nw+gap);
+      if(i<n){const nd=R.nodes[i];el("rect",{x:bx,y,width:nw,height:h,rx:8,class:i===0?"gx":"gn"},svg);
+        el("text",{x:bx+nw/2,y:y-8,"text-anchor":"middle","font-size":11.5,"font-weight":700},svg,i===0?"입력":nd.op);
+        el("text",{x:bx+nw/2,y:y+27,"text-anchor":"middle","font-size":12,"font-family":"var(--f-mono)"},svg,fv(nd.v));
+        el("text",{x:bx+nw/2,y:y+h+18,"text-anchor":"middle","font-size":11.5,class:"taf","font-family":"var(--f-mono)"},svg,fv(R.g[i]));}
+      else{el("rect",{x:bx,y,width:nw,height:h,rx:8,class:"go"},svg);el("text",{x:bx+nw/2,y:y-8,"text-anchor":"middle","font-size":11.5,"font-weight":700},svg,"f(x)");
+        el("text",{x:bx+nw/2,y:y+27,"text-anchor":"middle","font-size":12,"font-family":"var(--f-mono)"},svg,fv(R.out));el("text",{x:bx+nw/2,y:y+h+18,"text-anchor":"middle","font-size":11.5,class:"taf","font-family":"var(--f-mono)"},svg,"1");}
+      if(i>0){const ax=bx-gap;el("line",{x1:ax+1,y1:y+h/2,x2:bx-1,y2:y+h/2,class:"arr","marker-end":"url(#ahG)"},svg);}}
+    const by=y+h+34;
+    el("line",{x1:x0+total,y1:by,x2:x0,y2:by,class:"gb","marker-end":"url(#ahB)"},svg);
+    el("text",{x:W/2,y:by+16,"text-anchor":"middle","font-size":11.5,class:"taf"},svg,"backward(): 기록된 경로를 거꾸로 따라가며 국소 미분을 곱한다");
+    el("text",{x:6,y:y+h+18,"font-size":10.5,class:"mut"},svg,"∂f/∂");
+    const auto=R.g[0],eps=1e-6,num=(fx(x+eps)-fx(x-eps))/(2*eps);
+    $("#dgOps").textContent=(R.k+1)+"개 (× 2 "+R.k+"번 + "+(R.br?"** 2":"× (−3)")+")";
+    $("#dgAuto").textContent=fv(auto);$("#dgNum").textContent=fv(num);
+    $("#dgTF").textContent=tried.size+"개 / 1개";
+    const mism=Math.abs(num-auto)>1e-3*Math.max(1,Math.abs(auto));
+    let msg="x = "+minus(x.toFixed(1))+"에서는 while이 "+R.k+"번 돌고 "+(R.br?"h > 0":"h ≤ 0")+" 쪽 분기로 가서, 연산 "+(R.k+1)+"개가 기록됐습니다. x를 바꾸면 그래프의 길이와 마지막 연산이 바뀝니다. PyTorch는 호출할 때마다 이렇게 그래프를 새로 만들고 backward() 뒤에 버리므로 Python의 while·if를 그대로 쓸 수 있습니다. ";
+    if(mism)msg+="이번에는 autograd 미분("+fv(auto)+")과 수치 미분("+fv(num)+")이 다릅니다. x가 |x|·2ᵏ = 4가 되는 경계(±0.5, ±1, ±2)에 있으면 ε만큼만 움직여도 반복 횟수가 바뀌어 f 자체가 끊어지기 때문입니다. autograd는 '이번에 실행된 경로'의 미분만 돌려주고, 경로가 바뀌는 지점의 불연속은 알지 못합니다. ";
+    else msg+="autograd 미분과 수치 미분이 일치합니다("+fv(auto)+"). ";
+    msg+="같은 함수를 TensorFlow @tf.function으로 감싸면 Python 숫자 인수는 값이 바뀔 때마다 새로 추적해 지금까지 그래프 "+tried.size+"개를 만들었고, 텐서 인수(tf.constant)는 dtype·shape가 같은 한 그래프 1개를 재사용합니다. 텐서 조건의 while·if는 AutoGraph가 tf.while_loop·tf.cond로 바꿔 그래프 안에 넣습니다.";
+    $("#dgMsg").textContent=msg;}
+  $("#dgX").addEventListener("input",()=>safe("dg",render));
+  $("#dgReset").addEventListener("click",()=>{tried.clear();render();});
+  render();
+});
+
+/* ---------- 실험 2: 메모리 공유 ---------- */
+safe("share",function(){
+  const CONV={
+    from_numpy:{code:"t = torch.from_numpy(a)",share:()=>true,dt:s=>s,dev:"cpu",why:"from_numpy는 NumPy 버퍼를 그대로 감싸므로 항상 메모리를 공유하고 dtype도 그대로입니다."},
+    as_tensor:{code:"t = torch.as_tensor(a)",share:()=>true,dt:s=>s,dev:"cpu",why:"as_tensor는 dtype·장치를 바꿀 필요가 없으면 복사하지 않고 공유합니다."},
+    as_tensor32:{code:"t = torch.as_tensor(a, dtype=torch.float32)",share:s=>s==="float32",dt:()=>"float32",dev:"cpu",why:"as_tensor는 요청한 dtype이 원본과 같을 때만 공유하고, 다르면 변환하면서 복사합니다."},
+    tensor:{code:"t = torch.tensor(a)",share:()=>false,dt:s=>s,dev:"cpu",why:"torch.tensor는 항상 데이터를 복사합니다. dtype은 NumPy 배열의 것을 따라갑니다(float64 배열이면 float64 텐서)."},
+    float:{code:"t = torch.from_numpy(a).float()",share:s=>s==="float32",dt:()=>"float32",dev:"cpu",why:".float()는 이미 float32면 자기 자신을 돌려주고(공유 유지), 아니면 새 float32 텐서를 만듭니다(복사)."},
+    cuda:{code:"t = torch.from_numpy(a).to(\"cuda\")",share:()=>false,dt:s=>s,dev:"cuda:0",why:"GPU 메모리는 CPU 메모리와 별개라 장치를 옮기면 반드시 복사됩니다. 이후 a를 바꿔도 GPU의 t는 그대로입니다."}};
+  let a,t,shared,conv,src,log;
+  const npFmt=v=>Number.isInteger(v)?v+".":String(+v.toPrecision(8));
+  function reset(){src=$("#shS").value;conv=CONV[$("#shC").value];
+    a=src==="float64"?new Float64Array([1,2,3]):new Float32Array([1,2,3]);
+    shared=conv.share(src);const td=conv.dt(src);
+    t=shared?a:(td==="float64"?Float64Array.from(a):Float32Array.from(a));
+    log=[{in:src==="float64"?"a = np.array([1., 2., 3.])":"a = np.array([1., 2., 3.], dtype=np.float32)"},{in:conv.code}];render();}
+  function aRepr(){return "array(["+Array.from(a).map(npFmt).join(", ")+"]"+(src==="float32"?", dtype=float32":"")+")";}
+  function tRepr(){const td=conv.dt(src);return "tensor(["+Array.from(t).map(npFmt).join(", ")+"]"+(conv.dev!=="cpu"?", device='"+conv.dev+"'":"")+(td==="float64"?", dtype=torch.float64":"")+")";}
+  function render(){
+    const R=$("#shRepl");R.textContent="";
+    log.forEach(l=>{const d=document.createElement("div");d.className="in";d.textContent=l.in;R.appendChild(d);});
+    [["a",aRepr()],["t",tRepr()]].forEach(q=>{const d=document.createElement("div");d.className="in";d.textContent=q[0];R.appendChild(d);const o=document.createElement("div");o.textContent=q[1];R.appendChild(o);});
+    const S=$("#shSvg");clear(S);
+    el("defs",null,S).innerHTML='<marker id="ahS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker>';
+    el("rect",{x:8,y:22,width:96,height:36,rx:8,class:"box"},S);el("text",{x:56,y:45,"text-anchor":"middle","font-size":12.5,"font-weight":700},S,"a · NumPy");
+    el("rect",{x:8,y:110,width:96,height:36,rx:8,class:"boxa"},S);el("text",{x:56,y:133,"text-anchor":"middle","font-size":12.5,"font-weight":700},S,"t · torch");
+    const td=conv.dt(src),bytes=n=>3*(n==="float64"?8:4);
+    const store=(y,label,sub,cls,vals)=>{el("rect",{x:190,y,width:200,height:44,rx:8,class:cls},S);el("text",{x:200,y:y+17,"font-size":11.5,"font-weight":700},S,label);
+      el("text",{x:200,y:y+34,"font-size":11.5,"font-family":"var(--f-mono)"},S,"["+Array.from(vals).map(v=>+v.toPrecision(6)).join(", ")+"] "+sub);};
+    if(shared){store(62,"메모리 #1 · CPU · "+src,"· "+bytes(src)+"B","stg",a);
+      el("line",{x1:104,y1:40,x2:188,y2:76,class:"arr","marker-end":"url(#ahS)"},S);el("line",{x1:104,y1:128,x2:188,y2:92,class:"arr","marker-end":"url(#ahS)"},S);
+      el("text",{x:290,y:128,"text-anchor":"middle","font-size":12,"font-weight":700,class:"taf"},S,"같은 메모리를 공유");}
+    else{store(18,"메모리 #1 · CPU · "+src,"· "+bytes(src)+"B","stg",a);store(106,"메모리 #2 · "+(conv.dev==="cpu"?"CPU":"GPU")+" · "+td,"· "+bytes(td)+"B",conv.dev==="cpu"?"stg":"stgc",t);
+      el("line",{x1:104,y1:40,x2:188,y2:40,class:"arr","marker-end":"url(#ahS)"},S);el("line",{x1:104,y1:128,x2:188,y2:128,class:"arr","marker-end":"url(#ahS)"},S);
+      el("text",{x:150,y:88,"text-anchor":"middle","font-size":11.5,class:"tad"},S,"복사본");}
+    let msg=conv.why+" ";
+    if(shared)msg+="지금 a와 t는 같은 메모리라 한쪽의 제자리 수정이 다른 쪽에 그대로 보입니다. 전처리 배열을 텐서로 바꾼 뒤 원본을 재사용하면 학습 데이터가 몰래 바뀌는 버그가 생길 수 있습니다.";
+    else msg+="지금 a와 t는 서로 다른 메모리라 한쪽을 바꿔도 다른 쪽은 그대로입니다. 대신 복사하는 시간과 메모리가 듭니다.";
+    if(td==="float64")msg+=" t가 float64라서 이대로 float32 모델(nn.Linear 등)에 넣으면 dtype 오류가 납니다.";
+    $("#shMsg").textContent=msg;}
+  $("#shS").addEventListener("change",reset);$("#shC").addEventListener("change",reset);$("#shR").addEventListener("click",reset);
+  $("#shA").addEventListener("click",()=>{a[0]=10;log.push({in:"a[0] = 10"});render();});
+  $("#shT").addEventListener("click",()=>{for(let k=0;k<t.length;k++)t[k]+=1;log.push({in:"t.add_(1)"});render();});
+  reset();
+  function nb(){const dev=$("#nbD").value,rg=$("#nbG").value==="1",m=$("#nbM").value;
+    const code=$("#nbM").selectedOptions[0].textContent;
+    const O=$("#nbOut");O.textContent="";
+    const add=(cls,txt)=>{const d=document.createElement("div");d.className=cls;d.textContent=txt;O.appendChild(d);};
+    add("in","t = torch.tensor([1., 2., 3.]"+(dev==="cuda"?", device=\"cuda\"":"")+(rg?", requires_grad=True":"")+")");
+    add("in","arr = "+code);
+    const ERR_DEV="TypeError: can't convert cuda:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.";
+    const ERR_GRAD="RuntimeError: Can't call numpy() on Tensor that requires grad. Use tensor.detach().numpy() instead.";
+    let res=null,note="";
+    if(m==="m1"){if(dev==="cuda"){add("er",ERR_DEV);note=rg?"GPU에 있고 기울기 추적도 켜져 있어 detach()와 cpu()가 모두 필요합니다.":"GPU 메모리는 NumPy가 읽을 수 없으므로 먼저 CPU로 복사해야 합니다.";}
+      else if(rg){add("er",ERR_GRAD);note="기울기를 추적 중인 텐서를 NumPy로 바꾸면 그 뒤의 연산이 autograd에 기록되지 않으므로 PyTorch가 막습니다. detach()로 기록에서 떼어 냅니다.";}
+      else res="share";}
+    else if(m==="m2"){if(dev==="cuda"){add("er",ERR_DEV);note="detach()는 기록에서만 떼어 낼 뿐 장치는 그대로입니다.";}else res="share";}
+    else if(m==="m3"){res=dev==="cuda"?"copy":"share";}
+    else if(m==="m4"){res="copy";}
+    else{res=dev==="cuda"?"copy":"share";note=dev==="cuda"?"force=True는 t.detach().cpu().numpy()와 같은 동작이라 GPU 텐서는 CPU로 복사됩니다. 오류를 피하는 대신 언제 복사가 일어나는지 코드에 드러나지 않는다는 점에 주의합니다.":"force=True는 t.detach().cpu().numpy()와 같은 동작이라, CPU 텐서면 여전히 메모리를 공유합니다.";}
+    if(res==="share"){add("okv","성공 · arr는 t와 같은 메모리를 공유 (t.add_(1) 하면 arr도 바뀜)");
+      if(m==="m3")note="CPU 텐서에서 .cpu()는 복사하지 않고 자기 자신을 돌려줍니다. 그래서 GPU에서는 복사본이던 결과가 CPU에서는 공유가 됩니다. 결과를 따로 보관하려면 .copy()까지 붙입니다.";
+      else if(!note)note="CPU 텐서의 numpy()는 같은 메모리를 가리키는 배열을 만듭니다.";}
+    if(res==="copy"){add("okv","성공 · arr는 독립된 복사본 (t를 바꿔도 arr는 그대로)");if(!note)note=dev==="cuda"?"GPU → CPU로 옮기는 순간 복사되므로 이후 t와 무관합니다.":"copy()로 새 버퍼를 만들었으므로 t와 무관합니다.";}
+    add("in","# "+note);}
+  ["#nbD","#nbG","#nbM"].forEach(s=>$(s).addEventListener("change",()=>safe("nb",nb)));
+  nb();
+});
+
+/* ---------- 그림: 활성화 함수의 도함수 ---------- */
+safe("sgplot",function(){
+  const S=$("#sgPlot");const L=44,R=626,T=12,B=184,z0=-6,z1=6,y1=1.1;
+  const sx=z=>L+(z-z0)/(z1-z0)*(R-L),sy=v=>B-v/y1*(B-T);
+  el("rect",{x:L,y:T,width:sx(-4)-L,height:B-T,class:"satz"},S);el("rect",{x:sx(4),y:T,width:R-sx(4),height:B-T,class:"satz"},S);
+  for(const v of [0,0.25,0.5,1]){el("line",{x1:L,y1:sy(v),x2:R,y2:sy(v),class:"gl"},S);el("text",{x:L-6,y:sy(v)+4,"text-anchor":"end","font-size":11,class:"mut"},S,v);}
+  for(let z=-6;z<=6;z+=2)el("text",{x:sx(z),y:B+15,"text-anchor":"middle","font-size":11,class:"mut"},S,minus(z));
+  el("text",{x:(L+R)/2,y:212,"text-anchor":"middle","font-size":11.5,class:"mut"},S,"z (활성화 함수에 들어가는 값) · 세로축 = 도함수 값");
+  const path=f=>{const p=[];for(let i=0;i<=240;i++){const z=z0+i/240*(z1-z0);p.push(sx(z).toFixed(1)+","+sy(f(z)).toFixed(1));}return p.join(" ");};
+  el("polyline",{points:path(z=>1-Math.tanh(z)**2),class:"tnc"},S);
+  el("polyline",{points:sx(z0)+","+sy(0)+" "+sx(0)+","+sy(0)+" "+sx(0)+","+sy(1)+" "+sx(z1)+","+sy(1),class:"rlc"},S);
+  el("polyline",{points:path(z=>sig(z)*(1-sig(z))),class:"sgc"},S);
+  el("text",{x:sx(0)+8,y:sy(0.25)-6,"font-size":11.5,class:"tac","font-weight":700},S,"σ′(0) = 0.25");
+  el("text",{x:sx(4.1),y:sy(0.08),"font-size":11,class:"taf"},S,"σ′(4) ≈ "+(sig(4)*(1-sig(4))).toFixed(3));
+});
+
+/* ---------- 실험 3: 20층 신경망 기울기 소실 ---------- */
+safe("vanish",function(){
+  const D0=8,H=32,L=20,NTR=512,BS=64,STEPS=200,ALPHA=1/Math.sqrt(L-1);
+  const r0=mulberry32(2024);const X=new Float64Array(NTR*D0),Y=new Float64Array(NTR);
+  for(let i=0;i<NTR;i++){for(let j=0;j<D0;j++)X[i*D0+j]=gauss(r0);const o=i*D0;Y[i]=(X[o]*X[o+1]+0.5*Math.sin(2*X[o+2])+0.3*X[o+3]>0)?1:0;}
+  let pos=0;for(let i=0;i<NTR;i++)pos+=Y[i];const BASE=Math.max(pos,NTR-pos)/NTR;
+  const ACT={sigmoid:{f:z=>1/(1+Math.exp(-z)),d:(z,a)=>a*(1-a),sat:a=>a<0.01||a>0.99},
+             tanh:{f:Math.tanh,d:(z,a)=>1-a*a,sat:a=>Math.abs(a)>0.99},
+             relu:{f:z=>z>0?z:0,d:z=>z>0?1:0,sat:a=>a===0}};
+  function init(initK){const r=mulberry32(7);const W=[],b=[];
+    for(let l=1;l<=L;l++){const fin=l===1?D0:H,fout=l===L?1:H;const sd=initK==="xavier"?Math.sqrt(2/(fin+fout)):initK==="he"?Math.sqrt(2/fin):1;
+      const w=new Float64Array(fout*fin);for(let k=0;k<w.length;k++)w[k]=gauss(r)*sd;W[l]=w;b[l]=new Float64Array(fout);}return {W,b};}
+  function fb(P,idx,act,res,needGrad){
+    const B=idx.length,A=[],Z=[],F=[];
+    const a0=new Float64Array(B*D0);for(let s=0;s<B;s++)for(let j=0;j<D0;j++)a0[s*D0+j]=X[idx[s]*D0+j];A[0]=a0;
+    for(let l=1;l<L;l++){const fin=l===1?D0:H,w=P.W[l],bb=P.b[l],ap=A[l-1],rs=res&&l>=2;
+      const z=new Float64Array(B*H),fv=new Float64Array(B*H),a=new Float64Array(B*H);
+      for(let s=0;s<B;s++){const as=s*fin;for(let o=0;o<H;o++){let t=bb[o];const wo=o*fin;for(let i=0;i<fin;i++)t+=w[wo+i]*ap[as+i];const k=s*H+o;z[k]=t;const f=act.f(t);fv[k]=f;a[k]=rs?ap[k]+ALPHA*f:f;}}
+      Z[l]=z;F[l]=fv;A[l]=a;}
+    const wL=P.W[L],bL=P.b[L][0],aL=A[L-1];let loss=0,cor=0;const dl=new Float64Array(B);
+    for(let s=0;s<B;s++){let t=bL;for(let i=0;i<H;i++)t+=wL[i]*aL[s*H+i];const y=Y[idx[s]];loss+=Math.max(t,0)-t*y+Math.log1p(Math.exp(-Math.abs(t)));if((t>0?1:0)===y)cor++;dl[s]=(sig(t)-y)/B;}
+    const out={loss:loss/B,acc:cor/B,F};if(!needGrad)return out;
+    const gW=[],gb=[];const gwL=new Float64Array(H);let gbL=0;let dA=new Float64Array(B*H);
+    for(let s=0;s<B;s++){gbL+=dl[s];for(let i=0;i<H;i++){gwL[i]+=dl[s]*aL[s*H+i];dA[s*H+i]=dl[s]*wL[i];}}
+    gW[L]=gwL;gb[L]=new Float64Array([gbL]);
+    for(let l=L-1;l>=1;l--){const fin=l===1?D0:H,w=P.W[l],ap=A[l-1],z=Z[l],fv=F[l],rs=res&&l>=2,sc=rs?ALPHA:1;
+      const dz=new Float64Array(B*H);for(let k=0;k<B*H;k++)dz[k]=dA[k]*sc*act.d(z[k],fv[k]);
+      const gw=new Float64Array(H*fin),gbb=new Float64Array(H);
+      for(let s=0;s<B;s++){const as=s*fin;for(let o=0;o<H;o++){const d=dz[s*H+o];if(d===0)continue;gbb[o]+=d;const wo=o*fin;for(let i=0;i<fin;i++)gw[wo+i]+=d*ap[as+i];}}
+      gW[l]=gw;gb[l]=gbb;
+      if(l>1){const dp=new Float64Array(B*fin);
+        for(let s=0;s<B;s++){const as=s*fin;for(let o=0;o<H;o++){const d=dz[s*H+o];if(d===0)continue;const wo=o*fin;for(let i=0;i<fin;i++)dp[as+i]+=d*w[wo+i];}}
+        if(rs)for(let k=0;k<B*H;k++)dp[k]+=dA[k];dA=dp;}}
+    out.gW=gW;out.gb=gb;return out;}
+  const nrm=v=>{let s=0;for(let k=0;k<v.length;k++)s+=v[k]*v[k];return Math.sqrt(s);};
+  const cache={};
+  function train(actK,initK,res,optK){const key=[actK,initK,res,optK].join("|");if(cache[key])return cache[key];
+    const act=ACT[actK],P=init(initK),W0=P.W.map(w=>w&&Float64Array.from(w));const all=[...Array(NTR).keys()];
+    const g0=fb(P,all,act,res,true);const gn=[];for(let l=1;l<=L;l++)gn[l]=nrm(g0.gW[l]);
+    let satC=0,satN=0;
+    if(actK==="relu"){for(let l=1;l<L;l++){const fv=g0.F[l];for(let o=0;o<H;o++){let dead=true;for(let s=0;s<NTR;s++)if(fv[s*H+o]!==0){dead=false;break;}if(dead)satC++;satN++;}}}   // 512개 모두에서 0인 뉴런
+    else for(let l=1;l<L;l++){const fv=g0.F[l];for(let k=0;k<fv.length;k++){if(act.sat(fv[k]))satC++;satN++;}}
+    const r=mulberry32(11);const st={m:[],v:[],mb:[],vb:[]};
+    for(let l=1;l<=L;l++){st.m[l]=new Float64Array(P.W[l].length);st.v[l]=new Float64Array(P.W[l].length);st.mb[l]=new Float64Array(P.b[l].length);st.vb[l]=new Float64Array(P.b[l].length);}
+    let diverged=false;
+    for(let t=1;t<=STEPS;t++){const idx=[];for(let s=0;s<BS;s++)idx.push(Math.floor(r()*NTR));
+      const o=fb(P,idx,act,res,true);if(!isFinite(o.loss)){diverged=true;break;}
+      const c1=1-Math.pow(0.9,t),c2=1-Math.pow(0.999,t);
+      for(let l=1;l<=L;l++){const pairs=[[P.W[l],o.gW[l],st.m[l],st.v[l]],[P.b[l],o.gb[l],st.mb[l],st.vb[l]]];
+        for(const [p,g,m,v] of pairs){if(optK==="sgd"){for(let k=0;k<p.length;k++)p[k]-=0.1*g[k];}
+          else{for(let k=0;k<p.length;k++){m[k]=0.9*m[k]+0.1*g[k];v[k]=0.999*v[k]+0.001*g[k]*g[k];p[k]-=1e-3*(m[k]/c1)/(Math.sqrt(v[k]/c2)+1e-8);}}}}}
+    const g1=diverged?{loss:NaN,acc:NaN}:fb(P,all,act,res,false);
+    const rel=[];for(let l=1;l<=L;l++){const d=new Float64Array(P.W[l].length);for(let k=0;k<d.length;k++)d[k]=P.W[l][k]-W0[l][k];rel[l]=nrm(d)/nrm(W0[l]);}
+    if(!isFinite(g1.loss)||rel.some(v=>v!==undefined&&!isFinite(v)))diverged=true;
+    return cache[key]={gn,rel,sat:satC/satN,loss0:g0.loss,acc0:g0.acc,loss1:g1.loss,acc1:g1.acc,diverged};}
+  function chart(svg,vals,cls){clear(svg);const Lx=42,Rx=312,Ty=10,By=176;
+    const lv=[];for(let l=1;l<=L;l++){const v=vals[l];lv[l]=(isFinite(v)&&v>0)?Math.log10(v):(v===0?-300:300);}
+    const fin=lv.slice(1).filter(v=>Math.abs(v)<300);let lo=Math.floor(Math.min(...fin)),hi=Math.ceil(Math.max(...fin));if(hi-lo<2){lo-=1;hi+=1;}
+    const sx=l=>Lx+(l-1)/(L-1)*(Rx-Lx),sy=v=>By-(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*(By-Ty);
+    const stepT=Math.max(1,Math.ceil((hi-lo)/6));
+    for(let v=lo;v<=hi;v+=stepT){el("line",{x1:Lx,y1:sy(v),x2:Rx,y2:sy(v),class:"gl"},svg);el("text",{x:Lx-5,y:sy(v)+4,"text-anchor":"end","font-size":10.5,class:"mut"},svg,"10"+sup(v));}
+    for(const l of [1,5,10,15,20])el("text",{x:sx(l),y:By+15,"text-anchor":"middle","font-size":10.5,class:"mut"},svg,l);
+    el("text",{x:(Lx+Rx)/2,y:204,"text-anchor":"middle","font-size":11,class:"mut"},svg,"층 번호 (1 = 입력 쪽 → 20 = 출력층)");
+    el("polyline",{points:lv.slice(1).map((v,i)=>sx(i+1).toFixed(1)+","+sy(v).toFixed(1)).join(" "),class:cls},svg);
+    for(let l=1;l<=L;l++)el("circle",{cx:sx(l),cy:sy(lv[l]),r:3,class:Math.abs(lv[l])>=300?"c2":(cls==="lb"?"c0":"c1")},svg);}
+  function render(){
+    const actK=$("#vnA").value,initK=$("#vnI").value,res=$("#vnR").value==="1",optK=$("#vnO").value;
+    const S=train(actK,initK,res,optK);
+    chart($("#vnG"),S.gn,"lb");chart($("#vnU"),S.rel,"meanf");
+    const gr=S.gn[1]/S.gn[L],ur=S.rel[1]/S.rel[L];
+    $("#vnRatio").textContent=sci(gr);$("#vnURatio").textContent=S.diverged?"발산":sci(ur);
+    $("#vnSat").textContent=pct(S.sat)+(actK==="relu"?" (죽은 뉴런)":" (포화)");
+    $("#vnLoss").textContent=(S.loss0>1e3?sci(S.loss0):f3(S.loss0))+" → "+(S.diverged?"발산":(S.loss1>1e3?sci(S.loss1):f3(S.loss1)));
+    $("#vnAcc").textContent=(S.diverged?"–":pct(S.acc1))+" ("+pct(BASE)+")";
+    const name={sigmoid:"시그모이드",tanh:"tanh",relu:"ReLU"}[actK],iname={xavier:"Xavier",he:"He",big:"표준정규"}[initK];
+    let msg=name+" · "+iname+" 초기화 · 잔차 "+(res?"있음":"없음")+" · "+(optK==="sgd"?"SGD":"Adam")+". ";
+    const learned=!S.diverged&&S.acc1>BASE+0.1;
+    const accTxt=" 훈련 정확도는 "+pct(S.acc1)+"(다수 클래스 기준선 "+pct(BASE)+")입니다.";
+    if(S.loss0>20&&!S.diverged)msg+="표준정규 초기화는 ReLU에서 층마다 신호를 약 √(32/2) = 4배씩 키워, 학습 전 loss부터 "+sci(S.loss0)+"입니다(순전파 값 폭주). 기울기 노름 비("+sci(gr)+")는 고르지만 모든 층의 값이 비정상적으로 큽니다. Adam은 한 스텝의 갱신 크기를 학습률 정도로 제한해 NaN은 피했지만 학습 후 loss도 "+sci(S.loss1)+"입니다. 초기화를 He처럼 분산을 유지하는 값으로 줄여야 합니다."+accTxt;
+    else if(S.diverged)msg+="학습 중 가중치나 loss가 무한대·NaN으로 터졌습니다. 초기 가중치가 커서 층마다 신호가 증폭됐고(학습 전 loss "+sci(S.loss0)+"), 큰 기울기로 갱신하다 값이 터진 기울기 폭발입니다. 이때가 초기화 축소, 학습률 낮추기, 기울기 클리핑이 필요한 상황입니다.";
+    else if(res&&actK==="sigmoid"){const N=train(actK,initK,false,optK);
+      const od=Math.log10(gr/(N.gn[1]/N.gn[L]));
+      msg+="잔차 연결의 항등 경로 덕분에 기울기 노름 비("+sci(gr)+")가 잔차가 없을 때("+sci(N.gn[1]/N.gn[L])+")보다 "+(od>=1.5?"약 "+Math.round(od)+"자릿수 커졌고":"조금 커졌고")+", 층 1도 실제로 바뀝니다(변화율 비 "+sci(ur)+"). 그런데 "+(learned?"학습은 되지만 느립니다(loss "+f3(S.loss0)+" → "+f3(S.loss1)+").":"정확도는 기준선 수준에 머뭅니다(loss "+f3(S.loss0)+" → "+f3(S.loss1)+").")+" 시그모이드 출력은 항상 양수라 잔차 경로에 층마다 값이 쌓여, 학습 전 loss부터 높기 때문입니다. 기울기가 흐르는 것과 잘 학습되는 것은 별개라, 실제로는 활성화를 ReLU·tanh로 바꾸고 정규화 층을 함께 씁니다."+accTxt;}
+    else if(gr<1e-2){msg+="학습 전부터 층 1의 기울기가 층 20의 "+sci(gr)+"배입니다. 왼쪽 그림에서 입력 쪽으로 갈수록 로그 축에서 거의 직선으로 떨어지는 것이 기울기 소실의 전형적인 모양입니다. ";
+      if(optK==="sgd")msg+="SGD는 갱신량이 기울기에 비례하므로 200스텝 뒤 층 1의 가중치 변화율은 층 20의 "+sci(ur)+"배"+(ur<1e-3?"에 그칩니다. 질문의 '입력층 가중치가 거의 그대로'인 상태입니다.":"입니다.");
+      else{const ge=S.gn[1]/Math.sqrt(D0*H);
+        msg+="Adam은 기울기를 그 크기의 이동 평균으로 나누므로 변화율 비("+sci(ur)+")가 기울기 비("+sci(gr)+")보다 훨씬 덜 작습니다. ";
+        msg+=ge<1e-8?"그래도 층 1 기울기의 원소 크기(약 "+sci(ge)+")가 분모의 ε = 10⁻⁸보다 작아 보상이 제한되고, 층 1은 여전히 거의 그대로입니다.":"층 1 기울기의 원소 크기(약 "+sci(ge)+")가 ε = 10⁻⁸보다는 커서 갱신 크기가 대부분 되살아났습니다. 다만 작은 기울기는 잡음에 묻히기 쉬워 근본 해결은 아닙니다.";}
+      msg+=accTxt;
+      if(S.sat>0.15&&actK!=="relu")msg+=" 은닉 뉴런의 "+pct(S.sat)+"가 포화 상태라 그 뉴런의 미분이 거의 0입니다. 표준정규 초기화처럼 가중치가 크면 z가 커져 포화가 심해집니다.";}
+    else if(gr>1e3)msg+="층 1의 기울기가 층 20의 "+sci(gr)+"배로 입력 쪽이 지나치게 큽니다(기울기 폭발 경향). 은닉 뉴런의 "+pct(S.sat)+"가 포화돼 있어 학습도 불안정합니다(훈련 loss "+f3(S.loss0)+" → "+f3(S.loss1)+")."+accTxt;
+    else if(learned){msg+="층 1과 층 20의 기울기 노름 비가 "+sci(gr)+"이므로 기울기가 깊이를 지나도 같은 자릿수로 전달됩니다. 200스텝 뒤 층 1의 변화율도 층 20의 "+sci(ur)+"배라 입력 쪽 층도 함께 학습됩니다. 훈련 loss는 "+f3(S.loss0)+" → "+f3(S.loss1)+"입니다."+accTxt;}
+    else{msg+="층 1과 층 20의 기울기 노름 비("+sci(gr)+")는 고르지만 loss가 거의 줄지 않았습니다("+f3(S.loss0)+" → "+f3(S.loss1)+"). ";
+      if(actK==="relu"&&initK==="xavier")msg+="Xavier 초기화는 ReLU에서 층마다 활성화 분산을 약 절반으로 줄여, 19층을 지나면 신호가 2⁻¹⁹ 수준으로 사라집니다. 출력이 거의 0이라 모든 층의 기울기가 함께 작습니다(층 20 기울기 노름 "+sci(S.gn[L])+"). 그래서 ReLU에는 분산을 유지하도록 2배 큰 He 초기화를 씁니다.";
+      else msg+="기울기 비만으로는 충분하지 않고, 층별 기울기의 절대 크기(층 20 기울기 노름 "+sci(S.gn[L])+")와 loss 곡선을 함께 봐야 합니다.";
+      msg+=accTxt;}
+    if(actK==="relu"&&S.sat>0.1&&!S.diverged)msg+=" 학습 전 기준으로 은닉 뉴런의 "+pct(S.sat)+"는 512개 샘플 모두에서 출력이 0인 죽은 뉴런이라 기울기를 전혀 전달하지 못합니다.";
+    $("#vnMsg").textContent=msg;}
+  const go=()=>{$("#vnMsg").textContent="계산 중… (20층 신경망을 이 페이지에서 학습합니다)";later(render);};
+  ["#vnA","#vnI","#vnR","#vnO"].forEach(s=>$(s).addEventListener("change",go));
+  go();
+});
+
+/* ---------- 실험 4: GPU 메모리 계산 ---------- */
+safe("mem",function(){
+  const GB=1024**3,RES=1.5;
+  function render(){
+    const P=+$("#mmP").value*1e6,bpp=+$("#mmO").value,G=+$("#mmG").value,act0=+$("#mmA").value,x=$("#mmX").value;
+    const [tgt,ng]=$("#mmT").value.split("|").map(Number);
+    $("#mmAOut").textContent=act0;
+    const amp=x==="amp"||x==="both",ck=x==="ckpt"||x==="both";
+    const act=act0*(amp?0.5:1)*(ck?0.35:1)/1024; // GB per sample
+    const pB=P*4/GB,gB=P*4/GB,oB=P*(bpp-8)/GB,fix=pB+gB+oB;
+    const room=G-RES-fix,maxB=room>0?Math.floor(room/act):0;
+    let micro=0;if(maxB>=1){micro=1;while(micro*2<=maxB&&micro*2<=tgt/ng)micro*=2;}
+    const acc=micro?Math.ceil(tgt/(micro*ng)):0,eff=micro*acc*ng;
+    const S=$("#mmSvg");clear(S);const L=10,R=630,y=20,h=40,sx=v=>L+v/G*(R-L);
+    const segs=[[pB,"seg0"],[gB,"seg1"],[oB,"seg2"],[micro*act,"seg3"],[RES,"seg4"]];let cx=0;
+    segs.forEach(([v,c])=>{const w=Math.min(v,Math.max(0,G-cx));if(w>0)el("rect",{x:sx(cx),y,width:Math.max(0.5,sx(cx+w)-sx(cx)),height:h,class:c},S);cx+=v;});
+    if(cx<G)el("rect",{x:sx(cx),y,width:sx(G)-sx(cx),height:h,class:"seg5"},S);
+    el("rect",{x:L,y,width:R-L,height:h,class:"ax",fill:"none"},S);
+    for(let g=0;g<=G;g+=G<=16?2:(G<=40?5:10))el("text",{x:sx(g),y:y+h+16,"text-anchor":"middle","font-size":10.5,class:"mut"},S,g+"GB");
+    el("text",{x:L,y:12,"font-size":11.5,"font-weight":700},S,"GPU "+G+"GB 중 · 고정 "+fix.toFixed(2)+"GB + 활성화 "+(micro*act).toFixed(2)+"GB (마이크로 배치 "+micro+")");
+    if(cx>G)el("text",{x:R,y:12,"text-anchor":"end","font-size":11.5,"font-weight":700,class:"taf"},S,"메모리 초과");
+    $("#mmFix").textContent=fix.toFixed(2)+" GB";
+    $("#mmMax").textContent=maxB?fmtN(maxB):"0 (들어가지 않음)";
+    $("#mmUse").textContent=micro?micro+" × "+acc+" × "+ng+" = "+fmtN(eff):"–";
+    $("#mmUpd").textContent=micro?fmtN(Math.ceil(1e6/eff))+"회":"–";
+    $("#mmTime").textContent=ck?"약 1.33배 (순전파 재계산)":"1배";
+    let msg;
+    if(room<=0)msg="파라미터·기울기·옵티마이저 상태만으로 "+fix.toFixed(2)+"GB라 예약분을 빼면 활성화를 넣을 자리가 없습니다. 배치를 줄여서는 해결되지 않습니다. FSDP·ZeRO로 고정 부분을 GPU 여러 대에 나누거나, 8비트 옵티마이저, 더 큰 GPU가 필요합니다.";
+    else if(!micro)msg="샘플 하나의 활성화("+(act*1024).toFixed(0)+"MB)도 남은 "+room.toFixed(2)+"GB에 들어가지 않습니다. 활성화 체크포인팅이나 AMP를 켜거나 입력 크기를 줄여 보세요.";
+    else{msg="고정 부분 "+fix.toFixed(2)+"GB는 배치와 무관하고, 샘플 하나당 활성화 "+(act*1024).toFixed(1)+"MB만 배치에 비례합니다. 남은 "+room.toFixed(2)+"GB에 최대 "+fmtN(maxB)+"개가 들어가므로 마이크로 배치는 2의 거듭제곱인 "+micro+"개로 잡고";
+      msg+=acc>1?", 목표 유효 배치 "+fmtN(tgt)+"개를 맞추려면 "+acc+"번 누적합니다. 누적은 메모리를 늘리지 않습니다. 계산량은 유효 배치를 한 번에 처리할 때와 같지만, 작은 배치로 순전파·역전파를 "+acc+"번 나눠 하므로 GPU 활용률에 따라 더 느릴 수 있습니다.":", 누적 없이 목표 유효 배치 "+fmtN(tgt)+"개를 맞춥니다.";
+      msg+=" 100만 개 데이터라면 에포크당 업데이트는 "+fmtN(Math.ceil(1e6/eff))+"번입니다.";
+      if(!amp&&!ck&&acc>1)msg+=" AMP를 켜면 활성화가 줄어 누적 단계를 줄일 수 있습니다.";
+      if(eff!==tgt)msg+=" (2의 거듭제곱으로 맞추느라 유효 배치가 목표와 조금 다릅니다.)";}
+    msg+=" 이 계산은 단순화한 모델이므로 실제 배치는 아래 코드처럼 측정해서 정합니다.";
+    $("#mmMsg").textContent=msg;}
+  ["#mmP","#mmO","#mmG","#mmX","#mmT"].forEach(s=>$(s).addEventListener("change",()=>safe("mm",render)));
+  $("#mmA").addEventListener("input",()=>safe("mm",render));
+  render();
+});
+
+/* ---------- 실험 5: 배치 크기와 학습률 규칙 ---------- */
+safe("batch",function(){
+  const D=20,NTR=8192,NVA=4096,BSET=[8,32,128,512,2048,8192],LR0=0.05,B0=32;
+  const r=mulberry32(77);const SC=new Float64Array(D),wT=new Float64Array(D+1);
+  for(let j=0;j<D;j++){SC[j]=Math.pow(10,-0.5+j/(D-1));wT[j]=gauss(r)*0.8/SC[j];}wT[D]=0.3;   // 특징마다 척도가 0.3~3배로 다름
+  function gen(n){const X=new Float64Array(n*D),Y=new Float64Array(n);for(let i=0;i<n;i++){let z=wT[D];for(let j=0;j<D;j++){const v=gauss(r)*SC[j];X[i*D+j]=v;z+=wT[j]*v;}Y[i]=r()<sig(z)?1:0;}return {X,Y,n};}
+  const TR=gen(NTR),VA=gen(NVA);
+  function lossOf(w,S){let L=0;for(let i=0;i<S.n;i++){let z=w[D];for(let j=0;j<D;j++)z+=w[j]*S.X[i*D+j];const y=S.Y[i];L+=Math.max(z,0)-z*y+Math.log1p(Math.exp(-Math.abs(z)));}return L/S.n;}
+  const OPT=lossOf(wT,VA);
+  const lrOf=(rule,B)=>rule==="fixed"?LR0:rule==="linear"?LR0*B/B0:LR0*Math.sqrt(B/B0);
+  function grad(w,idx,g){g.fill(0);for(const i of idx){let z=w[D];const o=i*D;for(let j=0;j<D;j++)z+=w[j]*TR.X[o+j];const e=sig(z)-TR.Y[i];for(let j=0;j<D;j++)g[j]+=e*TR.X[o+j];g[D]+=e;}for(let j=0;j<=D;j++)g[j]/=idx.length;}
+  function train(B,lr,E,seed){const rr=mulberry32(seed);const w=new Float64Array(D+1),g=new Float64Array(D+1);const ord=[...Array(NTR).keys()];
+    for(let e=0;e<E;e++){for(let i=NTR-1;i>0;i--){const j=Math.floor(rr()*(i+1));const t=ord[i];ord[i]=ord[j];ord[j]=t;}
+      for(let s=0;s<NTR;s+=B){grad(w,ord.slice(s,s+B),g);for(let j=0;j<=D;j++)w[j]-=lr*g[j];}
+      let ok=true;for(let j=0;j<=D;j++)if(!isFinite(w[j])||Math.abs(w[j])>1e6)ok=false;if(!ok)return NaN;}
+    return lossOf(w,VA);}
+  // 기울기 코사인 (w = 0.5 w*)
+  const wMid=Float64Array.from(wT,v=>0.5*v),gFull=new Float64Array(D+1);grad(wMid,[...Array(NTR).keys()],gFull);
+  const nF=Math.sqrt(gFull.reduce((s,v)=>s+v*v,0));const COS={};
+  {const rr=mulberry32(5),g=new Float64Array(D+1);for(const B of BSET){let c=0;const RUN=B===NTR?1:200;for(let t=0;t<RUN;t++){const idx=[];if(B===NTR)for(let i=0;i<NTR;i++)idx.push(i);else for(let i=0;i<B;i++)idx.push(Math.floor(rr()*NTR));grad(wMid,idx,g);let dot=0,nn=0;for(let j=0;j<=D;j++){dot+=g[j]*gFull[j];nn+=g[j]*g[j];}c+=dot/(Math.sqrt(nn)*nF);}COS[B]=c/RUN;}}
+  const cache={};
+  function results(E){if(cache[E])return cache[E];const out={};
+    for(const rule of ["fixed","linear","sqrt"]){out[rule]={};for(const B of BSET){let s=0,bad=false;for(let k=0;k<3;k++){const v=train(B,lrOf(rule,B),E,100+k);if(!isFinite(v)||v>5){bad=true;break;}s+=v;}out[rule][B]=bad?NaN:s/3;}}
+    return cache[E]=out;}
+  const CLS={fixed:"lb",linear:"lv",sqrt:"meanf"},NAME={fixed:"고정 0.05",linear:"선형 스케일링",sqrt:"제곱근 스케일링"};
+  function render(){
+    const E=+$("#btE").value,rule=$("#btR").value,Bs=+$("#btB").value;const RS=results(E);
+    // 왼쪽: 검증 loss
+    const S=$("#btL");clear(S);const Lx=46,Rx=310,Ty=10,By=176;
+    const all=[];for(const k in RS)for(const B of BSET)if(isFinite(RS[k][B]))all.push(RS[k][B]);
+    const lo=Math.min(OPT,...all)-0.01,hi=Math.min(0.75,Math.max(...all))+0.02;
+    const sx=i=>Lx+i/(BSET.length-1)*(Rx-Lx),sy=v=>By-(Math.min(hi,Math.max(lo,v))-lo)/(hi-lo)*(By-Ty);
+    for(let k=0;k<=4;k++){const v=lo+(hi-lo)*k/4;el("line",{x1:Lx,y1:sy(v),x2:Rx,y2:sy(v),class:"gl"},S);el("text",{x:Lx-5,y:sy(v)+4,"text-anchor":"end","font-size":10.5,class:"mut"},S,v.toFixed(2));}
+    BSET.forEach((B,i)=>el("text",{x:sx(i),y:By+15,"text-anchor":"middle","font-size":10.5,class:B===Bs?"":"mut","font-weight":B===Bs?700:400},S,B>=1000?(B/1024)+"K":B));
+    el("text",{x:(Lx+Rx)/2,y:206,"text-anchor":"middle","font-size":11,class:"mut"},S,"배치 크기 (로그 간격)");
+    el("line",{x1:Lx,y1:sy(OPT),x2:Rx,y2:sy(OPT),class:"ln"},S);
+    el("line",{x1:sx(BSET.indexOf(Bs)),y1:Ty,x2:sx(BSET.indexOf(Bs)),y2:By,class:"cur"},S);
+    for(const k of ["fixed","linear","sqrt"]){const pts=[];BSET.forEach((B,i)=>{const v=RS[k][B];if(isFinite(v))pts.push(sx(i).toFixed(1)+","+sy(v).toFixed(1));});
+      el("polyline",{points:pts.join(" "),class:CLS[k]+" "+(k===rule?"lsel":"ldim")},S);
+      BSET.forEach((B,i)=>{const v=RS[k][B];if(!isFinite(v)){el("text",{x:sx(i),y:Ty+12,"text-anchor":"middle","font-size":11,"font-weight":700,class:"taf"},S,"발산");}else if(v>hi&&k===rule){el("text",{x:sx(i)-3,y:Ty+12,"text-anchor":"end","font-size":10.5,"font-weight":700,class:"taf"},S,"↑"+v.toFixed(2));}});}
+    // 오른쪽: 코사인
+    const C=$("#btC");clear(C);const cy=v=>By-v*(By-Ty);
+    for(const v of [0,0.25,0.5,0.75,1]){el("line",{x1:Lx,y1:cy(v),x2:Rx,y2:cy(v),class:"gl"},C);el("text",{x:Lx-5,y:cy(v)+4,"text-anchor":"end","font-size":10.5,class:"mut"},C,v.toFixed(2));}
+    const bw=(Rx-Lx)/BSET.length*0.6;
+    BSET.forEach((B,i)=>{const x=Lx+(i+0.5)*(Rx-Lx)/BSET.length;el("rect",{x:x-bw/2,y:cy(COS[B]),width:bw,height:By-cy(COS[B]),rx:3,class:B===Bs?"barm":"barp"},C);
+      el("text",{x,y:cy(COS[B])-4,"text-anchor":"middle","font-size":10.5},C,COS[B].toFixed(2));el("text",{x,y:By+15,"text-anchor":"middle","font-size":10.5,class:"mut"},C,B>=1000?(B/1024)+"K":B);});
+    el("text",{x:(Lx+Rx)/2,y:206,"text-anchor":"middle","font-size":11,class:"mut"},C,"배치 크기");
+    const lr=lrOf(rule,Bs),v=RS[rule][Bs];
+    $("#btLr").textContent=+lr.toPrecision(3)+"";
+    $("#btUpd").textContent=fmtN(Math.ceil(NTR/Bs))+" / "+fmtN(Math.ceil(1e6/Bs));
+    $("#btVal").textContent=isFinite(v)?v.toFixed(4)+" (하한 "+OPT.toFixed(4)+")":"발산";
+    let best=null;for(const B of BSET){const q=RS[rule][B];if(isFinite(q)&&(best===null||q<RS[rule][best]))best=B;}
+    $("#btBest").textContent=best?fmtN(best)+" ("+RS[rule][best].toFixed(4)+")":"–";
+    const f=RS.fixed,li=RS.linear,sq=RS.sqrt;
+    let msg="배치 8에서 미니배치 기울기의 코사인 유사도는 "+COS[8].toFixed(2)+", 배치 512에서 "+COS[512].toFixed(2)+"입니다. 배치가 작을수록 기울기 방향의 잡음이 크고, 커질수록 전체 기울기에 가까워지지만 그 개선은 점점 줄어듭니다. ";
+    msg+="학습률을 고정하면 배치 크기 "+fmtN(8192)+"에서는 "+E+"에포크 동안 업데이트를 "+E+"번밖에 못 해서 검증 loss("+(isFinite(f[8192])?f[8192].toFixed(3):"발산")+")가 배치 32("+f[32].toFixed(3)+")보다 나쁩니다. ";
+    const liBad=BSET.filter(B=>!isFinite(li[B])||li[B]>li[32]+0.02);
+    if(liBad.length)msg+="선형 스케일링은 배치 "+liBad.map(fmtN).join("·")+"에서 학습률이 "+liBad.map(B=>+lrOf("linear",B).toPrecision(3)).join("·")+"까지 커져 "+(liBad.some(B=>!isFinite(li[B]))?"발산하거나 ":"")+"오히려 나빠집니다. 안정적으로 쓸 수 있는 학습률의 상한을 넘었기 때문으로, 배치를 키워도 학습이 빨라지지 않는 임계 배치 크기가 있다는 뜻입니다. ";
+    else msg+="선형 스케일링은 이 범위에서 큰 배치의 손해를 상당 부분 메웁니다. ";
+    msg+="제곱근 스케일링의 가장 좋은 배치는 "+(()=>{let b=null;for(const B of BSET)if(isFinite(sq[B])&&(b===null||sq[B]<sq[b]))b=B;return b?fmtN(b):"–";})()+"입니다. 어떤 규칙도 모든 배치에서 맞지 않으므로 배치를 바꾸면 학습률을 다시 탐색해야 합니다.";
+    $("#btMsg").textContent=msg;}
+  const go=()=>{$("#btMsg").textContent="계산 중…";later(render);};
+  $("#btE").addEventListener("change",go);$("#btR").addEventListener("change",()=>safe("bt",render));$("#btB").addEventListener("change",()=>safe("bt",render));
+  go();
+});
+
+/* ---------- 퀴즈 ---------- */
+safe("quiz",function(){
+  const Q={
+    q1:[
+      {q:"TensorFlow 2.x의 기본 실행 방식으로 맞는 것은?",o:["그래프를 먼저 정의하고 Session.run()으로 실행한다","즉시 실행(eager)이 기본이고, 필요하면 tf.function으로 그래프로 변환한다","자동 미분을 지원하지 않는다","Keras 없이만 쓸 수 있다"],a:1,e:"Session과 placeholder는 TF 1.x 방식입니다. TF 2.0(2019)부터 즉시 실행이 기본이 되어 PyTorch와 같은 방식으로 코드를 실행하고, 성능이 필요한 부분만 tf.function으로 그래프를 만듭니다."},
+      {q:"@tf.function으로 감싼 함수를 Python float 인수 1.0, 2.0, 3.0으로 차례로 호출하면 그래프는 몇 개 만들어지나?",o:["값마다 새로 추적해 3개","dtype이 같으므로 1개","Python 숫자는 쓸 수 없어 오류","그래프 없이 즉시 실행"],a:0,e:"Python 숫자 인수는 값 자체가 추적의 기준이 되어 값이 바뀔 때마다 새로 추적합니다. tf.constant 같은 텐서로 넘기면 dtype·shape가 같은 한 그래프 하나를 재사용합니다(실험 1). 학습 루프에서 에포크 번호를 Python int로 넘기면 매 에포크 재추적이 일어나는 흔한 성능 버그입니다."},
+      {q:"2026년에 PyTorch 모델을 서버에 배포하려 한다. 가장 부적절한 설명은?",o:["TorchServe는 활발히 개발되는 대표 배포 도구이므로 우선 고른다","torch.export로 그래프를 내보내 AOTInductor로 컴파일할 수 있다","ONNX로 변환해 ONNX Runtime이나 TensorRT로 실행할 수 있다","대형 언어 모델은 vLLM 같은 전용 서빙 엔진을 쓴다"],a:0,e:"TorchServe는 2025년부터 제한적 유지보수 상태로 새 기능과 보안 패치 계획이 없습니다. 나머지는 현재 쓰이는 PyTorch 배포 경로입니다."}
+    ],
+    q2:[
+      {q:"a = np.array([1., 2., 3.]); t = torch.from_numpy(a); a[0] = 10 다음 t를 출력하면?",o:["tensor([1., 2., 3.])","tensor([10., 2., 3.], dtype=torch.float64)","tensor([10., 2., 3.]) (float32)","from_numpy 뒤에는 a를 바꿀 수 없어 오류"],a:1,e:"from_numpy는 메모리를 공유하므로 a를 바꾸면 t도 바뀝니다. 또 NumPy 기본 dtype float64를 그대로 가져와 float64 텐서가 됩니다."},
+      {q:"X = np.random.rand(64, 10)을 torch.from_numpy(X)로 바꿔 nn.Linear(10, 1)에 넣었더니 오류가 났다. 원인과 해결은?",o:["shape가 맞지 않는다. X.T를 넣는다","텐서가 float64인데 레이어 가중치는 float32다. .float()로 바꾸거나 처음부터 np.float32로 만든다","NumPy 배열은 GPU로 못 간다. .cuda()를 붙인다","requires_grad가 꺼져 있다. True로 켠다"],a:1,e:"NumPy 기본은 float64, PyTorch 레이어 기본은 float32라서 dtype 불일치 오류(mat1 and mat2 must have the same dtype)가 납니다. 입력에는 requires_grad가 필요 없습니다."},
+      {q:"GPU에 있고 requires_grad=True인 계산 결과 y를 NumPy 배열로 바꾸는 올바른 코드는?",o:["y.numpy()","y.cpu().numpy()","y.detach().cpu().numpy()","np.array(y)"],a:2,e:"기울기를 추적 중인 텐서는 detach()로 기록에서 떼어 내고, GPU 메모리는 NumPy가 읽을 수 없으므로 cpu()로 옮긴 뒤 numpy()를 부릅니다. y.cpu().numpy()는 requires_grad 때문에 RuntimeError가 납니다."}
+    ],
+    m1:[
+      {q:"20층 시그모이드 신경망에서 층 1의 기울기 노름이 1e−12, 층 20이 1e−1이고, 그 사이 층들은 로그 축에서 거의 직선으로 줄어든다. 가장 가능성이 큰 원인은?",o:["기울기 폭발","기울기 소실: 층마다 σ′(≤0.25)와 가중치가 곱해져 지수적으로 작아짐","계산 그래프 단절","학습률이 너무 큼"],a:1,e:"기울기가 존재하되 입력 쪽으로 갈수록 지수적으로 작아지는 모양이 기울기 소실입니다. 그래프가 끊겼다면 기울기가 작은 것이 아니라 None입니다."},
+      {q:"입력층 파라미터의 p.grad가 None이다. 가장 먼저 의심할 것은?",o:["시그모이드의 기울기 소실","순전파 중 .detach()·.item()·NumPy 변환 등으로 그래프가 끊겼거나, 그 파라미터가 순전파에 쓰이지 않았거나, requires_grad=False","학습률이 너무 작음","배치 크기가 너무 작음"],a:1,e:"기울기 소실은 아무리 심해도 작은 숫자이지 None이 아닙니다. None은 역전파 경로에 그 파라미터가 없다는 뜻이라 구현 문제입니다."},
+      {q:"다음 중 기울기 소실의 근본 해결책이 아닌 것은?",o:["은닉층을 ReLU·GELU로 바꾸고 He 초기화","잔차 연결","배치·레이어 정규화","기울기 클리핑"],a:3,e:"기울기 클리핑은 노름이 기준보다 큰 기울기를 잘라 내는 폭발 대책입니다. 작은 기울기를 키우지는 못합니다."}
+    ],
+    m2:[
+      {q:"학습 데이터 1,000,000개, 배치 크기 250이면 에포크당 옵티마이저 업데이트 횟수는?",o:["250","4,000","40,000","1,000,000"],a:1,e:"⌈1,000,000 / 250⌉ = 4,000번입니다. 배치를 1,000으로 키우면 1,000번으로 줄어, 같은 에포크로는 덜 학습될 수 있습니다."},
+      {q:"학습 중 GPU 메모리에서 배치 크기에 비례해 늘어나는 것은?",o:["모델 파라미터","파라미터의 기울기","Adam의 1·2차 모멘트","순전파에서 저장한 활성화"],a:3,e:"파라미터, 파라미터 기울기, 옵티마이저 상태는 파라미터 수로 정해지고 배치와 무관합니다. 역전파를 위해 저장하는 활성화가 샘플 수에 비례합니다(실험 4)."},
+      {q:"GPU 8대에서 GPU당 마이크로 배치 32, 기울기 누적 4단계로 학습한다. 유효 배치 크기는?",o:["32","128","256","1,024"],a:3,e:"32 × 4 × 8 = 1,024입니다. 다만 배치 정규화는 GPU당 마이크로 배치 32의 통계를 쓰므로(SyncBatchNorm이 아니면) 한 번에 1,024를 처리한 것과 완전히 같지는 않습니다."}
+    ]
+  };
+  document.querySelectorAll(".quiz").forEach(host=>{
+    const list=Q[host.dataset.quiz]||[];
+    list.forEach((it,qi)=>{
+      const box=document.createElement("div");box.className="qz";
+      const t=document.createElement("div");t.className="qt";t.innerHTML="<span>Q"+(qi+1)+".</span>";t.appendChild(document.createTextNode(it.q));box.appendChild(t);
+      const opts=document.createElement("div");opts.className="opts";box.appendChild(opts);
+      const exp=document.createElement("div");exp.className="exp";exp.hidden=true;exp.setAttribute("aria-live","polite");
+      const btns=it.o.map((o,oi)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=String.fromCharCode(9312+oi)+" "+o;
+        b.addEventListener("click",()=>{btns.forEach((x,xi)=>{x.classList.remove("right","wrong");if(xi===it.a)x.classList.add("right");});if(oi!==it.a)b.classList.add("wrong");
+          exp.hidden=false;exp.innerHTML=(oi===it.a?'<b class="ok">정답입니다.</b> ':'<b class="no">오답입니다.</b> 정답은 '+String.fromCharCode(9312+it.a)+"번. ");exp.appendChild(document.createTextNode(it.e));});
+        opts.appendChild(b);return b;});
+      box.appendChild(exp);host.appendChild(box);
+    });
+  });
+});
+})();
+</script>
+</body></html>
