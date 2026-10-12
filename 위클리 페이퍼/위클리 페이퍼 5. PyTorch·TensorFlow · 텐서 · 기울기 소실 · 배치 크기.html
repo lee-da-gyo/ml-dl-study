@@ -340,6 +340,22 @@ svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
 .sl3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .sl3 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
 @media (max-width:620px){.sl3{grid-template-columns:1fr}}
+/* 위클리 05 가독성: 문단·불릿 */
+.oneline p,.note p,.card p,.speech p,.how p{margin:0}
+.oneline{display:flex;flex-direction:column;gap:8px}
+.oneline small{margin-bottom:-4px}
+.oneline ul,.note ul,.card ul,.how ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.oneline ul{font-size:15.5px}
+.demo-head .how{display:flex;flex-direction:column;gap:8px;line-height:1.75}
+.note{gap:12px}
+.note p,.card p,.note li,.card li{line-height:1.8}
+.pair{gap:8px;padding:14px 16px}
+.now{display:flex;flex-direction:column;gap:10px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack .card{padding:18px 20px;gap:10px}
+.card pre{font-size:12px;padding:10px 12px;white-space:pre-wrap}
+.speech{display:flex;flex-direction:column;gap:12px;line-height:1.85}
+.insight{line-height:1.85;white-space:pre-line}
 </style>
 </head><body>
 
@@ -376,7 +392,13 @@ svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
     <div class="qhead"><div class="qnum">Q1</div><div class="min"><div class="kind">실습 해설</div><h2>딥러닝 프레임워크인 PyTorch와 TensorFlow를 비교해보세요.</h2></div></div>
 
     <div class="oneline"><small>한 줄 요약</small>
-      둘 다 <mark>텐서 연산 + 자동 미분 + GPU 가속 + 분산 학습 + 배포</mark>를 갖춘 프레임워크다. TensorFlow 2.0(2019)부터 둘 다 <b>즉시 실행(eager)이 기본이고 필요할 때 그래프로 컴파일</b>하므로 "PyTorch는 연구용, TensorFlow는 배포용"이라는 구분은 낡았다. 지금의 차이는 <mark>생태계와 배포 경로</mark>다. PyTorch는 논문·대형 언어 모델·Hugging Face의 사실상 표준이고, TensorFlow는 Keras·TFX·TF Serving·LiteRT로 이어지는 운영 도구와 TPU 지원이 강점이다. 그래서 고르는 기준은 인기보다 <b>팀의 기존 스택, 배포 대상, 쓰려는 사전 학습 모델</b>이다.
+      <p>PyTorch와 TensorFlow는 모두 <b>텐서 연산 · 자동 미분 · GPU 가속 · 분산 학습 · 배포</b>를 갖춘 딥러닝 프레임워크다. TensorFlow 2.0(2019) 이후 둘 다 <mark>즉시 실행(eager)이 기본이고, 필요할 때 그래프로 컴파일</mark>한다. 그래서 "PyTorch는 연구용, TensorFlow는 배포용"이라는 구분은 이제 맞지 않는다.</p>
+      <p>지금의 차이는 <b>생태계와 배포 경로</b>다.</p>
+      <ul>
+        <li><b>PyTorch</b>: 논문 구현 · 대형 언어 모델 · Hugging Face의 사실상 표준</li>
+        <li><b>TensorFlow</b>: Keras · TFX · TF Serving · LiteRT로 이어지는 운영 도구와 TPU 지원</li>
+      </ul>
+      <p>따라서 고르는 기준은 인기가 아니라 <mark>팀의 기존 스택, 배포 대상, 쓰려는 사전 학습 모델</mark>이다.</p>
     </div>
 
     <div class="part">1 · 그림·표·실험</div>
@@ -484,7 +506,10 @@ def train_step(x, y):
     <div class="demo" id="demo-graph">
       <div class="demo-head">
         <div class="t"><span class="badge b-lab">실험 1</span> 실행할 때마다 그래프가 새로 만들어진다 (define-by-run) <span class="tag-ex">예시 함수 · 이 페이지의 작은 autograd로 계산</span></div>
-        <div class="how">아래 함수는 <code>while</code>의 반복 횟수와 <code>if</code>의 분기가 입력 x에 따라 달라집니다. x를 바꾸면 이번 호출에서 실제로 실행된 연산만 그래프로 기록되고, 역전파는 그 경로를 거꾸로 따라갑니다. 이 페이지 안의 작은 autograd(PyTorch와 같은 방식)로 미분하고, 수치 미분 (f(x+ε) − f(x−ε)) / 2ε 과 비교합니다. 여러 x를 시도하면 TensorFlow <code>tf.function</code>이 그래프를 몇 개 만들지도 셉니다.</div>
+        <div class="how">
+          <p>아래 함수는 입력 x에 따라 <b>while 반복 횟수</b>와 <b>if 분기</b>가 달라집니다. x를 바꾸면 이번 호출에서 <b>실제로 실행된 연산만</b> 그래프로 기록되고, 역전파는 그 경로를 거꾸로 따라갑니다.</p>
+          <p>미분은 이 페이지 안의 작은 autograd(PyTorch와 같은 방식)로 계산해 <b>수치 미분</b> (f(x+ε) − f(x−ε)) / 2ε 과 비교합니다. 여러 x를 시도하면 TensorFlow <code>tf.function</code>이 그래프를 몇 개 만드는지도 셉니다.</p>
+        </div>
       </div>
       <div class="split">
         <div class="side">
@@ -518,22 +543,52 @@ def train_step(x, y):
       <b class="t">정정 · 실습 해설의 오래된 정보와 이분법</b>
       <div class="pair">
         <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">최근에는 배포 도구인 TorchServe로 프로덕션 환경에서도 많이 사용되고 있습니다.</span></span>
-        <span class="now"><span class="lbl-now">정정</span>TorchServe는 2025년부터 <b>제한적 유지보수(Limited Maintenance)</b> 상태로, 공식 문서에 새 기능·버그 수정·보안 패치 계획이 없다고 공지되어 있습니다. 지금 PyTorch 모델을 서버에 올린다면 <code>torch.export</code>로 그래프를 내보내 AOTInductor로 컴파일하거나, ONNX로 바꿔 ONNX Runtime·TensorRT로 실행하거나, NVIDIA Triton Inference Server를 씁니다. 대형 언어 모델은 vLLM·SGLang 같은 전용 서빙 엔진이 표준이고, 모바일은 ExecuTorch입니다. 작성 답안은 이 점을 이미 바르게 지적했습니다.</span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span><b>TorchServe</b>는 2025년부터 <b>제한적 유지보수(Limited Maintenance)</b> 상태입니다. 공식 문서에 새 기능 · 버그 수정 · 보안 패치 계획이 없다고 공지되어 있어, 신규 프로젝트의 대표 배포 도구로 볼 수 없습니다.</p>
+          <p>지금 PyTorch 모델은 용도에 따라 다음 경로로 배포합니다.</p>
+          <ul>
+            <li><b>일반 서버</b>: <code>torch.export</code> + AOTInductor, ONNX → ONNX Runtime · TensorRT, Triton Inference Server</li>
+            <li><b>대형 언어 모델</b>: vLLM · SGLang 같은 전용 서빙 엔진</li>
+            <li><b>모바일 · 엣지</b>: ExecuTorch</li>
+          </ul>
+          <p class="muted">작성 답안은 이 점을 이미 바르게 지적했습니다.</p>
+        </div>
       </div>
       <div class="pair">
         <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">PyTorch는 유연성과 사용성이 강점이고, TensorFlow는 배포와 확장성에서 더 유리하다고 볼 수 있습니다.</span></span>
-        <span class="now"><span class="lbl-now">정정</span>"확장성"은 PyTorch의 약점이 아닙니다. DDP·FSDP·텐서 병렬로 수천 개 GPU에서 학습하며, Meta의 Llama 같은 대형 언어 모델 다수가 PyTorch로 학습됩니다. TensorFlow가 앞서는 것은 확장성 일반이 아니라 <b>TFX·TF Serving·LiteRT로 이어진 운영 도구와 TPU 통합</b>입니다. 둘 다 학습부터 배포까지 할 수 있고, 차이는 생태계와 기존 스택입니다.</span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span><b>확장성</b>은 PyTorch의 약점이 아닙니다. <b>DDP · FSDP · 텐서 병렬</b>로 수천 개 GPU에서 학습하며, Meta의 Llama 같은 대형 언어 모델 다수가 PyTorch로 학습됩니다.</p>
+          <p>TensorFlow가 앞서는 부분은 확장성 일반이 아니라 <b>운영 도구(TFX · TF Serving · LiteRT)</b>와 <b>TPU 통합</b>입니다. 둘 다 학습부터 배포까지 할 수 있고, 실제 차이는 생태계와 기존 스택입니다.</p>
+        </div>
       </div>
     </div>
 
-    <div class="mini">
-      <div class="card add"><div class="k">보충 · "초기 TensorFlow가 복잡했던" 이유</div><h4>그래프를 먼저 만들고 나중에 실행했다</h4><p>TF 1.x는 <code>tf.placeholder</code>로 빈 그래프를 정의한 뒤 <code>Session.run()</code>에 값을 넣어야 결과가 나왔습니다. 중간값을 <code>print</code>로 볼 수 없고 Python <code>if</code>를 쓸 수 없어 디버깅이 어려웠습니다. PyTorch는 처음부터 코드를 실행하는 순간 계산이 일어나 Python 디버거를 그대로 쓸 수 있었고, 이것이 연구자들이 옮겨 간 핵심 이유입니다.</p></div>
-      <div class="card add"><div class="k">보충 · 세 번째 선택지</div><h4>JAX와 Keras 3</h4><p>구글 내부 연구(Gemini 등)는 JAX를 주로 씁니다. JAX는 NumPy와 같은 문법에 <code>grad</code>·<code>jit</code>·<code>vmap</code> 같은 함수 변환을 더한 방식입니다. Keras 3는 같은 Keras 코드를 JAX·TensorFlow·PyTorch 백엔드에서 돌릴 수 있어서, "Keras = TensorFlow"도 이제는 정확하지 않습니다.</p></div>
-      <div class="card add"><div class="k">보충 · 실무에서 걸리는 지점</div><h4>Windows GPU와 사전 학습 모델</h4><p>TensorFlow는 2.10이 Windows 네이티브에서 GPU를 지원한 마지막 버전이라, 그 뒤로는 WSL2가 필요합니다. 또 쓰려는 사전 학습 모델과 예제 코드가 어느 프레임워크에 있는지가 선택을 사실상 결정하는 경우가 많습니다. 새 프로젝트라면 이 두 가지를 먼저 확인합니다.</p></div>
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 초기 TensorFlow가 복잡했던 이유</div><h4>그래프를 먼저 만들고, 나중에 실행했다</h4>
+        <p>TF 1.x는 <code>tf.placeholder</code>로 빈 그래프를 정의한 뒤 <code>Session.run()</code>에 값을 넣어야 결과가 나왔습니다(<b>define-and-run</b>). 그래서 다음 작업이 어려웠습니다.</p>
+        <ul>
+          <li>중간값을 <code>print</code>로 바로 확인하기</li>
+          <li>Python <code>if</code> · <code>for</code>를 그대로 쓰기</li>
+        </ul>
+        <p>PyTorch는 코드를 실행하는 순간 계산이 일어나(<b>define-by-run</b>) <b>Python 디버거를 그대로</b> 쓸 수 있었고, 이것이 연구자들이 옮겨 간 핵심 이유입니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 세 번째 선택지</div><h4>JAX와 Keras 3</h4>
+        <p><b>JAX</b>는 NumPy와 같은 문법에 <code>grad</code> · <code>jit</code> · <code>vmap</code> 같은 함수 변환을 더한 프레임워크로, 구글 내부 연구(Gemini 등)의 주력입니다.</p>
+        <p><b>Keras 3</b>는 같은 코드를 JAX · TensorFlow · PyTorch 백엔드에서 실행합니다. 그래서 "Keras = TensorFlow"도 이제는 정확하지 않습니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 실무에서 먼저 확인할 것</div><h4>Windows GPU와 사전 학습 모델</h4>
+        <ul>
+          <li><b>Windows GPU</b>: TensorFlow는 2.10이 Windows 네이티브 GPU를 지원한 마지막 버전입니다. 그 뒤로는 <b>WSL2</b>가 필요합니다.</li>
+          <li><b>사전 학습 모델</b>: 쓰려는 모델과 예제 코드가 어느 프레임워크에 있는지가 선택을 사실상 결정하는 경우가 많습니다.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="speech">
-      PyTorch와 TensorFlow는 둘 다 텐서 연산, 자동 미분, GPU 가속, 분산 학습, 배포를 갖춘 딥러닝 프레임워크입니다. 원래 TensorFlow 1은 그래프를 먼저 정의하고 Session으로 실행해서 디버깅이 어려웠고, PyTorch는 코드를 실행하는 순간 그래프를 기록하는 즉시 실행 방식이라 연구자들이 선호했습니다. 지금은 TensorFlow 2가 즉시 실행을 기본으로 하고 tf.function으로 컴파일하며, PyTorch도 torch.compile로 그래프를 컴파일하기 때문에 실행 방식의 차이는 거의 사라졌습니다. 남은 차이는 생태계입니다. PyTorch는 논문 구현과 Hugging Face, 대형 언어 모델 학습의 표준이고, TensorFlow는 Keras, TF Serving, LiteRT로 이어지는 운영 도구와 TPU 지원이 강점입니다. 참고로 TorchServe는 유지보수가 중단돼서 PyTorch 배포는 torch.export, ONNX, vLLM 같은 경로를 씁니다. 그래서 저는 팀의 기존 스택, 배포 대상, 쓰려는 사전 학습 모델을 기준으로 고르겠습니다.
+      <p>PyTorch와 TensorFlow는 둘 다 <b>텐서 연산, 자동 미분, GPU 가속, 분산 학습, 배포</b>를 갖춘 딥러닝 프레임워크입니다.</p>
+      <p>원래 TensorFlow 1은 그래프를 먼저 정의하고 Session으로 실행해서 디버깅이 어려웠고, PyTorch는 코드를 실행하는 순간 그래프를 기록하는 <b>즉시 실행</b> 방식이라 연구자들이 선호했습니다. 지금은 TensorFlow 2가 즉시 실행을 기본으로 하고 PyTorch도 torch.compile로 컴파일하기 때문에, 실행 방식의 차이는 거의 사라졌습니다.</p>
+      <p>남은 차이는 <b>생태계</b>입니다. PyTorch는 논문 구현, Hugging Face, 대형 언어 모델 학습의 표준이고, TensorFlow는 Keras, TF Serving, LiteRT로 이어지는 운영 도구와 TPU 지원이 강점입니다. 참고로 TorchServe는 유지보수가 중단돼서, PyTorch 배포는 torch.export, ONNX, vLLM 같은 경로를 씁니다.</p>
+      <p>그래서 저는 <b>팀의 기존 스택, 배포 대상, 쓰려는 사전 학습 모델</b>을 기준으로 고르겠습니다.</p>
     </div>
 
     <div class="block">
@@ -547,7 +602,13 @@ def train_step(x, y):
     <div class="qhead"><div class="qnum">Q2</div><div class="min"><div class="kind">실습 해설</div><h2>PyTorch에서 텐서란 무엇이고, NumPy의 Array(배열)과 어떤 차이가 있나요?</h2></div></div>
 
     <div class="oneline"><small>한 줄 요약</small>
-      텐서는 <b>dtype·shape·device</b>를 가진 다차원 배열이고, 인덱싱·브로드캐스팅 규칙은 NumPy 배열과 거의 같다. 차이는 세 가지다. ① <mark>GPU 같은 가속기 메모리에 올라갈 수 있고</mark>, ② <mark>autograd가 연산을 기록해 기울기를 자동으로 계산</mark>하며, ③ <b>기본 실수 dtype이 float32</b>(NumPy는 float64)다. CPU에서는 <code>torch.from_numpy()</code>·<code>.numpy()</code>가 <b>메모리를 공유</b>하므로, 지금 만든 것이 복사본인지 같은 메모리인지 아는 것이 실수를 막는 핵심이다.
+      <p>텐서는 <b>dtype · shape · device</b>를 가진 다차원 배열이고, 인덱싱 · 브로드캐스팅 규칙은 NumPy 배열과 거의 같다. NumPy 배열과 다른 점은 세 가지다.</p>
+      <ul>
+        <li><mark>GPU 같은 가속기 메모리</mark>에 올라가 병렬 연산을 한다</li>
+        <li><mark>autograd</mark>가 연산을 기록해 기울기를 자동으로 계산한다</li>
+        <li>기본 실수 dtype이 <b>float32</b>다 (NumPy는 float64)</li>
+      </ul>
+      <p>또 CPU에서는 <code>torch.from_numpy()</code> · <code>.numpy()</code>가 <b>메모리를 공유</b>하므로, 지금 만든 것이 복사본인지 같은 메모리인지 아는 것이 실수를 막는 핵심이다.</p>
     </div>
 
     <div class="part">1 · 그림·표·실험</div>
@@ -603,7 +664,10 @@ def train_step(x, y):
     <div class="demo" id="demo-share">
       <div class="demo-head">
         <div class="t"><span class="badge b-lab">실험 2</span> 복사인가, 같은 메모리인가 <span class="tag-ex">PyTorch 규칙을 이 페이지에서 재현 · 공유는 실제로 같은 메모리 버퍼로 구현</span></div>
-        <div class="how">NumPy 배열 <code>a</code>를 여러 방법으로 텐서 <code>t</code>로 바꾼 뒤 한쪽을 고쳐 보세요. 공유하는 경우에는 이 페이지에서도 두 변수가 실제로 같은 메모리 버퍼를 가리키게 만들었기 때문에, 한쪽을 바꾸면 다른 쪽이 정말로 바뀝니다. 아래 두 번째 칸에서는 텐서를 NumPy로 되돌리는 방법별 결과와 오류를 확인합니다.</div>
+        <div class="how">
+          <p>NumPy 배열 <code>a</code>를 여러 방법으로 텐서 <code>t</code>로 바꾼 뒤, 한쪽을 고쳐 보세요. 공유하는 경우에는 이 페이지에서도 두 변수가 <b>실제로 같은 메모리 버퍼</b>를 가리키므로 한쪽을 바꾸면 다른 쪽도 정말로 바뀝니다.</p>
+          <p>아래 두 번째 칸에서는 텐서를 NumPy로 되돌리는 방법별로 <b>결과와 오류</b>를 확인합니다.</p>
+        </div>
       </div>
       <div class="ctrls">
         <label for="shS" style="font-weight:600">a 만들기</label>
@@ -648,13 +712,34 @@ def train_step(x, y):
 
     <div class="note add">
       <b class="t">보충 · 실습 해설을 더 정확하게</b>
-      <p>"requires_grad=True로 설정된 텐서는 계산 그래프를 기록하며"는 정확히 말하면 <b>그 텐서가 참여한 연산을 autograd 엔진이 기록</b>하는 것입니다. 결과 텐서마다 자신을 만든 연산(<code>grad_fn</code>)이 붙고, <code>backward()</code>가 이 고리를 거꾸로 따라가 잎 텐서의 <code>.grad</code>에 기울기를 <b>더합니다</b>. 그래프는 역전파가 끝나면 해제되므로 매 반복 새로 만들어지고(실험 1), 같은 그래프로 두 번 역전파하려면 <code>retain_graph=True</code>가 필요합니다. "텐서를 <code>.to(device)</code>로 이동시키면 된다"도 텐서에서는 <code>x = x.to(device)</code>처럼 <b>대입해야</b> 합니다. 모델(<code>nn.Module</code>)의 <code>.to()</code>만 제자리에서 파라미터를 옮깁니다.</p>
+      <p><b>그래프를 기록하는 주체.</b> "requires_grad=True로 설정된 텐서는 계산 그래프를 기록한다"는 정확히 말하면, 그 텐서가 참여한 <b>연산</b>을 <b>autograd 엔진</b>이 기록한다는 뜻입니다.</p>
+      <ul>
+        <li>결과 텐서마다 자신을 만든 연산(<code>grad_fn</code>)이 붙는다.</li>
+        <li><code>backward()</code>는 이 고리를 거꾸로 따라가 잎 텐서의 <code>.grad</code>에 기울기를 <b>더한다(누적)</b>.</li>
+        <li>그래프는 역전파가 끝나면 해제되어 매 반복 새로 만들어진다(실험 1). 같은 그래프로 두 번 역전파하려면 <code>retain_graph=True</code>가 필요하다.</li>
+      </ul>
+      <p><b>장치 이동.</b> 텐서의 <code>.to(device)</code>는 새 텐서를 돌려주므로 <code>x = x.to(device)</code>처럼 <b>대입해야</b> 합니다. 제자리에서 옮겨지는 것은 모델(<code>nn.Module</code>)의 <code>.to()</code>뿐입니다.</p>
     </div>
 
-    <div class="mini">
-      <div class="card add"><div class="k">보충 · dtype 기본값의 함정</div><h4>float64 텐서와 float32 모델</h4><p>NumPy로 전처리한 배열을 <code>torch.from_numpy()</code>로 바꾸면 float64 텐서가 되고, float32인 <code>nn.Linear</code>에 넣으면 <code>mat1 and mat2 must have the same dtype</code> 오류가 납니다. <code>.float()</code>를 붙이거나 처음부터 <code>np.float32</code>로 만듭니다. GPU는 float32·bfloat16 연산이 float64보다 훨씬 빠르기 때문에 딥러닝 기본값이 float32입니다.</p></div>
-      <div class="card add"><div class="k">보충 · 제자리 연산과 autograd</div><h4>역전파에 필요한 값을 덮어쓰면 오류</h4><p><code>y = x.sigmoid()</code> 뒤에 <code>y.mul_(2)</code>를 하면, 시그모이드의 역전파에 필요한 y가 바뀌어 <code>one of the variables needed for gradient computation has been modified by an inplace operation</code> 오류가 납니다. PyTorch는 텐서마다 버전 번호를 두어 이를 잡아냅니다. NumPy에는 없는 제약입니다.</p></div>
-      <div class="card add"><div class="k">보충 · 작성 답안 코드 확인</div><h4>결과와 해석이 정확하다</h4><p>작성 답안의 코드와 결과(기울기 2xᵢ/3 = [6.6667, 1.3333, 2.0000])는 맞습니다. GPU에서 돌리면 기울기가 <code>tensor([...], device='cuda:0')</code>로 출력되는 것만 다릅니다. <code>np.asarray(list, ...)</code>는 리스트에서 항상 새 배열을 만들므로 뒤의 <code>.copy()</code>는 없어도 됩니다.</p></div>
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · dtype 기본값의 함정</div><h4>float64 텐서를 float32 모델에 넣으면 오류</h4>
+        <p>NumPy로 전처리한 배열을 <code>torch.from_numpy()</code>로 바꾸면 <b>float64</b> 텐서가 됩니다. 이것을 float32인 <code>nn.Linear</code>에 넣으면 다음 오류가 납니다.</p>
+        <pre>RuntimeError: mat1 and mat2 must have the same dtype</pre>
+        <p><b>해결</b>: <code>.float()</code>를 붙이거나 처음부터 <code>np.float32</code>로 만듭니다. GPU는 float32 · bfloat16 연산이 float64보다 훨씬 빠르기 때문에 딥러닝의 기본값이 float32입니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 제자리 연산과 autograd</div><h4>역전파에 필요한 값을 덮어쓰면 오류</h4>
+        <p><code>y = x.sigmoid()</code> 뒤에 <code>y.mul_(2)</code>를 하면, 시그모이드의 역전파에 필요한 y가 바뀌어 오류가 납니다.</p>
+        <pre>RuntimeError: one of the variables needed for gradient computation
+has been modified by an inplace operation</pre>
+        <p>PyTorch는 텐서마다 <b>버전 번호</b>를 두어 이런 덮어쓰기를 잡아냅니다. NumPy에는 없는 제약입니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 작성 답안 코드 확인</div><h4>결과와 해석이 정확하다</h4>
+        <p>작성 답안의 코드와 결과(기울기 2xᵢ/3 = [6.6667, 1.3333, 2.0000])는 맞습니다. 덧붙일 점은 두 가지입니다.</p>
+        <ul>
+          <li>GPU에서 실행하면 기울기가 <code>tensor([...], device='cuda:0')</code>처럼 장치 정보와 함께 출력됩니다.</li>
+          <li><code>np.asarray(list, ...)</code>는 리스트에서 항상 새 배열을 만들므로 뒤의 <code>.copy()</code>는 없어도 됩니다.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="codewrap">
@@ -677,7 +762,9 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
     </div>
 
     <div class="speech">
-      PyTorch 텐서는 dtype, shape, device를 가진 다차원 배열이고, 인덱싱이나 브로드캐스팅 규칙은 NumPy 배열과 거의 같습니다. 차이는 세 가지입니다. 첫째, 텐서는 to(device)로 GPU 메모리에 올려 병렬 연산을 할 수 있습니다. 둘째, requires_grad가 켜진 텐서가 참여한 연산은 autograd가 기록해서 backward 한 번으로 모든 파라미터의 기울기를 계산합니다. 셋째, 기본 실수 타입이 NumPy는 float64, PyTorch는 float32라서 from_numpy로 가져온 배열은 float으로 바꿔 줘야 합니다. 또 CPU에서는 from_numpy와 numpy 메서드가 메모리를 공유해서 한쪽을 바꾸면 다른 쪽도 바뀌고, GPU 텐서나 기울기를 추적 중인 텐서는 detach, cpu, numpy 순서로 변환해야 합니다.
+      <p>PyTorch 텐서는 <b>dtype, shape, device</b>를 가진 다차원 배열이고, 인덱싱이나 브로드캐스팅 규칙은 NumPy 배열과 거의 같습니다.</p>
+      <p>차이는 세 가지입니다. 첫째, to(device)로 <b>GPU 메모리</b>에 올려 병렬 연산을 할 수 있습니다. 둘째, requires_grad가 켜진 텐서가 참여한 연산은 <b>autograd</b>가 기록해서, backward 한 번으로 모든 파라미터의 기울기를 계산합니다. 셋째, 기본 실수 타입이 NumPy는 float64, PyTorch는 <b>float32</b>라서 from_numpy로 가져온 배열은 float으로 바꿔 줘야 합니다.</p>
+      <p>또 CPU에서는 from_numpy와 numpy 메서드가 <b>메모리를 공유</b>해서 한쪽을 바꾸면 다른 쪽도 바뀝니다. GPU 텐서나 기울기를 추적 중인 텐서는 detach, cpu, numpy 순서로 변환합니다.</p>
     </div>
 
     <div class="block">
@@ -691,7 +778,11 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
     <div class="qhead"><div class="qnum iv">면접 1</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>20층짜리 깊은 신경망을 만들고 활성화 함수로 시그모이드를 사용했어요. 학습을 돌려보니 출력층 근처 레이어는 잘 학습되는데, 입력층 근처 레이어의 가중치는 몇 에포크가 지나도 거의 그대로예요. 어떤 원인을 의심할 건가요? 어떻게 확인하고 해결할 건가요?</h2></div></div>
 
     <div class="oneline"><small>한 줄 요약</small>
-      1순위는 <mark>시그모이드로 인한 기울기 소실</mark>이다. 역전파는 층을 하나 지날 때마다 <b>σ′(z) ≤ 0.25</b>와 가중치를 곱하므로, 20층이면 입력층의 기울기가 출력층보다 <b>지수적으로</b> 작아지고 포화되면(출력이 0이나 1 근처) 더 빨리 0이 된다. 확인은 <mark>층별 기울기 노름과 실제 갱신 비율 ‖ΔW‖/‖W‖, 활성화 포화 비율</mark>을 찍어 출력→입력 방향으로 지수적으로 줄어드는지 보는 것이다. 해결은 <b>은닉층 ReLU·GELU + He 초기화, 잔차 연결, 정규화 층</b>이고 시그모이드는 출력층(<code>BCEWithLogitsLoss</code>)에만 남긴다.
+      <p>1순위는 <mark>시그모이드로 인한 기울기 소실</mark>이다. 역전파는 층을 하나 지날 때마다 <b>σ′(z) ≤ 0.25</b>와 가중치를 곱하므로, 20층이면 입력층의 기울기가 <b>지수적으로</b> 작아진다. 출력이 0이나 1 근처로 포화되면 더 빨리 0이 된다.</p>
+      <ul>
+        <li><b>확인</b>: 층별 기울기 노름, 실제 갱신 비율 ‖ΔW‖/‖W‖, 활성화 포화 비율이 출력 → 입력 방향으로 지수적으로 줄어드는지 본다.</li>
+        <li><b>해결</b>: 은닉층 <b>ReLU · GELU + He 초기화</b>, <b>잔차 연결</b>, <b>정규화 층</b>. 시그모이드는 출력층(<code>BCEWithLogitsLoss</code>)에만 둔다.</li>
+      </ul>
     </div>
 
     <div class="part">1 · 그림·표·실험</div>
@@ -699,7 +790,8 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 왜 입력 쪽만 작아지나</h3>
       <div class="formula">∂L/∂h<sub>l−1</sub> = W<sub>l</sub><sup>T</sup> · ( <span class="fv">σ′(z<sub>l</sub>)</span> ⊙ ∂L/∂h<sub>l</sub> ) ,&nbsp;&nbsp; <span class="fv">σ′(z) = σ(z)(1 − σ(z)) ≤ 0.25</span></div>
-      <p>출력층의 기울기는 손실에서 바로 오지만, 층 1의 기울기는 이 곱셈을 19번 거친 값입니다. 가중치를 무시하고 σ′의 최댓값만 곱해도 0.25<sup>19</sup> ≈ 3.6 × 10<sup>−12</sup>입니다. 가중치를 크게 잡으면 곱이 커질 것 같지만, 가중치가 크면 z도 커져 시그모이드가 포화되고 σ′가 더 작아집니다. 그래서 시그모이드만으로는 이 균형을 맞출 수 없습니다.</p>
+      <p>출력층의 기울기는 손실에서 바로 오지만, 층 1의 기울기는 이 곱셈을 <b>19번</b> 거친 값입니다. 가중치를 무시하고 σ′의 최댓값만 곱해도 0.25<sup>19</sup> ≈ 3.6 × 10<sup>−12</sup>입니다.</p>
+      <p>가중치를 크게 잡으면 될 것 같지만, 가중치가 크면 z도 커져 시그모이드가 <b>포화</b>되고 σ′는 더 작아집니다. 그래서 시그모이드만으로는 이 균형을 맞출 수 없습니다.</p>
       <figure class="fig">
         <div class="svgbox"><svg id="sgPlot" viewBox="0 0 640 220" role="img" aria-label="시그모이드, tanh, ReLU의 도함수 그래프"></svg></div>
         <div class="keyrow">
@@ -708,14 +800,21 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
           <span><span class="sw ln" style="background:var(--fix)"></span>ReLU′(z), 양수에서 1</span>
           <span>주황 배경 = |z| &gt; 4, σ′ &lt; 0.018인 포화 구간</span>
         </div>
-        <figcaption>tanh는 최대 기울기가 1이고 0을 중심으로 대칭이라 시그모이드보다 낫지만 역시 양쪽에서 포화됩니다. ReLU는 양수 구간에서 기울기가 정확히 1이라 곱해도 줄지 않습니다. 대신 음수 구간은 0이라, 입력이 계속 음수인 뉴런은 영영 학습되지 않습니다(죽은 ReLU).</figcaption>
+        <figcaption><b>tanh</b>는 최대 기울기가 1이고 0 중심이라 시그모이드보다 낫지만, 역시 양쪽에서 포화됩니다. <b>ReLU</b>는 양수 구간의 기울기가 정확히 1이라 곱해도 줄지 않는 대신, 입력이 계속 음수인 뉴런은 학습되지 않습니다(죽은 ReLU).</figcaption>
       </figure>
     </div>
 
     <div class="demo" id="demo-vanish">
       <div class="demo-head">
         <div class="t"><span class="badge b-lab">실험 3</span> 20층 신경망을 직접 학습해 층별 기울기와 가중치 변화 재기 <span class="tag-ex">예시 데이터 · 입력 8개, 이진 분류 512개</span></div>
-        <div class="how">가중치 층 20개(은닉층 19개 × 뉴런 32개 + 출력층)인 신경망을 이 페이지에서 직접 만들어, 학습 전 층별 기울기 노름 ‖∂L/∂Wₗ‖과 미니배치 64개로 200스텝 학습한 뒤의 가중치 변화율 ‖Wₗ − Wₗ⁽⁰⁾‖ / ‖Wₗ⁽⁰⁾‖을 잽니다. 둘 다 로그 축입니다. 시그모이드에서 출발해 활성화, 초기화, 잔차 연결, 옵티마이저를 하나씩 바꿔 보세요. 학습률은 SGD 0.1, Adam 0.001로 고정했습니다.</div>
+        <div class="how">
+          <p>가중치 층 20개(은닉층 19개 × 뉴런 32개 + 출력층)인 신경망을 이 페이지에서 직접 학습해 두 값을 잽니다. 둘 다 <b>로그 축</b>입니다.</p>
+          <ul>
+            <li><b>학습 전 층별 기울기 노름</b> ‖∂L/∂Wₗ‖</li>
+            <li><b>200스텝 학습 후 가중치 변화율</b> ‖Wₗ − Wₗ⁽⁰⁾‖ / ‖Wₗ⁽⁰⁾‖ (미니배치 64개)</li>
+          </ul>
+          <p>시그모이드에서 출발해 <b>활성화, 초기화, 잔차 연결, 옵티마이저</b>를 하나씩 바꿔 보세요. 학습률은 SGD 0.1, Adam 0.001로 고정했습니다.</p>
+        </div>
       </div>
       <div class="ctrls">
         <label for="vnA" style="font-weight:600">은닉층 활성화</label>
@@ -802,18 +901,42 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
       <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
       <div class="pair">
         <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline"><code>update_ratio = gradient_norm / (parameter_norm + 1e-12)</code> … 입력층에 가까워질수록 gradient와 ratio가 지수적으로 작아진다면 기울기 소실의 강한 증거입니다.</span></span>
-        <span class="now"><span class="lbl-now">정정</span>이 값은 <b>기울기/가중치 비율</b>이지 갱신 비율이 아닙니다. 실제 갱신량은 학습률과 옵티마이저가 정합니다. SGD라면 ‖ΔW‖ = 학습률 × ‖grad‖라서 두 비율이 비례하지만, <b>Adam은 기울기를 그 크기의 이동 평균으로 나누므로</b> 기울기가 작아도 갱신은 덜 작아집니다. 그래서 "입력층 가중치가 거의 그대로"라는 증상을 확인하려면 위 코드처럼 <code>step()</code> 전후 가중치 차이로 ‖ΔW‖/‖W‖를 직접 재야 합니다. 다만 Adam의 보상에도 한계가 있습니다. 분모에 더하는 ε(기본 10⁻⁸)보다 기울기가 작아지면 갱신도 함께 작아지고, 기울기가 잡음처럼 부호가 흔들리면 이동 평균이 상쇄되어 줄어듭니다. 실험 3에서 SGD와 Adam의 변화율 비를 비교해 보세요.</span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>이 값은 <b>기울기 / 가중치 비율</b>이지 갱신 비율이 아닙니다. 실제 갱신량은 학습률과 옵티마이저가 정합니다.</p>
+          <ul>
+            <li><b>SGD</b>: ‖ΔW‖ = 학습률 × ‖grad‖라서 두 비율이 비례한다.</li>
+            <li><b>Adam</b>: 기울기를 그 크기의 이동 평균으로 나누므로, 기울기가 작아도 갱신은 덜 작아진다.</li>
+          </ul>
+          <p>그래서 "입력층 가중치가 거의 그대로"라는 증상은 위 코드처럼 <code>step()</code> 전후 가중치 차이로 ‖ΔW‖/‖W‖를 <b>직접</b> 재서 확인해야 합니다.</p>
+          <p>다만 Adam의 보상에도 한계가 있습니다. 기울기가 분모에 더하는 <b>ε(기본 10⁻⁸)</b>보다 작아지거나, 부호가 잡음처럼 흔들려 이동 평균이 상쇄되면 갱신도 다시 작아집니다. 실험 3에서 SGD와 Adam의 변화율 비를 비교해 보세요.</p>
+        </div>
       </div>
     </div>
 
-    <div class="mini">
-      <div class="card add"><div class="k">보충 · 출력층 근처만 학습되는 이유</div><h4>마지막 층은 곱셈을 거의 안 거친다</h4><p>출력층의 기울기는 손실에서 한 번만 곱해져 내려오므로 크기가 정상입니다. 그래서 겉으로는 loss가 조금씩 줄어 "학습은 된다"고 보이지만, 실제로는 무작위로 초기화된 앞쪽 19개 층의 출력 위에서 마지막 몇 층만 맞추고 있는 상태입니다. 깊이의 이점을 전혀 못 쓰는 셈입니다.</p></div>
-      <div class="card add"><div class="k">보충 · 시그모이드의 두 번째 문제</div><h4>출력이 항상 양수다</h4><p>시그모이드 출력은 0~1이라 평균이 0.5입니다. 다음 층 가중치의 기울기는 (뒤에서 온 기울기) × (이 입력)인데 입력이 모두 양수면 한 뉴런으로 들어가는 가중치들의 기울기 부호가 모두 같아집니다. 그래서 갱신이 지그재그로 움직여 느려집니다. tanh가 시그모이드보다 나은 이유가 0 중심이라는 점이고, Glorot &amp; Bengio(2010)도 시그모이드 깊은 망에서 위쪽 층이 0 근처로 포화되는 현상을 보고했습니다.</p></div>
-      <div class="card add"><div class="k">보충 · 시그모이드가 맞는 자리</div><h4>출력층과 게이트</h4><p>이진 분류 출력층, LSTM·GRU의 게이트, 어텐션 마스크처럼 "0~1 사이의 비율"이 필요한 곳에서는 시그모이드가 정답입니다. 문제는 깊이 방향으로 반복해서 곱해지는 은닉층에 쓰는 것입니다. 참고로 LSTM은 셀 상태를 더하기로 전달해 시간 방향의 기울기 소실을 줄인 구조입니다.</p></div>
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 출력층 근처만 학습되는 이유</div><h4>마지막 층은 곱셈을 거의 거치지 않는다</h4>
+        <p>출력층의 기울기는 손실에서 한 번만 곱해져 내려오므로 크기가 정상입니다. 그래서 loss가 조금씩 줄어 겉으로는 "학습은 된다"고 보입니다.</p>
+        <p>실제로는 <b>무작위로 초기화된 앞쪽 19개 층</b>의 출력 위에서 마지막 몇 층만 맞추고 있는 상태라, 깊이의 이점을 전혀 쓰지 못합니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 시그모이드의 두 번째 문제</div><h4>출력이 항상 양수다</h4>
+        <p>시그모이드 출력은 0~1이라 평균이 0.5입니다. 다음 층 가중치의 기울기는 (뒤에서 온 기울기) × (이 입력)이므로, 입력이 모두 양수면 한 뉴런으로 들어가는 가중치들의 <b>기울기 부호가 모두 같아집니다</b>. 그 결과 갱신이 지그재그로 움직여 느려집니다.</p>
+        <p><b>tanh</b>가 시그모이드보다 나은 이유가 바로 <b>0 중심</b>이라는 점입니다. Glorot &amp; Bengio(2010)도 시그모이드 깊은 망에서 위쪽 층이 포화되는 현상을 보고했습니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 시그모이드가 맞는 자리</div><h4>출력층과 게이트</h4>
+        <p>"0~1 사이의 비율"이 필요한 곳에서는 시그모이드가 정답입니다.</p>
+        <ul>
+          <li>이진 분류의 출력층</li>
+          <li>LSTM · GRU의 게이트</li>
+          <li>어텐션 마스크</li>
+        </ul>
+        <p>문제는 깊이 방향으로 반복해서 곱해지는 <b>은닉층</b>에 쓰는 것입니다. 참고로 LSTM은 셀 상태를 <b>더하기</b>로 전달해 시간 방향의 기울기 소실을 줄인 구조입니다.</p>
+      </div>
     </div>
 
     <div class="speech">
-      입력층 쪽 가중치만 거의 안 바뀐다면 시그모이드 때문에 생기는 기울기 소실을 가장 먼저 의심하겠습니다. 역전파는 층마다 시그모이드 미분값과 가중치를 곱하는데, 시그모이드 미분은 최대 0.25이고 출력이 0이나 1에 가까우면 거의 0이라서, 20층을 지나면 입력층 기울기가 지수적으로 작아집니다. 확인은 loss.backward 직후 층별 기울기 노름을 찍어서 출력층에서 입력층으로 갈수록 로그 축에서 직선처럼 줄어드는지 보고, optimizer.step 전후 가중치 차이로 실제 갱신 비율도 재겠습니다. 활성화 히스토그램에서 출력이 0과 1에 몰려 있는지도 보고, grad가 None인 경우는 그래프가 끊긴 다른 문제이니 따로 구분하겠습니다. 해결은 은닉층을 ReLU나 GELU로 바꾸고 He 초기화를 쓰고, 잔차 연결과 배치나 레이어 정규화를 넣는 것입니다. 시그모이드는 출력층에만 두고 BCEWithLogitsLoss로 묶겠습니다. 기울기 클리핑은 폭발 대책이라 이 문제의 해결책은 아닙니다.
+      <p>입력층 쪽 가중치만 거의 안 바뀐다면 시그모이드 때문에 생기는 <b>기울기 소실</b>을 가장 먼저 의심하겠습니다. 역전파는 층마다 시그모이드 미분값과 가중치를 곱하는데, 시그모이드 미분은 최대 0.25이고 출력이 0이나 1에 가까우면 거의 0이라서, 20층을 지나면 입력층 기울기가 지수적으로 작아집니다.</p>
+      <p>확인은 loss.backward 직후 <b>층별 기울기 노름</b>을 찍어서, 출력층에서 입력층으로 갈수록 로그 축에서 직선처럼 줄어드는지 봅니다. optimizer.step 전후 가중치 차이로 <b>실제 갱신 비율</b>도 재고, 활성화가 0과 1에 몰려 있는지도 보겠습니다. grad가 None인 경우는 그래프가 끊긴 다른 문제라 따로 구분하겠습니다.</p>
+      <p>해결은 은닉층을 <b>ReLU나 GELU</b>로 바꾸고 <b>He 초기화</b>를 쓰고, <b>잔차 연결</b>과 배치나 레이어 정규화를 넣는 것입니다. 시그모이드는 출력층에만 두고 BCEWithLogitsLoss로 묶겠습니다. 기울기 클리핑은 폭발 대책이라 이 문제의 해결책은 아닙니다.</p>
     </div>
 
     <div class="block">
@@ -827,7 +950,12 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
     <div class="qhead"><div class="qnum iv">면접 2</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>100만 개의 학습 데이터를 GPU 메모리에 한 번에 다 올릴 수 없는 상황이에요. 배치 크기를 어떻게 정할 건가요? 배치 크기를 아주 작게 잡는 것과 아주 크게 잡는 것 각각의 문제도 함께 설명해 주세요.</h2></div></div>
 
     <div class="oneline"><small>한 줄 요약</small>
-      데이터 전체를 GPU에 올릴 필요는 없다. 데이터는 디스크·CPU 메모리에 두고 <b>미니배치만</b> GPU로 보낸다. 배치 크기는 데이터 수가 아니라 <mark>GPU 메모리 = 고정 부분(파라미터·기울기·옵티마이저 상태) + 배치에 비례하는 활성화</mark>, 처리량, 학습 안정성으로 정한다. 2의 거듭제곱으로 늘리며 최대 메모리와 초당 샘플 수를 재고, 원하는 유효 배치가 안 들어가면 <b>기울기 누적·AMP·활성화 체크포인팅</b>을 쓴다. <mark>배치를 바꾸면 학습률도 다시 맞춘다.</mark> 너무 작으면 GPU가 놀고 기울기 잡음이 크며, 너무 크면 에포크당 업데이트가 줄고 어느 지점부터는 배치를 키워도 학습이 빨라지지 않는다.
+      <p>데이터 전체를 GPU에 올릴 필요는 없다. 데이터는 디스크 · CPU 메모리에 두고 <b>미니배치만</b> GPU로 보낸다. 배치 크기는 데이터 수가 아니라 다음 두 가지로 정한다.</p>
+      <ul>
+        <li><mark>GPU 메모리</mark> = 배치와 무관한 고정 부분(파라미터 · 기울기 · 옵티마이저 상태) + <b>배치에 비례하는 활성화</b></li>
+        <li><b>처리량</b>(초당 샘플 수)과 <b>학습 안정성 · 검증 성능</b></li>
+      </ul>
+      <p>2의 거듭제곱으로 늘리며 최대 메모리와 처리량을 재고, 원하는 유효 배치가 안 들어가면 <b>기울기 누적 · AMP · 활성화 체크포인팅</b>을 쓴다. 그리고 <mark>배치를 바꾸면 학습률도 다시 맞춘다.</mark></p>
     </div>
 
     <div class="part">1 · 그림·표·실험</div>
@@ -842,7 +970,14 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
     <div class="demo" id="demo-mem">
       <div class="demo-head">
         <div class="t"><span class="badge b-lab">실험 4</span> GPU 메모리에 들어가는 배치 크기 계산하기 <span class="tag-ex">예시 · 단순화한 메모리 모델</span></div>
-        <div class="how">학습 중 GPU 메모리를 <b>파라미터 + 기울기 + 옵티마이저 상태</b>(배치와 무관)와 <b>활성화</b>(배치에 비례)로 나눠 계산합니다. FP32 기준 파라미터 하나당 SGD(모멘텀)는 4 + 4 + 4 = 12바이트, Adam은 모멘트 두 개가 붙어 4 + 4 + 8 = 16바이트입니다. 샘플당 활성화 메모리는 모델·입력 크기마다 크게 달라서 직접 재야 하는 값이므로 슬라이더로 둡니다. AMP는 PyTorch autocast 기준으로 파라미터·기울기·옵티마이저 상태는 FP32 그대로, 활성화가 약 절반이 된다고 가정했고, 체크포인팅은 활성화를 35%만 저장하고 순전파를 한 번 더 한다고 가정했습니다. CUDA 컨텍스트와 할당기 단편화 몫으로 1.5GB를 남깁니다.</div>
+        <div class="how">
+          <p>학습 중 GPU 메모리를 두 부분으로 나눠 계산합니다.</p>
+          <ul>
+            <li><b>배치와 무관</b>: 파라미터 + 기울기 + 옵티마이저 상태. FP32 기준 파라미터 하나당 SGD(모멘텀)는 4 + 4 + 4 = <b>12바이트</b>, Adam은 모멘트 두 개가 붙어 4 + 4 + 8 = <b>16바이트</b>입니다.</li>
+            <li><b>배치에 비례</b>: 활성화. 모델과 입력 크기마다 크게 달라 직접 재야 하는 값이므로 슬라이더로 둡니다.</li>
+          </ul>
+          <p class="muted">가정: AMP는 PyTorch autocast 기준으로 파라미터 · 기울기 · 옵티마이저 상태는 FP32 그대로이고 활성화만 약 절반이 됩니다. 체크포인팅은 활성화를 35%만 저장하고 순전파를 한 번 더 합니다. CUDA 컨텍스트와 할당기 단편화 몫으로 1.5GB를 남깁니다.</p>
+        </div>
       </div>
       <div class="sl3">
         <label for="mmP">모델 파라미터 수<select id="mmP"><option value="11.7">1,170만 (ResNet-18 규모)</option><option value="25.6" selected>2,560만 (ResNet-50 규모)</option><option value="110">1억 1천만 (BERT-base 규모)</option><option value="350">3억 5천만</option></select></label>
@@ -876,7 +1011,16 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
     <div class="demo" id="demo-batch">
       <div class="demo-head">
         <div class="t"><span class="badge b-lab">실험 5</span> 배치 크기와 학습률 규칙을 바꿔 같은 데이터로 학습하기 <span class="tag-ex">예시 데이터 · 특징 20개 로지스틱 회귀, 학습 8,192개 · 검증 4,096개</span></div>
-        <div class="how">배치 크기 6가지 × 학습률 규칙 3가지를 이 페이지에서 미니배치 SGD로 학습하고(무작위 시작 3번 평균) 검증 loss를 비교합니다. 기준 학습률은 배치 32에서 0.05이고, <b>고정</b>은 배치와 상관없이 0.05, <b>선형 스케일링</b>은 배치에 비례(Goyal 외, 2017), <b>제곱근 스케일링</b>은 √배치에 비례합니다. 오른쪽 그림은 학습 중간 지점에서 뽑은 미니배치 기울기가 전체 데이터 기울기와 얼마나 같은 방향인지(코사인 유사도, 200번 평균)입니다. 특징마다 척도가 0.3~3배로 달라 안정적으로 쓸 수 있는 학습률에 상한이 있습니다. 모델이 볼록 문제라 과적합은 거의 없고, 이 실험은 <b>최적화 속도와 기울기 잡음</b>만 보여 줍니다.</div>
+        <div class="how">
+          <p>배치 크기 6가지 × 학습률 규칙 3가지를 이 페이지에서 미니배치 SGD로 학습하고(무작위 시작 3번 평균) 검증 loss를 비교합니다. 기준은 <b>배치 32에서 학습률 0.05</b>입니다.</p>
+          <ul>
+            <li><b>고정</b>: 배치와 상관없이 0.05</li>
+            <li><b>선형 스케일링</b>: 배치에 비례 (Goyal 외, 2017)</li>
+            <li><b>제곱근 스케일링</b>: √배치에 비례</li>
+          </ul>
+          <p>오른쪽 그림은 학습 중간 지점에서 뽑은 미니배치 기울기가 전체 데이터 기울기와 얼마나 같은 방향인지(<b>코사인 유사도</b>, 200번 평균)입니다.</p>
+          <p class="muted">특징마다 척도가 0.3~3배로 달라 안정적으로 쓸 수 있는 학습률에 상한이 있습니다. 볼록 문제라 과적합은 거의 없으므로, 이 실험은 최적화 속도와 기울기 잡음만 보여 줍니다.</p>
+        </div>
       </div>
       <div class="ctrls">
         <label for="btE" style="font-weight:600">학습 에포크</label>
@@ -969,26 +1113,58 @@ for step, (x, y) in enumerate(loader, start=1):
       <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
       <div class="pair">
         <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">GPU 메모리가 부족할 때의 해결책 … 추가 방법: <code>pin_memory=True</code>, <code>non_blocking=True</code>로 데이터 전송 최적화, 데이터 로딩과 GPU 연산을 겹치도록 prefetch 적용</span></span>
-        <span class="now"><span class="lbl-now">정정</span>이 세 가지는 <b>GPU 메모리를 줄이지 않습니다.</b> 고정(페이지 잠금) CPU 메모리에서 GPU로 비동기 전송해 데이터 대기 시간을 줄이는 <b>속도 최적화</b>이고, prefetch는 다음 배치를 미리 준비하므로 메모리를 오히려 조금 더 씁니다. 메모리를 줄이는 방법은 마이크로 배치 축소 + 기울기 누적, AMP, 활성화 체크포인팅, 입력 크기 축소, 그리고 고정 부분을 나누는 FSDP·ZeRO와 8비트 옵티마이저입니다.</span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>이 세 가지는 <b>GPU 메모리를 줄이지 않습니다.</b> 고정(페이지 잠금) CPU 메모리에서 GPU로 비동기 전송해 대기 시간을 줄이는 <b>속도 최적화</b>입니다. prefetch는 다음 배치를 미리 준비하므로 메모리를 오히려 조금 더 씁니다.</p>
+          <p>실제로 메모리를 줄이는 방법은 다음과 같습니다.</p>
+          <ul>
+            <li>마이크로 배치 축소 + <b>기울기 누적</b></li>
+            <li><b>AMP</b>, <b>활성화 체크포인팅</b>, 입력 크기 축소</li>
+            <li>고정 부분을 GPU 여러 대에 나누는 <b>FSDP · ZeRO</b>, 8비트 옵티마이저</li>
+          </ul>
+        </div>
       </div>
       <div class="pair">
         <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">큰 배치는 입력·활성화·기울기를 저장하기 위해 더 많은 GPU 메모리가 필요하고</span></span>
-        <span class="now"><span class="lbl-now">정정</span>배치에 비례하는 것은 <b>입력과 활성화(그리고 역전파 중의 활성화 기울기)</b>입니다. 파라미터의 기울기는 파라미터와 같은 크기라 배치가 1이든 1,000이든 같습니다. 배치를 늘릴 때 더 드는 메모리를 정확히 예측하려면 고정 부분과 배치 비례 부분을 나눠 생각해야 합니다(실험 4).</span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>배치에 비례하는 것은 <b>입력과 활성화</b>(그리고 역전파 중의 활성화 기울기)입니다. <b>파라미터 기울기</b>는 파라미터와 크기가 같아서 배치가 1이든 1,000이든 같습니다(실험 4).</p>
+        </div>
       </div>
       <div class="pair">
         <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline"><code>DataLoader</code>가 작은 미니배치만 순서대로 GPU에 전달하도록 구성합니다.</span></span>
-        <span class="now"><span class="lbl-now">정정</span><code>DataLoader</code>는 <b>CPU에서</b> 배치를 만들어 돌려줄 뿐이고, GPU로 옮기는 것은 학습 루프의 <code>.to(device)</code>입니다. 또 100만 개가 CPU 메모리에도 다 들어가지 않으면 <code>Dataset.__getitem__</code>이 필요한 샘플만 디스크에서 읽도록(메모리 매핑, 샤드 파일 스트리밍) 만들어야 합니다.</span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span><code>DataLoader</code>는 <b>CPU에서</b> 배치를 만들어 돌려줄 뿐이고, GPU로 옮기는 것은 학습 루프의 <code>.to(device)</code>입니다.</p>
+          <p>100만 개가 CPU 메모리에도 다 들어가지 않으면, <code>Dataset.__getitem__</code>이 필요한 샘플만 디스크에서 읽도록(메모리 매핑, 샤드 파일 스트리밍) 만들어야 합니다.</p>
+        </div>
       </div>
     </div>
 
-    <div class="mini">
-      <div class="card add"><div class="k">보충 · 학습률은 배치와 짝이다</div><h4>선형·제곱근 스케일링과 임계 배치</h4><p>SGD에서는 배치를 k배로 키우면 학습률도 k배로 하고 warm-up을 두는 선형 규칙이 출발점이고(Goyal 외, 2017), Adam 계열은 √k배가 이론적으로 더 맞다는 분석이 있습니다(Malladi 외, 2022). 어느 규칙이든 기울기 잡음이 충분히 작아지는 <b>임계 배치 크기</b>를 넘으면 배치를 키워도 필요한 스텝 수가 줄지 않습니다(McCandlish 외, 2018). 실험 5에서 선형 규칙이 큰 배치에서 무너지는 지점을 보세요.</p></div>
-      <div class="card add"><div class="k">보충 · 큰 배치의 일반화 논쟁</div><h4>배치 탓인가, 스텝 수 탓인가</h4><p>Keskar 외(2017)는 큰 배치가 날카로운 최솟값으로 가서 일반화가 나쁘다고 보고했지만, Hoffer 외(2017)와 Shallue 외(2018)는 학습률을 다시 맞추고 스텝 수를 충분히 주면 격차 대부분이 사라진다는 결과를 냈습니다. 그래서 "큰 배치는 일반화가 나쁘다"보다 "같은 에포크·같은 학습률로 비교하면 나빠 보인다"가 정확합니다.</p></div>
-      <div class="card add"><div class="k">보충 · 메모리를 잘못 재는 흔한 실수</div><h4>nvidia-smi와 짧은 입력</h4><p><code>nvidia-smi</code>는 PyTorch 캐싱 할당기가 잡아 둔 양(reserved)을 보여 주므로 실제 사용량(allocated)보다 큽니다. <code>torch.cuda.max_memory_allocated()</code>로 재고, 문장 길이나 이미지 크기가 변하는 데이터는 가장 긴 입력으로 시험해야 학습 도중 OOM이 나지 않습니다. 길이가 비슷한 샘플끼리 묶는 버킷팅도 낭비를 줄입니다.</p></div>
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 학습률은 배치와 짝이다</div><h4>스케일링 규칙과 임계 배치 크기</h4>
+        <ul>
+          <li><b>SGD</b>: 배치를 k배로 키우면 학습률도 k배로 하고 warm-up을 둔다 (선형 규칙, Goyal 외 2017)</li>
+          <li><b>Adam 계열</b>: √k배가 이론적으로 더 맞다는 분석이 있다 (Malladi 외 2022)</li>
+        </ul>
+        <p>어느 규칙이든 기울기 잡음이 충분히 작아지는 <b>임계 배치 크기</b>를 넘으면, 배치를 키워도 필요한 스텝 수가 줄지 않습니다(McCandlish 외 2018). 실험 5에서 선형 규칙이 무너지는 지점을 확인해 보세요.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 큰 배치의 일반화 논쟁</div><h4>배치 탓인가, 스텝 수 탓인가</h4>
+        <ul>
+          <li><b>Keskar 외(2017)</b>: 큰 배치는 날카로운 최솟값으로 가서 일반화가 나쁘다.</li>
+          <li><b>Hoffer 외(2017), Shallue 외(2018)</b>: 학습률을 다시 맞추고 스텝 수를 충분히 주면 격차 대부분이 사라진다.</li>
+        </ul>
+        <p>그래서 "큰 배치는 일반화가 나쁘다"보다 <b>"같은 에포크 · 같은 학습률로 비교하면 나빠 보인다"</b>가 정확합니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 메모리를 잘못 재는 흔한 실수</div><h4>nvidia-smi와 짧은 입력</h4>
+        <ul>
+          <li><b>nvidia-smi</b>는 PyTorch 캐싱 할당기가 잡아 둔 양(reserved)을 보여 줘서 실제 사용량보다 큽니다. <code>torch.cuda.max_memory_allocated()</code>로 잽니다.</li>
+          <li><b>가변 길이 데이터</b>는 가장 긴 입력으로 시험해야 학습 도중 OOM이 나지 않습니다. 길이가 비슷한 샘플끼리 묶는 <b>버킷팅</b>도 낭비를 줄입니다.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="speech">
-      100만 개를 GPU에 다 올릴 필요는 없습니다. 데이터는 디스크나 CPU 메모리에 두고 DataLoader가 CPU에서 미니배치를 만들면, 학습 루프에서 그 배치만 GPU로 옮깁니다. 배치 크기는 데이터 수가 아니라 GPU 메모리로 먼저 정합니다. 학습 메모리는 파라미터, 기울기, 옵티마이저 상태처럼 배치와 무관한 부분과 배치에 비례하는 활성화로 나뉘기 때문에, 배치를 16, 32, 64로 두 배씩 늘리면서 가장 긴 입력으로 최대 메모리와 초당 샘플 수를 재고, 처리량이 더 늘지 않거나 OOM 직전인 값보다 여유 있게 고릅니다. 원하는 유효 배치가 안 들어가면 기울기 누적과 AMP, 활성화 체크포인팅을 씁니다. 배치가 너무 작으면 GPU를 다 못 쓰고 기울기 잡음이 커서 학습이 느리고 배치 정규화도 불안정합니다. 너무 크면 메모리가 부족하고, 에포크당 업데이트 수가 줄어서 학습률을 키워야 하는데 어느 지점부터는 키워도 빨라지지 않습니다. 그래서 배치를 바꾸면 학습률과 warm-up을 검증 데이터로 다시 맞추겠습니다.
+      <p>100만 개를 GPU에 다 올릴 필요는 없습니다. 데이터는 디스크나 CPU 메모리에 두고, DataLoader가 CPU에서 만든 <b>미니배치만</b> 학습 루프에서 GPU로 옮깁니다.</p>
+      <p>배치 크기는 <b>GPU 메모리</b>로 먼저 정합니다. 학습 메모리는 파라미터, 기울기, 옵티마이저 상태처럼 배치와 무관한 부분과 배치에 비례하는 활성화로 나뉩니다. 그래서 배치를 16, 32, 64로 두 배씩 늘리면서 가장 긴 입력으로 최대 메모리와 초당 샘플 수를 재고, 처리량이 더 늘지 않거나 OOM 직전인 값보다 여유 있게 고릅니다. 원하는 유효 배치가 안 들어가면 <b>기울기 누적, AMP, 활성화 체크포인팅</b>을 씁니다.</p>
+      <p>배치가 <b>너무 작으면</b> GPU를 다 못 쓰고 기울기 잡음이 커서 학습이 느리고, 배치 정규화도 불안정합니다. <b>너무 크면</b> 메모리가 부족하고 에포크당 업데이트 수가 줄어 학습률을 키워야 하는데, 어느 지점부터는 키워도 빨라지지 않습니다. 그래서 배치를 바꾸면 <b>학습률과 warm-up</b>을 검증 데이터로 다시 맞추겠습니다.</p>
     </div>
 
     <div class="block">
@@ -1093,9 +1269,10 @@ safe("graph",function(){
     $("#dgTF").textContent=tried.size+"개 / 1개";
     const mism=Math.abs(num-auto)>1e-3*Math.max(1,Math.abs(auto));
     let msg="x = "+minus(x.toFixed(1))+"에서는 while이 "+R.k+"번 돌고 "+(R.br?"h > 0":"h ≤ 0")+" 쪽 분기로 가서, 연산 "+(R.k+1)+"개가 기록됐습니다. x를 바꾸면 그래프의 길이와 마지막 연산이 바뀝니다. PyTorch는 호출할 때마다 이렇게 그래프를 새로 만들고 backward() 뒤에 버리므로 Python의 while·if를 그대로 쓸 수 있습니다. ";
+    msg+="\n";
     if(mism)msg+="이번에는 autograd 미분("+fv(auto)+")과 수치 미분("+fv(num)+")이 다릅니다. x가 |x|·2ᵏ = 4가 되는 경계(±0.5, ±1, ±2)에 있으면 ε만큼만 움직여도 반복 횟수가 바뀌어 f 자체가 끊어지기 때문입니다. autograd는 '이번에 실행된 경로'의 미분만 돌려주고, 경로가 바뀌는 지점의 불연속은 알지 못합니다. ";
     else msg+="autograd 미분과 수치 미분이 일치합니다("+fv(auto)+"). ";
-    msg+="같은 함수를 TensorFlow @tf.function으로 감싸면 Python 숫자 인수는 값이 바뀔 때마다 새로 추적해 지금까지 그래프 "+tried.size+"개를 만들었고, 텐서 인수(tf.constant)는 dtype·shape가 같은 한 그래프 1개를 재사용합니다. 텐서 조건의 while·if는 AutoGraph가 tf.while_loop·tf.cond로 바꿔 그래프 안에 넣습니다.";
+    msg+="\n같은 함수를 TensorFlow @tf.function으로 감싸면 Python 숫자 인수는 값이 바뀔 때마다 새로 추적해 지금까지 그래프 "+tried.size+"개를 만들었고, 텐서 인수(tf.constant)는 dtype·shape가 같은 한 그래프 1개를 재사용합니다. 텐서 조건의 while·if는 AutoGraph가 tf.while_loop·tf.cond로 바꿔 그래프 안에 넣습니다.";
     $("#dgMsg").textContent=msg;}
   $("#dgX").addEventListener("input",()=>safe("dg",render));
   $("#dgReset").addEventListener("click",()=>{tried.clear();render();});
@@ -1140,7 +1317,7 @@ safe("share",function(){
     let msg=conv.why+" ";
     if(shared)msg+="지금 a와 t는 같은 메모리라 한쪽의 제자리 수정이 다른 쪽에 그대로 보입니다. 전처리 배열을 텐서로 바꾼 뒤 원본을 재사용하면 학습 데이터가 몰래 바뀌는 버그가 생길 수 있습니다.";
     else msg+="지금 a와 t는 서로 다른 메모리라 한쪽을 바꿔도 다른 쪽은 그대로입니다. 대신 복사하는 시간과 메모리가 듭니다.";
-    if(td==="float64")msg+=" t가 float64라서 이대로 float32 모델(nn.Linear 등)에 넣으면 dtype 오류가 납니다.";
+    if(td==="float64")msg+="\nt가 float64라서 이대로 float32 모델(nn.Linear 등)에 넣으면 dtype 오류가 납니다.";
     $("#shMsg").textContent=msg;}
   $("#shS").addEventListener("change",reset);$("#shC").addEventListener("change",reset);$("#shR").addEventListener("click",reset);
   $("#shA").addEventListener("click",()=>{a[0]=10;log.push({in:"a[0] = 10"});render();});
@@ -1244,7 +1421,7 @@ safe("vanish",function(){
     return cache[key]={gn,rel,sat:satC/satN,loss0:g0.loss,acc0:g0.acc,loss1:g1.loss,acc1:g1.acc,diverged};}
   function chart(svg,vals,cls){clear(svg);const Lx=42,Rx=312,Ty=10,By=176;
     const lv=[];for(let l=1;l<=L;l++){const v=vals[l];lv[l]=(isFinite(v)&&v>0)?Math.log10(v):(v===0?-300:300);}
-    const fin=lv.slice(1).filter(v=>Math.abs(v)<300);let lo=Math.floor(Math.min(...fin)),hi=Math.ceil(Math.max(...fin));if(hi-lo<2){lo-=1;hi+=1;}
+    const fin=lv.slice(1).filter(v=>Math.abs(v)<300);let lo=fin.length?Math.floor(Math.min(...fin)):-1,hi=fin.length?Math.ceil(Math.max(...fin)):1;if(hi-lo<2){lo-=1;hi+=1;}
     const sx=l=>Lx+(l-1)/(L-1)*(Rx-Lx),sy=v=>By-(Math.max(lo,Math.min(hi,v))-lo)/(hi-lo)*(By-Ty);
     const stepT=Math.max(1,Math.ceil((hi-lo)/6));
     for(let v=lo;v<=hi;v+=stepT){el("line",{x1:Lx,y1:sy(v),x2:Rx,y2:sy(v),class:"gl"},svg);el("text",{x:Lx-5,y:sy(v)+4,"text-anchor":"end","font-size":10.5,class:"mut"},svg,"10"+sup(v));}
@@ -1264,26 +1441,27 @@ safe("vanish",function(){
     const name={sigmoid:"시그모이드",tanh:"tanh",relu:"ReLU"}[actK],iname={xavier:"Xavier",he:"He",big:"표준정규"}[initK];
     let msg=name+" · "+iname+" 초기화 · 잔차 "+(res?"있음":"없음")+" · "+(optK==="sgd"?"SGD":"Adam")+". ";
     const learned=!S.diverged&&S.acc1>BASE+0.1;
-    const accTxt=" 훈련 정확도는 "+pct(S.acc1)+"(다수 클래스 기준선 "+pct(BASE)+")입니다.";
+    const accTxt="\n훈련 정확도는 "+pct(S.acc1)+"(다수 클래스 기준선 "+pct(BASE)+")입니다.";
     if(S.loss0>20&&!S.diverged)msg+="표준정규 초기화는 ReLU에서 층마다 신호를 약 √(32/2) = 4배씩 키워, 학습 전 loss부터 "+sci(S.loss0)+"입니다(순전파 값 폭주). 기울기 노름 비("+sci(gr)+")는 고르지만 모든 층의 값이 비정상적으로 큽니다. Adam은 한 스텝의 갱신 크기를 학습률 정도로 제한해 NaN은 피했지만 학습 후 loss도 "+sci(S.loss1)+"입니다. 초기화를 He처럼 분산을 유지하는 값으로 줄여야 합니다."+accTxt;
     else if(S.diverged)msg+="학습 중 가중치나 loss가 무한대·NaN으로 터졌습니다. 초기 가중치가 커서 층마다 신호가 증폭됐고(학습 전 loss "+sci(S.loss0)+"), 큰 기울기로 갱신하다 값이 터진 기울기 폭발입니다. 이때가 초기화 축소, 학습률 낮추기, 기울기 클리핑이 필요한 상황입니다.";
     else if(res&&actK==="sigmoid"){const N=train(actK,initK,false,optK);
       const od=Math.log10(gr/(N.gn[1]/N.gn[L]));
       msg+="잔차 연결의 항등 경로 덕분에 기울기 노름 비("+sci(gr)+")가 잔차가 없을 때("+sci(N.gn[1]/N.gn[L])+")보다 "+(od>=1.5?"약 "+Math.round(od)+"자릿수 커졌고":"조금 커졌고")+", 층 1도 실제로 바뀝니다(변화율 비 "+sci(ur)+"). 그런데 "+(learned?"학습은 되지만 느립니다(loss "+f3(S.loss0)+" → "+f3(S.loss1)+").":"정확도는 기준선 수준에 머뭅니다(loss "+f3(S.loss0)+" → "+f3(S.loss1)+").")+" 시그모이드 출력은 항상 양수라 잔차 경로에 층마다 값이 쌓여, 학습 전 loss부터 높기 때문입니다. 기울기가 흐르는 것과 잘 학습되는 것은 별개라, 실제로는 활성화를 ReLU·tanh로 바꾸고 정규화 층을 함께 씁니다."+accTxt;}
     else if(gr<1e-2){msg+="학습 전부터 층 1의 기울기가 층 20의 "+sci(gr)+"배입니다. 왼쪽 그림에서 입력 쪽으로 갈수록 로그 축에서 거의 직선으로 떨어지는 것이 기울기 소실의 전형적인 모양입니다. ";
+      msg+="\n";
       if(optK==="sgd")msg+="SGD는 갱신량이 기울기에 비례하므로 200스텝 뒤 층 1의 가중치 변화율은 층 20의 "+sci(ur)+"배"+(ur<1e-3?"에 그칩니다. 질문의 '입력층 가중치가 거의 그대로'인 상태입니다.":"입니다.");
       else{const ge=S.gn[1]/Math.sqrt(D0*H);
         msg+="Adam은 기울기를 그 크기의 이동 평균으로 나누므로 변화율 비("+sci(ur)+")가 기울기 비("+sci(gr)+")보다 훨씬 덜 작습니다. ";
         msg+=ge<1e-8?"그래도 층 1 기울기의 원소 크기(약 "+sci(ge)+")가 분모의 ε = 10⁻⁸보다 작아 보상이 제한되고, 층 1은 여전히 거의 그대로입니다.":"층 1 기울기의 원소 크기(약 "+sci(ge)+")가 ε = 10⁻⁸보다는 커서 갱신 크기가 대부분 되살아났습니다. 다만 작은 기울기는 잡음에 묻히기 쉬워 근본 해결은 아닙니다.";}
       msg+=accTxt;
-      if(S.sat>0.15&&actK!=="relu")msg+=" 은닉 뉴런의 "+pct(S.sat)+"가 포화 상태라 그 뉴런의 미분이 거의 0입니다. 표준정규 초기화처럼 가중치가 크면 z가 커져 포화가 심해집니다.";}
+      if(S.sat>0.15&&actK!=="relu")msg+="\n은닉 뉴런의 "+pct(S.sat)+"가 포화 상태라 그 뉴런의 미분이 거의 0입니다. 표준정규 초기화처럼 가중치가 크면 z가 커져 포화가 심해집니다.";}
     else if(gr>1e3)msg+="층 1의 기울기가 층 20의 "+sci(gr)+"배로 입력 쪽이 지나치게 큽니다(기울기 폭발 경향). 은닉 뉴런의 "+pct(S.sat)+"가 포화돼 있어 학습도 불안정합니다(훈련 loss "+f3(S.loss0)+" → "+f3(S.loss1)+")."+accTxt;
     else if(learned){msg+="층 1과 층 20의 기울기 노름 비가 "+sci(gr)+"이므로 기울기가 깊이를 지나도 같은 자릿수로 전달됩니다. 200스텝 뒤 층 1의 변화율도 층 20의 "+sci(ur)+"배라 입력 쪽 층도 함께 학습됩니다. 훈련 loss는 "+f3(S.loss0)+" → "+f3(S.loss1)+"입니다."+accTxt;}
     else{msg+="층 1과 층 20의 기울기 노름 비("+sci(gr)+")는 고르지만 loss가 거의 줄지 않았습니다("+f3(S.loss0)+" → "+f3(S.loss1)+"). ";
       if(actK==="relu"&&initK==="xavier")msg+="Xavier 초기화는 ReLU에서 층마다 활성화 분산을 약 절반으로 줄여, 19층을 지나면 신호가 2⁻¹⁹ 수준으로 사라집니다. 출력이 거의 0이라 모든 층의 기울기가 함께 작습니다(층 20 기울기 노름 "+sci(S.gn[L])+"). 그래서 ReLU에는 분산을 유지하도록 2배 큰 He 초기화를 씁니다.";
       else msg+="기울기 비만으로는 충분하지 않고, 층별 기울기의 절대 크기(층 20 기울기 노름 "+sci(S.gn[L])+")와 loss 곡선을 함께 봐야 합니다.";
       msg+=accTxt;}
-    if(actK==="relu"&&S.sat>0.1&&!S.diverged)msg+=" 학습 전 기준으로 은닉 뉴런의 "+pct(S.sat)+"는 512개 샘플 모두에서 출력이 0인 죽은 뉴런이라 기울기를 전혀 전달하지 못합니다.";
+    if(actK==="relu"&&S.sat>0.1&&!S.diverged)msg+="\n학습 전 기준으로 은닉 뉴런의 "+pct(S.sat)+"는 512개 샘플 모두에서 출력이 0인 죽은 뉴런이라 기울기를 전혀 전달하지 못합니다.";
     $("#vnMsg").textContent=msg;}
   const go=()=>{$("#vnMsg").textContent="계산 중… (20층 신경망을 이 페이지에서 학습합니다)";later(render);};
   ["#vnA","#vnI","#vnR","#vnO"].forEach(s=>$(s).addEventListener("change",go));
@@ -1321,10 +1499,10 @@ safe("mem",function(){
     else if(!micro)msg="샘플 하나의 활성화("+(act*1024).toFixed(0)+"MB)도 남은 "+room.toFixed(2)+"GB에 들어가지 않습니다. 활성화 체크포인팅이나 AMP를 켜거나 입력 크기를 줄여 보세요.";
     else{msg="고정 부분 "+fix.toFixed(2)+"GB는 배치와 무관하고, 샘플 하나당 활성화 "+(act*1024).toFixed(1)+"MB만 배치에 비례합니다. 남은 "+room.toFixed(2)+"GB에 최대 "+fmtN(maxB)+"개가 들어가므로 마이크로 배치는 2의 거듭제곱인 "+micro+"개로 잡고";
       msg+=acc>1?", 목표 유효 배치 "+fmtN(tgt)+"개를 맞추려면 "+acc+"번 누적합니다. 누적은 메모리를 늘리지 않습니다. 계산량은 유효 배치를 한 번에 처리할 때와 같지만, 작은 배치로 순전파·역전파를 "+acc+"번 나눠 하므로 GPU 활용률에 따라 더 느릴 수 있습니다.":", 누적 없이 목표 유효 배치 "+fmtN(tgt)+"개를 맞춥니다.";
-      msg+=" 100만 개 데이터라면 에포크당 업데이트는 "+fmtN(Math.ceil(1e6/eff))+"번입니다.";
+      msg+="\n100만 개 데이터라면 에포크당 업데이트는 "+fmtN(Math.ceil(1e6/eff))+"번입니다.";
       if(!amp&&!ck&&acc>1)msg+=" AMP를 켜면 활성화가 줄어 누적 단계를 줄일 수 있습니다.";
       if(eff!==tgt)msg+=" (2의 거듭제곱으로 맞추느라 유효 배치가 목표와 조금 다릅니다.)";}
-    msg+=" 이 계산은 단순화한 모델이므로 실제 배치는 아래 코드처럼 측정해서 정합니다.";
+    msg+="\n이 계산은 단순화한 모델이므로 실제 배치는 아래 코드처럼 측정해서 정합니다.";
     $("#mmMsg").textContent=msg;}
   ["#mmP","#mmO","#mmG","#mmX","#mmT"].forEach(s=>$(s).addEventListener("change",()=>safe("mm",render)));
   $("#mmA").addEventListener("input",()=>safe("mm",render));
@@ -1386,11 +1564,11 @@ safe("batch",function(){
     $("#btBest").textContent=best?fmtN(best)+" ("+RS[rule][best].toFixed(4)+")":"–";
     const f=RS.fixed,li=RS.linear,sq=RS.sqrt;
     let msg="배치 8에서 미니배치 기울기의 코사인 유사도는 "+COS[8].toFixed(2)+", 배치 512에서 "+COS[512].toFixed(2)+"입니다. 배치가 작을수록 기울기 방향의 잡음이 크고, 커질수록 전체 기울기에 가까워지지만 그 개선은 점점 줄어듭니다. ";
-    msg+="학습률을 고정하면 배치 크기 "+fmtN(8192)+"에서는 "+E+"에포크 동안 업데이트를 "+E+"번밖에 못 해서 검증 loss("+(isFinite(f[8192])?f[8192].toFixed(3):"발산")+")가 배치 32("+f[32].toFixed(3)+")보다 나쁩니다. ";
+    msg+="\n학습률을 고정하면 배치 크기 "+fmtN(8192)+"에서는 "+E+"에포크 동안 업데이트를 "+E+"번밖에 못 해서 검증 loss("+(isFinite(f[8192])?f[8192].toFixed(3):"발산")+")가 배치 32("+f[32].toFixed(3)+")보다 나쁩니다. ";
     const liBad=BSET.filter(B=>!isFinite(li[B])||li[B]>li[32]+0.02);
-    if(liBad.length)msg+="선형 스케일링은 배치 "+liBad.map(fmtN).join("·")+"에서 학습률이 "+liBad.map(B=>+lrOf("linear",B).toPrecision(3)).join("·")+"까지 커져 "+(liBad.some(B=>!isFinite(li[B]))?"발산하거나 ":"")+"오히려 나빠집니다. 안정적으로 쓸 수 있는 학습률의 상한을 넘었기 때문으로, 배치를 키워도 학습이 빨라지지 않는 임계 배치 크기가 있다는 뜻입니다. ";
+    if(liBad.length)msg+="\n선형 스케일링은 배치 "+liBad.map(fmtN).join("·")+"에서 학습률이 "+liBad.map(B=>+lrOf("linear",B).toPrecision(3)).join("·")+"까지 커져 "+(liBad.some(B=>!isFinite(li[B]))?"발산하거나 ":"")+"오히려 나빠집니다. 안정적으로 쓸 수 있는 학습률의 상한을 넘었기 때문으로, 배치를 키워도 학습이 빨라지지 않는 임계 배치 크기가 있다는 뜻입니다. ";
     else msg+="선형 스케일링은 이 범위에서 큰 배치의 손해를 상당 부분 메웁니다. ";
-    msg+="제곱근 스케일링의 가장 좋은 배치는 "+(()=>{let b=null;for(const B of BSET)if(isFinite(sq[B])&&(b===null||sq[B]<sq[b]))b=B;return b?fmtN(b):"–";})()+"입니다. 어떤 규칙도 모든 배치에서 맞지 않으므로 배치를 바꾸면 학습률을 다시 탐색해야 합니다.";
+    msg+="\n제곱근 스케일링의 가장 좋은 배치는 "+(()=>{let b=null;for(const B of BSET)if(isFinite(sq[B])&&(b===null||sq[B]<sq[b]))b=B;return b?fmtN(b):"–";})()+"입니다. 어떤 규칙도 모든 배치에서 맞지 않으므로 배치를 바꾸면 학습률을 다시 탐색해야 합니다.";
     $("#btMsg").textContent=msg;}
   const go=()=>{$("#btMsg").textContent="계산 중…";later(render);};
   $("#btE").addEventListener("change",go);$("#btR").addEventListener("change",()=>safe("bt",render));$("#btB").addEventListener("change",()=>safe("bt",render));
