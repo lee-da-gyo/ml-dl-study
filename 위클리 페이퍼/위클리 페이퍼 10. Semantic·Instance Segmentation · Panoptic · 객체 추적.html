@@ -416,7 +416,7 @@ table.pcl{min-width:520px}
     <div class="oneline"><small>한 줄 요약</small>
       <p>두 문제는 <b>답의 단위</b>가 다르다.</p>
       <ul>
-        <li><b>"이 픽셀은 무엇인가"</b> → <mark>Semantic Segmentation</mark>: 모든 픽셀에 클래스를 하나씩 붙인다. 같은 클래스인 차 두 대는 한 덩어리 '차'가 된다.</li>
+        <li><b>"이 픽셀은 무엇인가"</b> → <mark>Semantic Segmentation</mark>: 모든 픽셀에 클래스를 하나씩 붙인다. 차 두 대는 둘 다 '차'로 칠해질 뿐, 몇 대인지는 구분하지 않는다.</li>
         <li><b>"이 픽셀은 어느 개체인가"</b> → <mark>Instance Segmentation</mark>: 차·사람처럼 셀 수 있는 물체(<b>things</b>)마다 마스크 한 장과 클래스·신뢰도를 낸다. 도로·하늘 같은 배경(<b>stuff</b>)은 출력하지 않는다.</li>
       </ul>
       <p>둘을 한 번에 얻으려면 모든 픽셀에 <b>(클래스, 개체 ID)</b>를 하나씩 주는 <b>Panoptic Segmentation</b>을 쓴다. 영상에서는 <b>객체 추적</b>이 프레임이 바뀌어도 같은 차에 같은 ID를 이어 붙인다.</p>
@@ -444,7 +444,7 @@ table.pcl{min-width:520px}
           <tr><td><b>답하는 질문</b></td><td>이 픽셀은 무엇인가</td><td>이 물체는 어디까지이고, 몇 번째 개체인가</td><td>이 픽셀은 무엇이고, 물체라면 몇 번째인가</td></tr>
           <tr><td><b>출력 형식</b></td><td>H × W 클래스 지도 1장</td><td>개체 N개의 (클래스, 마스크, 신뢰도) 목록</td><td>H × W (클래스, 개체 ID) 지도 + 세그먼트 목록</td></tr>
           <tr><td><b>픽셀 겹침</b></td><td>없음 · 픽셀마다 정확히 하나</td><td>마스크끼리 겹칠 수 있고, 어느 마스크에도 속하지 않는 픽셀도 있다</td><td>없음 · 픽셀마다 정확히 하나</td></tr>
-          <tr><td><b>차 두 대</b></td><td>차, 차 (한 덩어리)</td><td>차 #1, 차 #2</td><td>차 #1, 차 #2</td></tr>
+          <tr><td><b>차 두 대</b></td><td>둘 다 '차' (몇 대인지 구분 없음)</td><td>차 #1, 차 #2</td><td>차 #1, 차 #2</td></tr>
           <tr><td><b>도로</b></td><td>도로</td><td>출력 없음</td><td>도로 (개체 ID 없음)</td></tr>
           <tr><td><b>대표 모델</b></td><td>FCN(2015), U-Net(2015), DeepLabv3+(2018)</td><td>Mask R-CNN(2017), YOLACT(2019), YOLOv8-seg(2023)</td><td>Panoptic FPN(2019), Panoptic-DeepLab(2020), Mask2Former(2022, 세 과제 공용)</td></tr>
           <tr><td><b>평가 지표</b></td><td>클래스별 IoU, 그 평균인 mIoU</td><td>Mask AP (IoU 기준 0.50~0.95 평균)</td><td>PQ = SQ × RQ</td></tr>
@@ -544,7 +544,7 @@ table.pcl{min-width:520px}
             <li><b>트랙 유지</b>: 탐지가 끊겨도 트랙을 지우지 않고 기다리는 프레임 수</li>
             <li><b>위치 예측</b>: 끊긴 동안 마지막 속도로 박스를 옮겨 둘지 정한다. SORT의 칼만 필터를 등속 모델로 단순화한 것이다</li>
           </ul>
-          <p class="muted">가정: B는 절반 이상 가려지면 탐지되지 않고, 탐지될 때는 가려진 부분까지 포함한 전체 박스가 나옵니다. A는 프레임당 1.5칸, B는 0.5칸 오른쪽으로 움직입니다.</p>
+          <p class="muted">가정: B는 절반 이상 가려지면 탐지되지 않고, 탐지될 때는 가려진 부분까지 포함한 전체 박스가 나옵니다. A는 프레임당 1.5칸, B는 0.5칸 오른쪽으로 움직입니다. 짝짓기는 SORT의 헝가리안 매칭 대신 IoU가 큰 쌍부터 고르는 탐욕적 방식입니다.</p>
         </div>
       </div>
       <div class="sl4">
@@ -702,9 +702,9 @@ def merge_panoptic(sem, instances, stuff_ids, overlap_thr=0.5, min_stuff_area=64
     </div>
 
     <div class="speech">
-      <p>픽셀이 차인지 도로인지 사람인지는 <b>Semantic Segmentation</b>으로 풉니다. DeepLabv3+나 U-Net 같은 인코더-디코더 모델이 모든 픽셀에 클래스를 하나씩 붙이고, 픽셀별 교차 엔트로피로 학습해 mIoU로 평가합니다. 다만 같은 클래스는 한 덩어리라서, 차 두 대가 맞닿으면 몇 대인지 알 수 없습니다.</p>
+      <p>픽셀이 차인지 도로인지 사람인지는 <b>Semantic Segmentation</b>으로 풉니다. DeepLabv3+나 U-Net 같은 인코더-디코더 모델이 모든 픽셀에 클래스를 하나씩 붙이고, 픽셀별 교차 엔트로피로 학습해 mIoU로 평가합니다. 다만 같은 클래스는 모두 같은 라벨이라서, 차 두 대가 맞닿으면 몇 대인지 알 수 없습니다.</p>
       <p>왼쪽 차와 오른쪽 차를 구별하는 것은 <b>Instance Segmentation</b>으로 풉니다. Mask R-CNN처럼 개체를 먼저 찾고 개체마다 마스크를 따로 예측하므로 차 #1, 차 #2가 나오고, Mask AP로 평가합니다. 도로 같은 배경은 출력하지 않고, 모양까지 필요 없다면 객체 탐지 박스로도 개체는 구분됩니다.</p>
-      <p>자율주행에서는 두 결과가 모두 필요해서, 모든 픽셀에 클래스와 개체 ID를 하나씩 주는 <b>Panoptic Segmentation</b>으로 합치고 PQ로 평가합니다. 영상에서는 <b>객체 추적</b>이 위치 예측과 IoU로 프레임 사이 개체를 짝지어, 가려졌다 다시 나타난 차에도 같은 ID를 유지해야 속도와 궤적을 예측할 수 있습니다.</p>
+      <p>자율주행에서는 두 결과가 모두 필요해서, 모든 픽셀에 클래스와 개체 ID를 하나씩 주는 <b>Panoptic Segmentation</b>으로 합치고 PQ로 평가합니다. 영상에서는 <b>객체 추적</b>으로 위치 예측과 IoU를 써서 프레임 사이 개체를 짝짓습니다. 가려졌다 다시 나타난 차에도 같은 ID를 유지해야 속도와 궤적을 예측할 수 있기 때문입니다.</p>
     </div>
 
     <div class="block">
