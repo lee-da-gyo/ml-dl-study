@@ -2,6 +2,7 @@
 
 머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 11편 공개)로 정리하는 곳입니다.
 글로만 설명하지 않고, 값을 직접 조작하며 개념을 익힐 수 있는 **인터랙티브 실험**과 **핵심 퀴즈**를 함께 연결했습니다.
+스프린트 **미션**(전체 18개 예정) 답안은 [별도 폴더](#스프린트-미션)에 정리합니다.
 
 👉 **웹페이지로 보기**: [https://lee-da-gyo.github.io/ml-dl-study/](https://lee-da-gyo.github.io/ml-dl-study/)
 
@@ -22,6 +23,14 @@
 | 09 | Semantic Segmentation · FCN · GAN · Diffusion · 객체 탐지 | Semantic Segmentation과 이미지 분류 / FCN과 분류 CNN의 차이 / GAN의 생성자와 판별자 / Diffusion 모델의 활용과 장점 / CCTV 진열대 상품의 개수와 위치 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%209.%20Semantic%20Segmentation%20%C2%B7%20FCN%20%C2%B7%20GAN%20%C2%B7%20Diffusion%20%C2%B7%20%EA%B0%9D%EC%B2%B4%20%ED%83%90%EC%A7%80.html) |
 | 10 | Semantic·Instance Segmentation · Panoptic · 객체 추적 | 자율주행 영상에서 픽셀의 클래스 구분과 차량 개체 구별 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%2010.%20Semantic%C2%B7Instance%20Segmentation%20%C2%B7%20Panoptic%20%C2%B7%20%EA%B0%9D%EC%B2%B4%20%EC%B6%94%EC%A0%81.html) |
 | 11 | GAN 모드 붕괴 · 원인 · 대응 · 평가 지표 | 학습할수록 비슷한 얼굴만 만드는 GAN의 모드 붕괴: 원인과 대응 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%2011.%20GAN%20%EB%AA%A8%EB%93%9C%20%EB%B6%95%EA%B4%B4%20%C2%B7%20%EC%9B%90%EC%9D%B8%20%C2%B7%20%EB%8C%80%EC%9D%91%20%C2%B7%20%ED%8F%89%EA%B0%80%20%EC%A7%80%ED%91%9C.html) |
+
+## 스프린트 미션
+
+스프린트 미션 답안(전체 18개 예정, 현재 1개 공개)은 위클리 페이퍼와 따로 [`스프린트 미션/`](스프린트%20미션) 폴더에 미션별로 정리합니다.
+
+| 미션 | 주제 | 내용 | 바로 보기 |
+| --- | --- | --- | --- |
+| 01 | Python 연습 | 파이썬 기초·응용, 객체와 클래스, 심화(시간 관리 · 소수의 합 · 도서관 관리) | [미션 설명](스프린트%20미션/미션%201.%20Python%20연습) · [노트북](스프린트%20미션/미션%201.%20Python%20연습/미션1_Python_연습.ipynb) |
 
 ## 위클리 페이퍼 01에서 해 볼 수 있는 것
 
