@@ -1,6 +1,6 @@
 # ML·DL 스터디 문제
 
-머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 5편 공개)로 정리하는 곳입니다.
+머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 6편 공개)로 정리하는 곳입니다.
 글로만 설명하지 않고, 값을 직접 조작하며 개념을 익힐 수 있는 **인터랙티브 실험**과 **핵심 퀴즈**를 함께 연결했습니다.
 
 👉 **웹페이지로 보기**: [https://lee-da-gyo.github.io/ml-dl-study/](https://lee-da-gyo.github.io/ml-dl-study/)
@@ -16,6 +16,7 @@
 | 03 | 결정 트리 · 부스팅 · PCA·요인 분석 | 결정 트리의 장단점 / 부스팅과 XGBoost·LightGBM·CatBoost / PCA와 요인 분석 / loss가 NaN이 될 때 / 만족도 예측: 회귀 vs 분류 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%203.%20%EA%B2%B0%EC%A0%95%20%ED%8A%B8%EB%A6%AC%20%C2%B7%20%EB%B6%80%EC%8A%A4%ED%8C%85%20%C2%B7%20PCA%C2%B7%EC%9A%94%EC%9D%B8%20%EB%B6%84%EC%84%9D.html) |
 | 04 | 머신러닝과 딥러닝 · 하이퍼파라미터 · 과적합 진단 · 설명 가능한 모델 | 머신러닝과 딥러닝의 포함관계 / 딥러닝 하이퍼파라미터 / 훈련 99%·테스트 70% 진단 / 대출 거절 사유와 모델 선택 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%204.%20%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D%EA%B3%BC%20%EB%94%A5%EB%9F%AC%EB%8B%9D%20%C2%B7%20%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%20%C2%B7%20%EA%B3%BC%EC%A0%81%ED%95%A9%20%EC%A7%84%EB%8B%A8%20%C2%B7%20%EC%84%A4%EB%AA%85%20%EA%B0%80%EB%8A%A5%ED%95%9C%20%EB%AA%A8%EB%8D%B8.html) |
 | 05 | PyTorch·TensorFlow · 텐서 · 기울기 소실 · 배치 크기 | PyTorch와 TensorFlow 비교 / 텐서와 NumPy 배열 / 20층 시그모이드의 기울기 소실 / GPU 메모리와 배치 크기 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%205.%20PyTorch%C2%B7TensorFlow%20%C2%B7%20%ED%85%90%EC%84%9C%20%C2%B7%20%EA%B8%B0%EC%9A%B8%EA%B8%B0%20%EC%86%8C%EC%8B%A4%20%C2%B7%20%EB%B0%B0%EC%B9%98%20%ED%81%AC%EA%B8%B0.html) |
+| 10 | Semantic·Instance Segmentation · Panoptic · 객체 추적 | 자율주행 영상에서 픽셀의 클래스 구분과 차량 개체 구별 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%2010.%20Semantic%C2%B7Instance%20Segmentation%20%C2%B7%20Panoptic%20%C2%B7%20%EA%B0%9D%EC%B2%B4%20%EC%B6%94%EC%A0%81.html) |
 
 ## 위클리 페이퍼 01에서 해 볼 수 있는 것
 
@@ -67,6 +68,14 @@
 | 20층 신경망 기울기 소실 | 활성화·초기화·잔차 연결·옵티마이저별 층별 기울기 노름과 가중치 변화율, Adam의 보상과 그 한계 |
 | GPU 메모리와 배치 크기 | 고정 메모리(파라미터·기울기·옵티마이저 상태)와 활성화를 나눠 최대 마이크로 배치·누적 단계·유효 배치 계산 |
 | 배치 크기와 학습률 규칙 | 고정·선형·제곱근 스케일링별 검증 loss, 미니배치 기울기의 잡음, 선형 규칙이 무너지는 임계 배치 |
+
+## 위클리 페이퍼 10에서 해 볼 수 있는 것
+
+| 실험 | 확인하는 개념 |
+| --- | --- |
+| Semantic 결과로 차 세기 | Semantic 마스크를 연결 요소로 나눠 차를 셀 때, 두 차가 맞닿거나 예측 경계가 1픽셀 번지면 한 대로 세는 이유 |
+| 픽셀 정확도 · mIoU · PQ | 두 차 합침·쪼갬·경계 번짐·작은 사람 놓침에서 세 지표가 어떻게 다르게 반응하는지, 개체 구분 실패가 PQ에서만 보이는 이유 |
+| 가려진 차의 ID 추적 | IoU 기준·트랙 유지 프레임·등속 위치 예측에 따라 가려졌다 나타난 차가 같은 ID를 유지하는지, ID 바뀜이 생기는 조건 |
 
 원래 답안에서 틀린 부분은 주황색 **정정**, 새로 더한 내용은 초록색 **보충**으로 표시했습니다.
 

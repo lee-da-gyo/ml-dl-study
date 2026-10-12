@@ -1,0 +1,1566 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>위클리 페이퍼 06</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 위클리 #1~#4와 같은 모눈 노트 위의 학습 카드. 질문마다 [한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈] */
+:root{
+  --bg:#f3f5f8; --paper:#ffffff; --grid:#e3e8ef;
+  --ink:#1b2433; --muted:#5b6678; --line:#d5dce6;
+  --accent:#2448c9; --accent-soft:#e6ecfb;
+  --mark:#ffe36b; --add:#0f7a55; --add-soft:#e1f4ec; --fix:#c2410c; --fix-soft:#fdeee4;
+  --code-bg:#f0f2f6;
+  --f-display:"Black Han Sans","IBM Plex Sans KR",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4,h5{text-wrap:balance;margin:0}
+p{margin:0}
+header.top{display:flex;flex-direction:column;gap:10px}
+header.top .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+header.top h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,5vw,38px);line-height:1.25}
+header.top p{color:var(--muted);max-width:68ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:8px;flex-wrap:wrap;
+  background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+nav.toc a{text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--paper);
+  padding:5px 11px;border-radius:999px;font-size:13.5px;font-weight:500}
+nav.toc a.iv{border-style:dashed}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:4px;letter-spacing:.04em;vertical-align:2px;white-space:nowrap}
+.b-add{background:var(--add-soft);color:var(--add)}
+.b-fix{background:var(--fix-soft);color:var(--fix)}
+.b-core{background:var(--accent-soft);color:var(--accent)}
+.b-lab{background:var(--ink);color:var(--paper)}
+.tag-ex{display:inline-block;font-size:11px;font-weight:700;padding:0 7px;border-radius:4px;border:1px dashed var(--muted);color:var(--muted);letter-spacing:.04em;vertical-align:2px;line-height:1.7;white-space:nowrap}
+mark{background:var(--mark);color:inherit;padding:0 2px;border-radius:2px}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+
+section.q{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,4vw,36px);
+  display:flex;flex-direction:column;gap:28px;scroll-margin-top:64px}
+.qhead{display:flex;gap:16px;align-items:flex-start}
+.qnum{font-family:var(--f-display);font-size:44px;line-height:1;color:var(--accent);white-space:nowrap}
+.qnum.iv{font-size:30px;padding-top:4px}
+.qhead h2{font-size:clamp(18px,3vw,23px);font-weight:700;line-height:1.45}
+.qhead .min{min-width:0;display:flex;flex-direction:column;gap:4px}
+.qhead .kind{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.oneline{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 8px 8px 0;font-size:16.5px;font-weight:500}
+.oneline small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em;margin-bottom:2px}
+h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.part{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-bottom:-12px}
+.block{display:flex;flex-direction:column;gap:14px}
+.muted{color:var(--muted)}
+.fig{border:1px dashed var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+.fig figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+figure{margin:0}
+.formula{font-family:var(--f-mono);font-size:15px;text-align:center;padding:14px 10px;background:var(--code-bg);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.formula .fb{color:var(--accent);font-weight:600}.formula .fv{color:var(--fix);font-weight:600}.formula .fn{color:var(--muted);font-weight:600}
+
+/* demo shell */
+.demo{border:1.5px solid var(--ink);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--paper)}
+.demo-head{display:flex;flex-direction:column;gap:4px}
+.demo-head .t{font-weight:700;font-size:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.demo-head .how{font-size:13.5px;color:var(--muted)}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
+button.btn{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+button.btn:hover{border-color:var(--accent);color:var(--accent)}
+button.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{font:inherit;font-size:14px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+input[type=range]{accent-color:var(--accent);width:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px}
+.stat{background:var(--code-bg);border-radius:8px;padding:8px 10px;min-width:0}
+.stat .k{font-size:11.5px;color:var(--muted);font-weight:700;line-height:1.4}
+.stat .v{font-family:var(--f-mono);font-size:15px;font-variant-numeric:tabular-nums}
+.stat.em{background:var(--accent-soft)} .stat.em .v{color:var(--accent);font-weight:600}
+.stat.warn{background:var(--fix-soft)} .stat.warn .v{color:var(--fix);font-weight:600}
+.stat.ok{background:var(--add-soft)} .stat.ok .v{color:var(--add);font-weight:600}
+.insight{font-size:14.5px;border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:720px){.split{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.panels{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.panel h5{font-size:14px}
+.panel .cap{font-size:12.5px;color:var(--muted)}
+.svgbox svg{width:100%;height:auto;display:block}
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.sw.c{border-radius:50%}
+.sw.ln{height:3px;width:16px;border-radius:0;vertical-align:3px}
+.sw.dash{height:0;width:16px;border-radius:0;border-top:2px dashed var(--ink);vertical-align:3px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code-bg);font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td b{color:var(--accent)}
+table.num td,table.num th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 10px}
+table.num td:first-child{font-family:var(--f-body);font-weight:700}
+table.num td:last-child{font-family:var(--f-body)}
+.df{font-family:var(--f-mono);font-size:12.5px;min-width:620px}
+.df td,.df th{padding:6px 10px;white-space:nowrap}
+.df td.memo{font-family:var(--f-body);white-space:normal;min-width:180px}
+.df .na{color:var(--fix);font-weight:600}
+.df tr.drop td{text-decoration:line-through;opacity:.5}
+.df .chg{background:var(--mark);border-radius:3px;padding:0 3px}
+.df .fill{background:var(--add-soft);color:var(--add);border-radius:3px;padding:0 3px;font-weight:600}
+
+/* cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h4{font-size:15.5px}
+.card p,.card li{font-size:14.5px}
+.card ul{margin:0;padding-left:18px}
+.card .k{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em}
+.card.add{border-color:var(--add);background:var(--add-soft)} .card.add .k{color:var(--add)}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.mini{grid-template-columns:1fr}}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:s}
+.step{position:relative;border:1px solid var(--line);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--paper)}
+.step::before{counter-increment:s;content:"STEP " counter(s);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.step b{font-size:15px}
+.step span{font-size:13px;color:var(--muted);line-height:1.55}
+.step code{font-size:11.5px}
+.step.add{border-color:var(--add);background:var(--add-soft)} .step.add::before{color:var(--add)}
+@media (max-width:820px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.flow{grid-template-columns:1fr}}
+
+.codewrap{display:flex;flex-direction:column;gap:6px}
+.codecap{font-size:12.5px;color:var(--muted)}
+pre{margin:0;font-family:var(--f-mono);font-size:13px;line-height:1.65;background:var(--code-bg);border-radius:10px;padding:14px 16px;overflow-x:auto}
+pre .c{color:var(--muted)}
+pre .hl{background:var(--mark);border-radius:3px}
+.note{border-radius:10px;padding:14px 16px;font-size:14.5px;display:flex;flex-direction:column;gap:8px}
+.note.add{background:var(--add-soft)}
+.note.fix{background:var(--fix-soft)}
+.note b.t{font-size:13px;letter-spacing:.05em}
+.note.add b.t{color:var(--add)} .note.fix b.t{color:var(--fix)}
+.was{display:block;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--fix);text-decoration-thickness:1.5px}
+.now{display:block}
+.lbl-was,.lbl-now{font-weight:700;color:var(--fix);margin-right:4px}
+.pair{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:var(--paper);border-radius:8px}
+
+.speech{border:2px solid var(--ink);border-radius:12px;padding:18px 18px 16px;position:relative;font-size:15px}
+.speech::before{content:"면접 30초 답변";position:absolute;top:-11px;left:14px;background:var(--paper);padding:0 8px;font-size:12px;font-weight:700;letter-spacing:.06em}
+
+/* svg */
+svg text{font-family:var(--f-body);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+svg .ax{stroke:var(--line);stroke-width:1.5;fill:none}
+svg .gl{stroke:var(--grid);stroke-width:1;fill:none}
+svg .c0{fill:var(--accent)} svg .c1{fill:var(--add)} svg .c2{fill:var(--fix)}
+svg .cg{fill:var(--muted);fill-opacity:.55}
+svg .r0{fill:var(--accent);fill-opacity:.10} svg .r1{fill:var(--add);fill-opacity:.12} svg .r2{fill:var(--fix);fill-opacity:.12}
+svg .cent{stroke:var(--ink);stroke-width:3;fill:none}
+svg .pt{fill:var(--accent);fill-opacity:.85}
+svg .ptx{fill:var(--fix)}
+svg .fitln{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .mseln{stroke:var(--accent);stroke-width:2;stroke-dasharray:7 5;fill:none}
+svg .maeln{stroke:var(--add);stroke-width:2;stroke-dasharray:3 4;fill:none}
+svg .res{stroke:var(--fix);stroke-width:1.5;fill:none}
+svg .sq{fill:var(--fix);fill-opacity:.14;stroke:var(--fix);stroke-opacity:.45;stroke-width:1}
+svg .truef{stroke:var(--ink);stroke-width:2;stroke-dasharray:6 4;fill:none}
+svg .thin{stroke:var(--accent);stroke-width:1.2;stroke-opacity:.35;fill:none}
+svg .meanf{stroke:var(--add);stroke-width:3;fill:none}
+svg .lb{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .lv{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .lt{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .ln{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+svg .cur{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3}
+svg .ring{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .bull{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .shot{fill:var(--fix);stroke:var(--paper);stroke-width:1}
+svg .ftr{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+svg .fva{fill:var(--fix)}
+svg .pos-t{fill:var(--ink)} svg .pos-v{fill:var(--paper)}
+svg .bar-a{fill:var(--fix)} svg .bar-b{fill:var(--add)}
+svg .curve{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .curvefill{fill:var(--accent-soft)}
+svg .tail{fill:var(--fix);fill-opacity:.35}
+svg .vmean{stroke:var(--add);stroke-width:2.5}
+svg .vmed{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:5 3}
+svg .trl{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .val{stroke:var(--fix);stroke-width:2.5;fill:none}
+
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:12px}
+.qz{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.qz .qt{font-weight:600}
+.qz .qt span{color:var(--accent);margin-right:6px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:14.5px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;line-height:1.5}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--add);background:var(--add-soft)}
+.opt.wrong{border-color:var(--fix);background:var(--fix-soft)}
+.exp{font-size:14px;background:var(--code-bg);border-radius:8px;padding:10px 12px}
+.exp b.ok{color:var(--add)} .exp b.no{color:var(--fix)}
+
+footer{font-size:13px;color:var(--muted);text-align:center}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+nav.pager a,nav.pager span{display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;line-height:1.4;min-width:0}
+nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
+nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
+nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
+/* 위클리 03에서 이어 쓰는 스타일 */
+svg .leaf0{fill:var(--accent);fill-opacity:.13} svg .leaf1{fill:var(--add);fill-opacity:.17}
+svg .leafb{fill:none;stroke:var(--paper);stroke-width:1.2}
+svg .p0{fill:var(--accent)} svg .p1{fill:var(--add)}
+svg .p0,svg .p1{stroke:var(--paper);stroke-width:.8}
+svg .trueb{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+svg .box{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .boxa{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .boxg{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .boxf{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+svg .ahp{fill:var(--muted)}
+svg .edge{stroke:var(--line);stroke-width:2;fill:none}
+svg .edgea{stroke:var(--accent);stroke-width:2;fill:none}
+svg .tac{fill:var(--accent)} svg .tad{fill:var(--add)} svg .taf{fill:var(--fix)}
+svg .modelc{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .treec{stroke:var(--add);stroke-width:2.5;fill:none}
+svg .resp{fill:var(--fix);fill-opacity:.8}
+svg .zero{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+svg .nanl{stroke:var(--fix);stroke-width:2;stroke-dasharray:4 3}
+svg .barp{fill:var(--accent);fill-opacity:.75}
+svg .barm{fill:var(--fix)}
+table.ldt{min-width:680px;font-size:13.5px}
+table.ldt th,table.ldt td{padding:7px 10px;text-align:center;vertical-align:middle}
+table.ldt td:first-child,table.ldt th:first-child{text-align:left}
+table.ldt td:first-child{font-weight:700}
+td.ld{position:relative;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.ld .bar{position:absolute;left:4px;top:22%;height:56%;border-radius:3px;background:var(--accent);opacity:.2}
+td.ld .bar.neg{background:var(--fix)}
+td.ld .n{position:relative}
+td.ld.hi .n{font-weight:700;color:var(--accent)}
+td.ld.tr{color:var(--muted)}
+th.grp{text-align:center!important;border-left:1px solid var(--line)}
+td.gl,th.gl{border-left:1px solid var(--line)}
+table.heat{min-width:420px}
+table.heat td,table.heat th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 6px}
+table.heat td:first-child,table.heat th:first-child{font-family:var(--f-body)}
+table.dec td{font-variant-numeric:tabular-nums}
+table.dec td.best{color:var(--add);font-weight:700}
+.treebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;padding:6px}
+.treebox svg{display:block;max-width:none;margin:0 auto}
+svg .boxd{fill:var(--paper);stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+svg .lf0{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5} svg .lf1{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .trunc{fill:var(--code-bg);stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+pre.rules{font-size:12.5px;line-height:1.6;max-height:320px;overflow:auto;white-space:pre}
+.formula.left{text-align:left;white-space:pre;line-height:1.9}
+.sl5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sl5 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:440px){.sl5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.opt,.exp,.insight,.stat .v{overflow-wrap:anywhere}
+select{max-width:100%}
+/* 위클리 04 추가 스타일 */
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.tri{grid-template-columns:1fr}}
+.tri .panel .acc{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tri .panel .acc b{color:var(--accent)}
+.sl4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sl4 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+svg .gpt{fill:var(--ink)} svg .rpt{fill:var(--fix)}
+svg .gpt,svg .rpt{stroke:var(--paper);stroke-width:1}
+svg .bestr{fill:none;stroke:var(--ink);stroke-width:2}
+svg .opt{fill:none;stroke:var(--add);stroke-width:2.5}
+svg .hm{fill:var(--accent)}
+svg .venn0{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
+svg .venn1{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .venn2{fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:1.5}
+svg .venn3{fill:var(--add-soft);stroke:var(--add);stroke-width:2}
+.verdict{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.verdict .big{font-family:var(--f-mono);font-size:20px;font-variant-numeric:tabular-nums}
+.verdict ol,.verdict ul{margin:0;padding-left:20px;font-size:14px}
+.verdict .k{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+table.contrib{min-width:0;font-size:13.5px}
+table.contrib td,table.contrib th{padding:6px 8px}
+/* 위클리 05 추가 스타일 */
+.codecols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.codecols{grid-template-columns:1fr}}
+.codecols pre{font-size:12.3px}
+.codecols .codecap b{color:var(--ink)}
+pre.lines{white-space:pre}
+pre.lines .cnt{display:inline-block;min-width:3.2em;color:var(--muted);user-select:none}
+pre.lines .off{opacity:.38}
+pre.lines .rec{background:var(--accent-soft);border-radius:3px}
+svg .gn{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+svg .gx{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .go{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .gb{stroke:var(--fix);stroke-width:1.5;fill:none;stroke-dasharray:5 4}
+svg .ahf{fill:var(--fix)}
+svg .stg{fill:var(--code-bg);stroke:var(--line);stroke-width:1.5}
+svg .stgc{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .seg0{fill:var(--accent);fill-opacity:.85} svg .seg1{fill:var(--accent);fill-opacity:.5} svg .seg2{fill:var(--accent);fill-opacity:.28}
+svg .seg3{fill:var(--add);fill-opacity:.75} svg .seg4{fill:var(--muted);fill-opacity:.45} svg .seg5{fill:var(--code-bg);stroke:var(--line);stroke-width:1}
+svg .sgc{stroke:var(--accent);stroke-width:2.5;fill:none} svg .tnc{stroke:var(--add);stroke-width:2.5;fill:none} svg .rlc{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .satz{fill:var(--fix);fill-opacity:.08}
+svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
+.repl{font-family:var(--f-mono);font-size:13px;background:var(--code-bg);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.repl .in{color:var(--muted)}
+.repl .in::before{content:">>> ";color:var(--accent)}
+.repl .er{color:var(--fix);font-weight:600}
+.repl .okv{color:var(--add);font-weight:600}
+.sh{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:4px}
+.sh.y{background:var(--fix-soft);color:var(--fix)} .sh.n{background:var(--add-soft);color:var(--add)}
+.sl3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sl3 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl3{grid-template-columns:1fr}}
+/* 위클리 05 가독성: 문단·불릿 */
+.oneline p,.note p,.card p,.speech p,.how p{margin:0}
+.oneline{display:flex;flex-direction:column;gap:8px}
+.oneline small{margin-bottom:-4px}
+.oneline ul,.note ul,.card ul,.how ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.oneline ul{font-size:15.5px}
+.demo-head .how{display:flex;flex-direction:column;gap:8px;line-height:1.75}
+.note{gap:12px}
+.note p,.card p,.note li,.card li{line-height:1.8}
+.pair{gap:8px;padding:14px 16px}
+.now{display:flex;flex-direction:column;gap:10px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack .card{padding:18px 20px;gap:10px}
+.card pre{font-size:12px;padding:10px 12px;white-space:pre-wrap}
+.speech{display:flex;flex-direction:column;gap:12px;line-height:1.85}
+.insight{line-height:1.85;white-space:pre-line}
+header.top p.flowline{color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 14px;width:fit-content;max-width:100%}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px;white-space:nowrap}
+/* 위클리 05 코드 색 (Python 문법 강조) */
+:root{--sy-k:#8a3ffc;--sy-s:#0f7a55;--sy-n:#b4460c;--sy-f:#2448c9;--sy-d:#a15c00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}}
+:root[data-theme="dark"]{--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}
+pre .sy-k{color:var(--sy-k);font-weight:600} pre .sy-s{color:var(--sy-s)} pre .sy-n{color:var(--sy-n)}
+pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .sy-b{color:var(--sy-n);font-style:italic}
+/* 원래 답안은 취소선 없이 그대로 읽히게 */
+.was{text-decoration:none!important;color:var(--ink)!important}
+/* 수치 칸: 같은 줄의 칸끼리 제목 높이를 맞춰 값이 같은 높이에서 시작하게 한다 */
+.stats{grid-auto-rows:auto}
+.stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
+.stat .v .nw{white-space:nowrap}
+.stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
+.stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
+.stat .v .sub{white-space:normal}
+/* 위클리 06 추가 스타일 */
+svg .hbg{fill:var(--paper);stroke:var(--grid);stroke-width:1}
+svg .hpos{fill:var(--accent)} svg .hneg{fill:var(--fix)}
+svg .hsel{fill:none;stroke:var(--ink);stroke-width:2.5}
+svg .hwin{fill:none;stroke:var(--fix);stroke-width:2.5;stroke-dasharray:5 3}
+svg .hmax{fill:none;stroke:var(--add);stroke-width:2.5}
+svg .hv{font-family:var(--f-mono);font-size:10px}
+.kgrid{display:inline-grid;grid-template-columns:repeat(3,58px);gap:4px}
+.kgrid input{font:inherit;font-family:var(--f-mono);font-size:13px;width:58px;padding:3px 6px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-align:right}
+.calc{font-family:var(--f-mono);font-size:13px;background:var(--code-bg);border-radius:8px;padding:10px 12px;overflow-x:auto;white-space:pre-wrap;line-height:1.75}
+.archbox{max-height:380px;overflow:auto}
+table.arch{min-width:600px;font-size:13.5px}
+table.arch td,table.arch th{padding:6px 10px;font-variant-numeric:tabular-nums;vertical-align:middle}
+table.arch th{position:sticky;top:0;z-index:1}
+table.arch td.n{font-family:var(--f-mono);text-align:right;white-space:nowrap}
+table.arch tr.pool td,table.arch tr.in td{color:var(--muted)}
+table.arch tr.head td{background:var(--fix-soft)}
+table.arch tr.big td{font-weight:700}
+svg .aetr{fill:var(--muted);fill-opacity:.35} svg .aenor{fill:var(--accent);fill-opacity:.75} svg .aeano{fill:var(--fix)}
+svg .aerec{stroke:var(--fix);stroke-width:1;stroke-opacity:.55}
+svg .aedec{stroke:var(--ink);stroke-width:2.5;fill:none} svg .aedecx{stroke:var(--ink);stroke-width:2;stroke-dasharray:5 4;fill:none}
+svg .aez{fill:var(--add);stroke:var(--paper);stroke-width:1.5}
+svg .thr{stroke:var(--ink);stroke-width:2;stroke-dasharray:5 3}
+svg .hn{fill:var(--accent);fill-opacity:.55} svg .ha{fill:var(--fix);fill-opacity:.55}
+svg .trreg{fill:var(--add);fill-opacity:.12}
+svg .mfc{stroke:var(--fix);stroke-width:2.5;fill:none} svg .mfl{stroke:var(--muted);stroke-width:2.5;fill:none;stroke-dasharray:6 4} svg .mgap{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .dfc{fill:var(--fix)} svg .dfl{fill:var(--muted)} svg .dgap{fill:var(--accent)}
+</style>
+</head><body>
+
+<div class="wrap" id="top">
+  <nav class="pager" aria-label="위클리 이동">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%205.%20PyTorch·TensorFlow%20·%20텐서%20·%20기울기%20소실%20·%20배치%20크기.html" rel="prev">‹ 이전 · 05 PyTorch·TensorFlow · 텐서</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+  </nav>
+  <header class="top">
+    <div class="eyebrow">WEEKLY PAPER 06 · 합성곱 신경망의 구조, 오토인코더, 위치 변화에 강한 이유</div>
+    <h1>CNN 레이어 · 오토인코더 · 완전연결층과 위치 변화</h1>
+    <p>실습 해설 2문항과 면접 1문항을 정리했습니다. 각 문항은 아래 순서로 읽으면 됩니다.</p>
+    <p class="flowline"><b>한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈</b></p>
+    <p>원래 답안(실습 해설과 작성 답안)을 고친 부분은 아래 표시로 구분했습니다.</p>
+    <div class="legend">
+      <span><span class="badge b-core">핵심</span> 꼭 알아야 할 개념</span>
+      <span><span class="badge b-add">보충</span> 원래 답안에 새로 더한 내용</span>
+      <span><span class="badge b-fix">정정</span> 원래 답안에서 틀렸거나 과장된 부분</span>
+      <span><span class="badge b-lab">실험</span> 값을 바꿔 보는 인터랙티브</span>
+      <span><span class="tag-ex">예시</span> 설명용으로 만든 가상의 값</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="질문 바로가기">
+    <a href="#q1">Q1 CNN 레이어의 역할</a>
+    <a href="#q2">Q2 오토인코더와 인코더·디코더</a>
+    <a class="iv" href="#m1">면접 1 완전연결층과 위치 변화</a>
+    <a href="#sum">총정리</a>
+  </nav>
+
+  <!-- ===================== Q1 ===================== -->
+  <section class="q" id="q1">
+    <div class="qhead"><div class="qnum">Q1</div><div class="min"><div class="kind">실습 해설</div><h2>CNN을 구성하는 각 레이어의 역할에 대해 설명해보세요.</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>CNN은 <b>합성곱층 → 활성화 함수 → 다운샘플링(풀링 또는 stride 합성곱)</b> 블록을 여러 번 쌓아 특징을 뽑고, 마지막 <b>분류 헤드</b>(Flatten + 완전연결층, 또는 Global Average Pooling + 선형층)가 클래스 점수를 내는 신경망이다.</p>
+      <p>이 구조가 이미지에 잘 맞는 이유는 세 가지다.</p>
+      <ul>
+        <li><mark>지역 연결</mark>: 한 출력 칸은 입력의 작은 창(예: 3×3)만 본다</li>
+        <li><mark>가중치 공유</mark>: 같은 필터를 모든 위치에 다시 쓴다</li>
+        <li><b>계층적 특징</b>: 층을 쌓을수록 한 칸이 보는 영역(수용 영역)이 넓어져 엣지 → 무늬 → 부분 → 물체로 올라간다</li>
+      </ul>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 작은 CNN 하나를 따라가 보기</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 760 236" role="img" aria-label="32×32×3 입력이 합성곱, 풀링, GAP, 선형층을 거쳐 10개 클래스 점수가 되는 과정">
+          <defs><marker id="ahP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+          <g font-size="11.5" font-weight="700" text-anchor="middle">
+            <text x="40" y="30">입력</text>
+            <text x="135" y="24">Conv 3×3 ×32</text><text x="135" y="38">+ ReLU</text>
+            <text x="230" y="30">MaxPool 2×2</text>
+            <text x="325" y="24">Conv 3×3 ×64</text><text x="325" y="38">+ ReLU</text>
+            <text x="420" y="30">MaxPool 2×2</text>
+            <text x="515" y="30">GAP</text>
+            <text x="600" y="30">Linear</text>
+            <text x="700" y="30">softmax</text>
+          </g>
+          <rect class="box"  x="33"  y="45"  width="14" height="120" rx="3"/>
+          <rect class="boxa" x="120" y="45"  width="30" height="120" rx="3"/>
+          <rect class="boxg" x="215" y="75"  width="30" height="60"  rx="3"/>
+          <rect class="boxa" x="303" y="75"  width="44" height="60"  rx="3"/>
+          <rect class="boxg" x="398" y="90"  width="44" height="30"  rx="3"/>
+          <rect class="boxf" x="510" y="73"  width="10" height="64"  rx="2"/>
+          <rect class="boxf" x="595" y="93"  width="10" height="24"  rx="2"/>
+          <g class="arr" marker-end="url(#ahP)">
+            <line x1="51" y1="105" x2="114" y2="105"/><line x1="154" y1="105" x2="209" y2="105"/><line x1="249" y1="105" x2="297" y2="105"/>
+            <line x1="351" y1="105" x2="392" y2="105"/><line x1="446" y1="105" x2="504" y2="105"/><line x1="524" y1="105" x2="589" y2="105"/><line x1="609" y1="105" x2="664" y2="105"/>
+          </g>
+          <text x="700" y="101" font-size="11.5" text-anchor="middle">클래스 10개의</text><text x="700" y="116" font-size="11.5" text-anchor="middle">확률</text>
+          <g font-size="11" text-anchor="middle" font-family="var(--f-mono)">
+            <text x="40" y="186">32×32×3</text><text x="135" y="186">32×32×32</text><text x="230" y="186">16×16×32</text>
+            <text x="325" y="186">16×16×64</text><text x="420" y="186">8×8×64</text><text x="515" y="186">64</text><text x="600" y="186">10</text>
+          </g>
+          <path class="arr" d="M30,200 v8 h432 v-8"/><text x="246" y="226" font-size="11.5" text-anchor="middle" class="mut">특징 추출부 · 블록을 반복할수록 가로·세로는 줄고 채널은 늘어난다</text>
+          <path class="arr" d="M500,200 v8 h120 v-8"/><text x="560" y="226" font-size="11.5" text-anchor="middle" class="mut">분류 헤드</text>
+        </svg></div>
+        <figcaption>상자의 높이는 가로·세로 크기, 너비는 채널 수를 나타냅니다(비율은 개략). 합성곱은 padding 1로 크기를 유지하고, 풀링이 크기를 절반으로 줄입니다. 마지막 GAP는 8×8 특징 지도를 채널마다 평균해 64개 값으로 바꾸고, 선형층이 그것을 클래스 점수 10개로 바꿉니다.</figcaption>
+      </figure>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 합성곱 한 칸의 계산과 크기 공식</h3>
+      <div class="formula left">출력[k, i, j] = <span class="fb">b<sub>k</sub></span> + Σ<sub>c</sub> Σ<sub>u</sub> Σ<sub>v</sub> <span class="fv">W[k, c, u, v]</span> · 입력[c, i·S + u − P, j·S + v − P]
+출력 크기 = ⌊(입력 크기 + 2P − K) / S⌋ + 1          <span class="fn">K: 필터 크기, P: 패딩, S: stride</span>
+파라미터 수 = (K × K × C<sub>in</sub> + 1) × C<sub>out</sub>           <span class="fn">C: 채널 수, +1은 편향</span></div>
+      <p>필터 하나는 입력의 <b>모든 채널</b>을 한꺼번에 덮는 K × K × C<sub>in</sub> 크기의 덩어리이고, 필터 하나가 출력 채널 하나를 만듭니다. 그래서 파라미터 수는 이미지의 가로·세로 크기와 <b>무관</b>합니다. 224×224 이미지든 32×32 이미지든 3×3 필터 64개의 파라미터는 똑같이 1,792개입니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 레이어별 역할</h3>
+      <div class="tbl"><table style="min-width:880px">
+        <thead><tr><th style="width:16%">레이어</th><th style="width:27%">하는 일</th><th style="width:17%">크기 변화</th><th style="width:15%">학습 파라미터</th><th>헷갈리기 쉬운 점</th></tr></thead>
+        <tbody>
+          <tr><td><b>Convolution</b></td><td>작은 필터를 밀면서 지역 특징(엣지·무늬)을 찾아 특징 지도를 만든다</td><td>채널 수 → 필터 수, 가로·세로는 P·S로 결정</td><td>있음 (필터 + 편향)</td><td>필터 값은 사람이 정하지 않고 역전파로 학습된다</td></tr>
+          <tr><td><b>Activation</b><br><span class="muted" style="font-size:12.5px">ReLU · GELU · SiLU</span></td><td>비선형성을 넣는다. 없으면 합성곱을 몇 층 쌓아도 하나의 선형 변환이다</td><td>없음</td><td>대개 없음 (PReLU는 있음)</td><td>시그모이드는 은닉층에서 기울기 소실을 일으킨다(위클리 5)</td></tr>
+          <tr><td><b>Pooling</b><br><span class="muted" style="font-size:12.5px">Max · Average</span></td><td>2×2 창마다 최댓값 또는 평균으로 특징 지도를 요약한다</td><td>가로·세로 절반, 채널 그대로</td><td>없음</td><td>최근 구조는 stride 2 합성곱으로 대신하기도 한다</td></tr>
+          <tr><td><b>Normalization</b><br><span class="muted" style="font-size:12.5px">Batch · Layer · Group</span></td><td>활성값의 평균·분산을 맞춰 학습을 안정시키고 큰 학습률을 쓸 수 있게 한다</td><td>없음</td><td>있음 (채널당 γ, β)</td><td>배치 정규화는 작은 배치에서 불안정하다</td></tr>
+          <tr><td><b>Dropout</b></td><td>학습 때만 일부 값을 0으로 만들어 특정 뉴런에 기대는 것을 막는다</td><td>없음</td><td>없음</td><td>평가 때는 꺼진다(<code>model.eval()</code>)</td></tr>
+          <tr><td><b>Flatten + FC</b></td><td>특징 지도를 한 줄로 펴서 모든 값을 조합해 점수를 낸다</td><td>H×W×C → 벡터 → 클래스 수</td><td>많음</td><td>VGG-16 파라미터의 약 89%가 여기에 있다(실험 2)</td></tr>
+          <tr><td><b>Global Average Pooling</b></td><td>채널마다 공간 전체를 평균해 값 하나로 만든다</td><td>H×W×C → C</td><td>없음</td><td>점수를 내는 것은 뒤에 붙는 선형층이다</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="demo" id="demo-conv">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 1</span> 합성곱 → ReLU → 풀링을 한 칸씩 계산하기 <span class="tag-ex">예시 이미지 · 12×12 흑백</span></div>
+        <div class="how">
+          <p>12×12 흑백 이미지에 3×3 필터 하나를 적용하고(편향 0), ReLU와 2×2 풀링을 차례로 거칩니다. <b>합성곱 출력의 칸을 누르면</b> 그 칸이 본 입력 창(주황 점선)과 곱셈 내역이 나옵니다.</p>
+          <p><b>입력 이동</b>을 1칸·2칸으로 바꾸면, 같은 이미지를 오른쪽으로 옮겼을 때 각 단계의 출력이 어떻게 바뀌는지 비교합니다. 면접 1의 <b>등변성과 불변성</b>을 숫자로 확인하는 부분입니다.</p>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="cvImg" style="font-weight:600">이미지</label>
+        <select id="cvImg"><option value="box" selected>사각형</option><option value="diag">대각선</option><option value="seven">숫자 7</option></select>
+        <label for="cvF" style="font-weight:600">필터</label>
+        <select id="cvF"><option value="vedge" selected>세로 엣지 (Sobel x)</option><option value="hedge">가로 엣지 (Sobel y)</option><option value="blur">평균 흐림</option><option value="sharp">선명하게</option><option value="custom">직접 입력</option></select>
+        <label for="cvP" style="font-weight:600">패딩</label>
+        <select id="cvP"><option value="0" selected>0</option><option value="1">1</option></select>
+        <label for="cvS" style="font-weight:600">stride</label>
+        <select id="cvS"><option value="1" selected>1</option><option value="2">2</option></select>
+        <label for="cvPool" style="font-weight:600">풀링</label>
+        <select id="cvPool"><option value="max" selected>Max 2×2</option><option value="avg">Average 2×2</option><option value="none">없음</option></select>
+        <label for="cvSh" style="font-weight:600">입력 이동</label>
+        <select id="cvSh"><option value="0" selected>0칸</option><option value="1">오른쪽 1칸</option><option value="2">오른쪽 2칸</option></select>
+      </div>
+      <div class="ctrls" id="cvK" hidden>
+        <span style="font-weight:600">필터 값</span>
+        <div class="kgrid">
+          <input type="number" step="0.5" value="0" aria-label="필터 1행 1열"><input type="number" step="0.5" value="0" aria-label="필터 1행 2열"><input type="number" step="0.5" value="0" aria-label="필터 1행 3열">
+          <input type="number" step="0.5" value="0" aria-label="필터 2행 1열"><input type="number" step="0.5" value="1" aria-label="필터 2행 2열"><input type="number" step="0.5" value="0" aria-label="필터 2행 3열">
+          <input type="number" step="0.5" value="0" aria-label="필터 3행 1열"><input type="number" step="0.5" value="0" aria-label="필터 3행 2열"><input type="number" step="0.5" value="0" aria-label="필터 3행 3열">
+        </div>
+      </div>
+      <div class="panels">
+        <div class="panel"><h5>① 입력 (12×12)</h5><div class="svgbox"><svg id="cvIn" viewBox="0 0 200 200" role="img" aria-label="입력 이미지와 선택한 칸이 본 3×3 창"></svg></div><div class="cap">주황 점선 = 선택한 출력 칸이 본 3×3 창</div></div>
+        <div class="panel"><h5 id="cvOutT">② 합성곱 출력</h5><div class="svgbox"><svg id="cvOut" viewBox="0 0 200 200" role="img" aria-label="합성곱 출력 특징 지도, 칸을 누르면 계산 내역 표시"></svg></div><div class="cap">파랑 = 양수, 주황 = 음수 · 칸을 눌러 선택</div></div>
+        <div class="panel"><h5>③ ReLU 뒤</h5><div class="svgbox"><svg id="cvRelu" viewBox="0 0 200 200" role="img" aria-label="ReLU를 거친 특징 지도"></svg></div><div class="cap">음수가 0이 된다 · 초록 = 풀링 창에서 고른 값</div></div>
+        <div class="panel"><h5 id="cvPoolT">④ 풀링 뒤</h5><div class="svgbox"><svg id="cvPl" viewBox="0 0 200 200" role="img" aria-label="풀링을 거친 특징 지도"></svg></div><div class="cap">2×2 창, stride 2 · 남는 줄은 버린다</div></div>
+      </div>
+      <div class="calc" id="cvCalc" aria-live="polite"></div>
+      <div class="stats">
+        <div class="stat"><div class="k">합성곱 출력 크기</div><div class="v" id="cvSize">–</div></div>
+        <div class="stat"><div class="k">이 층의 파라미터</div><div class="v" id="cvPar">–</div></div>
+        <div class="stat"><div class="k">ReLU가 0으로 바꾼 칸</div><div class="v" id="cvZero">–</div></div>
+        <div class="stat em"><div class="k">합성곱 출력: 이동한 만큼 옮겨 비교</div><div class="v" id="cvEq">–</div></div>
+        <div class="stat em"><div class="k">최종 출력: 제자리 비교</div><div class="v" id="cvInv">–</div></div>
+      </div>
+      <p class="insight" id="cvMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="demo" id="demo-arch">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 2</span> 층마다 출력 크기·파라미터·수용 영역 계산하기 <span class="tag-ex">공식으로 정확히 계산 · 편향 포함</span></div>
+        <div class="how">
+          <p>모델 구조와 입력 크기, <b>분류 헤드</b>를 고르면 층마다 출력 모양, 파라미터 수, <b>수용 영역</b>(그 층의 한 칸이 입력에서 보는 범위)을 계산합니다. 합성곱은 모두 3×3, padding 1, stride 1이고 풀링은 2×2, stride 2입니다.</p>
+          <ul>
+            <li><b>Flatten + FC</b>: 마지막 특징 지도를 한 줄로 펴서 완전연결층에 넣는다 (VGG-16은 4096 → 4096 → 클래스, 작은 CNN은 256 → 클래스)</li>
+            <li><b>GAP + Linear</b>: 채널마다 평균한 뒤 선형층 하나로 클래스 점수를 낸다</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="arM" style="font-weight:600">모델</label>
+        <select id="arM"><option value="small">작은 CNN (합성곱 3개)</option><option value="vgg" selected>VGG-16 (합성곱 13개)</option></select>
+        <label for="arIn" style="font-weight:600">입력</label>
+        <select id="arIn"><option value="32">32×32×3</option><option value="64">64×64×3</option><option value="224" selected>224×224×3</option></select>
+        <label for="arH" style="font-weight:600">분류 헤드</label>
+        <select id="arH"><option value="flatten" selected>Flatten + FC</option><option value="gap">GAP + Linear</option></select>
+        <label for="arC" style="font-weight:600">클래스 수</label>
+        <select id="arC"><option value="10">10</option><option value="1000" selected>1,000</option></select>
+      </div>
+      <div class="svgbox"><svg id="arBar" viewBox="0 0 640 64" role="img" aria-label="특징 추출부와 분류 헤드의 파라미터 비중 막대"></svg></div>
+      <div class="keyrow">
+        <span><span class="sw" style="background:var(--accent)"></span>합성곱층 파라미터</span>
+        <span><span class="sw" style="background:var(--fix)"></span>분류 헤드 파라미터</span>
+      </div>
+      <div class="tbl archbox"><table class="arch" id="arTbl"></table></div>
+      <div class="stats">
+        <div class="stat em"><div class="k">전체 파라미터</div><div class="v" id="arTot">–</div></div>
+        <div class="stat warn"><div class="k">분류 헤드 비중</div><div class="v" id="arHead">–</div></div>
+        <div class="stat"><div class="k">가장 큰 층</div><div class="v" id="arBig">–</div></div>
+        <div class="stat ok"><div class="k">마지막 특징 지도 한 칸의 수용 영역</div><div class="v" id="arRF">–</div></div>
+      </div>
+      <p class="insight" id="arMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">같은 특징 추출부에 두 가지 헤드를 붙이고 모양·파라미터 확인하기 (PyTorch)</div>
+<pre>import torch
+from torch import nn
+
+def block(c_in, c_out):                                  <span class="c"># 합성곱 → 정규화 → 활성화 → 다운샘플링</span>
+    return nn.Sequential(nn.Conv2d(c_in, c_out, 3, padding=1, bias=False),
+                         nn.BatchNorm2d(c_out), nn.ReLU(), nn.MaxPool2d(2))
+
+features = nn.Sequential(block(3, 32), block(32, 64), block(64, 128))
+flatten_head = nn.Sequential(nn.Flatten(), nn.Linear(128 * 4 * 4, 256), nn.ReLU(),
+                             nn.Dropout(0.5), nn.Linear(256, 10))     <span class="c"># 32×32 입력 전용</span>
+gap_head = nn.Sequential(nn.AdaptiveAvgPool2d(1), nn.Flatten(), nn.Linear(128, 10))
+
+x = torch.randn(8, 3, 32, 32)                            <span class="c"># (배치, 채널, 높이, 너비)</span>
+h = features(x)
+print(h.shape)                                           <span class="c"># torch.Size([8, 128, 4, 4])</span>
+print(flatten_head(h).shape, gap_head(h).shape)          <span class="c"># 둘 다 torch.Size([8, 10])</span>
+count = lambda m: sum(p.numel() for p in m.parameters())
+print(count(features), count(flatten_head), count(gap_head))   <span class="c"># 93,472 / 527,114 / 1,290</span></pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 원래 답안에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">Max Pooling은 가장 중요한 값을 선택해 중요한 정보를 보존하고</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>Max Pooling은 창 안에서 <b>가장 큰 활성값</b>을 고를 뿐입니다. 활성값이 크다는 것은 "그 필터의 패턴과 많이 닮았다"는 뜻이지, 의미상 가장 중요한 정보라는 보장은 없습니다.</p>
+          <p>역전파에서도 기울기는 각 창의 <b>최댓값 위치 하나로만</b> 흐르고 나머지 3칸은 0을 받습니다(실험 1의 초록 칸).</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">Pooling Layer는 데이터의 크기를 줄여 계산량을 감소시키고, 모델의 일반화 능력을 높이는 역할을 합니다. … 이를 통해 과적합을 방지하는 효과도 있습니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>풀링 자체에는 학습 파라미터가 없으므로 과적합을 직접 막는 장치가 아닙니다. 영향은 간접적입니다.</p>
+          <ul>
+            <li><b>도움이 되는 경우</b>: 특징 지도가 작아져 뒤쪽 FC 층의 파라미터가 줄고, 작은 위치 변화에 덜 민감해진다</li>
+            <li><b>해가 되는 경우</b>: 위치 정보를 버리므로 분할·검출처럼 정확한 위치가 필요한 작업에서는 성능을 떨어뜨릴 수 있다</li>
+          </ul>
+          <p>과적합 대책은 데이터 증강, 가중치 감쇠, 드롭아웃, 조기 종료가 직접적입니다(위클리 4).</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">마지막에는 Global Average Pooling이나 완전연결층이 특징을 종합해 클래스별 예측값을 출력합니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>GAP는 채널마다 평균을 낼 뿐이라 <b>그 자체로는 클래스 점수를 만들지 않습니다</b>. 점수는 GAP 뒤에 붙는 선형층(Linear)이 냅니다.</p>
+          <p>예외는 마지막 합성곱의 채널 수를 클래스 수와 같게 만들고 GAP 결과를 바로 점수로 쓰는 구조로, 처음 GAP를 제안한 Network in Network(Lin 외, 2013)가 이 방식이었습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 이름과 다른 실제 연산</div><h4>딥러닝의 "합성곱"은 교차상관이다</h4>
+        <p>수학의 합성곱은 필터를 <b>뒤집어서</b> 곱하지만, PyTorch <code>nn.Conv2d</code>를 비롯한 딥러닝 프레임워크는 뒤집지 않고 그대로 곱합니다(교차상관, cross-correlation). 필터 값을 학습하므로 뒤집든 안 뒤집든 표현력은 같아 이름만 그대로 쓰는 것입니다.</p>
+        <p>실험 1의 세로 엣지 필터가 "오른쪽 − 왼쪽"으로 계산되는 것도 뒤집지 않기 때문입니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 3×3 필터를 쌓는 이유</div><h4>같은 수용 영역을 더 적은 파라미터로</h4>
+        <p>3×3 합성곱 2개를 쌓으면 5×5, 3개를 쌓으면 7×7 영역을 봅니다. 채널이 C로 같을 때 파라미터(편향 제외)를 비교하면 다음과 같습니다.</p>
+        <ul>
+          <li><b>3×3 세 층</b>: 3 × 9C² = 27C², 그 사이에 ReLU가 2번 더 들어가 비선형성도 늘어난다</li>
+          <li><b>7×7 한 층</b>: 49C²</li>
+        </ul>
+        <p>VGG(Simonyan &amp; Zisserman, 2014)가 3×3만 쓴 근거이고, 실험 2의 수용 영역 열에서 층마다 2칸, 풀링 뒤에는 그 두 배씩 넓어지는 것을 볼 수 있습니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 분류 헤드의 변화</div><h4>큰 FC에서 GAP로, 풀링에서 stride 합성곱으로</h4>
+        <p>VGG-16의 첫 FC 층 하나(25,088 → 4,096)가 1억 276만 개로 전체 1억 3,836만 개의 74%를 차지합니다. 그래서 GoogLeNet·ResNet부터는 <b>GAP + 선형층 하나</b>가 표준이 됐습니다. 입력 해상도가 달라도 GAP 출력 크기는 채널 수로 같다는 장점도 있습니다.</p>
+        <p>다운샘플링도 All Convolutional Net(Springenberg 외, 2014) 이후 <b>stride 2 합성곱</b>으로 대신하는 구조가 많아졌습니다. 줄이는 방법까지 학습하게 하는 것입니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>CNN은 <b>합성곱층, 활성화 함수, 다운샘플링 층</b>으로 된 블록을 여러 번 쌓고, 마지막에 <b>분류 헤드</b>를 붙인 구조입니다.</p>
+      <p>합성곱층은 작은 필터를 이미지 전체에 밀면서 엣지나 무늬 같은 지역 특징을 찾습니다. 한 칸이 가까운 영역만 보는 <b>지역 연결</b>과, 같은 필터를 모든 위치에 쓰는 <b>가중치 공유</b> 덕분에 파라미터가 이미지 크기와 무관하게 적습니다. 그 뒤 ReLU 같은 활성화 함수가 비선형성을 넣고, 풀링이나 stride 2 합성곱이 특징 지도를 줄여 계산량을 낮추고 다음 층이 더 넓은 영역을 보게 합니다. 층이 깊어질수록 특징이 엣지에서 부분, 물체 형태로 올라갑니다.</p>
+      <p>마지막에는 특징 지도를 펴서 완전연결층에 넣거나, <b>Global Average Pooling</b>으로 채널마다 평균한 뒤 선형층으로 클래스 점수를 냅니다. 큰 완전연결층은 파라미터 대부분을 차지해서 요즘은 GAP 방식을 주로 씁니다. 정규화 층은 학습을 안정시키고 드롭아웃은 과적합을 줄이는 보조 층입니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== Q2 ===================== -->
+  <section class="q" id="q2">
+    <div class="qhead"><div class="qnum">Q2</div><div class="min"><div class="kind">실습 해설</div><h2>오토 인코더가 적용되기 적합한 상황에 대해 설명하고, 오토 인코더를 구성하는 인코더(Encoder)와 디코더(Decoder) 각각의 개념과 차이점에 대해 설명하세요.</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>오토인코더는 <b>인코더</b>가 입력 x를 잠재 표현 z = f(x)로 바꾸고, <b>디코더</b>가 z에서 x̂ = g(z)를 다시 만들어 <mark>복원 오차 L(x, x̂)를 줄이도록</mark> 함께 학습하는 신경망이다. 정답 레이블 없이 입력 자체가 정답이다.</p>
+      <p>핵심은 "그대로 복사하지 못하게 막는 제약"이다. 병목(z를 입력보다 작게)이나 잡음·희소성 같은 규제가 있어야 데이터의 구조를 배운다. 그래서 다음 상황에 맞는다.</p>
+      <ul>
+        <li><b>레이블은 없고 고차원 데이터는 많을 때</b>: 차원 축소, 시각화, 특징 학습</li>
+        <li><b>손상된 입력을 고칠 때</b>: 노이즈 제거, 결측 복원</li>
+        <li><b>정상 데이터만 충분할 때</b>: 복원 오차를 점수로 쓰는 이상 탐지</li>
+      </ul>
+      <p>새 데이터 <b>생성</b>이 목적이면 잠재 공간의 분포를 정해 두는 <mark>VAE</mark>가 더 맞다.</p>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 압축했다가 다시 펼치는 구조</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 720 220" role="img" aria-label="입력 784차원을 인코더가 32차원 잠재 표현으로 줄이고 디코더가 다시 784차원으로 복원하는 구조">
+          <defs><marker id="ahQ" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+          <rect class="box" x="20" y="50" width="56" height="140" rx="6"/>
+          <text x="48" y="116" font-size="13" font-weight="700" text-anchor="middle">x</text><text x="48" y="134" font-size="11" text-anchor="middle" class="mut">784</text>
+          <polygon class="boxa" points="92,50 292,100 292,140 92,190"/>
+          <text x="180" y="118" font-size="13" font-weight="700" text-anchor="middle" class="tac">Encoder f</text><text x="180" y="136" font-size="11" text-anchor="middle" class="mut">784 → 256 → 32</text>
+          <rect class="boxg" x="306" y="100" width="108" height="40" rx="6"/>
+          <text x="360" y="118" font-size="13" font-weight="700" text-anchor="middle">z</text><text x="360" y="133" font-size="11" text-anchor="middle" class="mut">잠재 표현 32</text>
+          <polygon class="boxf" points="428,100 628,50 628,190 428,140"/>
+          <text x="540" y="118" font-size="13" font-weight="700" text-anchor="middle" class="taf">Decoder g</text><text x="540" y="136" font-size="11" text-anchor="middle" class="mut">32 → 256 → 784</text>
+          <rect class="box" x="644" y="50" width="56" height="140" rx="6"/>
+          <text x="672" y="116" font-size="13" font-weight="700" text-anchor="middle">x̂</text><text x="672" y="134" font-size="11" text-anchor="middle" class="mut">784</text>
+          <path class="arr" d="M48,44 C48,10 672,10 672,44" marker-end="url(#ahQ)" marker-start="url(#ahQ)"/>
+          <text x="360" y="22" font-size="12" text-anchor="middle" font-weight="700">복원 오차 L(x, x̂) = ‖x − x̂‖² 을 줄이도록 f와 g를 함께 학습</text>
+          <text x="360" y="168" font-size="11.5" text-anchor="middle" class="mut">병목: z에 담긴 정보만</text><text x="360" y="183" font-size="11.5" text-anchor="middle" class="mut">디코더로 넘어간다</text>
+          <text x="192" y="212" font-size="11.5" text-anchor="middle" class="mut">학습 후 단독으로: 특징 추출 · 차원 축소</text>
+          <text x="540" y="212" font-size="11.5" text-anchor="middle" class="mut">학습 후 단독으로: z → 데이터</text>
+        </svg></div>
+        <figcaption>784는 28×28 흑백 이미지(MNIST)의 픽셀 수, 256·32는 예로 든 크기입니다. 이미지라면 인코더는 stride 2 합성곱으로 줄이고, 디코더는 전치 합성곱(<code>ConvTranspose2d</code>)이나 업샘플링 + 합성곱으로 키웁니다.</figcaption>
+      </figure>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 인코더와 디코더 비교</h3>
+      <div class="tbl"><table style="min-width:760px">
+        <thead><tr><th style="width:18%">기준</th><th style="width:41%">Encoder f</th><th>Decoder g</th></tr></thead>
+        <tbody>
+          <tr><td><b>입력 → 출력</b></td><td>데이터 x → 잠재 표현 z</td><td>잠재 표현 z → 복원 x̂</td></tr>
+          <tr><td><b>하는 일</b></td><td>복원에 필요한 정보를 z에 담도록 <b>압축·요약</b></td><td>z에 담긴 정보로 데이터를 <b>재구성</b></td></tr>
+          <tr><td><b>차원</b></td><td>보통 줄인다 (과소완전, undercomplete)</td><td>다시 원래 차원으로 키운다</td></tr>
+          <tr><td><b>이미지에서 쓰는 층</b></td><td>합성곱 + stride·풀링 (다운샘플링)</td><td>전치 합성곱, 업샘플링 + 합성곱</td></tr>
+          <tr><td><b>학습 후 쓰임</b></td><td>특징 추출기, 차원 축소, 검색용 임베딩</td><td>VAE·잠재 확산 모델에서 z를 이미지로 바꾸는 생성기</td></tr>
+          <tr><td><b>한계</b></td><td>표현이 사람이 생각하는 "의미"와 일치한다는 보장은 없다</td><td>z에 없는 정보는 만들어 낼 수 없다. MSE로 학습하면 흐릿해진다</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 적합한 상황과 쓰는 방식</h3>
+      <div class="tbl"><table style="min-width:860px">
+        <thead><tr><th style="width:17%">상황</th><th style="width:43%">쓰는 방식</th><th>주의</th></tr></thead>
+        <tbody>
+          <tr><td><b>차원 축소·시각화</b></td><td>학습 후 인코더만 떼어 z를 시각화·군집·검색에 쓴다</td><td>선형 오토인코더는 PCA와 같은 부분공간을 배운다. 비선형 구조가 있을 때 의미가 있다</td></tr>
+          <tr><td><b>노이즈 제거</b></td><td><b>Denoising AE</b>: 잡음 섞인 x̃를 넣고 깨끗한 x를 정답으로 학습한다(Vincent 외, 2008)</td><td>학습 때 넣은 잡음과 실제 잡음의 종류가 비슷해야 한다</td></tr>
+          <tr><td><b>이상 탐지</b></td><td>정상 데이터로만 학습하고 복원 오차가 임계값보다 크면 이상으로 본다</td><td>이상치도 잘 복원될 수 있다. 임계값은 정상 검증 데이터로 정한다(실험 3)</td></tr>
+          <tr><td><b>사전 학습</b></td><td><b>MAE</b>(He 외, 2021): 이미지 패치의 75%를 가리고 복원하게 학습한 인코더를 다른 작업에 미세 조정한다</td><td>사전 학습 뒤 디코더는 버린다</td></tr>
+          <tr><td><b>압축된 잠재 공간</b></td><td>잠재 확산 모델(Stable Diffusion)은 오토인코더로 이미지를 작은 z로 바꾼 뒤 그 공간에서 생성한다(Rombach 외, 2022)</td><td>이때 오토인코더는 KL·VQ 규제를 둔 변형이다</td></tr>
+          <tr><td><b>새 데이터 생성</b></td><td><b>VAE</b>: z를 N(0, I) 근처에 놓도록 KL 항을 더해 학습하고, N(0, I)에서 뽑은 z를 디코딩한다</td><td>기본 오토인코더는 잠재 분포를 정하지 않아 임의의 z가 그럴듯한 결과를 낸다는 보장이 없다</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="demo" id="demo-ae">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 3</span> 오토인코더로 압축·복원하고 이상치 찾기 <span class="tag-ex">예시 데이터 · 휘어진 곡선 위 정상 점 400개</span></div>
+        <div class="how">
+          <p>정상 데이터는 곡선 y = 0.8 sin(1.6x) 근처의 점들이고, <b>가운데 구간(|x| &lt; 0.35)에는 정상 데이터가 없습니다</b>. 2차원 점을 잠재 표현 z로 줄였다가 복원하는 오토인코더를 이 페이지에서 직접 학습합니다(Adam, 전체 배치).</p>
+          <ul>
+            <li><b>선형</b>: 2 → z → 2, 활성화 없음</li>
+            <li><b>비선형</b>: 2 → 16 → z → 16 → 2, 은닉층 tanh</li>
+          </ul>
+          <p>임계값은 <b>정상 검증 데이터 200개</b>의 복원 오차 분위수로 정하고, 정상 시험 데이터 200개와 이상치 60개로 평가합니다. 아래 z 슬라이더는 잠재 공간의 한 점을 디코더에 넣어 어떤 데이터가 나오는지 보여 줍니다.</p>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="aeK" style="font-weight:600">모델</label>
+        <select id="aeK"><option value="lin">선형 오토인코더</option><option value="mlp" selected>비선형 오토인코더</option></select>
+        <label for="aeZd" style="font-weight:600">잠재 차원</label>
+        <select id="aeZd"><option value="1" selected>1 (압축)</option><option value="2">2 (입력과 같음)</option></select>
+        <label for="aeA" style="font-weight:600">이상치 종류</label>
+        <select id="aeA"><option value="far" selected>곡선에서 멀리 떨어진 점</option><option value="gap">곡선 위 빈 구간의 점</option></select>
+      </div>
+      <div class="sl3">
+        <label for="aeQ">임계값 = 정상 검증 오차의 <output id="aeQOut" for="aeQ">95</output>% 분위수<input type="range" id="aeQ" min="80" max="99.5" step="0.5" value="95"></label>
+        <label for="aeU">디코더에 넣을 z (학습 범위의 <output id="aeUOut" for="aeU">0</output>%)<input type="range" id="aeU" min="-160" max="160" step="5" value="0"></label>
+        <span></span>
+      </div>
+      <div class="panels">
+        <div class="panel"><h5>데이터와 복원 결과</h5><div class="svgbox"><svg id="aeP" viewBox="0 0 320 230" role="img" aria-label="정상 데이터, 이상치, 디코더가 만드는 곡선"></svg></div><div class="cap">주황 선 = 이상치 x → 복원 x̂ · 검은 선 = 디코더 출력(점선은 학습 범위 밖 z)</div></div>
+        <div class="panel"><h5>복원 오차 분포 (log₁₀)</h5><div class="svgbox"><svg id="aeH" viewBox="0 0 320 230" role="img" aria-label="정상과 이상치의 복원 오차 히스토그램과 임계값"></svg></div><div class="cap">막대 높이 = 그룹 안 비율 · 점선 = 임계값</div></div>
+      </div>
+      <div class="keyrow">
+        <span><span class="sw c" style="background:var(--muted);opacity:.5"></span>학습용 정상</span>
+        <span><span class="sw c" style="background:var(--accent)"></span>시험용 정상</span>
+        <span><span class="sw c" style="background:var(--fix)"></span>이상치</span>
+        <span><span class="sw c" style="background:var(--add)"></span>z를 디코딩한 점</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">복원 오차 중앙값</div><div class="v" id="aeMed">–</div></div>
+        <div class="stat em"><div class="k">탐지율 (Recall)</div><div class="v" id="aeRec">–</div></div>
+        <div class="stat"><div class="k">정밀도 (Precision)</div><div class="v" id="aePre">–</div></div>
+        <div class="stat warn"><div class="k">정상 오경보</div><div class="v" id="aeFpr">–</div></div>
+        <div class="stat ok"><div class="k">AUROC (임계값과 무관)</div><div class="v" id="aeAuc">–</div></div>
+        <div class="stat"><div class="k">디코딩한 점과 정상 곡선의 거리</div><div class="v" id="aeZ">–</div></div>
+      </div>
+      <p class="insight" id="aeMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">합성곱 오토인코더 학습과 복원 오차 기반 이상 탐지 (PyTorch)</div>
+<pre>import torch
+from torch import nn
+
+class ConvAE(nn.Module):
+    def __init__(self, z_dim=32):
+        super().__init__()
+        self.encoder = nn.Sequential(                    <span class="c"># 1×28×28 → 32×14×14 → 64×7×7 → z</span>
+            nn.Conv2d(1, 32, 3, stride=2, padding=1), nn.ReLU(),
+            nn.Conv2d(32, 64, 3, stride=2, padding=1), nn.ReLU(),
+            nn.Flatten(), nn.Linear(64 * 7 * 7, z_dim))
+        self.decoder = nn.Sequential(                    <span class="c"># z → 64×7×7 → 32×14×14 → 1×28×28</span>
+            nn.Linear(z_dim, 64 * 7 * 7), nn.ReLU(), nn.Unflatten(1, (64, 7, 7)),
+            nn.ConvTranspose2d(64, 32, 4, stride=2, padding=1), nn.ReLU(),
+            nn.ConvTranspose2d(32, 1, 4, stride=2, padding=1), nn.Sigmoid())
+
+    def forward(self, x):
+        return self.decoder(self.encoder(x))
+
+model = ConvAE()
+opt = torch.optim.Adam(model.parameters(), lr=1e-3)
+for x, _ in normal_loader:                               <span class="c"># 레이블은 쓰지 않는다</span>
+    x_noisy = (x + 0.2 * torch.randn_like(x)).clamp(0, 1)   <span class="c"># 노이즈 제거용이면 잡음 입력</span>
+    loss = nn.functional.mse_loss(model(x_noisy), x)     <span class="c"># 정답은 깨끗한 원본</span>
+    opt.zero_grad(set_to_none=True); loss.backward(); opt.step()
+
+@torch.no_grad()
+def score(x):                                            <span class="c"># 샘플별 복원 오차</span>
+    model.eval()
+    return ((model(x) - x) ** 2).flatten(1).mean(dim=1)
+
+threshold = torch.quantile(score(x_val_normal), 0.99)    <span class="c"># 정상 검증 데이터로 임계값</span>
+is_anomaly = score(x_test) &gt; threshold</pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 실습 해설에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">이 과정에서 입력 데이터의 중요한 특징만 추출하고, 불필요한 정보를 제거합니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>인코더가 남기는 것은 "중요한 특징"이 아니라 <b>복원 오차를 줄이는 데 유리한 정보</b>입니다. 픽셀 MSE로 학습하면 넓은 배경처럼 픽셀 수가 많은 부분이 우선되고, 분류에 중요한 작은 디테일은 버려질 수 있습니다.</p>
+          <p>또 병목이 없고 규제도 없으면 아무것도 버리지 않고 <b>그대로 복사</b>하는 법을 배웁니다(실험 3의 선형 오토인코더 · 잠재 차원 2는 복원 오차가 정확히 0).</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">디코더는 인코더가 학습한 특징을 기반으로 데이터의 세부 정보를 복원하며</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>디코더는 <b>z에 담긴 정보만</b> 쓸 수 있으므로, 병목에서 사라진 세부 정보는 되살릴 수 없습니다. MSE로 학습한 디코더는 같은 z에 해당할 수 있는 여러 입력의 <b>평균</b>(E[x | z])을 내놓는 쪽으로 학습되어 결과가 흐릿해집니다.</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">정상 데이터를 학습한 모델은 이상 데이터를 복원하기 어려워 이 차이를 기반으로 이상치를 탐지할 수 있습니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>이것은 보장이 아니라 <b>가정</b>입니다. 오토인코더가 너무 잘 일반화해서 이상치까지 잘 복원하는 문제는 잘 알려져 있습니다(Gong 외, 2019, MemAE). 실험 3에서 두 경우를 볼 수 있습니다.</p>
+          <ul>
+            <li><b>정상 패턴 위에 놓인 이상치</b>(빈 구간의 점): 디코더 곡선이 그 위를 지나가 대부분 임계값보다 작은 오차로 복원되므로 놓친다</li>
+            <li><b>압축이 없는 모델</b>(잠재 차원 = 입력 차원): 항등 함수를 배울 수 있어, 선형 오토인코더는 이상치까지 오차 0으로 복원한다</li>
+          </ul>
+          <p>그래서 임계값은 <b>정상 검증 데이터</b>로 정하고, 이상 사례가 일부라도 있으면 Precision · Recall · AUROC로 확인해야 합니다.</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">마지막으로, 생성 모델링에도 사용되며, 잠재 공간(latent space)을 활용해 새로운 데이터를 생성할 수 있습니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>기본 오토인코더는 복원만 배우고 <b>z의 분포를 정하지 않습니다</b>. 그래서 학습 데이터의 z가 놓인 범위와 그 사이가 의미 있게 채워진다는 보장이 없고, 어디서 z를 뽑아야 할지도 정해져 있지 않습니다(실험 3의 z 슬라이더를 학습 범위 밖으로 옮겨 보세요).</p>
+          <p>생성에는 KL 항으로 z를 N(0, I)에 맞추는 <b>VAE</b>(Kingma &amp; Welling, 2013)나 확산 모델처럼 확률 분포를 학습하는 모델을 씁니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 병목만이 방법은 아니다</div><h4>과완전 오토인코더와 규제</h4>
+        <p>z를 입력보다 크게 잡는 <b>과완전(overcomplete)</b> 구조도 쓰지만, 그대로 두면 항등 함수를 배우므로 다른 제약을 겁니다.</p>
+        <ul>
+          <li><b>희소 AE</b>: z의 대부분이 0이 되도록 L1 같은 벌점을 준다</li>
+          <li><b>Denoising AE</b>: 손상된 입력에서 원본을 복원하게 해 복사를 막는다</li>
+          <li><b>Contractive AE</b>: 입력이 조금 바뀌어도 z가 덜 바뀌도록 인코더의 야코비안에 벌점을 준다(Rifai 외, 2011)</li>
+        </ul>
+        <p>따라서 표의 "인코더는 차원을 줄인다"는 가장 흔한 형태일 뿐 정의는 아닙니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · PCA와의 관계</div><h4>선형이면 PCA, 비선형이면 휘어진 구조까지</h4>
+        <p>활성화 없는 오토인코더를 MSE로 학습하면 최적해가 <b>PCA 주성분과 같은 부분공간</b>을 펼칩니다(Baldi &amp; Hornik, 1989). 다만 축이 서로 직교하거나 분산 순서로 정렬된다는 보장은 없습니다.</p>
+        <p>비선형 오토인코더는 곡선·곡면 같은 구조를 따라 압축할 수 있어, Hinton &amp; Salakhutdinov(2006)는 깊은 오토인코더가 PCA보다 복원 오차가 훨씬 작은 저차원 표현을 만든다는 것을 보였습니다. 실험 3에서 선형과 비선형을 바꿔 비교해 보세요.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · VAE가 다른 점</div><h4>점이 아니라 분포로 인코딩한다</h4>
+        <p>VAE의 인코더는 z 하나가 아니라 평균 μ(x)와 분산 σ²(x)를 내고, 그 분포에서 z를 뽑아 디코딩합니다. 손실은 두 항입니다.</p>
+        <pre>loss = 복원 오차(x, x̂) + KL( N(μ, σ²) ‖ N(0, I) )</pre>
+        <p>KL 항이 모든 z를 N(0, I) 근처에 모으므로, 생성할 때 N(0, I)에서 z를 뽑으면 디코더가 본 적 있는 영역이 나옵니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>오토인코더는 입력을 <b>잠재 표현으로 압축했다가 다시 복원</b>하면서, 복원 오차를 줄이도록 학습하는 신경망입니다. 레이블이 필요 없어서, 고차원 데이터는 많은데 레이블이 없을 때의 차원 축소와 특징 학습, 잡음 섞인 입력에서 원본을 복원하는 <b>노이즈 제거</b>, 정상 데이터만 충분할 때의 <b>이상 탐지</b>에 적합합니다.</p>
+      <p><b>인코더</b>는 입력을 저차원 잠재 벡터로 바꾸는 부분으로, 복원에 필요한 정보를 그 벡터에 담도록 학습됩니다. <b>디코더</b>는 그 벡터에서 원래 차원의 데이터를 다시 만드는 부분입니다. 방향이 반대이고, 인코더는 학습 후 특징 추출기로, 디코더는 잠재 벡터를 데이터로 바꾸는 생성기로 따로 쓸 수 있다는 점이 다릅니다.</p>
+      <p>주의할 점은 두 가지입니다. 병목이나 규제가 없으면 그냥 복사를 배우고, 이상치도 잘 복원될 수 있어서 이상 탐지 임계값은 <b>정상 검증 데이터</b>로 정해야 합니다. 그리고 기본 오토인코더는 잠재 공간의 분포를 정하지 않으므로, 새 데이터 생성이 목적이면 <b>VAE</b>를 쓰겠습니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q2"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 면접 1 ===================== -->
+  <section class="q" id="m1">
+    <div class="qhead"><div class="qnum iv">면접 1</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>이미지 분류 모델을 완전연결층(Fully Connected Layer)만으로 만들었더니 파라미터 수가 수백만 개를 넘고, 사진 속 물체 위치가 조금만 바뀌어도 예측이 크게 달라져요. 왜 이런 문제가 생기고, CNN은 이 문제를 어떻게 해결하는지 설명해 주세요.</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>완전연결층은 이미지를 <b>순서 없는 숫자 목록</b>으로 본다. 모든 픽셀이 모든 뉴런과 <b>위치마다 다른 가중치</b>로 연결되므로 두 문제가 같은 뿌리에서 나온다.</p>
+      <ul>
+        <li><b>파라미터 폭증</b>: 파라미터 = 픽셀 수 × 뉴런 수. 224×224×3 입력을 뉴런 1,000개에 연결하면 1억 5천만 개다</li>
+        <li><b>위치 민감</b>: 같은 귀라도 다른 위치에 있으면 다른 가중치와 곱해진다. 학습 때 그 위치에서 본 적이 없으면 알아보지 못한다</li>
+      </ul>
+      <p>CNN은 <mark>지역 연결</mark>로 파라미터를 줄이고, <mark>가중치 공유</mark>로 같은 필터를 모든 위치에 써서 <b>이동 등변성</b>을 얻는다. 여기에 풀링·GAP가 위치를 지우면 <b>작은 이동에 대한 근사적 불변성</b>이 생긴다.</p>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 파라미터를 줄이는 두 단계</h3>
+      <div class="tbl"><table class="num" style="min-width:760px">
+        <thead><tr><th style="width:30%">구조 (입력 224×224×3)</th><th style="width:22%">파라미터 수</th><th>계산</th></tr></thead>
+        <tbody>
+          <tr><td>FC · 출력 뉴런 1,000개</td><td>150,529,000</td><td>150,528 × 1,000 + 1,000</td></tr>
+          <tr><td>FC · 출력을 224×224×64로</td><td>483,388,358,656</td><td>150,528 × 3,211,264 + 3,211,264 (FP32로 약 1.93TB)</td></tr>
+          <tr><td>지역 연결만 (위치마다 다른 3×3 필터)</td><td>89,915,392</td><td>224 × 224 × 64 × (3 × 3 × 3 + 1)</td></tr>
+          <tr><td>지역 연결 + 가중치 공유 = 합성곱</td><td>1,792</td><td>64 × (3 × 3 × 3 + 1)</td></tr>
+        </tbody>
+      </table></div>
+      <p>출력 크기를 같게(224×224×64, padding 1) 맞추면 두 원리의 효과를 따로 볼 수 있습니다. <b>지역 연결</b>이 한 출력 칸의 입력을 150,528개에서 27개로 줄여 약 5,376배, <b>가중치 공유</b>가 50,176개 위치의 필터를 하나로 합쳐 다시 50,176배 줄입니다.</p>
+      <p>첫 줄과 마지막 줄의 비(약 84,000배)는 출력 크기가 다른 두 층의 비교라, 구조 차이를 보여 주는 참고값으로만 읽어야 합니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 등변성과 불변성</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg id="eqFig" viewBox="0 0 720 236" role="img" aria-label="입력이 이동하면 합성곱 특징 지도도 같이 이동하고, GAP 출력은 같지만 Flatten과 FC는 위치마다 다른 가중치를 쓰는 그림"></svg></div>
+        <figcaption>위아래는 같은 물체가 2칸 이동한 두 입력입니다. 합성곱 특징 지도는 같은 양만큼 이동하고(<b>등변</b>, equivariance), GAP는 위치를 평균으로 지워 같은 값을 냅니다(<b>불변</b>, invariance). 같은 특징 지도를 Flatten해서 FC에 넣으면 이동한 값이 다른 가중치와 곱해지므로 출력이 달라질 수 있습니다.</figcaption>
+      </figure>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 문제와 원인, CNN의 해결 원리</h3>
+      <div class="tbl"><table style="min-width:860px">
+        <thead><tr><th style="width:17%">문제</th><th style="width:30%">완전연결층에서의 원인</th><th style="width:30%">CNN의 해결 원리</th><th>남는 한계</th></tr></thead>
+        <tbody>
+          <tr><td><b>파라미터 폭증</b></td><td>입력 픽셀 수 × 출력 뉴런 수. 해상도가 2배면 픽셀이 4배, 파라미터도 4배</td><td>지역 연결 + 가중치 공유로 파라미터가 해상도와 무관</td><td>Flatten + FC 헤드를 쓰면 헤드에서 다시 커진다(실험 2)</td></tr>
+          <tr><td><b>위치 민감</b></td><td>위치마다 별도 가중치. 패턴이 지나가지 않은 픽셀의 가중치는 학습되지 않는다</td><td>같은 필터를 모든 위치에 적용(등변) + 풀링·GAP로 위치 제거(불변)</td><td>stride·풀링의 다운샘플링 때문에 1픽셀 이동에도 출력이 흔들릴 수 있다</td></tr>
+          <tr><td><b>공간 구조 무시</b></td><td>픽셀 순서를 섞어도 같은 모델이 된다. 이웃 관계를 데이터로부터 배워야 한다</td><td>이웃한 픽셀끼리만 묶어서 보는 지역성을 구조에 넣는다</td><td>멀리 떨어진 부분의 관계는 층을 쌓아야 본다</td></tr>
+          <tr><td><b>과적합·데이터 요구</b></td><td>파라미터가 많고 같은 패턴을 위치마다 따로 배워야 한다</td><td>한 위치에서 배운 필터가 모든 위치에 쓰여 데이터 효율이 높다</td><td>회전·크기 변화에는 구조적 보장이 없어 데이터 증강이 필요하다</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="demo" id="demo-shift">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 4</span> 물체를 처음 보는 위치로 옮기면? FC와 CNN 직접 학습하기 <span class="tag-ex">예시 데이터 · 16×16 이미지, '+' 대 '×'</span></div>
+        <div class="how">
+          <p>16×16 이미지에 5×5 크기의 <b>'+'</b> 또는 <b>'×'</b>를 넣고(밝기 0.7~1.0, 잡음 σ = 0.15) 둘을 구분하는 세 모델을 이 페이지에서 학습합니다(학습 600장, Adam, 25 에포크).</p>
+          <ul>
+            <li><b>FC</b>: 256 → 32(ReLU) → 1</li>
+            <li><b>Conv + Flatten</b>: 3×3 필터 4개(ReLU) → 14×14×4를 펴서 → 1</li>
+            <li><b>Conv + GAP</b>: 3×3 필터 4개(ReLU) → 채널별 평균 4개 → 1</li>
+          </ul>
+          <p>학습 데이터의 물체는 <b>왼쪽(가로 위치 px 0~3)에만</b> 놓입니다. 시험은 px 0~11 모든 위치에서 위치마다 80장씩 합니다. 학습 위치를 "전체"로 바꾸면 모든 위치를 보여 주는 데이터 증강과 같은 효과입니다.</p>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="sfTr" style="font-weight:600">학습 데이터 위치</label>
+        <select id="sfTr"><option value="3" selected>왼쪽만 (px 0~3)</option><option value="11">전체 (px 0~11)</option></select>
+        <label for="sfCls" style="font-weight:600">살펴볼 모양</label>
+        <select id="sfCls"><option value="0" selected>+</option><option value="1">×</option></select>
+      </div>
+      <div><label for="sfPx" style="font-size:14px;font-weight:600">살펴볼 가로 위치 px: <output id="sfPxOut" for="sfPx">9</output></label><input type="range" id="sfPx" min="0" max="11" step="1" value="9"></div>
+      <div class="tri">
+        <div class="panel"><h5>위치별 시험 정확도</h5><div class="svgbox"><svg id="sfAcc" viewBox="0 0 320 230" role="img" aria-label="가로 위치별 세 모델의 시험 정확도"></svg></div><div class="cap">초록 배경 = 학습 때 물체가 놓인 위치</div></div>
+        <div class="panel"><h5>입력 이미지</h5><div class="svgbox"><svg id="sfImg" viewBox="0 0 200 200" role="img" aria-label="선택한 위치의 입력 이미지"></svg></div><div class="cap">점선 = 학습 때 물체가 지나간 열(0~7)</div></div>
+        <div class="panel"><h5>Conv + GAP의 특징 지도</h5><div class="svgbox"><svg id="sfMap" viewBox="0 0 200 200" role="img" aria-label="가장 크게 반응한 필터의 특징 지도"></svg></div><div class="cap">가장 크게 반응한 필터 · 물체를 따라 이동(등변)</div></div>
+      </div>
+      <div class="keyrow">
+        <span><span class="sw ln" style="background:var(--fix)"></span>FC</span>
+        <span><span class="sw dash" style="border-top-color:var(--muted)"></span>Conv + Flatten</span>
+        <span><span class="sw ln" style="background:var(--accent)"></span>Conv + GAP</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">파라미터 수</div><div class="v" id="sfPar">–</div></div>
+        <div class="stat ok"><div class="k">학습 위치 정확도 (px 0~3)</div><div class="v" id="sfIn">–</div></div>
+        <div class="stat warn"><div class="k">처음 보는 열만 쓰는 위치 (px 8~11)</div><div class="v" id="sfOut">–</div></div>
+        <div class="stat em"><div class="k">이 이미지의 정답 확률</div><div class="v" id="sfProb">–</div></div>
+      </div>
+      <p class="insight" id="sfMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">합성곱의 등변성, GAP의 불변성, 다운샘플링이 등변성을 깨는 것을 직접 확인하기 (PyTorch)</div>
+<pre>import torch
+from torch import nn
+
+torch.manual_seed(0)
+conv = nn.Conv2d(3, 8, 3, padding=1, bias=False)
+x = torch.zeros(1, 3, 32, 32)
+x[..., 8:14, 8:14] = torch.rand(3, 6, 6)                 <span class="c"># 가장자리에서 떨어진 물체</span>
+x4 = torch.roll(x, shifts=4, dims=3)                     <span class="c"># 오른쪽으로 4칸 이동</span>
+
+y, y4 = conv(x), conv(x4)
+print(torch.allclose(torch.roll(y, 4, dims=3), y4, atol=1e-6))    <span class="c"># True: 등변</span>
+gap = lambda t: torch.relu(t).mean(dim=(2, 3))
+print(torch.allclose(gap(y), gap(y4), atol=1e-6))       <span class="c"># True: GAP 뒤에는 불변</span>
+
+pool = nn.MaxPool2d(2)
+y1 = conv(torch.roll(x, shifts=1, dims=3))               <span class="c"># 1칸 이동 + 2×2 풀링</span>
+print(torch.allclose(pool(y), pool(y1)))                 <span class="c"># False: 풀링만으로는 불변이 아니다</span></pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">물체 이동에 민감 | 위치마다 별도의 가중치를 학습 | 같은 필터를 모든 위치에 적용</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>"같은 필터를 모든 위치에 적용"만으로는 위치 민감성이 해결되지 않습니다. 합성곱이 주는 것은 특징 지도가 같이 이동하는 <b>등변성</b>이고, 그 지도를 <b>Flatten + FC</b>에 넣으면 위치마다 다른 가중치가 다시 등장합니다.</p>
+          <p>실험 4에서 Conv + Flatten은 처음 보는 위치에서 FC처럼 정확도가 떨어지고, Conv + GAP만 유지됩니다. 해결의 완성은 <b>등변한 특징 추출 + 위치를 지우는 헤드(풀링·GAP)</b>이고, 작성 답안의 뒷부분 정정 문단은 이 점을 바르게 설명했습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 실제 CNN은 1픽셀 이동에도 흔들린다</div><h4>다운샘플링의 앨리어싱과 패딩</h4>
+        <p>stride 2 합성곱이나 2×2 풀링은 출력을 한 칸 걸러 뽑는 것이라, 입력이 홀수 칸 이동하면 출력 격자에 맞지 않아 값이 달라집니다(실험 1의 stride 2 + 1칸 이동). Azulay &amp; Weiss(2019)는 ImageNet 분류 CNN의 예측이 1픽셀 이동에도 크게 바뀔 수 있음을 보였습니다.</p>
+        <ul>
+          <li><b>대책</b>: 다운샘플링 전에 흐림 필터를 넣는 안티앨리어싱(BlurPool, Zhang 2019), random crop·translation 증강</li>
+          <li><b>패딩</b>: 가장자리의 0 패딩이 "여기는 경계"라는 신호가 되어 CNN도 절대 위치를 어느 정도 알아낸다(Islam 외, 2020)</li>
+        </ul>
+      </div>
+      <div class="card add"><div class="k">보충 · 귀납 편향</div><h4>CNN은 가정을 구조에 넣은 모델이다</h4>
+        <p>"가까운 픽셀끼리 관련 있다(지역성)"와 "같은 패턴은 어디에나 나타날 수 있다(이동 등변성)"는 가정을 구조에 넣었기 때문에 적은 파라미터와 데이터로 학습됩니다. 가정이 맞는 이미지·음성에서 강한 이유입니다.</p>
+        <p>반대로 Vision Transformer(Dosovitskiy 외, 2020)는 이 가정이 약해서 ImageNet 규모에서는 비슷한 크기의 ResNet보다 낮았고, 3억 장 규모(JFT-300M)로 사전 학습했을 때 앞섰습니다. 가정을 줄이면 데이터가 그만큼 더 필요하다는 예입니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>완전연결층은 이미지를 한 줄로 편 숫자 목록으로 보고 <b>모든 픽셀을 모든 뉴런에 위치마다 다른 가중치</b>로 연결합니다. 그래서 파라미터가 픽셀 수 곱하기 뉴런 수로 늘어나, 224×224 컬러 이미지를 뉴런 1,000개에 연결하기만 해도 1억 5천만 개가 됩니다. 같은 이유로, 같은 물체도 위치가 바뀌면 전혀 다른 가중치와 곱해지고, 학습 때 물체가 지나가지 않은 위치의 가중치는 학습되지 않아 예측이 크게 흔들립니다.</p>
+      <p>CNN은 두 가지로 해결합니다. <b>지역 연결</b>로 한 출력이 3×3 같은 작은 영역만 보게 하고, <b>가중치 공유</b>로 같은 필터를 모든 위치에 다시 씁니다. 그러면 파라미터가 해상도와 무관하게 줄고, 한 위치에서 배운 특징을 다른 위치에서도 그대로 찾을 수 있습니다. 이때 특징 지도는 입력과 같이 이동하는 <b>이동 등변성</b>을 가집니다.</p>
+      <p>예측까지 안정되려면 풀링이나 <b>Global Average Pooling</b>으로 위치 정보를 지워야 합니다. 특징 지도를 Flatten해서 FC에 넣으면 위치별 가중치가 다시 생기기 때문입니다. 실제 CNN도 stride와 풀링 때문에 1픽셀 이동에 흔들릴 수 있어서, 데이터 증강이나 안티앨리어싱을 함께 쓰겠습니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="m1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 총정리 ===================== -->
+  <section class="q" id="sum">
+    <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 CNN 레이어 (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>합성곱·풀링·FC의 기본 역할, 공간 구조를 보존하는 특징 추출, 활성화·정규화의 보조 역할</td><td>Max Pooling은 "가장 중요한 값"이 아니라 가장 큰 활성값. 풀링이 과적합을 직접 막지는 않음</td></tr>
+        <tr><td>Q1 작성 답안</td><td><span class="badge b-core">보완</span></td><td>레이어별 역할표, 지역 연결·가중치 공유, 파라미터 계산(150,529,000 대 1,792), GAP와 stride 합성곱</td><td>GAP 자체는 클래스 점수를 내지 않음(뒤의 선형층이 냄). 교차상관, 3×3 적층과 수용 영역, VGG 헤드 비중 추가</td></tr>
+        <tr><td>Q2 오토인코더 (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>차원 축소·노이즈 제거·이상 탐지 용도, 인코더와 디코더의 방향 차이, 복원 오차 최소화</td><td>인코더는 "중요한 특징"이 아니라 복원에 유리한 정보를 남김. 디코더는 사라진 세부를 복원 못 함. 이상치도 복원될 수 있음. 기본 AE는 생성에 부적합</td></tr>
+        <tr><td>Q2 작성 답안</td><td><span class="badge b-add">정확</span></td><td>z = Encoder(x), x̂ = Decoder(z), 이상 탐지의 한계와 임계값 검증, 기본 AE 대신 VAE</td><td>과완전 AE와 규제, 선형 AE = PCA 부분공간, VAE 손실, MAE·잠재 확산 모델 같은 현재 활용 추가</td></tr>
+        <tr><td>면접 1 완전연결층과 위치 변화 (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>모든 픽셀 연결로 인한 파라미터 증가, 위치별 가중치, 지역 연결·가중치 공유, 등변성과 근사적 불변성 구분</td><td>"같은 필터 공유"만으로는 위치 민감성이 해결되지 않음(Flatten + FC 헤드). 지역 연결과 공유의 효과 분리, 앨리어싱·패딩, 귀납 편향 추가</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <nav class="pager" aria-label="위클리 이동 (하단)">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%205.%20PyTorch·TensorFlow%20·%20텐서%20·%20기울기%20소실%20·%20배치%20크기.html" rel="prev">‹ 이전 · 05 PyTorch·TensorFlow · 텐서</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+    <a href="#top">↑ 맨 위로</a>
+  </nav>
+
+  <footer>위클리 페이퍼 06 · CNN 레이어 / 오토인코더 / 면접 1문항 · <span class="tag-ex">예시</span> 표시가 있는 값은 설명용 가상 데이터입니다</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){let u=0;while(!u)u=r();const v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const minus=s=>String(s).replace(/-/g,"−");
+const f3=v=>minus(v.toFixed(3));
+const pct=v=>(v*100).toFixed(1)+"%";
+const sig=z=>1/(1+Math.exp(-z));
+const sup=n=>String(n).split("").map(c=>"⁰¹²³⁴⁵⁶⁷⁸⁹"["0123456789".indexOf(c)]||(c==="-"?"⁻":c)).join("");
+function sci(v){if(!isFinite(v))return "발산";if(v===0)return "0";const e=Math.floor(Math.log10(Math.abs(v)));const m=v/Math.pow(10,e);if(e>=-2&&e<=3)return minus(+v.toPrecision(3)+"");return minus(m.toFixed(1))+"×10"+sup(e);}
+function clear(s){while(s.firstChild)s.removeChild(s.firstChild);}
+function safe(name,fn){try{fn();}catch(e){console.error(name,e);}}
+const later=fn=>setTimeout(()=>safe("later",fn),20);
+const fmtN=n=>n.toLocaleString("ko-KR");
+
+/* Python 문법 강조: 주석·키워드·내장 함수·문자열·숫자·호출·데코레이터 */
+const SY_KW=new Set("import from as def return for in if elif else with try except finally while class lambda not and or is None True False yield pass break continue raise global assert".split(" "));
+const SY_BI=new Set("print range len enumerate zip min max sum abs dict list tuple set int float str bool isinstance super open map sorted".split(" "));
+const SY_RE=/(#.*)|(@[A-Za-z_][\w.]*)|([rbfu]?"(?:[^"\\n]|\.)*"|[rbfu]?'(?:[^'\\n]|\.)*')|(\b\d+(?:\.\d+)?(?:e[-+]?\d+)?\b)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)/g;
+function hlPre(pre){
+  if(pre.closest(".card"))return;   // 오류 메시지 블록은 그대로
+  const w=document.createTreeWalker(pre,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".c,.cnt,[class^='sy-']")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{const t=n.nodeValue,frag=document.createDocumentFragment();let last=0,m;SY_RE.lastIndex=0;
+    while((m=SY_RE.exec(t))){let cls=null;
+      if(m[1])cls="c";else if(m[2])cls="sy-d";else if(m[3])cls="sy-s";else if(m[4])cls="sy-n";
+      else if(m[5])cls=SY_KW.has(m[5])?"sy-k":SY_BI.has(m[5])?"sy-b":"sy-f";
+      else if(SY_KW.has(m[6]))cls="sy-k";else if(m[6]==="self")cls="sy-b";
+      if(!cls)continue;
+      if(m.index>last)frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+      const sp=document.createElement("span");sp.className=cls;sp.textContent=m[0];frag.appendChild(sp);last=m.index+m[0].length;}
+    if(!last)return;if(last<t.length)frag.appendChild(document.createTextNode(t.slice(last)));n.parentNode.replaceChild(frag,n);});
+}
+
+/* 특징 지도 그리기: 양수 파랑, 음수 주황 */
+function heat(svg,M,o){
+  clear(svg);o=o||{};const n=M.length,cs=200/n;let vmax=o.vmax||0;
+  if(!vmax)M.forEach(r=>r.forEach(v=>{vmax=Math.max(vmax,Math.abs(v));}));if(!vmax)vmax=1;
+  const showV=o.vals&&n<=6;
+  for(let i=0;i<n;i++)for(let j=0;j<n;j++){const v=M[i][j];
+    el("rect",{x:j*cs,y:i*cs,width:cs,height:cs,class:"hbg"},svg);
+    if(Math.abs(v)>1e-12){const a=Math.min(1,Math.abs(v)/vmax);el("rect",{x:j*cs+.5,y:i*cs+.5,width:cs-1,height:cs-1,class:v>0?"hpos":"hneg","fill-opacity":(showV?0.08+0.5*a:0.1+0.85*a).toFixed(3)},svg);}
+    if(showV)el("text",{x:j*cs+cs/2,y:i*cs+cs/2+4,"text-anchor":"middle",class:"hv"},svg,fmt2(v));
+    if(o.click){const hit=el("rect",{x:j*cs,y:i*cs,width:cs,height:cs,fill:"transparent",style:"cursor:pointer"},svg);hit.addEventListener("click",()=>o.click(i,j));}}
+  return cs;}
+function fmt2(v){if(Math.abs(v)<5e-10)return "0";return minus(+v.toFixed(2)+"");}
+
+/* ---------- 실험 1: 합성곱 → ReLU → 풀링 ---------- */
+safe("conv",function(){
+  const N=12;
+  const IMGS={
+    box:(r,c)=>r>=3&&r<=8&&c>=3&&c<=8,
+    diag:(r,c)=>r>=1&&r<=9&&(c===r||(c===r+1&&r<=8)),
+    seven:(r,c)=>(r===2&&c>=2&&c<=9)||(r>=3&&r<=10&&c===Math.round(9-(r-3)*5/7))};
+  const KS={vedge:[[-1,0,1],[-2,0,2],[-1,0,1]],hedge:[[-1,-2,-1],[0,0,0],[1,2,1]],blur:[[1,1,1],[1,1,1],[1,1,1]].map(r=>r.map(v=>v/9)),sharp:[[0,-1,0],[-1,5,-1],[0,-1,0]]};
+  const KDESC={vedge:"세로 엣지 필터는 (오른쪽 열 − 왼쪽 열)을 계산하므로, 왼쪽이 어둡고 오른쪽이 밝은 경계에서 양수, 반대 경계에서 음수를 냅니다.",
+    hedge:"가로 엣지 필터는 (아래 행 − 위 행)을 계산하므로, 위가 어둡고 아래가 밝은 경계에서 양수, 반대 경계에서 음수를 냅니다.",
+    blur:"평균 흐림 필터는 주변 9칸의 평균이라 경계가 퍼지고 음수가 생기지 않습니다.",
+    sharp:"선명하게 필터는 가운데를 5배 하고 상하좌우를 빼서, 경계의 밝은 쪽은 더 밝게(양수) 어두운 쪽은 음수로 만들어 대비를 키웁니다.",
+    custom:"직접 입력한 필터입니다."};
+  function img(name,sh){const f=IMGS[name],M=[];for(let r=0;r<N;r++){M.push([]);for(let c=0;c<N;c++)M[r].push(c-sh>=0&&f(r,c-sh)?1:0);}return M;}
+  function conv(X,K,P,S){const n=X.length,H=Math.floor((n+2*P-3)/S)+1,Y=[];
+    for(let i=0;i<H;i++){Y.push([]);for(let j=0;j<H;j++){let s=0;for(let u=0;u<3;u++)for(let v=0;v<3;v++){const r=i*S+u-P,c=j*S+v-P;if(r>=0&&r<n&&c>=0&&c<n)s+=K[u][v]*X[r][c];}Y[i].push(s);}}return Y;}
+  const relu=M=>M.map(r=>r.map(v=>Math.max(0,v)));
+  function pool(M,mode){const H=Math.floor(M.length/2),Y=[],arg=[];
+    for(let i=0;i<H;i++){Y.push([]);arg.push([]);for(let j=0;j<H;j++){
+      const vs=[[2*i,2*j],[2*i,2*j+1],[2*i+1,2*j],[2*i+1,2*j+1]].map(([r,c])=>({r,c,v:M[r][c]}));
+      if(mode==="max"){let b=vs[0];vs.forEach(o=>{if(o.v>b.v)b=o;});Y[i].push(b.v);arg[i].push(b);}
+      else{Y[i].push(vs.reduce((a,o)=>a+o.v,0)/4);arg[i].push(null);}}}
+    return {Y,arg};}
+  function getK(){const k=$("#cvF").value;if(k!=="custom")return KS[k];
+    const a=[...document.querySelectorAll("#cvK input")].map(x=>{const v=parseFloat(x.value);return isFinite(v)?v:0;});return [a.slice(0,3),a.slice(3,6),a.slice(6,9)];}
+  function pipeline(name,sh,K,P,S,pm){const X=img(name,sh),Y=conv(X,K,P,S),A=relu(Y),Pp=pm==="none"?null:pool(A,pm);return {X,Y,A,Pp,F:Pp?Pp.Y:A};}
+  let sel=null;
+  function render(keep){
+    const name=$("#cvImg").value,P=+$("#cvP").value,S=+$("#cvS").value,pm=$("#cvPool").value,sh=+$("#cvSh").value,fk=$("#cvF").value,K=getK();
+    $("#cvK").hidden=fk!=="custom";
+    const R=pipeline(name,sh,K,P,S,pm),H=R.Y.length;
+    if(!keep||!sel||sel.i>=H||sel.j>=H){let b={i:0,j:0,v:-1};R.Y.forEach((r,i)=>r.forEach((v,j)=>{if(Math.abs(v)>b.v+1e-12)b={i,j,v:Math.abs(v)};}));sel={i:b.i,j:b.j};}
+    const vY=Math.max(1e-9,...R.Y.flat().map(Math.abs));
+    // ① 입력
+    const sIn=$("#cvIn"),c0=heat(sIn,R.X,{vmax:1});
+    const r0=sel.i*S-P,q0=sel.j*S-P;el("rect",{x:q0*c0,y:r0*c0,width:3*c0,height:3*c0,class:"hwin"},sIn);
+    // ② 합성곱
+    $("#cvOutT").textContent="② 합성곱 출력 ("+H+"×"+H+")";
+    const sO=$("#cvOut"),c1=heat(sO,R.Y,{vmax:vY,vals:true,click:(i,j)=>{sel={i,j};safe("conv",()=>render(true));}});
+    el("rect",{x:sel.j*c1,y:sel.i*c1,width:c1,height:c1,class:"hsel"},sO);
+    // ③ ReLU
+    const sR=$("#cvRelu"),c2=heat(sR,R.A,{vmax:vY,vals:true});
+    el("rect",{x:sel.j*c2,y:sel.i*c2,width:c2,height:c2,class:"hsel"},sR);
+    // ④ 풀링
+    const sP=$("#cvPl");clear(sP);
+    let poolTxt="";
+    if(R.Pp&&R.Pp.Y.length){const Hp=R.Pp.Y.length;$("#cvPoolT").textContent="④ "+(pm==="max"?"Max":"Average")+" 풀링 뒤 ("+Hp+"×"+Hp+")";
+      const c3=heat(sP,R.Pp.Y,{vmax:vY,vals:true});
+      const pi=Math.floor(sel.i/2),pj=Math.floor(sel.j/2);
+      if(pi<Hp&&pj<Hp){el("rect",{x:pj*c3,y:pi*c3,width:c3,height:c3,class:"hsel"},sP);
+        el("rect",{x:2*pj*c2,y:2*pi*c2,width:2*c2,height:2*c2,class:"hwin"},sR);
+        const win=[R.A[2*pi][2*pj],R.A[2*pi][2*pj+1],R.A[2*pi+1][2*pj],R.A[2*pi+1][2*pj+1]];
+        if(pm==="max"){const a=R.Pp.arg[pi][pj];el("rect",{x:a.c*c2+1.5,y:a.r*c2+1.5,width:c2-3,height:c2-3,class:"hmax"},sR);
+          poolTxt="\n풀링: 이 칸이 속한 2×2 창 ["+win.map(fmt2).join(", ")+"] → Max = "+fmt2(R.Pp.Y[pi][pj]);}
+        else poolTxt="\n풀링: 이 칸이 속한 2×2 창 ["+win.map(fmt2).join(", ")+"] → 평균 = "+fmt2(R.Pp.Y[pi][pj]);}
+      else poolTxt="\n풀링: 이 칸은 2×2로 나누고 남은 줄이라 풀링에서 버려집니다.";
+    }else{$("#cvPoolT").textContent="④ 풀링 없음";el("text",{x:100,y:104,"text-anchor":"middle","font-size":13,class:"mut"},sP,"풀링을 고르면 표시");}
+    // 계산 내역
+    const terms=[];let zc=0,pc=0;
+    for(let u=0;u<3;u++)for(let v=0;v<3;v++){const r=r0+u,c=q0+v;if(r<0||r>=N||c<0||c>=N){pc++;continue;}const x=R.X[r][c];if(x===0){zc++;continue;}terms.push(fmt2(x)+"×"+(K[u][v]<0?"("+fmt2(K[u][v])+")":fmt2(K[u][v])));}
+    const y=R.Y[sel.i][sel.j];
+    let calc="출력 (행 "+(sel.i+1)+", 열 "+(sel.j+1)+") = Σ 입력 × 필터 (편향 0)\n= "+(terms.length?terms.join(" + "):"0")+" = "+fmt2(y);
+    const om=[];if(zc)om.push("입력이 0인 칸 "+zc+"개");if(pc)om.push("패딩 칸 "+pc+"개");
+    if(om.length)calc+="\n("+om.join(", ")+"는 곱이 0이라 생략)";
+    calc+="\nReLU: max(0, "+fmt2(y)+") = "+fmt2(Math.max(0,y))+poolTxt;
+    $("#cvCalc").textContent=calc;
+    // 수치
+    const neg=R.Y.flat().filter(v=>v<-1e-12).length;
+    $("#cvSize").innerHTML=H+"×"+H+'<span class="sub">⌊(12 + 2×'+P+" − 3) / "+S+"⌋ + 1</span>";
+    $("#cvPar").innerHTML='10<span class="sub">필터 9 + 편향 1</span>';
+    $("#cvZero").innerHTML=neg+" / "+(H*H)+'<span class="sub">음수였던 칸</span>';
+    // 이동 비교
+    let eqTxt="",invTxt="",msgShift="";
+    if(sh===0){$("#cvEq").innerHTML='–<span class="sub">입력 이동을 1~2칸으로</span>';$("#cvInv").innerHTML='–<span class="sub">입력 이동을 1~2칸으로</span>';
+      msgShift="입력 이동을 1칸이나 2칸으로 바꾸면 이동 전후 출력을 비교합니다.";}
+    else{const B=pipeline(name,0,K,P,S,pm);
+      const cmp=(F,G,d)=>{let same=0,t=0;for(let i=0;i<F.length;i++)for(let j=d;j<F.length;j++){const x=F[i][j],y=G[i][j-d];if(Math.abs(x)<1e-9&&Math.abs(y)<1e-9)continue;t++;if(Math.abs(x-y)<1e-9)same++;}return {same,t,fr:t?same/t:1};};
+      if(sh%S===0){const d=sh/S,c=cmp(R.A,B.A,d);
+        $("#cvEq").innerHTML=pct(c.fr)+'<span class="sub">출력 '+d+"칸 옮겨 비교</span>";
+        eqTxt=c.fr===1?"입력을 "+sh+"칸 옮기자 합성곱+ReLU 출력도 정확히 "+d+"칸 옮겨졌습니다(옮겨 비교하면 100% 일치). 같은 필터를 모든 위치에 쓰기 때문에 생기는 이동 등변성입니다.":"출력을 "+d+"칸 옮겨 비교하면 값이 있는 칸 중 "+pct(c.fr)+"가 일치합니다.";}
+      else{const c=cmp(R.A,B.A,0);
+        $("#cvEq").innerHTML='격자 불일치<span class="sub">제자리 같음 '+c.same+" / "+c.t+"칸</span>";
+        eqTxt="stride "+S+"는 출력을 한 칸 걸러 계산하므로, 입력이 "+S+"칸 움직일 때마다 출력이 1칸 움직이고 그 사이의 "+sh+"칸 이동은 출력 격자에 맞지 않습니다. 이번에는 "+(c.fr===1?"값이 있는 칸 "+c.t+"개가 모두 제자리 값 그대로라, 입력이 움직였는데 출력은 전혀 바뀌지 않았습니다(1칸 위치 정보가 사라짐).":c.same===0?"값이 있는 칸 "+c.t+"개 중 제자리 값 그대로인 칸이 없어 값 자체가 바뀌었습니다.":"값이 있는 칸 "+c.t+"개 중 "+c.same+"개만 제자리 값 그대로이고 나머지는 값이 바뀌었습니다.")+" 출력이 입력을 따라 이동하지 못한 것이므로, 다운샘플링이 등변성을 깨는 경우입니다.";}
+      const F=R.F,G=B.F,Hf=F.length,ci=cmp(F,G,0);
+      $("#cvInv").innerHTML=(Hf?pct(ci.fr):"–")+'<span class="sub">값이 있는 칸 '+ci.same+" / "+ci.t+"</span>";
+      const T=S*(R.Pp?2:1);
+      invTxt="최종 출력("+(R.Pp?"풀링":"ReLU")+" 뒤)을 제자리에서 비교하면 "+(ci.same===ci.t?"값이 있는 칸 "+ci.t+"개가 모두 그대로입니다.":ci.same===0?"값이 있는 칸 "+ci.t+"개 중 그대로인 칸이 없습니다.":"값이 있는 칸 "+ci.t+"개 중 "+ci.same+"개만 그대로입니다.");
+      if(R.Pp&&sh%T===0){const c=cmp(F,G,sh/T);
+        invTxt+=" 풀링 출력은 "+(c.fr===1?"정확히 "+(sh/T)+"칸 옮겨졌을 뿐입니다":(sh/T)+"칸 옮겨 비교하면 "+pct(c.fr)+" 일치합니다")+". 풀링 한 번은 작은 이동을 흡수할 수 있을 뿐 이동을 지우지는 못합니다. 위치를 완전히 지우는 것은 GAP 같은 전역 풀링입니다(면접 1).";}
+      else if(R.Pp){if(ci.fr===1)invTxt+=" 이번 이동은 2×2 풀링 창 안에서 모두 흡수됐습니다. 하지만 이동량이나 물체 위치가 달라지면 창 경계를 넘어 값이 바뀌므로, 풀링 한 번으로 생기는 불변성은 근사적입니다.";
+        else if(ci.same===0)invTxt+=" 이동이 풀링 창 경계를 넘어 값이 모두 바뀌었습니다. 풀링이 작은 이동을 늘 흡수하는 것은 아닙니다.";
+        else invTxt+=" 2×2 풀링이 창 안의 이동은 흡수하지만 창 경계를 넘는 이동은 값을 바꿉니다. 풀링 한 번으로 생기는 불변성은 근사적입니다.";}
+      else if(sh%S===0)invTxt+=" 풀링이 없으면 특징 지도가 이동을 그대로 따라가므로, 제자리에서 비교하면 값이 달라집니다.";
+      msgShift=eqTxt+"\n"+invTxt;}
+    // 메시지
+    let mn=Infinity,mx=-Infinity;R.Y.flat().forEach(v=>{mn=Math.min(mn,v);mx=Math.max(mx,v);});
+    let msg=KDESC[fk]+" 이번 출력은 "+fmt2(mn)+" ~ "+fmt2(mx)+" 범위입니다.";
+    msg+="\n"+(neg?"ReLU가 음수 "+neg+"칸을 0으로 바꿨습니다. 필터 하나로는 반대 방향 경계 정보를 잃기 때문에, 실제 CNN은 서로 다른 패턴을 맡는 필터를 수십~수백 개 둡니다.":"음수가 없어 ReLU가 바꾼 칸이 없습니다.");
+    if(R.Pp)msg+=" "+(pm==="max"?"Max":"Average")+" 풀링은 2×2 창마다 "+(pm==="max"?"가장 큰 활성값":"평균")+"을 남겨 "+H+"×"+H+" 특징 지도를 "+R.Pp.Y.length+"×"+R.Pp.Y.length+"로 줄입니다.";
+    msg+="\n"+msgShift;
+    $("#cvMsg").textContent=msg;
+  }
+  ["#cvImg","#cvF","#cvP","#cvS","#cvPool","#cvSh"].forEach(s=>$(s).addEventListener("change",()=>safe("conv",()=>render(false))));
+  document.querySelectorAll("#cvK input").forEach(x=>x.addEventListener("input",()=>safe("conv",()=>render(true))));
+  render(false);
+});
+
+/* ---------- 실험 2: 층별 출력 크기 · 파라미터 · 수용 영역 ---------- */
+safe("arch",function(){
+  const CFG={small:[32,"M",64,"M",128,"M"],vgg:[64,64,"M",128,128,"M",256,256,256,"M",512,512,512,"M",512,512,512,"M"]};
+  function build(model,inp,head,ncls){
+    const rows=[];let H=inp,C=3,rf=1,jmp=1,convP=0,pi=0;
+    rows.push({name:"입력",shape:H+"×"+H+"×"+C,p:0,rf:1,kind:"in"});
+    for(const v of CFG[model]){
+      if(v==="M"){H=Math.floor(H/2);rf+=jmp;jmp*=2;pi++;rows.push({name:"MaxPool 2×2",shape:H+"×"+H+"×"+C,p:0,rf,kind:"pool"});}
+      else{const p=(9*C+1)*v;convP+=p;rows.push({name:"Conv 3×3, "+C+" → "+v+" + ReLU",shape:H+"×"+H+"×"+v,p,rf:rf+2*jmp,kind:"conv"});C=v;rf+=2*jmp;}}
+    let headP=0;const Hf=H,Cf=C,rfF=rf;
+    if(head==="flatten"){const fl=H*H*C;rows.push({name:"Flatten",shape:fmtN(fl),p:0,kind:"head"});
+      const fcs=model==="vgg"?[4096,4096,ncls]:[256,ncls];let d=fl;
+      fcs.forEach((o,i)=>{const p=(d+1)*o;headP+=p;rows.push({name:"FC "+fmtN(d)+" → "+fmtN(o)+(i<fcs.length-1?" + ReLU":""),shape:fmtN(o),p,kind:"head"});d=o;});}
+    else{rows.push({name:"Global Average Pooling",shape:fmtN(C),p:0,kind:"head"});const p=(C+1)*ncls;headP+=p;rows.push({name:"Linear "+fmtN(C)+" → "+fmtN(ncls),shape:fmtN(ncls),p,kind:"head"});}
+    return {rows,convP,headP,total:convP+headP,Hf,Cf,rf:rfF};}
+  function render(){
+    const m=$("#arM").value,inp=+$("#arIn").value,hd=$("#arH").value,nc=+$("#arC").value;
+    const A=build(m,inp,hd,nc),Bo=build(m,inp,hd==="flatten"?"gap":"flatten",nc);
+    let big=A.rows[0];A.rows.forEach(r=>{if(r.p>big.p)big=r;});
+    const T=$("#arTbl");T.innerHTML="";
+    const th=document.createElement("thead");th.innerHTML="<tr><th>층</th><th>출력 모양</th><th style=\"text-align:right\">파라미터</th><th style=\"text-align:right\">비중</th><th style=\"text-align:right\">수용 영역</th></tr>";T.appendChild(th);
+    const tb=document.createElement("tbody");
+    A.rows.forEach(r=>{const tr=document.createElement("tr");tr.className=r.kind+(r===big?" big":"");
+      [r.name,r.shape,r.p?fmtN(r.p):"0",r.p?(r.p/A.total*100).toFixed(r.p/A.total<0.001?3:1)+"%":"–",r.rf?r.rf+"×"+r.rf:"–"].forEach((t,i)=>{const td=document.createElement("td");if(i>=2)td.className="n";if(i===1)td.style.fontFamily="var(--f-mono)";td.textContent=t;tr.appendChild(td);});
+      tb.appendChild(tr);});
+    T.appendChild(tb);
+    // 막대
+    const S=$("#arBar");clear(S);const W=620,x0=10,cw=W*A.convP/A.total;
+    el("rect",{x:x0,y:8,width:Math.max(cw,0),height:26,class:"c0"},S);el("rect",{x:x0+cw,y:8,width:W-cw,height:26,class:"c2"},S);
+    const cl=(A.convP/A.total*100).toFixed(1)+"%",hl=(A.headP/A.total*100).toFixed(1)+"%";
+    el("text",{x:x0,y:52,"font-size":12},S,"합성곱 "+fmtN(A.convP)+" ("+cl+")");
+    el("text",{x:x0+W,y:52,"font-size":12,"text-anchor":"end"},S,"헤드 "+fmtN(A.headP)+" ("+hl+")");
+    // 수치
+    $("#arTot").innerHTML=fmtN(A.total)+'<span class="sub">FP32 '+(A.total*4/1048576).toFixed(1)+" MB</span>";
+    $("#arHead").innerHTML=hl+'<span class="sub">헤드 '+fmtN(A.headP)+"개</span>";
+    $("#arBig").innerHTML=fmtN(big.p)+'<span class="sub">'+big.name+"</span>";
+    $("#arRF").innerHTML=A.rf+"×"+A.rf+'<span class="sub">입력 '+inp+"×"+inp+" · 특징 지도 "+A.Hf+"×"+A.Hf+"</span>";
+    // 메시지
+    let msg="";
+    if(hd==="flatten"){msg+="Flatten 헤드는 마지막 특징 지도 "+A.Hf+"×"+A.Hf+"×"+A.Cf+" = "+fmtN(A.Hf*A.Hf*A.Cf)+"개 값을 모두 첫 FC에 연결합니다. 가장 큰 층은 '"+big.name+"'("+fmtN(big.p)+"개, 전체의 "+(big.p/A.total*100).toFixed(1)+"%)이고, 분류 헤드 전체가 "+hl+"를 차지합니다.";
+      msg+="\nGAP + Linear로 바꾸면 전체가 "+fmtN(A.total)+" → "+fmtN(Bo.total)+"개로 "+(A.total/Bo.total).toFixed(1)+"배 줄어듭니다. 또 Flatten 헤드는 입력 크기가 바뀌면 첫 FC의 입력 수도 바뀌어 다른 해상도를 받을 수 없지만, GAP 헤드의 파라미터는 입력 크기와 무관합니다.";}
+    else{msg+="GAP는 "+A.Hf+"×"+A.Hf+"×"+A.Cf+" 특징 지도를 채널별 평균 "+fmtN(A.Cf)+"개로 바꾸고, 선형층 하나("+fmtN(A.headP)+"개)가 클래스 점수를 냅니다. 분류 헤드는 전체의 "+hl+"뿐이라 파라미터 대부분이 특징을 뽑는 합성곱층에 쓰입니다.";
+      msg+="\nFlatten + FC 헤드였다면 전체가 "+fmtN(Bo.total)+"개로, 지금보다 "+(Bo.total/A.total).toFixed(1)+"배 많습니다.";}
+    if(m==="vgg"&&inp===224&&hd==="flatten"&&nc===1000)msg+="\n이 설정의 "+fmtN(A.total)+"개는 torchvision VGG-16의 파라미터 수와 같습니다.";
+    msg+="\n수용 영역은 3×3 합성곱마다 (2 × 지금까지의 stride 곱)만큼, 풀링마다 그 절반만큼 넓어집니다. 마지막 특징 지도의 한 칸은 입력의 "+A.rf+"×"+A.rf+" 영역에 해당하는 정보를 모읍니다"+(A.rf>=inp?"(입력 "+inp+"×"+inp+"보다 넓어 이미지 전체와 패딩까지 걸칩니다)":"")+".";
+    $("#arMsg").textContent=msg;}
+  ["#arM","#arIn","#arH","#arC"].forEach(s=>$(s).addEventListener("change",()=>safe("arch",render)));
+  render();
+});
+
+/* ---------- 실험 3: 오토인코더 압축 · 복원 · 이상 탐지 ---------- */
+safe("ae",function(){
+  const f=t=>0.8*Math.sin(1.6*t),GAPW=0.35,rr=mulberry32(606);
+  function normals(n){const a=[];while(a.length<n){const t=-2+4*rr();if(Math.abs(t)<GAPW)continue;a.push([t+0.05*gauss(rr),f(t)+0.05*gauss(rr)]);}return a;}
+  const TR=normals(400),VA=normals(200),TE=normals(200);
+  const CT=[];for(let i=0;i<=1840;i++){const t=-2.6+5.2*i/1840;CT.push([t,f(t)]);}
+  function dcurve(p){let m=Infinity;for(const q of CT){const d=(p[0]-q[0])**2+(p[1]-q[1])**2;if(d<m)m=d;}return Math.sqrt(m);}
+  const FAR=[];while(FAR.length<60){const p=[-2.3+4.6*rr(),-1.7+3.4*rr()];if(dcurve(p)>0.35)FAR.push(p);}
+  const GAPA=[];for(let i=0;i<60;i++){const t=-GAPW+2*GAPW*rr();GAPA.push([t+0.05*gauss(rr),f(t)+0.05*gauss(rr)]);}
+  // 작은 MLP (사전 할당 버퍼)
+  function makeNet(kind,k,seed){const r=mulberry32(seed);const sizes=kind==="lin"?[2,k,2]:[2,16,k,16,2];const acts=kind==="lin"?["id","id"]:["tanh","id","tanh","id"];
+    const L=[];for(let i=0;i<sizes.length-1;i++){const a=sizes[i],b=sizes[i+1],lim=Math.sqrt(6/(a+b)),W=new Float64Array(a*b);for(let j=0;j<W.length;j++)W[j]=(2*r()-1)*lim;
+      L.push({a,b,W,B:new Float64Array(b),act:acts[i],h:new Float64Array(b),d:new Float64Array(b),gW:new Float64Array(a*b),gB:new Float64Array(b),mW:new Float64Array(a*b),vW:new Float64Array(a*b),mB:new Float64Array(b),vB:new Float64Array(b)});}
+    return {L,enc:kind==="lin"?1:2,k};}
+  function run(net,x,from,to){let h=x;for(let li=from;li<to;li++){const l=net.L[li];for(let j=0;j<l.b;j++){let s=l.B[j];for(let i=0;i<l.a;i++)s+=l.W[i*l.b+j]*h[i];l.h[j]=l.act==="tanh"?Math.tanh(s):s;}h=l.h;}return h;}
+  const recon=(net,x)=>Array.from(run(net,x,0,net.L.length));
+  const encode=(net,x)=>Array.from(run(net,x,0,net.enc));
+  const decode=(net,z)=>Array.from(run(net,z,net.enc,net.L.length));
+  function train(net,X,steps,lr){const n=X.length,b1=.9,b2=.999,eps=1e-8,nl=net.L.length;
+    for(let t=1;t<=steps;t++){net.L.forEach(l=>{l.gW.fill(0);l.gB.fill(0);});
+      const lrt=lr*(t>steps*0.7?0.2:1);
+      for(const x of X){const out=run(net,x,0,nl);let d=net.L[nl-1].d;for(let j=0;j<2;j++)d[j]=(out[j]-x[j])/n;
+        for(let li=nl-1;li>=0;li--){const l=net.L[li],hin=li?net.L[li-1].h:x;d=l.d;
+          if(l.act==="tanh")for(let j=0;j<l.b;j++)d[j]*=1-l.h[j]*l.h[j];
+          for(let j=0;j<l.b;j++)l.gB[j]+=d[j];
+          if(li){const pd=net.L[li-1].d;for(let i=0;i<l.a;i++){let s=0;for(let j=0;j<l.b;j++){l.gW[i*l.b+j]+=hin[i]*d[j];s+=l.W[i*l.b+j]*d[j];}pd[i]=s;}}
+          else for(let i=0;i<l.a;i++)for(let j=0;j<l.b;j++)l.gW[i*l.b+j]+=hin[i]*d[j];}}
+      const c1=1-Math.pow(b1,t),c2=1-Math.pow(b2,t);
+      net.L.forEach(l=>{[[l.W,l.gW,l.mW,l.vW],[l.B,l.gB,l.mB,l.vB]].forEach(([p,g,m,v])=>{for(let j=0;j<p.length;j++){m[j]=b1*m[j]+(1-b1)*g[j];v[j]=b2*v[j]+(1-b2)*g[j]*g[j];p[j]-=lrt*(m[j]/c1)/(Math.sqrt(v[j]/c2)+eps);}});});}
+    return net;}
+  const cache={};
+  function model(kind,k){const key=kind+k;if(!cache[key]){const net=train(makeNet(kind,k,kind==="lin"?11+k:31+k),TR,kind==="lin"?1500:3000,0.01);
+      const err=X=>X.map(x=>{const o=recon(net,x),e=(o[0]-x[0])**2+(o[1]-x[1])**2;return e<1e-12?0:e;});   // 1e-12 미만은 부동소수점 반올림이라 0으로 본다
+      const zs=k===1?TR.map(x=>encode(net,x)[0]):[];
+      cache[key]={net,eVA:err(VA),eTE:err(TE),eFAR:err(FAR),eGAP:err(GAPA),zmin:k===1?Math.min(...zs):0,zmax:k===1?Math.max(...zs):0};}
+    return cache[key];}
+  function quant(a,q){const s=a.slice().sort((x,y)=>x-y),p=(s.length-1)*q,i=Math.floor(p),fr=p-i;return i+1<s.length?s[i]*(1-fr)+s[i+1]*fr:s[i];}
+  const med=a=>quant(a,0.5);
+  function auroc(pos,neg){let s=0;for(const p of pos)for(const q of neg)s+=p>q?1:p===q?0.5:0;return s/(pos.length*neg.length);}
+  // 좌표
+  const X0=-2.4,X1=2.4,Y0=-1.8,Y1=1.8,PL=34,PR=312,PT=10,PB=200;
+  const sx=v=>PL+(v-X0)/(X1-X0)*(PR-PL),sy=v=>PB-(v-Y0)/(Y1-Y0)*(PB-PT);
+  function render(){
+    const kind=$("#aeK").value,k=+$("#aeZd").value,at=$("#aeA").value,q=+$("#aeQ").value/100,u=+$("#aeU").value;
+    $("#aeQOut").textContent=(+$("#aeQ").value).toString();$("#aeUOut").textContent=minus(u+"");
+    const Mo=model(kind,k),net=Mo.net,ANO=at==="far"?FAR:GAPA,eA=at==="far"?Mo.eFAR:Mo.eGAP,eN=Mo.eTE;
+    const thr=quant(Mo.eVA,q);
+    const tp=eA.filter(e=>e>thr).length,fp=eN.filter(e=>e>thr).length;
+    const rec=tp/eA.length,pre=tp+fp?tp/(tp+fp):NaN,fpr=fp/eN.length,auc=auroc(eA,eN);
+    // 산점도
+    const S=$("#aeP");clear(S);
+    el("defs",null,S).innerHTML='<clipPath id="aeClip"><rect x="'+PL+'" y="'+PT+'" width="'+(PR-PL)+'" height="'+(PB-PT)+'"/></clipPath>';
+    for(const v of [-2,-1,0,1,2]){el("line",{x1:sx(v),y1:PT,x2:sx(v),y2:PB,class:"gl"},S);el("text",{x:sx(v),y:PB+14,"text-anchor":"middle","font-size":10.5,class:"mut"},S,minus(v+""));}
+    for(const v of [-1.5,-0.75,0,0.75,1.5]){el("line",{x1:PL,y1:sy(v),x2:PR,y2:sy(v),class:"gl"},S);el("text",{x:PL-4,y:sy(v)+4,"text-anchor":"end","font-size":10.5,class:"mut"},S,minus(v+""));}
+    el("rect",{x:sx(-GAPW),y:PT,width:sx(GAPW)-sx(-GAPW),height:PB-PT,class:"trreg"},S);
+    el("text",{x:sx(0),y:PT+12,"text-anchor":"middle","font-size":10,class:"mut"},S,"빈 구간");
+    const g=el("g",{"clip-path":"url(#aeClip)"},S);
+    TR.forEach(p=>el("circle",{cx:sx(p[0]),cy:sy(p[1]),r:1.8,class:"aetr"},g));
+    TE.forEach(p=>el("circle",{cx:sx(p[0]),cy:sy(p[1]),r:2,class:"aenor"},g));
+    ANO.forEach(p=>{const o=recon(net,p);el("line",{x1:sx(p[0]),y1:sy(p[1]),x2:sx(o[0]),y2:sy(o[1]),class:"aerec"},g);});
+    ANO.forEach(p=>el("circle",{cx:sx(p[0]),cy:sy(p[1]),r:2.6,class:"aeano"},g));
+    let zTxt="",zStat="";
+    if(k===1){const zm=(Mo.zmin+Mo.zmax)/2,zh=(Mo.zmax-Mo.zmin)/2;
+      const pin=[],pl=[],pr=[];for(let i=0;i<=160;i++){const uu=-1.6+3.2*i/160,pt=decode(net,[zm+uu*zh]);const s=sx(pt[0]).toFixed(1)+","+sy(pt[1]).toFixed(1);if(uu<-1)pl.push(s);else if(uu>1)pr.push(s);else pin.push(s);}
+      pl.push(pin[0]);pr.unshift(pin[pin.length-1]);
+      el("polyline",{points:pl.join(" "),class:"aedecx"},g);el("polyline",{points:pr.join(" "),class:"aedecx"},g);el("polyline",{points:pin.join(" "),class:"aedec"},g);
+      const zp=decode(net,[zm+u/100*zh]),dz=dcurve(zp);
+      el("circle",{cx:sx(zp[0]),cy:sy(zp[1]),r:6,class:"aez"},g);
+      $("#aeU").disabled=false;
+      // 학습 범위 안 디코딩 점들의 최대 거리
+      let dIn=0;for(let i=0;i<=40;i++){dIn=Math.max(dIn,dcurve(decode(net,[zm+(-1+2*i/40)*zh])));}
+      zStat=dz.toFixed(3)+'<span class="sub">'+(Math.abs(u)<=100?"학습 범위 안":"학습 범위 밖")+" · 범위 안 최대 "+dIn.toFixed(3)+"</span>";
+      zTxt="z 슬라이더: 학습 데이터의 z 범위의 "+minus(u+"")+"% 지점을 디코딩한 점은 정상 곡선에서 "+dz.toFixed(3)+" 떨어져 있습니다(학습 범위 안에서 디코딩한 점들의 최대 거리 "+dIn.toFixed(3)+"). ";
+      if(Math.abs(u)>100)zTxt+=dz>Math.max(2*dIn,0.1)?"학습 범위 밖의 z는 디코더가 본 적 없는 입력이라 정상 곡선에서 벗어난 점이 나옵니다. 기본 오토인코더는 z의 분포를 정해 두지 않으므로, 어떤 z를 넣어야 정상 데이터가 나오는지 알 수 없습니다(VAE는 이를 N(0, I)로 맞춥니다).":"이 위치에서는 아직 곡선 근처지만, 학습 범위 밖의 z는 디코더가 본 적 없는 입력이라 결과가 보장되지 않습니다. 슬라이더를 더 바깥으로 옮겨 보세요.";
+      else zTxt+=kind==="lin"?"선형 디코더의 출력은 z가 무엇이든 직선 위에만 놓입니다.":"학습 범위 안의 z는 정상 곡선을 따라 디코딩됩니다. 빈 구간에 해당하는 z도 곡선을 매끄럽게 이어 지나갑니다.";}
+    else{$("#aeU").disabled=true;zStat='–<span class="sub">잠재 차원 1에서만</span>';zTxt="잠재 차원이 2이면 z 하나로 디코더 출력을 그릴 수 없어 z 슬라이더는 쓰지 않습니다.";}
+    // 히스토그램
+    const Hs=$("#aeH");clear(Hs);const L0=-5,L1=1,HL=30,HR=312,HT=12,HB=196,nb=24;
+    const hx=v=>HL+(v-L0)/(L1-L0)*(HR-HL);
+    const lg=e=>Math.min(L1-1e-9,Math.max(L0,Math.log10(Math.max(e,1e-12))));
+    const bins=a=>{const c=new Array(nb).fill(0);a.forEach(e=>{c[Math.floor((lg(e)-L0)/(L1-L0)*nb)]++;});return c.map(v=>v/a.length);};
+    const bN=bins(eN),bA=bins(eA),ym=Math.max(0.05,...bN,...bA);
+    for(let v=L0;v<=L1;v++){el("line",{x1:hx(v),y1:HT,x2:hx(v),y2:HB,class:"gl"},Hs);el("text",{x:hx(v),y:HB+14,"text-anchor":"middle","font-size":10.5,class:"mut"},Hs,"10"+sup(v));}
+    const bw=(HR-HL)/nb;
+    [[bN,"hn"],[bA,"ha"]].forEach(([b,c])=>b.forEach((v,i)=>{if(v>0)el("rect",{x:HL+i*bw+0.5,y:HB-v/ym*(HB-HT),width:bw-1,height:v/ym*(HB-HT),class:c},Hs);}));
+    el("line",{x1:HL,y1:HB,x2:HR,y2:HB,class:"ax"},Hs);
+    const tx=hx(lg(thr));el("line",{x1:tx,y1:HT,x2:tx,y2:HB,class:"thr"},Hs);
+    el("text",{x:tx+(tx>220?-4:4),y:HT+12,"text-anchor":tx>220?"end":"start","font-size":10.5,"font-weight":700},Hs,"임계값");
+    el("text",{x:(HL+HR)/2,y:226,"text-anchor":"middle","font-size":10.5,class:"mut"},Hs,"복원 오차 ‖x − x̂‖²");
+    // 수치
+    $("#aeMed").innerHTML='<span class="pr"><span class="pl">정상</span>'+sci(med(eN))+'</span><span class="pr"><span class="pl">이상</span>'+sci(med(eA))+"</span>";
+    $("#aeRec").innerHTML=pct(rec)+'<span class="sub">'+tp+" / "+eA.length+"개 탐지</span>";
+    $("#aePre").innerHTML=(isFinite(pre)?pct(pre):"–")+'<span class="sub">이상 판정 '+(tp+fp)+"개 중 "+tp+"개</span>";
+    $("#aeFpr").innerHTML=pct(fpr)+'<span class="sub">정상 '+fp+" / "+eN.length+"개</span>";
+    $("#aeAuc").innerHTML=auc.toFixed(3)+'<span class="sub">0.5 = 무작위</span>';
+    $("#aeZ").innerHTML=zStat;
+    // 메시지
+    const mA=med(eA),mN=med(eN),ratio=mN>0?mA/mN:NaN;
+    let msg=mA===0&&mN===0?"정상과 이상치 모두 복원 오차 중앙값이 0입니다(부동소수점 반올림 수준). ":"이상치의 복원 오차 중앙값("+sci(mA)+")은 정상("+sci(mN)+")의 "+(isFinite(ratio)?(ratio>=10?Math.round(ratio):ratio.toFixed(1))+"배입니다. ":"값입니다. ");
+    msg+="임계값을 정상 검증 오차의 "+(+$("#aeQ").value)+"% 분위수("+sci(thr)+")로 두면 이상치 "+eA.length+"개 중 "+tp+"개를 찾고 정상 "+eN.length+"개 중 "+fp+"개를 잘못 경보합니다. 임계값과 무관한 AUROC는 "+auc.toFixed(3)+"입니다.";
+    if(kind==="lin"&&k===1){msg+="\n선형 오토인코더의 디코더 출력은 직선 하나 위에만 놓이므로(검은 선) 휘어진 정상 데이터부터 잘 복원하지 못합니다. 선형 AE가 PCA와 같은 부분공간을 배우는 한계입니다.";
+      if(at==="gap"&&auc<0.5)msg+=" 빈 구간의 점은 원점 근처라 직선과 가까워, 정상보다 오히려 잘 복원됩니다(AUROC가 0.5보다 낮음).";
+      else if(auc<0.8)msg+=" 그래서 정상과 이상치의 오차가 겹쳐 구분이 약합니다.";}
+    else if(kind==="lin"&&k===2)msg+="\n잠재 차원(2)이 입력 차원(2)과 같으면 선형 오토인코더는 정확한 항등 변환을 배웁니다. 정상이든 이상치든 오차가 0이라 복원 오차로는 아무것도 구분할 수 없습니다.";
+    else if(k===2){msg+="\n잠재 차원(2)이 입력 차원(2)과 같아 압축이 일어나지 않습니다. ";
+      msg+=auc<0.7?"모델이 항등 함수에 가까워져 이상치도 정상과 비슷하게 복원하므로 복원 오차로는 구분하기 어렵습니다.":"이 실행에서는 학습 데이터가 없던 영역에서 항등 함수를 덜 정확하게 배워 이상치의 오차가 정상보다 컸습니다. 하지만 정상 구조를 배워서 생긴 차이가 아니라서, 모델 크기나 학습량이 바뀌면 유지된다는 보장이 없습니다. 잠재 차원 1일 때와 이상치 오차의 절대 크기를 비교해 보세요.";}
+    else if(at==="far")msg+="\n디코더 출력이 정상 곡선을 따라 휘어 있어(검은 곡선), 곡선에서 멀리 떨어진 점은 곡선 위로 끌려오며 큰 오차를 냅니다."+(auc>=0.9?" 복원 오차가 잘 작동하는 경우입니다.":"");
+    else msg+="\n빈 구간의 점은 학습 데이터에 한 번도 없었지만, 디코더 곡선이 그 구간을 매끄럽게 이어 지나갑니다."+(rec<0.5?" 그래서 대부분 임계값보다 작은 오차로 복원되어 이상치 "+eA.length+"개 중 "+tp+"개만 잡혔습니다. '처음 보는 값'이어도 정상 패턴 위에 놓이면 복원 오차로는 잘 잡히지 않습니다.":" 이번 임계값에서는 이상치의 "+pct(rec)+"가 임계값을 넘었습니다.");
+    msg+="\n"+zTxt;
+    $("#aeMsg").textContent=msg;}
+  const heavy=()=>{$("#aeMsg").textContent="계산 중…";later(render);};
+  $("#aeK").addEventListener("change",heavy);$("#aeZd").addEventListener("change",heavy);
+  ["#aeA","#aeQ","#aeU"].forEach(s=>$(s).addEventListener("input",()=>safe("ae",render)));
+  heavy();
+});
+
+/* ---------- 등변성 · 불변성 그림 ---------- */
+safe("eqfig",function(){
+  const S=$("#eqFig"),cs=11,n=8;
+  el("defs",null,S).innerHTML='<marker id="ahE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker>';
+  const H=["입력 (8×8)","합성곱 + ReLU 특징 지도","GAP","Flatten + FC"];
+  [[20,H[0]],[190,H[1]],[370,H[2]],[520,H[3]]].forEach(([x,t])=>el("text",{x,y:16,"font-size":12,"font-weight":700},S,t));
+  function grid(x,y,cells,cls){for(let i=0;i<n;i++)for(let j=0;j<n;j++)el("rect",{x:x+j*cs,y:y+i*cs,width:cs,height:cs,class:"hbg"},S);
+    cells.forEach(([i,j,a])=>el("rect",{x:x+j*cs+.5,y:y+i*cs+.5,width:cs-1,height:cs-1,class:cls,"fill-opacity":a},S));}
+  [[30,0],[134,2]].forEach(([y,s],row)=>{
+    const obj=[[3,1+s,1],[3,2+s,1],[4,1+s,1],[4,2+s,1]];
+    grid(20,y,obj,"hpos");
+    const fm=[];for(let i=2;i<=5;i++)for(let j=s;j<=s+3;j++){const core=(i===3||i===4)&&(j===s+1||j===s+2);fm.push([i,j,core?0.9:0.35]);}
+    grid(200,y,fm,"hpos");
+    el("line",{x1:116,y1:y+44,x2:192,y2:y+44,class:"arr","marker-end":"url(#ahE)"},S);
+    el("line",{x1:296,y1:y+44,x2:368,y2:y+44,class:"arr","marker-end":"url(#ahE)"},S);
+    el("rect",{x:376,y:y+24,width:60,height:40,rx:6,class:"boxa"},S);el("text",{x:406,y:y+49,"text-anchor":"middle","font-size":12,"font-family":"var(--f-mono)"},S,"같은 값");
+    el("line",{x1:296,y1:y+58,x2:514,y2:y+70,class:"arr","marker-end":"url(#ahE)"},S);
+    el("rect",{x:520,y:y+50,width:184,height:40,rx:6,class:"boxf"},S);
+    el("text",{x:612,y:y+67,"text-anchor":"middle","font-size":11.5},S,row?"열 "+(s+1)+"~"+(s+4)+"의 값 × 그 위치 가중치":"열 1~4의 값 × 그 위치 가중치");
+    el("text",{x:612,y:y+82,"text-anchor":"middle","font-size":11,class:"mut"},S,"위치가 바뀌면 다른 가중치와 곱해짐");
+    el("text",{x:20,y:y+102,"font-size":11,class:"mut"},S,row?"2칸 오른쪽으로 이동":"원래 위치");});
+  el("text",{x:248,y:126,"text-anchor":"middle","font-size":11.5,"font-weight":700,class:"tac"},S,"↕ 같은 양만큼 이동 = 등변");
+  el("text",{x:406,y:126,"text-anchor":"middle","font-size":11.5,"font-weight":700,class:"tac"},S,"↕ 값이 같다 = 불변");
+});
+
+/* ---------- 실험 4: 위치 이동과 FC · CNN ---------- */
+safe("shift",function(){
+  const S=16,PS=5,NP=12,MS=14,F=4,EP=25,BS=32;
+  const PAT=[(r,c)=>r===2||c===2,(r,c)=>r===c||r+c===4];
+  function sample(r,cls,px,py){const X=new Float64Array(S*S);for(let i=0;i<X.length;i++)X[i]=0.15*gauss(r);const a=0.7+0.3*r();
+    for(let i=0;i<PS;i++)for(let j=0;j<PS;j++)if(PAT[cls](i,j))X[(py+i)*S+px+j]+=a;return X;}
+  function dataset(seed,n,pxMax){const r=mulberry32(seed),D=[];for(let i=0;i<n;i++){const cls=i%2,px=Math.floor(r()*(pxMax+1)),py=Math.floor(r()*NP);D.push({x:sample(r,cls,px,py),y:cls,px});}return D;}
+  const TEST=[];{const r=mulberry32(4242);for(let px=0;px<NP;px++)for(let k=0;k<80;k++)TEST.push({x:sample(r,k%2,px,Math.floor(r()*NP)),y:k%2,px});}
+  const VIEW=[0,1].map(cls=>{const out=[];for(let px=0;px<NP;px++)out.push(sample(mulberry32(900+cls*31+px),cls,px,5));return out;});
+  const sg=z=>1/(1+Math.exp(-z));
+  function randn(r,n,s){const a=new Float64Array(n);for(let i=0;i<n;i++)a[i]=gauss(r)*s;return a;}
+  // 모델: P(파라미터 배열들), fwd(x) → {z, cache}, back(x, cache, dz, G)
+  function makeFC(seed){const r=mulberry32(seed),H=32;const W1=randn(r,256*H,Math.sqrt(2/256)),b1=new Float64Array(H),w2=randn(r,H,Math.sqrt(1/H)),b2=new Float64Array(1);const h=new Float64Array(H);
+    return {P:[W1,b1,w2,b2],
+      fwd(x){let z=b2[0];for(let j=0;j<H;j++){let s=b1[j];for(let i=0;i<256;i++)s+=W1[i*H+j]*x[i];h[j]=s>0?s:0;z+=w2[j]*h[j];}return z;},
+      back(x,dz,G){const [gW1,gb1,gw2,gb2]=G;gb2[0]+=dz;for(let j=0;j<H;j++){gw2[j]+=dz*h[j];if(h[j]>0){const d=dz*w2[j];gb1[j]+=d;for(let i=0;i<256;i++)gW1[i*H+j]+=d*x[i];}}}};}
+  function makeCNN(seed,head){const r=mulberry32(seed);const Wc=randn(r,F*9,Math.sqrt(2/9)),bc=new Float64Array(F);const A=new Float64Array(F*MS*MS);
+    const V=head==="gap"?randn(r,F,1):randn(r,F*MS*MS,Math.sqrt(1/(F*MS*MS))),c=new Float64Array(1);const g=new Float64Array(F);
+    function conv(x){for(let f=0;f<F;f++)for(let i=0;i<MS;i++)for(let j=0;j<MS;j++){let s=bc[f];for(let u=0;u<3;u++)for(let v=0;v<3;v++)s+=Wc[f*9+u*3+v]*x[(i+u)*S+j+v];A[(f*MS+i)*MS+j]=s>0?s:0;}}
+    return {P:[Wc,bc,V,c],A,
+      fwd(x){conv(x);let z=c[0];if(head==="gap"){for(let f=0;f<F;f++){let s=0;for(let k=0;k<MS*MS;k++)s+=A[f*MS*MS+k];g[f]=s/(MS*MS);z+=V[f]*g[f];}}else{for(let k=0;k<A.length;k++)z+=V[k]*A[k];}return z;},
+      back(x,dz,G){const [gWc,gbc,gV,gc]=G;gc[0]+=dz;
+        for(let f=0;f<F;f++)for(let i=0;i<MS;i++)for(let j=0;j<MS;j++){const k=(f*MS+i)*MS+j;let da;
+          if(head==="gap"){da=dz*V[f]/(MS*MS);}else{gV[k]+=dz*A[k];da=dz*V[k];}
+          if(A[k]>0){gbc[f]+=da;for(let u=0;u<3;u++)for(let v=0;v<3;v++)gWc[f*9+u*3+v]+=da*x[(i+u)*S+j+v];}}
+        if(head==="gap")for(let f=0;f<F;f++)gV[f]+=dz*g[f];}};}
+  function fit(m,D,seed){const r=mulberry32(seed),G=m.P.map(p=>new Float64Array(p.length)),M=m.P.map(p=>new Float64Array(p.length)),Vv=m.P.map(p=>new Float64Array(p.length));
+    const idx=D.map((_,i)=>i),lr=0.005,wd=1e-4,b1=.9,b2=.999;let t=0;
+    for(let e=0;e<EP;e++){for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+      for(let s=0;s<idx.length;s+=BS){G.forEach(g=>g.fill(0));const bt=idx.slice(s,s+BS);
+        bt.forEach(k=>{const d=D[k],z=m.fwd(d.x);m.back(d.x,(sg(z)-d.y)/bt.length,G);});
+        t++;const c1=1-Math.pow(b1,t),c2=1-Math.pow(b2,t);
+        m.P.forEach((p,pi)=>{const g=G[pi],mm=M[pi],vv=Vv[pi];for(let j=0;j<p.length;j++){const gr=g[j]+wd*p[j];mm[j]=b1*mm[j]+(1-b1)*gr;vv[j]=b2*vv[j]+(1-b2)*gr*gr;p[j]-=lr*(mm[j]/c1)/(Math.sqrt(vv[j]/c2)+1e-8);}});}}
+    return m;}
+  function evalAcc(m){const ok=new Array(NP).fill(0),cnt=new Array(NP).fill(0);TEST.forEach(d=>{const p=sg(m.fwd(d.x));cnt[d.px]++;if((p>0.5?1:0)===d.y)ok[d.px]++;});return ok.map((v,i)=>v/cnt[i]);}
+  const nParams=m=>m.P.reduce((a,p)=>a+p.length,0);
+  const KEYS=["fc","flat","gap"],NAMES={fc:"FC",flat:"Conv+Flat",gap:"Conv+GAP"},CLS={fc:"mfc",flat:"mfl",gap:"mgap"},DOT={fc:"dfc",flat:"dfl",gap:"dgap"};
+  const cache={};
+  function trainAll(pxMax,done){if(cache[pxMax]){done(cache[pxMax]);return;}
+    const D=dataset(77+pxMax,600,pxMax),res={models:{},acc:{}};
+    const steps=[["fc",()=>makeFC(5)],["flat",()=>makeCNN(6,"flat")],["gap",()=>makeCNN(7,"gap")]];
+    let i=0;const next=()=>{if(i>=steps.length){cache[pxMax]=res;done(res);return;}
+      const [k,mk]=steps[i++];$("#sfMsg").textContent="계산 중… ("+NAMES[k]+" 학습, "+i+" / 3)";
+      later(()=>{const m=fit(mk(),D,100+i);res.models[k]=m;res.acc[k]=evalAcc(m);next();});};
+    next();}
+  const mean=(a,lo,hi)=>{let s=0;for(let i=lo;i<=hi;i++)s+=a[i];return s/(hi-lo+1);};
+  let cur=null;
+  function draw(){if(!cur)return;
+    const pxMax=+$("#sfTr").value,px=+$("#sfPx").value,cls=+$("#sfCls").value;$("#sfPxOut").textContent=px;
+    // 정확도 그래프
+    const C=$("#sfAcc");clear(C);const L=38,R=310,T=14,B=196,xs=i=>L+i/(NP-1)*(R-L),ys=v=>B-(v-0.4)/0.6*(B-T);
+    el("rect",{x:xs(0)-6,y:T,width:xs(pxMax)-xs(0)+12,height:B-T,class:"trreg"},C);
+    for(const v of [0.4,0.5,0.6,0.7,0.8,0.9,1]){el("line",{x1:L,y1:ys(v),x2:R,y2:ys(v),class:"gl"},C);el("text",{x:L-5,y:ys(v)+4,"text-anchor":"end","font-size":10.5,class:"mut"},C,Math.round(v*100)+"%");}
+    for(let i=0;i<NP;i++)el("text",{x:xs(i),y:B+14,"text-anchor":"middle","font-size":10.5,class:"mut"},C,i);
+    el("text",{x:(L+R)/2,y:226,"text-anchor":"middle","font-size":10.5,class:"mut"},C,"물체의 가로 위치 px (왼쪽 끝 열)");
+    el("line",{x1:xs(px),y1:T,x2:xs(px),y2:B,class:"cur"},C);
+    KEYS.forEach(k=>{const a=cur.acc[k];el("polyline",{points:a.map((v,i)=>xs(i).toFixed(1)+","+ys(Math.max(0.4,v)).toFixed(1)).join(" "),class:CLS[k]},C);
+      a.forEach((v,i)=>el("circle",{cx:xs(i),cy:ys(Math.max(0.4,v)),r:i===px?4:2.4,class:DOT[k]},C));});
+    // 입력 이미지
+    const x=VIEW[cls][px],Mx=[];for(let i=0;i<S;i++){Mx.push([]);for(let j=0;j<S;j++)Mx[i].push(x[i*S+j]);}
+    const sI=$("#sfImg"),cI=heat(sI,Mx,{vmax:1});
+    el("rect",{x:0,y:0,width:8*cI,height:200,fill:"none",stroke:"var(--add)","stroke-width":2,"stroke-dasharray":"5 4"},sI);
+    el("rect",{x:px*cI,y:5*cI,width:5*cI,height:5*cI,fill:"none",stroke:"var(--ink)","stroke-width":1.5},sI);
+    // 특징 지도 (Conv+GAP)
+    const mg=cur.models.gap;mg.fwd(x);let bf=0,bs=-1;for(let f=0;f<F;f++){let s=0;for(let k=0;k<MS*MS;k++)s+=mg.A[f*MS*MS+k];if(s>bs){bs=s;bf=f;}}
+    const Mf=[];for(let i=0;i<MS;i++){Mf.push([]);for(let j=0;j<MS;j++)Mf[i].push(mg.A[(bf*MS+i)*MS+j]);}
+    heat($("#sfMap"),Mf,{});
+    // 수치
+    const pr=(lab,v)=>'<span class="pr"><span class="pl">'+lab+"</span>"+v+"</span>";
+    $("#sfPar").innerHTML=KEYS.map(k=>pr(NAMES[k],fmtN(nParams(cur.models[k])))).join("");
+    $("#sfIn").innerHTML=KEYS.map(k=>pr(NAMES[k],pct(mean(cur.acc[k],0,3)))).join("");
+    $("#sfOut").innerHTML=KEYS.map(k=>pr(NAMES[k],pct(mean(cur.acc[k],8,11)))).join("");
+    $("#sfProb").innerHTML=KEYS.map(k=>{const p=sg(cur.models[k].fwd(x));return pr(NAMES[k],(cls?p:1-p).toFixed(2));}).join("");
+    // 메시지
+    const aIn={},aOut={};KEYS.forEach(k=>{aIn[k]=mean(cur.acc[k],0,3);aOut[k]=mean(cur.acc[k],8,11);});
+    let msg="학습 위치(px 0~3) 정확도는 FC "+pct(aIn.fc)+", Conv+Flatten "+pct(aIn.flat)+", Conv+GAP "+pct(aIn.gap)+"입니다. 학습 때 한 번도 쓰이지 않은 열(8~15)에만 물체가 놓이는 위치(px 8~11)에서는 FC "+pct(aOut.fc)+", Conv+Flatten "+pct(aOut.flat)+", Conv+GAP "+pct(aOut.gap)+"입니다.";
+    if(pxMax===3){
+      if(aOut.fc<0.75)msg+="\nFC는 학습 중 물체가 지나가지 않은 픽셀의 가중치가 잡음에서 온 기울기와 가중치 감쇠만 받아, 그 위치의 패턴을 알아보지 못하고 찍는 수준에 가까워집니다.";
+      if(aOut.flat<0.75)msg+="\nConv + Flatten도 마찬가지입니다. 합성곱 특징 지도 자체는 물체를 따라 옮겨지지만(오른쪽 그림), Flatten 뒤 선형층이 위치마다 다른 가중치를 써서 FC와 같은 문제가 다시 생깁니다. 가중치 공유만으로는 위치 문제가 해결되지 않습니다.";
+      if(aOut.gap>=0.9)msg+="\nConv + GAP는 같은 필터가 모든 위치에서 같은 방식으로 반응하고 GAP가 위치를 평균으로 지우므로, 한 번도 보지 못한 위치에서도 정확도가 유지됩니다. 파라미터도 "+fmtN(nParams(cur.models.gap))+"개로 가장 적습니다.";
+      else msg+="\nConv + GAP도 이 설정에서는 처음 보는 위치의 정확도가 "+pct(aOut.gap)+"입니다.";}
+    else{msg+="\n모든 위치를 학습 데이터로 보여 주면(이동 증강과 같은 효과) "+(aOut.fc>=0.9?"FC도 처음 보는 위치 문제가 사라집니다":"FC의 처음 보는 위치 정확도가 "+pct(aOut.fc)+"로 올라갑니다")+". 대신 FC는 같은 패턴을 위치마다 따로 배워야 해서 파라미터 "+fmtN(nParams(cur.models.fc))+"개와 위치를 고루 덮는 데이터가 필요하고, Conv + GAP는 "+fmtN(nParams(cur.models.gap))+"개로 같은 일을 합니다.";}
+    $("#sfMsg").textContent=msg;}
+  function go(){trainAll(+$("#sfTr").value,res=>{cur=res;safe("shift",draw);});}
+  $("#sfTr").addEventListener("change",go);
+  ["#sfPx","#sfCls"].forEach(s=>$(s).addEventListener("input",()=>safe("shift",draw)));
+  go();
+});
+
+/* ---------- 코드 블록 문법 강조 ---------- */
+safe("syntax",function(){document.querySelectorAll("pre:not(.rules)").forEach(hlPre);});
+
+/* ---------- 퀴즈 ---------- */
+safe("quiz",function(){
+  const Q={
+    q1:[
+      {q:"입력 32×32×3에 3×3 필터 16개, padding 1, stride 1인 합성곱층을 적용했다. 출력 크기와 파라미터 수(편향 포함)는?",o:["30×30×16, 448개","32×32×16, 448개","32×32×16, 160개","32×32×3, 432개"],a:1,e:"출력 크기는 ⌊(32 + 2×1 − 3) / 1⌋ + 1 = 32이고 채널은 필터 수 16입니다. 필터 하나가 입력 채널 3개를 모두 덮으므로 파라미터는 (3×3×3 + 1) × 16 = 448개입니다. 160개는 입력 채널을 1개로 잘못 센 값입니다."},
+      {q:"2×2 Max Pooling(stride 2)에 대한 설명으로 옳은 것은?",o:["창 안에서 의미상 가장 중요한 정보를 고른다","학습 파라미터가 없고, 역전파 때 기울기는 각 창의 최댓값 위치로만 전달된다","채널 수를 절반으로 줄인다","과적합을 반드시 막는다"],a:1,e:"Max Pooling은 가장 큰 활성값을 고르는 고정 연산이라 파라미터가 없고, 기울기는 선택된 위치 하나로만 흐릅니다. 줄어드는 것은 가로·세로이고 채널 수는 그대로입니다."},
+      {q:"VGG-16(입력 224×224, 클래스 1,000)의 파라미터 1억 3,836만 개 중 약 89%는 어디에 있나?",o:["첫 번째 합성곱층","13개 합성곱층 전체","마지막 완전연결층 3개","5개 풀링층"],a:2,e:"합성곱층 13개는 약 1,471만 개이고, 완전연결층 3개가 약 1억 2,364만 개(89.4%)입니다. 첫 FC(25,088 → 4,096) 하나만 1억 276만 개입니다. 풀링층에는 파라미터가 없습니다(실험 2)."}
+    ],
+    q2:[
+      {q:"2차원 데이터에 잠재 차원 2인 오토인코더를 규제 없이 학습해 이상 탐지에 쓰려 한다. 가장 큰 문제는?",o:["학습이 수렴하지 않는다","압축이 없어 항등 함수에 가까워지고, 이상치도 잘 복원해 복원 오차로 구분하기 어렵다","디코더가 인코더보다 커야 한다","잠재 차원이 크면 항상 이상치의 오차가 커진다"],a:1,e:"잠재 차원이 입력 차원 이상이고 규제가 없으면 입력을 그대로 복사하는 해가 존재합니다. 정상 구조를 배울 이유가 없어 이상치도 복원되므로 복원 오차가 탐지 점수로 쓸모없어집니다(실험 3의 선형 오토인코더 · 잠재 차원 2)."},
+      {q:"정상 데이터로만 학습한 오토인코더로 이상 탐지를 할 때 임계값을 정하는 방법으로 가장 적절한 것은?",o:["학습 데이터 복원 오차의 최댓값","시험 데이터에서 F1이 최대가 되도록 맞춘 값","학습에 쓰지 않은 정상 검증 데이터의 복원 오차에서, 허용할 오경보율에 맞춘 분위수","항상 0.1"],a:2,e:"학습 데이터의 오차는 실제보다 작게 나오고, 시험 데이터로 임계값을 맞추면 평가가 낙관적으로 됩니다(데이터 누수). 정상 검증 데이터로 오경보율을 정하고, 이상 사례가 있으면 검증 단계에서 Precision·Recall로 확인합니다."},
+      {q:"기본 오토인코더의 잠재 공간에서 임의의 z를 뽑아 디코딩하면 자연스러운 샘플이 잘 나오지 않는 이유는?",o:["디코더에 활성화 함수가 없어서","z의 분포를 정하는 항이 없어, 학습 데이터의 z가 놓인 영역 밖이나 그 사이가 의미 있게 채워진다는 보장이 없어서","인코더가 z를 항상 0으로 만들어서","복원 오차를 MAE로 계산해서"],a:1,e:"기본 오토인코더는 복원만 학습합니다. VAE는 KL 항으로 z를 N(0, I) 근처에 모으기 때문에, N(0, I)에서 뽑은 z가 디코더가 본 적 있는 영역에 놓입니다."}
+    ],
+    m1:[
+      {q:"224×224×3 이미지를 펴서 뉴런 1,000개짜리 완전연결층에 연결할 때 파라미터 수(편향 포함)는?",o:["1,792","3,211,264","150,529,000","483,388,358,656"],a:2,e:"224 × 224 × 3 = 150,528개 입력이 뉴런 1,000개와 모두 연결되므로 150,528 × 1,000 + 1,000 = 150,529,000개입니다. 1,792는 3×3 필터 64개인 합성곱층, 마지막 값은 출력을 224×224×64로 맞춘 완전연결층입니다."},
+      {q:"padding 1, stride 1인 합성곱 + ReLU에 입력을 오른쪽으로 3칸 옮겨 넣었다(물체는 가장자리에서 충분히 떨어져 있다). 출력은?",o:["입력과 상관없이 같다(불변)","특징 지도도 오른쪽으로 3칸 옮겨진다(등변)","특징 지도가 무작위로 바뀐다","stride가 1이라 출력 크기가 3 줄어든다"],a:1,e:"같은 필터를 모든 위치에 쓰므로 특징 지도가 입력과 같은 양만큼 이동합니다. 이것이 이동 등변성이고, 출력이 같아지는 불변성은 GAP처럼 위치를 지우는 연산이 더해져야 생깁니다(실험 1)."},
+      {q:"실험 4에서 물체를 왼쪽에만 두고 학습했더니 Conv + Flatten 모델도 처음 보는 오른쪽 위치에서 정확도가 크게 떨어졌다. 이유는?",o:["합성곱 필터가 오른쪽에서는 계산되지 않아서","Flatten 뒤 선형층이 위치마다 다른 가중치를 써서, 학습 때 쓰이지 않은 위치의 가중치가 학습되지 않았기 때문","ReLU가 오른쪽 값을 모두 0으로 만들어서","파라미터가 너무 적어서"],a:1,e:"합성곱 특징 지도는 물체를 따라 이동하지만, 펼친 뒤의 선형층은 FC와 같은 위치별 가중치입니다. 위치를 지우는 GAP 헤드를 쓰면 처음 보는 위치에서도 정확도가 유지됩니다."}
+    ]
+  };
+  document.querySelectorAll(".quiz").forEach(host=>{
+    const list=Q[host.dataset.quiz]||[];
+    list.forEach((it,qi)=>{
+      const box=document.createElement("div");box.className="qz";
+      const t=document.createElement("div");t.className="qt";t.innerHTML="<span>Q"+(qi+1)+".</span>";t.appendChild(document.createTextNode(it.q));box.appendChild(t);
+      const opts=document.createElement("div");opts.className="opts";box.appendChild(opts);
+      const exp=document.createElement("div");exp.className="exp";exp.hidden=true;exp.setAttribute("aria-live","polite");
+      const btns=it.o.map((o,oi)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=String.fromCharCode(9312+oi)+" "+o;
+        b.addEventListener("click",()=>{btns.forEach((x,xi)=>{x.classList.remove("right","wrong");if(xi===it.a)x.classList.add("right");});if(oi!==it.a)b.classList.add("wrong");
+          exp.hidden=false;exp.innerHTML=(oi===it.a?'<b class="ok">정답입니다.</b> ':'<b class="no">오답입니다.</b> 정답은 '+String.fromCharCode(9312+it.a)+"번. ");exp.appendChild(document.createTextNode(it.e));});
+        opts.appendChild(b);return b;});
+      box.appendChild(exp);host.appendChild(box);
+    });
+  });
+});
+})();
+</script>
+<script>
+/* 나란히 놓인 그림 칸: 칸끼리 제목·그림·설명 줄을 같은 높이로 맞춘다 */
+(function(){try{document.querySelectorAll(".panels,.tri").forEach(function(g){
+  var ps=[].filter.call(g.children,function(c){return c.classList.contains("panel");});if(ps.length<2)return;
+  var n=Math.max.apply(null,ps.map(function(p){return p.children.length;}));
+  ps.forEach(function(p){p.style.display="grid";p.style.gridRow="span "+n;p.style.gridTemplateRows="subgrid";p.style.rowGap="6px";p.style.alignContent="start";});
+});}catch(e){console.error("panel align",e);}})();
+</script>
+</body></html>

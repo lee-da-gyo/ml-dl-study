@@ -1,0 +1,1055 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>위클리 페이퍼 10</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 위클리 #1~#4와 같은 모눈 노트 위의 학습 카드. 질문마다 [한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈] */
+:root{
+  --bg:#f3f5f8; --paper:#ffffff; --grid:#e3e8ef;
+  --ink:#1b2433; --muted:#5b6678; --line:#d5dce6;
+  --accent:#2448c9; --accent-soft:#e6ecfb;
+  --mark:#ffe36b; --add:#0f7a55; --add-soft:#e1f4ec; --fix:#c2410c; --fix-soft:#fdeee4;
+  --code-bg:#f0f2f6;
+  --f-display:"Black Han Sans","IBM Plex Sans KR",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4,h5{text-wrap:balance;margin:0}
+p{margin:0}
+header.top{display:flex;flex-direction:column;gap:10px}
+header.top .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+header.top h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,5vw,38px);line-height:1.25}
+header.top p{color:var(--muted);max-width:68ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:8px;flex-wrap:wrap;
+  background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+nav.toc a{text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--paper);
+  padding:5px 11px;border-radius:999px;font-size:13.5px;font-weight:500}
+nav.toc a.iv{border-style:dashed}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:4px;letter-spacing:.04em;vertical-align:2px;white-space:nowrap}
+.b-add{background:var(--add-soft);color:var(--add)}
+.b-fix{background:var(--fix-soft);color:var(--fix)}
+.b-core{background:var(--accent-soft);color:var(--accent)}
+.b-lab{background:var(--ink);color:var(--paper)}
+.tag-ex{display:inline-block;font-size:11px;font-weight:700;padding:0 7px;border-radius:4px;border:1px dashed var(--muted);color:var(--muted);letter-spacing:.04em;vertical-align:2px;line-height:1.7;white-space:nowrap}
+mark{background:var(--mark);color:inherit;padding:0 2px;border-radius:2px}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+
+section.q{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,4vw,36px);
+  display:flex;flex-direction:column;gap:28px;scroll-margin-top:64px}
+.qhead{display:flex;gap:16px;align-items:flex-start}
+.qnum{font-family:var(--f-display);font-size:44px;line-height:1;color:var(--accent);white-space:nowrap}
+.qnum.iv{font-size:30px;padding-top:4px}
+.qhead h2{font-size:clamp(18px,3vw,23px);font-weight:700;line-height:1.45}
+.qhead .min{min-width:0;display:flex;flex-direction:column;gap:4px}
+.qhead .kind{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.oneline{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 8px 8px 0;font-size:16.5px;font-weight:500}
+.oneline small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em;margin-bottom:2px}
+h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.part{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-bottom:-12px}
+.block{display:flex;flex-direction:column;gap:14px}
+.muted{color:var(--muted)}
+.fig{border:1px dashed var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+.fig figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+figure{margin:0}
+.formula{font-family:var(--f-mono);font-size:15px;text-align:center;padding:14px 10px;background:var(--code-bg);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.formula .fb{color:var(--accent);font-weight:600}.formula .fv{color:var(--fix);font-weight:600}.formula .fn{color:var(--muted);font-weight:600}
+
+/* demo shell */
+.demo{border:1.5px solid var(--ink);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--paper)}
+.demo-head{display:flex;flex-direction:column;gap:4px}
+.demo-head .t{font-weight:700;font-size:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.demo-head .how{font-size:13.5px;color:var(--muted)}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
+button.btn{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+button.btn:hover{border-color:var(--accent);color:var(--accent)}
+button.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{font:inherit;font-size:14px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+input[type=range]{accent-color:var(--accent);width:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px}
+.stat{background:var(--code-bg);border-radius:8px;padding:8px 10px;min-width:0}
+.stat .k{font-size:11.5px;color:var(--muted);font-weight:700;line-height:1.4}
+.stat .v{font-family:var(--f-mono);font-size:15px;font-variant-numeric:tabular-nums}
+.stat.em{background:var(--accent-soft)} .stat.em .v{color:var(--accent);font-weight:600}
+.stat.warn{background:var(--fix-soft)} .stat.warn .v{color:var(--fix);font-weight:600}
+.stat.ok{background:var(--add-soft)} .stat.ok .v{color:var(--add);font-weight:600}
+.insight{font-size:14.5px;border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:720px){.split{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.panels{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.panel h5{font-size:14px}
+.panel .cap{font-size:12.5px;color:var(--muted)}
+.svgbox svg{width:100%;height:auto;display:block}
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.sw.c{border-radius:50%}
+.sw.ln{height:3px;width:16px;border-radius:0;vertical-align:3px}
+.sw.dash{height:0;width:16px;border-radius:0;border-top:2px dashed var(--ink);vertical-align:3px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code-bg);font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td b{color:var(--accent)}
+table.num td,table.num th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 10px}
+table.num td:first-child{font-family:var(--f-body);font-weight:700}
+table.num td:last-child{font-family:var(--f-body)}
+.df{font-family:var(--f-mono);font-size:12.5px;min-width:620px}
+.df td,.df th{padding:6px 10px;white-space:nowrap}
+.df td.memo{font-family:var(--f-body);white-space:normal;min-width:180px}
+.df .na{color:var(--fix);font-weight:600}
+.df tr.drop td{text-decoration:line-through;opacity:.5}
+.df .chg{background:var(--mark);border-radius:3px;padding:0 3px}
+.df .fill{background:var(--add-soft);color:var(--add);border-radius:3px;padding:0 3px;font-weight:600}
+
+/* cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h4{font-size:15.5px}
+.card p,.card li{font-size:14.5px}
+.card ul{margin:0;padding-left:18px}
+.card .k{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em}
+.card.add{border-color:var(--add);background:var(--add-soft)} .card.add .k{color:var(--add)}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.mini{grid-template-columns:1fr}}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:s}
+.step{position:relative;border:1px solid var(--line);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--paper)}
+.step::before{counter-increment:s;content:"STEP " counter(s);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.step b{font-size:15px}
+.step span{font-size:13px;color:var(--muted);line-height:1.55}
+.step code{font-size:11.5px}
+.step.add{border-color:var(--add);background:var(--add-soft)} .step.add::before{color:var(--add)}
+@media (max-width:820px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.flow{grid-template-columns:1fr}}
+
+.codewrap{display:flex;flex-direction:column;gap:6px}
+.codecap{font-size:12.5px;color:var(--muted)}
+pre{margin:0;font-family:var(--f-mono);font-size:13px;line-height:1.65;background:var(--code-bg);border-radius:10px;padding:14px 16px;overflow-x:auto}
+pre .c{color:var(--muted)}
+pre .hl{background:var(--mark);border-radius:3px}
+.note{border-radius:10px;padding:14px 16px;font-size:14.5px;display:flex;flex-direction:column;gap:8px}
+.note.add{background:var(--add-soft)}
+.note.fix{background:var(--fix-soft)}
+.note b.t{font-size:13px;letter-spacing:.05em}
+.note.add b.t{color:var(--add)} .note.fix b.t{color:var(--fix)}
+.was{display:block;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--fix);text-decoration-thickness:1.5px}
+.now{display:block}
+.lbl-was,.lbl-now{font-weight:700;color:var(--fix);margin-right:4px}
+.pair{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:var(--paper);border-radius:8px}
+
+.speech{border:2px solid var(--ink);border-radius:12px;padding:18px 18px 16px;position:relative;font-size:15px}
+.speech::before{content:"면접 30초 답변";position:absolute;top:-11px;left:14px;background:var(--paper);padding:0 8px;font-size:12px;font-weight:700;letter-spacing:.06em}
+
+/* svg */
+svg text{font-family:var(--f-body);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+svg .ax{stroke:var(--line);stroke-width:1.5;fill:none}
+svg .gl{stroke:var(--grid);stroke-width:1;fill:none}
+svg .c0{fill:var(--accent)} svg .c1{fill:var(--add)} svg .c2{fill:var(--fix)}
+svg .cg{fill:var(--muted);fill-opacity:.55}
+svg .r0{fill:var(--accent);fill-opacity:.10} svg .r1{fill:var(--add);fill-opacity:.12} svg .r2{fill:var(--fix);fill-opacity:.12}
+svg .cent{stroke:var(--ink);stroke-width:3;fill:none}
+svg .pt{fill:var(--accent);fill-opacity:.85}
+svg .ptx{fill:var(--fix)}
+svg .fitln{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .mseln{stroke:var(--accent);stroke-width:2;stroke-dasharray:7 5;fill:none}
+svg .maeln{stroke:var(--add);stroke-width:2;stroke-dasharray:3 4;fill:none}
+svg .res{stroke:var(--fix);stroke-width:1.5;fill:none}
+svg .sq{fill:var(--fix);fill-opacity:.14;stroke:var(--fix);stroke-opacity:.45;stroke-width:1}
+svg .truef{stroke:var(--ink);stroke-width:2;stroke-dasharray:6 4;fill:none}
+svg .thin{stroke:var(--accent);stroke-width:1.2;stroke-opacity:.35;fill:none}
+svg .meanf{stroke:var(--add);stroke-width:3;fill:none}
+svg .lb{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .lv{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .lt{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .ln{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+svg .cur{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3}
+svg .ring{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .bull{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .shot{fill:var(--fix);stroke:var(--paper);stroke-width:1}
+svg .ftr{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+svg .fva{fill:var(--fix)}
+svg .pos-t{fill:var(--ink)} svg .pos-v{fill:var(--paper)}
+svg .bar-a{fill:var(--fix)} svg .bar-b{fill:var(--add)}
+svg .curve{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .curvefill{fill:var(--accent-soft)}
+svg .tail{fill:var(--fix);fill-opacity:.35}
+svg .vmean{stroke:var(--add);stroke-width:2.5}
+svg .vmed{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:5 3}
+svg .trl{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .val{stroke:var(--fix);stroke-width:2.5;fill:none}
+
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:12px}
+.qz{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.qz .qt{font-weight:600}
+.qz .qt span{color:var(--accent);margin-right:6px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:14.5px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;line-height:1.5}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--add);background:var(--add-soft)}
+.opt.wrong{border-color:var(--fix);background:var(--fix-soft)}
+.exp{font-size:14px;background:var(--code-bg);border-radius:8px;padding:10px 12px}
+.exp b.ok{color:var(--add)} .exp b.no{color:var(--fix)}
+
+footer{font-size:13px;color:var(--muted);text-align:center}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+nav.pager a,nav.pager span{display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;line-height:1.4;min-width:0}
+nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
+nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
+nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
+/* 위클리 03에서 이어 쓰는 스타일 */
+svg .leaf0{fill:var(--accent);fill-opacity:.13} svg .leaf1{fill:var(--add);fill-opacity:.17}
+svg .leafb{fill:none;stroke:var(--paper);stroke-width:1.2}
+svg .p0{fill:var(--accent)} svg .p1{fill:var(--add)}
+svg .p0,svg .p1{stroke:var(--paper);stroke-width:.8}
+svg .trueb{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+svg .box{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .boxa{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .boxg{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .boxf{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+svg .ahp{fill:var(--muted)}
+svg .edge{stroke:var(--line);stroke-width:2;fill:none}
+svg .edgea{stroke:var(--accent);stroke-width:2;fill:none}
+svg .tac{fill:var(--accent)} svg .tad{fill:var(--add)} svg .taf{fill:var(--fix)}
+svg .modelc{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .treec{stroke:var(--add);stroke-width:2.5;fill:none}
+svg .resp{fill:var(--fix);fill-opacity:.8}
+svg .zero{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+svg .nanl{stroke:var(--fix);stroke-width:2;stroke-dasharray:4 3}
+svg .barp{fill:var(--accent);fill-opacity:.75}
+svg .barm{fill:var(--fix)}
+table.ldt{min-width:680px;font-size:13.5px}
+table.ldt th,table.ldt td{padding:7px 10px;text-align:center;vertical-align:middle}
+table.ldt td:first-child,table.ldt th:first-child{text-align:left}
+table.ldt td:first-child{font-weight:700}
+td.ld{position:relative;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.ld .bar{position:absolute;left:4px;top:22%;height:56%;border-radius:3px;background:var(--accent);opacity:.2}
+td.ld .bar.neg{background:var(--fix)}
+td.ld .n{position:relative}
+td.ld.hi .n{font-weight:700;color:var(--accent)}
+td.ld.tr{color:var(--muted)}
+th.grp{text-align:center!important;border-left:1px solid var(--line)}
+td.gl,th.gl{border-left:1px solid var(--line)}
+table.heat{min-width:420px}
+table.heat td,table.heat th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 6px}
+table.heat td:first-child,table.heat th:first-child{font-family:var(--f-body)}
+table.dec td{font-variant-numeric:tabular-nums}
+table.dec td.best{color:var(--add);font-weight:700}
+.treebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;padding:6px}
+.treebox svg{display:block;max-width:none;margin:0 auto}
+svg .boxd{fill:var(--paper);stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+svg .lf0{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5} svg .lf1{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .trunc{fill:var(--code-bg);stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+pre.rules{font-size:12.5px;line-height:1.6;max-height:320px;overflow:auto;white-space:pre}
+.formula.left{text-align:left;white-space:pre;line-height:1.9}
+.sl5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sl5 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:440px){.sl5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.opt,.exp,.insight,.stat .v{overflow-wrap:anywhere}
+select{max-width:100%}
+/* 위클리 04 추가 스타일 */
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.tri{grid-template-columns:1fr}}
+.tri .panel .acc{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tri .panel .acc b{color:var(--accent)}
+.sl4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sl4 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+svg .gpt{fill:var(--ink)} svg .rpt{fill:var(--fix)}
+svg .gpt,svg .rpt{stroke:var(--paper);stroke-width:1}
+svg .bestr{fill:none;stroke:var(--ink);stroke-width:2}
+svg .opt{fill:none;stroke:var(--add);stroke-width:2.5}
+svg .hm{fill:var(--accent)}
+svg .venn0{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
+svg .venn1{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .venn2{fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:1.5}
+svg .venn3{fill:var(--add-soft);stroke:var(--add);stroke-width:2}
+.verdict{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.verdict .big{font-family:var(--f-mono);font-size:20px;font-variant-numeric:tabular-nums}
+.verdict ol,.verdict ul{margin:0;padding-left:20px;font-size:14px}
+.verdict .k{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+table.contrib{min-width:0;font-size:13.5px}
+table.contrib td,table.contrib th{padding:6px 8px}
+/* 위클리 05 추가 스타일 */
+.codecols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.codecols{grid-template-columns:1fr}}
+.codecols pre{font-size:12.3px}
+.codecols .codecap b{color:var(--ink)}
+pre.lines{white-space:pre}
+pre.lines .cnt{display:inline-block;min-width:3.2em;color:var(--muted);user-select:none}
+pre.lines .off{opacity:.38}
+pre.lines .rec{background:var(--accent-soft);border-radius:3px}
+svg .gn{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+svg .gx{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .go{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .gb{stroke:var(--fix);stroke-width:1.5;fill:none;stroke-dasharray:5 4}
+svg .ahf{fill:var(--fix)}
+svg .stg{fill:var(--code-bg);stroke:var(--line);stroke-width:1.5}
+svg .stgc{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .seg0{fill:var(--accent);fill-opacity:.85} svg .seg1{fill:var(--accent);fill-opacity:.5} svg .seg2{fill:var(--accent);fill-opacity:.28}
+svg .seg3{fill:var(--add);fill-opacity:.75} svg .seg4{fill:var(--muted);fill-opacity:.45} svg .seg5{fill:var(--code-bg);stroke:var(--line);stroke-width:1}
+svg .sgc{stroke:var(--accent);stroke-width:2.5;fill:none} svg .tnc{stroke:var(--add);stroke-width:2.5;fill:none} svg .rlc{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .satz{fill:var(--fix);fill-opacity:.08}
+svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
+.repl{font-family:var(--f-mono);font-size:13px;background:var(--code-bg);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.repl .in{color:var(--muted)}
+.repl .in::before{content:">>> ";color:var(--accent)}
+.repl .er{color:var(--fix);font-weight:600}
+.repl .okv{color:var(--add);font-weight:600}
+.sh{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:4px}
+.sh.y{background:var(--fix-soft);color:var(--fix)} .sh.n{background:var(--add-soft);color:var(--add)}
+.sl3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sl3 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl3{grid-template-columns:1fr}}
+/* 위클리 05 가독성: 문단·불릿 */
+.oneline p,.note p,.card p,.speech p,.how p{margin:0}
+.oneline{display:flex;flex-direction:column;gap:8px}
+.oneline small{margin-bottom:-4px}
+.oneline ul,.note ul,.card ul,.how ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.oneline ul{font-size:15.5px}
+.demo-head .how{display:flex;flex-direction:column;gap:8px;line-height:1.75}
+.note{gap:12px}
+.note p,.card p,.note li,.card li{line-height:1.8}
+.pair{gap:8px;padding:14px 16px}
+.now{display:flex;flex-direction:column;gap:10px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack .card{padding:18px 20px;gap:10px}
+.card pre{font-size:12px;padding:10px 12px;white-space:pre-wrap}
+.speech{display:flex;flex-direction:column;gap:12px;line-height:1.85}
+.insight{line-height:1.85;white-space:pre-line}
+header.top p.flowline{color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 14px;width:fit-content;max-width:100%}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px;white-space:nowrap}
+/* 위클리 05 코드 색 (Python 문법 강조) */
+:root{--sy-k:#8a3ffc;--sy-s:#0f7a55;--sy-n:#b4460c;--sy-f:#2448c9;--sy-d:#a15c00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}}
+:root[data-theme="dark"]{--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}
+pre .sy-k{color:var(--sy-k);font-weight:600} pre .sy-s{color:var(--sy-s)} pre .sy-n{color:var(--sy-n)}
+pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .sy-b{color:var(--sy-n);font-style:italic}
+/* 원래 답안은 취소선 없이 그대로 읽히게 */
+.was{text-decoration:none!important;color:var(--ink)!important}
+/* 수치 칸: 같은 줄의 칸끼리 제목 높이를 맞춰 값이 같은 높이에서 시작하게 한다 */
+.stats{grid-auto-rows:auto}
+.stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
+.stat .v .nw{white-space:nowrap}
+.stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
+.stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
+.stat .v .sub{white-space:normal}
+/* 위클리 10 추가 스타일 */
+.panels.four{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:620px){.panels.four{grid-template-columns:1fr}}
+table.pcl{min-width:520px}
+.stat .v.kr{font-family:var(--f-body);font-weight:700}
+</style>
+</head><body>
+
+<div class="wrap" id="top">
+  <nav class="pager" aria-label="위클리 이동">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%205.%20PyTorch·TensorFlow%20·%20텐서%20·%20기울기%20소실%20·%20배치%20크기.html" rel="prev">‹ 이전 · 05 PyTorch·TensorFlow · 텐서</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+  </nav>
+  <header class="top">
+    <div class="eyebrow">WEEKLY PAPER 10 · 자율주행 장면 이해: 픽셀 분류, 개체 구분, 프레임 사이 추적</div>
+    <h1>Semantic·Instance Segmentation · Panoptic · 객체 추적</h1>
+    <p>면접형 질문 1문항을 정리했습니다. 아래 순서로 읽으면 됩니다.</p>
+    <p class="flowline"><b>한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈</b></p>
+    <p>원래 답안(작성 답안)을 고친 부분은 아래 표시로 구분했습니다.</p>
+    <div class="legend">
+      <span><span class="badge b-core">핵심</span> 꼭 알아야 할 개념</span>
+      <span><span class="badge b-add">보충</span> 원래 답안에 새로 더한 내용</span>
+      <span><span class="badge b-fix">정정</span> 원래 답안에서 틀렸거나 과장된 부분</span>
+      <span><span class="badge b-lab">실험</span> 값을 바꿔 보는 인터랙티브</span>
+      <span><span class="tag-ex">예시</span> 설명용으로 만든 가상의 값</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="질문 바로가기">
+    <a href="#q1">Q1 Semantic vs Instance Segmentation</a>
+    <a href="#sum">총정리</a>
+  </nav>
+
+  <!-- ===================== Q1 ===================== -->
+  <section class="q" id="q1">
+    <div class="qhead"><div class="qnum">Q1</div><div class="min"><div class="kind">면접형 질문 · 작성 답안 검토</div><h2>자율주행 차량이 카메라로 도로 이미지를 분석해요. '이 픽셀들이 차인지 도로인지 사람인지' 구분하는 것과, '왼쪽 차와 오른쪽 차를 서로 다른 개체로 구별'하는 것은 다른 문제예요. 이 둘을 각각 어떤 방식으로 해결할 건가요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>두 문제는 <b>답의 단위</b>가 다르다.</p>
+      <ul>
+        <li><b>"이 픽셀은 무엇인가"</b> → <mark>Semantic Segmentation</mark>: 모든 픽셀에 클래스를 하나씩 붙인다. 같은 클래스인 차 두 대는 한 덩어리 '차'가 된다.</li>
+        <li><b>"이 픽셀은 어느 개체인가"</b> → <mark>Instance Segmentation</mark>: 차·사람처럼 셀 수 있는 물체(<b>things</b>)마다 마스크 한 장과 클래스·신뢰도를 낸다. 도로·하늘 같은 배경(<b>stuff</b>)은 출력하지 않는다.</li>
+      </ul>
+      <p>둘을 한 번에 얻으려면 모든 픽셀에 <b>(클래스, 개체 ID)</b>를 하나씩 주는 <b>Panoptic Segmentation</b>을 쓴다. 영상에서는 <b>객체 추적</b>이 프레임이 바뀌어도 같은 차에 같은 ID를 이어 붙인다.</p>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 같은 장면, 세 가지 출력</h3>
+      <p>아래 네 그림은 모두 같은 <b>40 × 20 픽셀</b> 장면이고, 칸 하나가 픽셀 하나입니다. 실험 1·2도 이 장면을 그대로 씁니다.</p>
+      <div class="panels four">
+        <div class="panel"><h5>원본 이미지</h5><div class="svgbox"><svg id="scRaw" viewBox="0 0 400 200" role="img" aria-label="하늘, 인도, 도로 위에 사람 1명과 자동차 2대가 있는 장면"></svg></div><div class="cap">하늘·인도·도로 위에 사람 1명, 자동차 2대</div></div>
+        <div class="panel"><h5>① Semantic Segmentation</h5><div class="svgbox"><svg id="scSem" viewBox="0 0 400 200" role="img" aria-label="Semantic 결과: 두 자동차가 같은 색"></svg></div><div class="cap">모든 픽셀에 클래스 하나 · 두 차가 같은 색</div></div>
+        <div class="panel"><h5>② Instance Segmentation</h5><div class="svgbox"><svg id="scIns" viewBox="0 0 400 200" role="img" aria-label="Instance 결과: 개체마다 다른 색, 배경은 출력 없음"></svg></div><div class="cap">개체마다 마스크 · 배경 픽셀은 출력 없음(빈칸)</div></div>
+        <div class="panel"><h5>③ Panoptic Segmentation</h5><div class="svgbox"><svg id="scPan" viewBox="0 0 400 200" role="img" aria-label="Panoptic 결과: 배경은 클래스, 물체는 개체별 색"></svg></div><div class="cap">배경은 클래스만, 물체는 클래스 + 개체 ID</div></div>
+      </div>
+      <div class="keyrow" id="scKey"></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 세 방식 비교</h3>
+      <div class="tbl"><table style="min-width:820px">
+        <thead><tr><th style="width:14%">기준</th><th style="width:27%">Semantic Segmentation</th><th style="width:30%">Instance Segmentation</th><th>Panoptic Segmentation</th></tr></thead>
+        <tbody>
+          <tr><td><b>답하는 질문</b></td><td>이 픽셀은 무엇인가</td><td>이 물체는 어디까지이고, 몇 번째 개체인가</td><td>이 픽셀은 무엇이고, 물체라면 몇 번째인가</td></tr>
+          <tr><td><b>출력 형식</b></td><td>H × W 클래스 지도 1장</td><td>개체 N개의 (클래스, 마스크, 신뢰도) 목록</td><td>H × W (클래스, 개체 ID) 지도 + 세그먼트 목록</td></tr>
+          <tr><td><b>픽셀 겹침</b></td><td>없음 · 픽셀마다 정확히 하나</td><td>마스크끼리 겹칠 수 있고, 어느 마스크에도 속하지 않는 픽셀도 있다</td><td>없음 · 픽셀마다 정확히 하나</td></tr>
+          <tr><td><b>차 두 대</b></td><td>차, 차 (한 덩어리)</td><td>차 #1, 차 #2</td><td>차 #1, 차 #2</td></tr>
+          <tr><td><b>도로</b></td><td>도로</td><td>출력 없음</td><td>도로 (개체 ID 없음)</td></tr>
+          <tr><td><b>대표 모델</b></td><td>FCN(2015), U-Net(2015), DeepLabv3+(2018)</td><td>Mask R-CNN(2017), YOLACT(2019), YOLOv8-seg(2023)</td><td>Panoptic FPN(2019), Panoptic-DeepLab(2020), Mask2Former(2022, 세 과제 공용)</td></tr>
+          <tr><td><b>평가 지표</b></td><td>클래스별 IoU, 그 평균인 mIoU</td><td>Mask AP (IoU 기준 0.50~0.95 평균)</td><td>PQ = SQ × RQ</td></tr>
+          <tr><td><b>자율주행 쓰임</b></td><td>주행 가능 영역, 차선·인도 경계</td><td>차량·보행자 하나하나의 모양, 추적의 입력</td><td>배경과 물체를 한 장의 지도로</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="demo" id="demo-cc">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 1</span> Semantic 결과만으로 차를 셀 수 있을까 <span class="tag-ex">예시 장면 · 40 × 20 픽셀</span></div>
+        <div class="how">
+          <p>Semantic 결과에서 '차' 픽셀만 골라 서로 이어진 덩어리, 즉 <b>연결 요소(connected components)</b>로 나누면 차 수를 셀 수 있을 것처럼 보입니다. 두 차 사이 간격을 줄여 보세요.</p>
+          <ul>
+            <li><b>간격</b>: 앞차 오른쪽 끝과 뒤차 왼쪽 끝 사이의 빈 픽셀 수. 음수면 뒤차가 앞차에 가려집니다.</li>
+            <li><b>경계 번짐</b>: 실제 모델의 예측은 경계가 흐려집니다. '차' 마스크를 상하좌우로 1픽셀 넓혀 그 효과를 흉내 냅니다.</li>
+          </ul>
+          <p class="muted">연결 기준은 상하좌우 4-이웃입니다.</p>
+        </div>
+      </div>
+      <div class="sl3">
+        <label for="ccGap">두 차 사이 간격: <output id="ccGapOut" for="ccGap">2칸</output><input type="range" id="ccGap" min="-5" max="6" step="1" value="2"></label>
+        <label for="ccDil">예측 경계 번짐<select id="ccDil"><option value="0" selected>없음 (정답과 같은 경계)</option><option value="1">1픽셀 번짐</option></select></label>
+      </div>
+      <div class="tri">
+        <div class="panel"><h5>Semantic 예측</h5><div class="svgbox"><svg id="ccSem" viewBox="0 0 400 200" role="img" aria-label="Semantic 예측"></svg></div><div class="cap">차 픽셀은 모두 같은 클래스</div></div>
+        <div class="panel"><h5>연결 요소로 나눈 결과</h5><div class="svgbox"><svg id="ccCC" viewBox="0 0 400 200" role="img" aria-label="연결 요소"></svg></div><div class="cap">덩어리마다 다른 색 = 센 차 수</div></div>
+        <div class="panel"><h5>Instance 정답</h5><div class="svgbox"><svg id="ccIns" viewBox="0 0 400 200" role="img" aria-label="Instance 정답"></svg></div><div class="cap">차마다 따로 그린 마스크</div></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">차로 분류된 픽셀</div><div class="v" id="ccPx">–</div></div>
+        <div class="stat em"><div class="k">연결 요소로 센 차</div><div class="v" id="ccN">–</div></div>
+        <div class="stat"><div class="k">실제 차 (Instance 정답)</div><div class="v" id="ccTrue">–</div></div>
+        <div class="stat" id="ccVBox"><div class="k">판정</div><div class="v kr" id="ccV">–</div></div>
+      </div>
+      <p class="insight" id="ccMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="demo" id="demo-metric">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 2</span> 같은 예측, 다른 점수: 픽셀 정확도 · mIoU · PQ <span class="tag-ex">예시 장면 · 실험 1의 간격 2칸</span></div>
+        <div class="how">
+          <p>정답 장면에 대표적인 오류를 하나씩 넣고, 세 지표를 이 페이지에서 직접 계산합니다.</p>
+          <ul>
+            <li><b>픽셀 정확도</b>: 클래스를 맞힌 픽셀의 비율</li>
+            <li><b>mIoU</b>: 클래스마다 IoU = |예측 ∩ 정답| / |예측 ∪ 정답|을 구해 평균</li>
+            <li><b>PQ</b>: 같은 클래스에서 IoU &gt; 0.5인 예측·정답 세그먼트를 짝(TP)으로 묶고, 클래스마다 ΣIoU<sub>TP</sub> / (TP + ½FP + ½FN)을 구해 평균</li>
+          </ul>
+          <p class="muted">배경(stuff)은 클래스 전체를 세그먼트 하나로 봅니다. 픽셀 정확도와 mIoU는 개체 ID를 보지 않습니다.</p>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="mtK" style="font-weight:600">예측에 넣을 오류</label>
+        <select id="mtK">
+          <option value="perfect">없음 (완벽한 예측)</option>
+          <option value="merge" selected>두 차를 한 개체로 합침</option>
+          <option value="split">차 #1을 두 조각으로 쪼갬</option>
+          <option value="dilate">물체 경계가 1픽셀씩 번짐</option>
+          <option value="miss">작은 사람을 놓침</option>
+        </select>
+      </div>
+      <div class="panels">
+        <div class="panel"><h5>정답 (Panoptic)</h5><div class="svgbox"><svg id="mtG" viewBox="0 0 400 200" role="img" aria-label="정답 Panoptic 지도"></svg></div><div class="cap">색 = 배경 클래스 또는 개체</div></div>
+        <div class="panel"><h5>예측 (Panoptic)</h5><div class="svgbox"><svg id="mtP" viewBox="0 0 400 200" role="img" aria-label="예측 Panoptic 지도"></svg></div><div class="cap">× = 클래스가 틀린 픽셀</div></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">픽셀 정확도</div><div class="v" id="mtAcc">–</div></div>
+        <div class="stat em"><div class="k">mIoU</div><div class="v" id="mtMiou">–</div></div>
+        <div class="stat em"><div class="k">PQ</div><div class="v" id="mtPQ">–</div></div>
+        <div class="stat"><div class="k">PQ (things: 차·사람)</div><div class="v" id="mtTh">–</div></div>
+        <div class="stat"><div class="k">PQ (stuff: 하늘·인도·도로)</div><div class="v" id="mtSt">–</div></div>
+      </div>
+      <div class="tbl"><table class="num pcl">
+        <thead><tr><th>클래스</th><th>종류</th><th>IoU (mIoU용)</th><th>TP</th><th>FP</th><th>FN</th><th>PQ</th></tr></thead>
+        <tbody id="mtTb"></tbody>
+      </table></div>
+      <p class="insight" id="mtMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 자율주행에서는 이렇게 이어진다</h3>
+      <div class="flow">
+        <div class="step"><b>픽셀 단위 장면</b><span>Semantic Segmentation으로 도로·차선·인도를 나눠 주행 가능 영역을 구한다</span></div>
+        <div class="step"><b>개체 단위 물체</b><span>Instance Segmentation이나 객체 탐지로 차·보행자를 하나씩 분리한다</span></div>
+        <div class="step add"><b>프레임 사이 ID</b><span>객체 추적이 이전 프레임의 개체와 짝지어 같은 ID를 유지한다</span></div>
+        <div class="step add"><b>예측·계획</b><span>ID별로 쌓인 위치에서 속도·궤적을 예측해 주행 경로를 정한다</span></div>
+      </div>
+    </div>
+
+    <div class="demo" id="demo-track">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 3</span> 가려졌다 다시 나타난 차에 같은 ID 붙이기 <span class="tag-ex">예시 · 단순화한 IoU 추적</span></div>
+        <div class="how">
+          <p>가까운 차선의 트럭 A가 먼 차선의 승용차 B를 추월하면서 화면에서 B를 가립니다. 추적기는 프레임마다 나온 개체(여기서는 박스)를 이전 프레임의 트랙과 <b>IoU가 큰 쌍부터</b> 짝지어 ID를 이어 붙입니다.</p>
+          <ul>
+            <li><b>IoU 기준</b>: 겹침이 이보다 작으면 같은 개체로 보지 않고 새 ID를 만든다</li>
+            <li><b>트랙 유지</b>: 탐지가 끊겨도 트랙을 지우지 않고 기다리는 프레임 수</li>
+            <li><b>위치 예측</b>: 끊긴 동안 마지막 속도로 박스를 옮겨 둘지 정한다. SORT의 칼만 필터를 등속 모델로 단순화한 것이다</li>
+          </ul>
+          <p class="muted">가정: B는 절반 이상 가려지면 탐지되지 않고, 탐지될 때는 가려진 부분까지 포함한 전체 박스가 나옵니다. A는 프레임당 1.5칸, B는 0.5칸 오른쪽으로 움직입니다.</p>
+        </div>
+      </div>
+      <div class="sl4">
+        <label for="tkT">프레임: <output id="tkTOut" for="tkT">t = 17</output><input type="range" id="tkT" min="0" max="20" step="1" value="17"></label>
+        <label for="tkI">IoU 기준<select id="tkI"><option value="0.1">0.1</option><option value="0.3" selected>0.3</option><option value="0.5">0.5</option></select></label>
+        <label for="tkA">트랙 유지<select id="tkA"><option value="1">1프레임</option><option value="5" selected>5프레임</option><option value="15">15프레임</option></select></label>
+        <label for="tkP">위치 예측<select id="tkP"><option value="0" selected>없음 (마지막 위치)</option><option value="1">등속 예측</option></select></label>
+      </div>
+      <div class="svgbox"><svg id="tkView" viewBox="0 0 480 200" role="img" aria-label="현재 프레임의 박스와 ID"></svg></div>
+      <div class="svgbox"><svg id="tkLine" viewBox="0 0 480 92" role="img" aria-label="프레임별로 붙은 ID"></svg></div>
+      <div class="keyrow">
+        <span>칸 색과 숫자 = 그 프레임에 붙은 ID</span>
+        <span><span class="sw dash"></span>점선 = 탐지되지 않음, 또는 탐지 없이 남아 있는 트랙</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">B가 탐지되지 않은 프레임</div><div class="v" id="tkHide">–</div></div>
+        <div class="stat"><div class="k">만들어진 ID</div><div class="v" id="tkIds">–</div></div>
+        <div class="stat" id="tkSwBox"><div class="k">ID 바뀜 횟수</div><div class="v" id="tkSw">–</div></div>
+        <div class="stat em"><div class="k">B의 ID (처음 → 끝)</div><div class="v" id="tkB">–</div></div>
+      </div>
+      <p class="insight" id="tkMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">Semantic Segmentation: 픽셀마다 클래스 하나 (torchvision DeepLabv3)</div>
+<pre>import torch
+from torchvision.io import read_image
+from torchvision.models.segmentation import deeplabv3_resnet50, DeepLabV3_ResNet50_Weights
+
+weights = DeepLabV3_ResNet50_Weights.DEFAULT
+model = deeplabv3_resnet50(weights=weights).eval()
+img = read_image("street.jpg")                       # [3, H, W] uint8
+x = weights.transforms()(img).unsqueeze(0)           # 크기 조정·정규화 → [1, 3, H', W']
+with torch.inference_mode():
+    logits = model(x)["out"]                         # [1, 21, H', W'] 픽셀마다 클래스 점수
+sem = logits.argmax(dim=1)[0]                        # [H', W'] 픽셀마다 클래스 번호 하나
+car = weights.meta["categories"].index("car")
+print((sem == car).sum().item(), "픽셀이 car")        # 차가 몇 대든 픽셀 수만 나온다</pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">Instance Segmentation: 개체마다 (클래스, 마스크, 신뢰도) (torchvision Mask R-CNN)</div>
+<pre>from collections import Counter
+from torchvision.models.detection import maskrcnn_resnet50_fpn_v2, MaskRCNN_ResNet50_FPN_V2_Weights
+
+weights = MaskRCNN_ResNet50_FPN_V2_Weights.DEFAULT
+model = maskrcnn_resnet50_fpn_v2(weights=weights).eval()
+with torch.inference_mode():
+    out = model([weights.transforms()(img)])[0]      # 이미지 리스트를 받아 이미지마다 dict 하나
+keep = out["scores"] &gt; 0.5
+names = [weights.meta["categories"][i] for i in out["labels"][keep].tolist()]
+masks = out["masks"][keep, 0] &gt; 0.5                  # [N, H, W] 개체마다 마스크 한 장
+seen = Counter()
+for name, m in zip(names, masks):
+    seen[name] += 1
+    print(f"{name} #{seen[name]}: {m.sum().item()} px")   # car #1, car #2 … 마스크끼리 겹칠 수 있다</pre>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">Panoptic으로 합치기: Panoptic FPN 논문의 후처리 규칙을 단순화한 것</div>
+<pre>import numpy as np
+
+def merge_panoptic(sem, instances, stuff_ids, overlap_thr=0.5, min_stuff_area=64):
+    pan = np.zeros(sem.shape, dtype=np.int64)        # 0 = 아직 주인 없는 픽셀
+    segments, next_id = [], 1
+    for inst in sorted(instances, key=lambda d: -d["score"]):    # 신뢰도 높은 개체부터
+        free = inst["mask"] &amp; (pan == 0)
+        if free.sum() &lt; overlap_thr * inst["mask"].sum():         # 절반 넘게 이미 차지됨 → 버림
+            continue
+        pan[free] = next_id
+        segments.append({"id": next_id, "category": inst["label"], "isthing": True})
+        next_id += 1
+    for c in stuff_ids:                                           # 남은 픽셀은 stuff 클래스로
+        region = (sem == c) &amp; (pan == 0)
+        if region.sum() &gt;= min_stuff_area:                        # 너무 작은 조각은 버림
+            pan[region] = next_id
+            segments.append({"id": next_id, "category": c, "isthing": False})
+            next_id += 1
+    return pan, segments                             # 픽셀마다 세그먼트 ID 정확히 하나</pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">비교표 "출력 단위 — 픽셀별 클래스와 개체 ID", 그리고 ② Instance Segmentation 그림에 <code>[도로]</code> 영역을 그려 넣은 것</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>Instance Segmentation의 출력은 픽셀 지도가 아니라 <b>검출한 개체 N개의 목록</b>입니다. 개체마다 클래스, 마스크 한 장, 신뢰도가 나옵니다.</p>
+          <ul>
+            <li>도로·하늘 같은 <b>stuff는 출력하지 않는다.</b> 그림 ②의 <code>[도로]</code>는 빠져야 한다.</li>
+            <li>마스크는 개체마다 따로 예측하므로 <b>서로 겹칠 수 있고</b>, 어느 마스크에도 속하지 않는 픽셀도 있다.</li>
+          </ul>
+          <p>"모든 픽셀에 클래스와 개체 ID가 정확히 하나씩" 붙는 형식은 <b>Panoptic Segmentation</b>의 정의입니다(위 그림 ③).</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">픽셀 실험 표 "D | 도로 | 배경 또는 도로"</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>Instance 결과에서 D는 <b>어떤 마스크에도 속하지 않습니다</b>(출력 없음). D가 '도로'라는 정보는 Semantic이나 Panoptic 결과에서만 나옵니다.</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">즉, 두 자동차가 붙어 있거나 겹쳐 보여도 각각 독립된 물체로 인식할 수 있습니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>그렇게 하도록 <b>학습하는 것</b>이지 보장되지는 않습니다. 같은 클래스 물체가 맞닿거나 크게 겹치는 장면은 Instance Segmentation의 <b>대표적인 실패 사례</b>입니다.</p>
+          <ul>
+            <li><b>Mask R-CNN 계열</b>: 박스끼리의 IoU가 NMS 기준(torchvision 기본 0.5)을 넘으면 신뢰도가 낮은 박스를 지운다. 뒤에서 크게 가려진 차가 통째로 사라질 수 있다.</li>
+            <li><b>맞닿은 경계</b>: 붙은 부분의 픽셀이 다른 개체로 넘어가기 쉽다.</li>
+          </ul>
+          <p>그래서 혼잡한 장면을 위한 <b>Soft-NMS</b>(Bodla 외, 2017) 같은 변형과, 가려진 부분까지 예측하는 <b>amodal 분할</b>이 따로 연구됩니다.</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">“자동차인지 판단하는 것은 객체 탐지만으로 충분하다”라고 설명하면 정확하지 않습니다. 픽셀 단위의 영역을 요구하므로 분할 기법을 사용해야 합니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>첫 번째 문제(픽셀의 클래스)에는 맞는 말입니다. 하지만 두 번째 문제인 <b>"서로 다른 개체로 구별"은 객체 탐지로도 풀립니다.</b> 탐지는 개체마다 박스 하나와 클래스를 내므로 차 #1·#2가 이미 구분됩니다.</p>
+          <p>마스크가 꼭 필요한 것은 개체의 <b>정확한 모양</b>이 중요할 때입니다. 박스가 크게 겹치는 경우나 차체 윤곽, 열린 문이 그 예입니다. 실제 자율주행 인식은 카메라와 라이다를 함께 쓰는 <b>3D 박스 탐지 + 추적</b>이 중심이고, nuScenes·Waymo Open Dataset의 대표 과제도 3D 탐지와 추적입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · Panoptic의 평가 지표</div><h4>PQ = SQ × RQ, mIoU로는 개체 구분이 안 보인다</h4>
+        <p>Panoptic Segmentation과 <b>PQ</b>(Panoptic Quality)는 Kirillov 외(2019)가 함께 제안했습니다. 클래스마다 IoU &gt; 0.5인 예측·정답 세그먼트를 짝지은 뒤, 두 항으로 나눠 읽습니다.</p>
+        <ul>
+          <li><b>SQ</b>(분할 품질): 짝지은 세그먼트들의 평균 IoU, 즉 모양이 얼마나 정확한가</li>
+          <li><b>RQ</b>(인식 품질): TP / (TP + ½FP + ½FN), 즉 개체를 빠짐없이 하나씩 찾았는가</li>
+        </ul>
+        <p>IoU 기준이 0.5보다 크면 한 정답에 짝지어질 수 있는 예측이 최대 하나라서 매칭이 유일하게 정해집니다. COCO Panoptic은 things 80개와 stuff 53개, 모두 <b>133개 클래스</b>로 평가합니다. 실험 2의 '두 차 합침'처럼 mIoU는 1인데 PQ만 떨어지는 경우가 바로 개체 구분 실패입니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · Instance Segmentation을 푸는 세 갈래</div><h4>먼저 찾고 칠하기, 칠하고 묶기, 쿼리로 한 번에</h4>
+        <ul>
+          <li><b>탐지 후 분할(top-down)</b>: Mask R-CNN은 박스를 먼저 찾고, RoIAlign으로 박스 안 특징을 뽑아 개체마다 28 × 28 마스크를 예측한다.</li>
+          <li><b>분할 후 묶기(bottom-up)</b>: Panoptic-DeepLab은 Semantic 결과와 함께 개체 중심 지도와 각 픽셀에서 중심까지의 오프셋을 예측해, 같은 중심을 가리키는 픽셀을 한 개체로 묶는다. 실험 1의 연결 요소를 학습된 묶음 규칙으로 바꾼 셈이다.</li>
+          <li><b>쿼리 기반</b>: Mask2Former는 학습되는 쿼리 N개가 각자 마스크 하나와 클래스 하나를 예측한다. 같은 구조로 Semantic·Instance·Panoptic을 모두 푼다.</li>
+        </ul>
+      </div>
+      <div class="card add"><div class="k">보충 · 학습과 지표에서 주의할 점</div><h4>도로는 크고 사람은 작다</h4>
+        <p>도로 장면은 도로·하늘 픽셀이 압도적으로 많고, 멀리 있는 보행자는 수십 픽셀에 불과합니다. 그래서 <b>픽셀 정확도만으로는 성능을 판단할 수 없습니다.</b> 실험 2에서 사람을 통째로 놓쳐도 픽셀 정확도는 <span id="missDrop">2.4</span>%p만 떨어집니다.</p>
+        <ul>
+          <li><b>지표</b>: 클래스를 같은 무게로 평균하는 mIoU, 개체 단위인 Mask AP·PQ를 본다.</li>
+          <li><b>손실</b>: 픽셀별 교차 엔트로피에 클래스 가중치를 주거나, Dice·Focal 손실을 섞어 작은 클래스의 비중을 키운다.</li>
+          <li><b>해상도</b>: 작은 물체는 1픽셀 오차에도 IoU가 크게 떨어진다(실험 2의 경계 번짐). 출력 해상도를 지키는 디코더가 중요한 이유다.</li>
+        </ul>
+      </div>
+      <div class="card add"><div class="k">보충 · 객체 추적은 무엇으로 짝짓나</div><h4>위치 예측, 겹침, 외형</h4>
+        <ul>
+          <li><b>SORT</b>(Bewley 외, 2016): 칼만 필터로 다음 위치를 예측하고, 예측 박스와 탐지 박스의 IoU로 헝가리안 매칭을 한다.</li>
+          <li><b>DeepSORT</b>(Wojke 외, 2017): 외형 임베딩을 더해, 오래 가려졌다 나타난 개체도 같은 개체로 다시 찾는다.</li>
+          <li><b>ByteTrack</b>(Zhang 외, 2022): 신뢰도가 낮은 탐지도 버리지 않고 2차 매칭에 써서 가려진 개체를 덜 놓친다.</li>
+        </ul>
+        <p>실험 3은 이 중 SORT의 뼈대만 남긴 것입니다. ID가 끊기면 같은 차가 두 대로 기록되어, 속도와 궤적 예측이 처음부터 다시 시작됩니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>픽셀이 차인지 도로인지 사람인지는 <b>Semantic Segmentation</b>으로 풉니다. DeepLabv3+나 U-Net 같은 인코더-디코더 모델이 모든 픽셀에 클래스를 하나씩 붙이고, 픽셀별 교차 엔트로피로 학습해 mIoU로 평가합니다. 다만 같은 클래스는 한 덩어리라서, 차 두 대가 맞닿으면 몇 대인지 알 수 없습니다.</p>
+      <p>왼쪽 차와 오른쪽 차를 구별하는 것은 <b>Instance Segmentation</b>으로 풉니다. Mask R-CNN처럼 개체를 먼저 찾고 개체마다 마스크를 따로 예측하므로 차 #1, 차 #2가 나오고, Mask AP로 평가합니다. 도로 같은 배경은 출력하지 않고, 모양까지 필요 없다면 객체 탐지 박스로도 개체는 구분됩니다.</p>
+      <p>자율주행에서는 두 결과가 모두 필요해서, 모든 픽셀에 클래스와 개체 ID를 하나씩 주는 <b>Panoptic Segmentation</b>으로 합치고 PQ로 평가합니다. 영상에서는 <b>객체 추적</b>이 위치 예측과 IoU로 프레임 사이 개체를 짝지어, 가려졌다 다시 나타난 차에도 같은 ID를 유지해야 속도와 궤적을 예측할 수 있습니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 총정리 ===================== -->
+  <section class="q" id="sum">
+    <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th style="width:21%">검토 대상</th><th style="width:10%">판정</th><th style="width:33%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
+      <tbody>
+        <tr><td>문제 해석 · 한 줄 요약</td><td><span class="badge b-add">정확</span></td><td>픽셀의 클래스는 Semantic, 개체 분리는 Instance, 둘을 합친 Panoptic</td><td>없음</td></tr>
+        <tr><td>그림 ② · 비교표 '출력 단위'</td><td><span class="badge b-fix">오류</span></td><td>두 차를 #1·#2로 나누는 예시</td><td>Instance는 도로(stuff)를 출력하지 않는다. 출력은 개체별 (클래스, 마스크, 신뢰도) 목록이고, 픽셀마다 (클래스, ID)가 붙는 것은 Panoptic</td></tr>
+        <tr><td>픽셀 실험 (A~D)</td><td><span class="badge b-core">보완</span></td><td>A·B는 같은 차, C는 다른 차라는 구분</td><td>D의 Instance 결과는 '배경 또는 도로'가 아니라 출력 없음</td></tr>
+        <tr><td>"붙어 있거나 겹쳐도 구분할 수 있다"</td><td><span class="badge b-fix">오류</span></td><td>Instance가 개체를 따로 다룬다는 방향</td><td>맞닿거나 겹친 같은 클래스 물체는 대표적인 실패 사례. NMS로 가려진 차가 사라질 수 있음</td></tr>
+        <tr><td>자율주행 해결 · Panoptic · 추적</td><td><span class="badge b-add">정확</span></td><td>Semantic으로 주행 영역, Instance로 개별 차량, 프레임 사이에는 추적이 필요</td><td>PQ 지표, 추적의 짝짓기 방법(위치 예측·IoU·외형) 추가</td></tr>
+        <tr><td>원래 답안의 '정정 사항' 문단</td><td><span class="badge b-core">보완</span></td><td>픽셀 단위 영역에는 분할이 필요</td><td>개체 구별 자체는 객체 탐지로도 된다. 실제 자율주행 인식은 3D 탐지 + 추적이 중심</td></tr>
+        <tr><td>대표 모델 · 지표 · 면접 답변 · 퀴즈</td><td><span class="badge b-add">정확</span></td><td>FCN·U-Net·DeepLabV3+, Mask R-CNN·YOLO, IoU·mIoU·Mask AP, 추적 퀴즈</td><td>Panoptic 모델과 PQ, 학습 손실 한 문장 추가</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <nav class="pager" aria-label="위클리 이동 (하단)">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%205.%20PyTorch·TensorFlow%20·%20텐서%20·%20기울기%20소실%20·%20배치%20크기.html" rel="prev">‹ 이전 · 05 PyTorch·TensorFlow · 텐서</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+    <a href="#top">↑ 맨 위로</a>
+  </nav>
+
+  <footer>위클리 페이퍼 10 · Semantic·Instance·Panoptic Segmentation과 객체 추적 · <span class="tag-ex">예시</span> 표시가 있는 값은 설명용 가상 데이터입니다</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){let u=0;while(!u)u=r();const v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const minus=s=>String(s).replace(/-/g,"−");
+const f3=v=>minus(v.toFixed(3));
+const pct=v=>(v*100).toFixed(1)+"%";
+const sig=z=>1/(1+Math.exp(-z));
+const sup=n=>String(n).split("").map(c=>"⁰¹²³⁴⁵⁶⁷⁸⁹"["0123456789".indexOf(c)]||(c==="-"?"⁻":c)).join("");
+function sci(v){if(!isFinite(v))return "발산";if(v===0)return "0";const e=Math.floor(Math.log10(Math.abs(v)));const m=v/Math.pow(10,e);if(e>=-2&&e<=3)return minus(+v.toPrecision(3)+"");return minus(m.toFixed(1))+"×10"+sup(e);}
+function clear(s){while(s.firstChild)s.removeChild(s.firstChild);}
+function safe(name,fn){try{fn();}catch(e){console.error(name,e);}}
+const later=fn=>setTimeout(()=>safe("later",fn),20);
+const fmtN=n=>n.toLocaleString("ko-KR");
+
+/* Python 문법 강조: 주석·키워드·내장 함수·문자열·숫자·호출·데코레이터 */
+const SY_KW=new Set("import from as def return for in if elif else with try except finally while class lambda not and or is None True False yield pass break continue raise global assert".split(" "));
+const SY_BI=new Set("print range len enumerate zip min max sum abs dict list tuple set int float str bool isinstance super open map sorted".split(" "));
+const SY_RE=/(#.*)|(@[A-Za-z_][\w.]*)|([rbfu]?"(?:[^"\\n]|\.)*"|[rbfu]?'(?:[^'\\n]|\.)*')|(\b\d+(?:\.\d+)?(?:e[-+]?\d+)?\b)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)/g;
+function hlPre(pre){
+  if(pre.closest(".card"))return;   // 오류 메시지 블록은 그대로
+  const w=document.createTreeWalker(pre,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".c,.cnt,[class^='sy-']")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{const t=n.nodeValue,frag=document.createDocumentFragment();let last=0,m;SY_RE.lastIndex=0;
+    while((m=SY_RE.exec(t))){let cls=null;
+      if(m[1])cls="c";else if(m[2])cls="sy-d";else if(m[3])cls="sy-s";else if(m[4])cls="sy-n";
+      else if(m[5])cls=SY_KW.has(m[5])?"sy-k":SY_BI.has(m[5])?"sy-b":"sy-f";
+      else if(SY_KW.has(m[6]))cls="sy-k";else if(m[6]==="self")cls="sy-b";
+      if(!cls)continue;
+      if(m.index>last)frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+      const sp=document.createElement("span");sp.className=cls;sp.textContent=m[0];frag.appendChild(sp);last=m.index+m[0].length;}
+    if(!last)return;if(last<t.length)frag.appendChild(document.createTextNode(t.slice(last)));n.parentNode.replaceChild(frag,n);});
+}
+
+/* ---------- 공통 장면: 40 × 20 픽셀 ---------- */
+const W=40,H=20,N=W*H;
+const CLS=["하늘","인도","도로","자동차","사람"];
+const CCOL=["#8fc1ec","#cdb48f","#6b7280","#0e7490","#d9480f"];          // 클래스 색 (Semantic)
+const ICOL=["#2f5bd3","#e8a317","#c026d3","#0f9d6b","#e11d48","#7c3aed"]; // 개체 색 (Instance·Panoptic)
+const THING={1:3,2:3,3:4};                                                 // 개체 ID → 클래스
+const INAME={1:"차 #1",2:"차 #2",3:"사람 #1",4:"차 #3"};
+const stuffAt=r=>r<=6?0:(r<=9?1:2);
+function carCells(x0,r0){const o=[];for(let r=r0;r<r0+2;r++)for(let c=x0+2;c<=x0+7;c++)o.push([r,c]);for(let r=r0+2;r<r0+6;r++)for(let c=x0;c<=x0+9;c++)o.push([r,c]);return o;}
+function personCells(){const o=[[3,6]];for(let r=4;r<=9;r++)for(let c=5;c<=7;c++)o.push([r,c]);return o;}
+const CAR1X=11,CAR_R=10;
+function makeScene(gap){
+  const cls=new Int8Array(N),ins=new Int8Array(N);
+  for(let r=0;r<H;r++)for(let c=0;c<W;c++)cls[r*W+c]=stuffAt(r);
+  const put=(cells,id)=>cells.forEach(([r,c])=>{if(c<0||c>=W||r<0||r>=H)return;cls[r*W+c]=THING[id];ins[r*W+c]=id;});
+  put(carCells(CAR1X+10+gap,CAR_R),2);   // 뒤차를 먼저 그리고
+  put(carCells(CAR1X,CAR_R),1);          // 앞차가 덮는다
+  put(personCells(),3);
+  return {cls,ins};
+}
+function drawGrid(svg,colorAt){
+  clear(svg);
+  el("rect",{x:0,y:0,width:W*10,height:H*10,style:"fill:var(--code-bg)"},svg);
+  for(let r=0;r<H;r++){let c=0;while(c<W){const col=colorAt(r*W+c);let e=c+1;while(e<W&&colorAt(r*W+e)===col)e++;if(col)el("rect",{x:c*10,y:r*10,width:(e-c)*10,height:10,style:"fill:"+col},svg);c=e;}}
+  const g=el("g",{style:"stroke:var(--paper);stroke-opacity:.3;stroke-width:.6"},svg);
+  for(let c=1;c<W;c++)el("line",{x1:c*10,y1:0,x2:c*10,y2:H*10},g);
+  for(let r=1;r<H;r++)el("line",{x1:0,y1:r*10,x2:W*10,y2:r*10},g);
+}
+function tag(svg,txt,x,y,fs){el("text",{x,y,"text-anchor":"middle","font-size":fs||12,"font-weight":700,style:"fill:#fff;stroke:#1b2433;stroke-width:3px;paint-order:stroke;stroke-linejoin:round"},svg,txt);}
+function centroid(arr,v){let sx=0,sy=0,n=0;for(let i=0;i<N;i++)if(arr[i]===v){sx+=i%W;sy+=(i/W)|0;n++;}return n?[sx/n*10+5,sy/n*10+9]:null;}
+const panColor=S=>i=>S.ins[i]?ICOL[S.ins[i]-1]:CCOL[S.cls[i]];
+function stuffTags(svg){tag(svg,"하늘",300,40);tag(svg,"인도",300,88);tag(svg,"도로",360,185);}
+function insTags(svg,S,fs){const ids=new Set(S.ins);ids.delete(0);ids.forEach(id=>{const p=centroid(S.ins,id);if(p)tag(svg,INAME[id]||("#"+id),p[0],id===3?p[1]-58:p[1]+3,fs);});}
+// 사람은 키가 커서 중심 대신 머리 위에 이름을 단다
+
+/* ---------- 그림: 같은 장면, 세 가지 출력 ---------- */
+safe("scene",function(){
+  const S=makeScene(2);
+  const raw=$("#scRaw");
+  const RAW=["#bfe0fb","#d8c7a8","#5b6270"];
+  drawGrid(raw,i=>{const id=S.ins[i];if(id===1)return "#c0392b";if(id===2)return "#aab4bf";if(id===3)return "#374151";return RAW[S.cls[i]];});
+  for(let c=1;c<W;c+=4)el("rect",{x:c*10,y:178,width:20,height:4,style:"fill:#f5f5f5"},raw);       // 차선
+  [[CAR1X,"#dbeafe"],[CAR1X+12,"#dbeafe"]].forEach(([x0,col])=>el("rect",{x:(x0+3)*10,y:(CAR_R+1)*10+2,width:40,height:7,style:"fill:"+col},raw)); // 창문
+  [CAR1X+2,CAR1X+7,CAR1X+14,CAR1X+19].forEach(c=>el("circle",{cx:c*10+5,cy:(CAR_R+6)*10,r:6,style:"fill:#111827"},raw)); // 바퀴
+  drawGrid($("#scSem"),i=>CCOL[S.cls[i]]);stuffTags($("#scSem"));
+  [[CAR1X+5,"자동차"],[CAR1X+17,"자동차"]].forEach(([c,t])=>tag($("#scSem"),t,c*10,135));tag($("#scSem"),"사람",65,22);
+  drawGrid($("#scIns"),i=>S.ins[i]?ICOL[S.ins[i]-1]:null);insTags($("#scIns"),S);
+  drawGrid($("#scPan"),panColor(S));stuffTags($("#scPan"));insTags($("#scPan"),S);
+  const sw=(col,t)=>'<span><span class="sw" style="background:'+col+'"></span>'+t+"</span>";
+  $("#scKey").innerHTML=CLS.map((t,k)=>sw(CCOL[k],t+(k>=3?" (Semantic)":""))).join("")+[1,2,3].map(id=>sw(ICOL[id-1],INAME[id])).join("")+'<span><span class="sw" style="background:var(--code-bg);border:1px solid var(--line)"></span>출력 없음</span>';
+});
+
+/* ---------- 실험 1: Semantic + 연결 요소 ---------- */
+safe("cc",function(){
+  function components(mask){
+    const lab=new Int16Array(N);let n=0;
+    for(let i=0;i<N;i++){if(!mask[i]||lab[i])continue;n++;lab[i]=n;const st=[i];
+      while(st.length){const j=st.pop(),r=(j/W)|0,c=j%W;
+        [[r-1,c],[r+1,c],[r,c-1],[r,c+1]].forEach(([rr,cc])=>{if(rr<0||rr>=H||cc<0||cc>=W)return;const k=rr*W+cc;if(mask[k]&&!lab[k]){lab[k]=n;st.push(k);}});}}
+    return {lab,n};
+  }
+  function render(){
+    const gap=+$("#ccGap").value,dil=+$("#ccDil").value;
+    $("#ccGapOut").textContent=minus(gap)+"칸"+(gap<0?" (뒤차가 가려짐)":"");
+    const S=makeScene(gap);
+    let car=new Uint8Array(N);for(let i=0;i<N;i++)car[i]=S.cls[i]===3?1:0;
+    if(dil){const d=car.slice();for(let r=0;r<H;r++)for(let c=0;c<W;c++){const i=r*W+c;if(car[i])continue;
+      if((c>0&&car[i-1])||(c<W-1&&car[i+1])||(r>0&&car[i-W])||(r<H-1&&car[i+W]))d[i]=1;}car=d;}
+    const {lab,n}=components(car);
+    drawGrid($("#ccSem"),i=>car[i]?CCOL[3]:CCOL[S.cls[i]]);
+    drawGrid($("#ccCC"),i=>lab[i]?ICOL[[0,1,4,5][(lab[i]-1)%4]]:null);
+    for(let k=1;k<=n;k++){const p=centroid(lab,k);if(p)tag($("#ccCC"),"덩어리 "+k,p[0],p[1]+5,22);}
+    drawGrid($("#ccIns"),i=>(S.ins[i]===1||S.ins[i]===2)?ICOL[S.ins[i]-1]:null);
+    [1,2].forEach(id=>{const p=centroid(S.ins,id);if(p)tag($("#ccIns"),INAME[id],p[0],p[1]+5,22);});
+    let px=0;car.forEach(v=>px+=v);
+    let vis2=0;S.ins.forEach(v=>{if(v===2)vis2++;});
+    $("#ccPx").textContent=px+"개";$("#ccN").textContent=n+"대";$("#ccTrue").textContent="2대";
+    const ok=n===2;$("#ccV").textContent=ok?"맞게 셈":"1대로 잘못 셈";
+    $("#ccVBox").className="stat "+(ok?"ok":"warn");
+    let msg;
+    if(ok)msg="연결 요소 2개 = 실제 차 2대입니다. 두 차 사이에 '차'가 아닌 픽셀 줄이 하나라도 남아 있으면 연결 요소로도 셀 수 있습니다.\n하지만 이것은 운이 좋은 경우입니다. 간격을 줄이거나 경계 번짐을 켜 보세요.";
+    else if(dil&&gap>0)msg="실제로는 "+gap+"칸 떨어져 있지만, 예측 경계가 1픽셀씩 번지자 두 차가 이어져 1대로 셌습니다. 1픽셀 번짐이면 간격이 2칸 이하일 때 이렇게 붙습니다.\nSemantic 결과에는 '여기서 다른 차가 시작된다'는 정보가 없어서, 후처리로는 붙은 덩어리를 다시 나눌 근거가 없습니다.";
+    else msg="두 차가 맞닿아"+(gap<0?" 겹쳐 보이면서":"")+" '차' 픽셀이 한 덩어리로 이어졌고, 연결 요소는 1대로 셉니다. Semantic 결과에는 개체 경계 정보가 없기 때문입니다.\nInstance 정답은 여전히 차 #1과 차 #2를 따로 갖고 있습니다"+(gap<0?"(차 #2는 보이는 "+vis2+"픽셀만)":"")+". 이것이 개체를 직접 예측해야 하는 이유입니다.";
+    $("#ccMsg").textContent=msg;
+  }
+  ["#ccGap","#ccDil"].forEach(s=>$(s).addEventListener("input",render));
+  render();
+});
+
+/* ---------- 실험 2: 픽셀 정확도 · mIoU · PQ ---------- */
+
+safe("metric",function(){
+  const G=makeScene(2);
+  function predOf(kind){
+    const cls=G.cls.slice(),ins=G.ins.slice();
+    if(kind==="merge"){for(let i=0;i<N;i++)if(ins[i]===2)ins[i]=1;}
+    else if(kind==="split"){for(let i=0;i<N;i++)if(ins[i]===1&&i%W>=CAR1X+6)ins[i]=4;}
+    else if(kind==="dilate"){const c0=G.cls,i0=G.ins;
+      for(let r=0;r<H;r++)for(let c=0;c<W;c++){const i=r*W+c;if(i0[i])continue;
+        const nb=[c>0?i-1:-1,c<W-1?i+1:-1,r>0?i-W:-1,r<H-1?i+W:-1];
+        for(const j of nb){if(j>=0&&i0[j]){ins[i]=i0[j];cls[i]=c0[j];break;}}}}
+    else if(kind==="miss"){for(let i=0;i<N;i++)if(ins[i]===3){ins[i]=0;cls[i]=stuffAt((i/W)|0);}}
+    return {cls,ins};
+  }
+  function segments(S){const m=new Map();
+    for(let i=0;i<N;i++){const key=S.ins[i]?"t"+S.ins[i]:"s"+S.cls[i];let s=m.get(key);if(!s){s={key,cls:S.cls[i],n:0};m.set(key,s);}s.n++;}
+    return [...m.values()];}
+  function evaluate(P){
+    const gs=segments(G),ps=segments(P);
+    const gk=new Map(gs.map((s,k)=>[s.key,k])),pk=new Map(ps.map((s,k)=>[s.key,k]));
+    const inter=new Map();
+    for(let i=0;i<N;i++){const a=gk.get(G.ins[i]?"t"+G.ins[i]:"s"+G.cls[i]),b=pk.get(P.ins[i]?"t"+P.ins[i]:"s"+P.cls[i]);const key=a*100+b;inter.set(key,(inter.get(key)||0)+1);}
+    let correct=0;for(let i=0;i<N;i++)if(G.cls[i]===P.cls[i])correct++;
+    const rows=[];
+    for(let c=0;c<5;c++){
+      let I=0,U=0;for(let i=0;i<N;i++){const a=G.cls[i]===c,b=P.cls[i]===c;if(a&&b)I++;if(a||b)U++;}
+      const gc=gs.map((s,k)=>[s,k]).filter(([s])=>s.cls===c),pc=ps.map((s,k)=>[s,k]).filter(([s])=>s.cls===c);
+      let tp=0,sum=0;const gm=new Set(),pm=new Set(),pairs=[];
+      gc.forEach(([g,a])=>pc.forEach(([p,b])=>{const it=inter.get(a*100+b)||0;if(!it)return;const iou=it/(g.n+p.n-it);pairs.push({g:g.key,p:p.key,iou,gn:g.n,pn:p.n});
+        if(iou>0.5){tp++;sum+=iou;gm.add(a);pm.add(b);}}));
+      const fn=gc.length-gm.size,fp=pc.length-pm.size;
+      rows.push({c,iou:U?I/U:null,tp,fp,fn,pq:(tp+fp+fn)?sum/(tp+0.5*fp+0.5*fn):null,thing:c>=3,pairs,sq:tp?sum/tp:0});
+    }
+    const mean=a=>a.reduce((x,y)=>x+y,0)/a.length;
+    const ious=rows.filter(r=>r.iou!=null).map(r=>r.iou),pqs=rows.filter(r=>r.pq!=null);
+    return {rows,acc:correct/N,wrong:N-correct,miou:mean(ious),pq:mean(pqs.map(r=>r.pq)),
+      th:mean(pqs.filter(r=>r.thing).map(r=>r.pq)),st:mean(pqs.filter(r=>!r.thing).map(r=>r.pq))};
+  }
+  const f=v=>v==null?"–":v.toFixed(3);
+  const p1=v=>(v*100).toFixed(1)+"%";
+  // 보충 카드의 "사람을 놓쳤을 때 픽셀 정확도 하락폭"을 실제 계산값으로 채운다
+  const em=evaluate(predOf("miss"));$("#missDrop").textContent=((1-em.acc)*100).toFixed(1);
+  function render(){
+    const kind=$("#mtK").value,P=predOf(kind),R=evaluate(P);
+    drawGrid($("#mtG"),panColor(G));insTags($("#mtG"),G,16);
+    const svg=$("#mtP");drawGrid(svg,panColor(P));insTags(svg,P,16);
+    for(let i=0;i<N;i++)if(G.cls[i]!==P.cls[i]){const x=(i%W)*10,y=((i/W)|0)*10;el("path",{d:"M"+(x+2)+" "+(y+2)+"L"+(x+8)+" "+(y+8)+"M"+(x+8)+" "+(y+2)+"L"+(x+2)+" "+(y+8),style:"stroke:#fff;stroke-width:1.6"},svg);}
+    $("#mtAcc").textContent=p1(R.acc);$("#mtMiou").textContent=f(R.miou);$("#mtPQ").textContent=f(R.pq);
+    $("#mtTh").textContent=f(R.th);$("#mtSt").textContent=f(R.st);
+    $("#mtTb").innerHTML=R.rows.map(r=>"<tr><td>"+CLS[r.c]+"</td><td>"+(r.thing?"things":"stuff")+"</td><td>"+f(r.iou)+"</td><td>"+r.tp+"</td><td>"+r.fp+"</td><td>"+r.fn+"</td><td>"+(r.pq!=null&&r.pq<0.999?"<b>"+f(r.pq)+"</b>":f(r.pq))+"</td></tr>").join("");
+    const car=R.rows[3],per=R.rows[4];let msg;
+    if(kind==="perfect")msg="세 지표가 모두 1입니다. 오류를 하나씩 골라 어떤 지표가 반응하는지 보세요.";
+    else if(kind==="merge"){const pr=car.pairs[0];
+      msg="두 차의 클래스는 모두 맞아서 픽셀 정확도와 mIoU는 그대로(1)입니다.\n그러나 합친 예측("+pr.pn+"픽셀)과 정답 차 하나("+pr.gn+"픽셀)의 IoU가 정확히 0.5라서, '0.5 초과' 조건을 넘지 못해 짝이 하나도 생기지 않습니다(FP "+car.fp+", FN "+car.fn+"). 차 클래스 PQ가 0이 되어 전체 PQ가 떨어집니다("+f(R.pq)+"). 개체 구분 실패는 PQ에서만 보입니다.";}
+    else if(kind==="split"){const big=car.pairs.filter(p=>p.g==="t1").sort((a,b)=>b.iou-a.iou);
+      msg="차 #1을 두 조각("+big.map(p=>p.pn+"픽셀").join(", ")+")으로 쪼갰습니다. 큰 조각은 정답과 짝(TP)이 되고(IoU "+f(big[0].iou)+"), 작은 조각은 남는 예측(FP)이 됩니다.\n클래스는 모두 맞으므로 픽셀 정확도와 mIoU는 1이고, PQ만 내려갑니다("+f(R.pq)+"). 합침과 반대 방향의 개체 오류입니다.";}
+    else if(kind==="dilate")msg="물체 경계를 1픽셀씩 넓혔습니다. 개체는 모두 짝을 찾았지만(FP·FN 0) 짝의 IoU가 낮아져 PQ가 떨어집니다.\n같은 1픽셀 오차라도 작은 물체가 훨씬 크게 손해를 봅니다. 사람 IoU는 "+f(per.iou)+", 차 IoU는 "+f(car.iou)+"입니다. 사람 IoU는 짝 기준 0.5를 겨우 넘었습니다.";
+    else msg="사람 "+R.wrong+"픽셀을 놓쳐 배경으로 칠했습니다. 전체 "+N+"픽셀 가운데 "+R.wrong+"개라 픽셀 정확도는 거의 그대로("+p1(R.acc)+")입니다.\n하지만 클래스를 같은 무게로 평균하는 mIoU는 사람 IoU가 0이 되어 크게 떨어지고("+f(R.miou)+"), PQ도 사람 클래스가 FN 1개로 0점이 되어 전체 PQ가 내려갑니다("+f(R.pq)+"). 자율주행에서 가장 위험한 오류가 픽셀 정확도에서는 거의 보이지 않습니다.";
+    $("#mtMsg").textContent=msg;
+  }
+  $("#mtK").addEventListener("input",render);
+  render();
+});
+
+/* ---------- 실험 3: IoU 매칭 추적 ---------- */
+safe("track",function(){
+  const T=20;
+  function gt(t){
+    const A={x:1+1.5*t,y:6,w:10,h:10},B={x:14+0.5*t,y:8,w:7,h:5};
+    const ov=Math.max(0,Math.min(A.x+A.w,B.x+B.w)-Math.max(A.x,B.x));
+    return {A,B,vis:1-ov/B.w,bDet:1-ov/B.w>=0.5};
+  }
+  function iou(a,b){const ix=Math.max(0,Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x)),iy=Math.max(0,Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y));const I=ix*iy;return I/(a.w*a.h+b.w*b.h-I);}
+  function run(thr,maxAge,pred){
+    let tracks=[],next=1;const hist=[];
+    for(let t=0;t<=T;t++){
+      const g=gt(t),dets=[{obj:"A",box:g.A}];if(g.bDet)dets.push({obj:"B",box:g.B});
+      tracks.forEach(tr=>{tr.pbox=pred?Object.assign({},tr.box,{x:tr.box.x+tr.vx*(tr.miss+1)}):tr.box;});
+      const pairs=[];tracks.forEach((tr,ti)=>dets.forEach((d,di)=>{const v=iou(tr.pbox,d.box);if(v>=thr)pairs.push([v,ti,di]);}));
+      pairs.sort((a,b)=>b[0]-a[0]);
+      const uT=new Set(),uD=new Set(),assign={},cand={};
+      tracks.forEach(tr=>dets.forEach(d=>{if(tr.obj===d.obj)cand[d.obj]={id:tr.id,iou:iou(tr.pbox,d.box)};}));   // 같은 차의 기존 트랙과의 IoU (설명용)
+      pairs.forEach(([v,ti,di])=>{if(uT.has(ti)||uD.has(di))return;uT.add(ti);uD.add(di);const tr=tracks[ti],d=dets[di];
+        tr.vx=(d.box.x-tr.box.x)/(tr.miss+1);tr.box=d.box;tr.miss=0;assign[d.obj]={id:tr.id,iou:v};});
+      tracks.forEach((tr,ti)=>{if(!uT.has(ti))tr.miss++;});
+      const dropped=tracks.filter(tr=>tr.miss>maxAge).map(tr=>tr.id);
+      tracks=tracks.filter(tr=>tr.miss<=maxAge);
+      dets.forEach((d,di)=>{if(uD.has(di))return;const tr={id:next++,obj:d.obj,box:d.box,vx:0,miss:0};tracks.push(tr);assign[d.obj]={id:tr.id,iou:null,fresh:true};});
+      hist.push({t,g,assign,cand,dropped,tracks:tracks.map(tr=>({id:tr.id,miss:tr.miss,box:tr.box,ghost:pred?Object.assign({},tr.box,{x:tr.box.x+tr.vx*tr.miss}):tr.box}))});
+    }
+    return {hist,ids:next-1};
+  }
+  // tr.obj는 정답 대조와 설명 문구에만 쓰고, 매칭에는 쓰지 않는다
+  const colOf=id=>ICOL[(id-1)%ICOL.length];
+  function render(){
+    const t=+$("#tkT").value,thr=+$("#tkI").value,maxAge=+$("#tkA").value,pred=$("#tkP").value==="1";
+    $("#tkTOut").textContent="t = "+t;
+    const R=run(thr,maxAge,pred),h=R.hist[t];
+    // 현재 프레임
+    const v=$("#tkView");clear(v);
+    el("rect",{x:0,y:0,width:480,height:60,style:"fill:var(--accent-soft)"},v);
+    el("rect",{x:0,y:60,width:480,height:140,style:"fill:var(--code-bg)"},v);
+    for(let x=10;x<480;x+=40)el("rect",{x,y:136,width:20,height:3,style:"fill:var(--line)"},v);
+    const bx=b=>({x:b.x*10,y:b.y*10,width:b.w*10,height:b.h*10});
+    el("rect",Object.assign(bx(h.g.B),{rx:4,style:"fill:#aab4bf"}),v);
+    el("rect",Object.assign(bx(h.g.A),{rx:4,style:"fill:#5b6678;fill-opacity:.92"}),v);
+    el("text",{x:h.g.A.x*10+50,y:h.g.A.y*10+62,"text-anchor":"middle","font-size":13,style:"fill:#fff"},v,"트럭 A");
+    if(!h.g.bDet)el("rect",Object.assign(bx(h.g.B),{rx:4,style:"fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4"}),v);
+    // 탐지 없이 남은 트랙 (마지막 위치 또는 예측 위치)
+    h.tracks.filter(tr=>tr.miss>0).forEach(tr=>{const b=bx(tr.ghost);el("rect",Object.assign(b,{style:"fill:none;stroke:"+colOf(tr.id)+";stroke-width:2;stroke-dasharray:6 4"}),v);
+      tag(v,"ID "+tr.id+(pred?" 예측 위치":" 마지막 위치"),b.x+b.width/2,b.y-6);});
+    ["A","B"].forEach(o=>{const a=h.assign[o];if(!a)return;const b=bx(h.g[o]);
+      el("rect",Object.assign(b,{rx:4,style:"fill:none;stroke:"+colOf(a.id)+";stroke-width:3"}),v);
+      tag(v,"ID "+a.id+(a.fresh&&t>0?" (새 ID)":""),b.x+b.width/2,o==="A"?b.y+b.height+16:b.y-6);});
+    if(!h.g.bDet)tag(v,"B 가려짐 · 탐지 안 됨",h.g.B.x*10+35,h.g.B.y*10+30);
+    // 타임라인
+    const L=$("#tkLine");clear(L);
+    for(let k=0;k<=T;k+=5)el("text",{x:44+k*20,y:12,"text-anchor":"middle","font-size":11,class:"mut"},L,"t"+k);
+    ["A","B"].forEach((o,ri)=>{const y=20+ri*34;el("text",{x:14,y:y+19,"font-size":13,"font-weight":700},L,o);
+      R.hist.forEach((hh,k)=>{const a=hh.assign[o],x=35+k*20;
+        if(a){el("rect",{x,y,width:18,height:26,rx:3,style:"fill:"+colOf(a.id)},L);el("text",{x:x+9,y:y+18,"text-anchor":"middle","font-size":12,"font-weight":700,style:"fill:#fff"},L,String(a.id));}
+        else el("rect",{x:x+.75,y:y+.75,width:16.5,height:24.5,rx:3,style:"fill:none;stroke:var(--muted);stroke-dasharray:3 3"},L);});});
+    el("rect",{x:33+t*20,y:16,width:22,height:72,rx:4,style:"fill:none;stroke:var(--ink);stroke-width:1.5"},L);
+    // 통계
+    const hidden=R.hist.filter(hh=>!hh.g.bDet).map(hh=>hh.t);
+    $("#tkHide").innerHTML='<span class="nw">'+hidden.length+'프레임</span><span class="sub">t = '+hidden[0]+' ~ '+hidden[hidden.length-1]+"</span>";
+    $("#tkIds").innerHTML='<span class="nw">'+R.ids+'개</span><span class="sub">실제 차는 2대</span>';
+    let sw=0;const bIds=[];
+    ["A","B"].forEach(o=>{let prev=null;R.hist.forEach(hh=>{const a=hh.assign[o];if(!a)return;if(prev!=null&&a.id!==prev)sw++;prev=a.id;if(o==="B"&&(bIds.length===0||bIds[bIds.length-1]!==a.id))bIds.push(a.id);});});
+    $("#tkSw").textContent=sw+"번";$("#tkSwBox").className="stat "+(sw?"warn":"ok");
+    $("#tkB").textContent=bIds.join(" → ");
+    // 설명
+    const back=hidden[hidden.length-1]+1,hb=R.hist[back],aB=hb.assign.B,lastId=bIds[0];
+    let msg;
+    if(aB.id===lastId)msg="B가 "+hidden.length+"프레임 동안 보이지 않았지만, 트랙을 지우지 않고 기다렸고("+maxAge+"프레임까지) "+(pred?"마지막 속도로 박스를 옮겨 둔 덕분에":"마지막 위치와의 겹침이 기준을 넘어서")+" 다시 나타난 B와 짝지었습니다(t = "+back+", IoU "+aB.iou.toFixed(2)+").\nID가 하나로 이어집니다."+(pred?"":" 다만 이렇게 낮은 겹침까지 받아 주는 기준은 다른 차와 잘못 짝지을 위험도 큽니다. 위치 예측을 켜면 기준을 낮추지 않고도 IoU가 1에 가까워집니다.");
+    else{const alive=R.hist[back-1].tracks.some(tr=>tr.id===lastId);
+      if(!alive){const when=R.hist.find(hh=>hh.dropped.includes(lastId));
+        msg="트랙을 "+maxAge+"프레임까지만 기다려서, B가 가려져 있는 동안 B의 트랙이 지워졌습니다(t = "+when.t+"). t = "+back+"에 다시 나타난 B는 새 ID를 받아(ID "+aB.id+") 같은 차가 두 대처럼 기록됩니다.\n트랙 유지를 가려진 기간보다 길게 늘려 보세요.";}
+      else{const c=hb.cand.B;
+        msg="트랙은 남아 있었지만 "+(pred?"예측 위치가 실제 위치와 어긋나":"위치 예측 없이 t = "+(hidden[0]-1)+"의 마지막 위치에 멈춰 있어서")+", 그사이 움직인 B와의 IoU가 기준보다 작았습니다(IoU "+c.iou.toFixed(2)+" < "+thr+"). 그래서 새 ID가 붙었습니다(ID "+aB.id+").\n"+(pred?"":"위치 예측을 켜면 박스가 B를 따라가 IoU가 1에 가까워집니다. IoU 기준만 낮추면 엉뚱한 개체와 짝지어질 위험이 커집니다.");}}
+    $("#tkMsg").textContent=msg;
+  }
+  ["#tkT","#tkI","#tkA","#tkP"].forEach(s=>$(s).addEventListener("input",render));
+  render();
+});
+
+/* ---------- 코드 블록 문법 강조 ---------- */
+safe("syntax",function(){document.querySelectorAll("pre:not(.rules)").forEach(hlPre);});
+
+/* ---------- 퀴즈 ---------- */
+safe("quiz",function(){
+  const Q={
+    q1:[
+      {q:"Semantic Segmentation 결과에서 '차' 픽셀을 연결 요소로 나눠 차 대수를 세려고 한다. 이 방법이 틀리는 경우는?",o:["화면에 차가 한 대뿐일 때","두 차가 맞닿거나 겹쳐 '차' 픽셀이 한 덩어리로 이어질 때","도로 픽셀이 많을 때","이미지 해상도가 높을 때"],a:1,e:"Semantic 결과에는 개체 정보가 없어서, 같은 클래스 픽셀이 이어지면 한 덩어리로 셉니다. 예측 경계가 1픽셀만 번져도 2칸 떨어진 두 차가 붙습니다(실험 1). 그래서 개체를 직접 예측하는 Instance Segmentation이 필요합니다."},
+      {q:"정답에는 크기가 같은 차 2대가 있다. 모델이 두 차 픽셀의 클래스는 모두 맞혔지만, 두 차를 한 개체로 합쳐 예측했다. 점수 변화로 맞는 것은?",o:["픽셀 정확도와 mIoU가 크게 떨어진다","픽셀 정확도와 mIoU는 그대로이고, PQ의 차 클래스 점수가 0이 된다","PQ는 그대로이고 mIoU만 떨어진다","세 지표 모두 그대로다"],a:1,e:"픽셀 정확도와 mIoU는 클래스만 보므로 변하지 않습니다. PQ는 IoU가 0.5를 넘는 세그먼트끼리만 짝짓는데, 크기가 같은 두 차를 합친 예측은 각 정답과의 IoU가 정확히 0.5라 짝이 하나도 생기지 않습니다. 그래서 차 클래스 PQ가 0입니다(실험 2)."},
+      {q:"Panoptic Segmentation 결과의 형식으로 맞는 것은?",o:["개체마다 마스크가 있고, 마스크끼리 겹칠 수 있다","모든 픽셀에 (클래스, 개체 ID)가 정확히 하나씩 붙고, stuff 클래스는 개체 ID 없이 클래스만 갖는다","차·사람만 출력하고 도로는 출력하지 않는다","이미지 한 장에 클래스 하나를 붙인다"],a:1,e:"①과 ③은 Instance Segmentation, ④는 이미지 분류입니다. Panoptic은 Semantic처럼 모든 픽셀을 겹침 없이 덮으면서, things에는 개체 ID까지 붙입니다."}
+    ]
+  };
+  document.querySelectorAll(".quiz").forEach(host=>{
+    const list=Q[host.dataset.quiz]||[];
+    list.forEach((it,qi)=>{
+      const box=document.createElement("div");box.className="qz";
+      const t=document.createElement("div");t.className="qt";t.innerHTML="<span>Q"+(qi+1)+".</span>";t.appendChild(document.createTextNode(it.q));box.appendChild(t);
+      const opts=document.createElement("div");opts.className="opts";box.appendChild(opts);
+      const exp=document.createElement("div");exp.className="exp";exp.hidden=true;exp.setAttribute("aria-live","polite");
+      const btns=it.o.map((o,oi)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=String.fromCharCode(9312+oi)+" "+o;
+        b.addEventListener("click",()=>{btns.forEach((x,xi)=>{x.classList.remove("right","wrong");if(xi===it.a)x.classList.add("right");});if(oi!==it.a)b.classList.add("wrong");
+          exp.hidden=false;exp.innerHTML=(oi===it.a?'<b class="ok">정답입니다.</b> ':'<b class="no">오답입니다.</b> 정답은 '+String.fromCharCode(9312+it.a)+"번. ");exp.appendChild(document.createTextNode(it.e));});
+        opts.appendChild(b);return b;});
+      box.appendChild(exp);host.appendChild(box);
+    });
+  });
+});
+})();
+</script>
+<script>
+/* 나란히 놓인 그림 칸: 칸끼리 제목·그림·설명 줄을 같은 높이로 맞춘다 */
+(function(){try{document.querySelectorAll(".panels,.tri").forEach(function(g){
+  var ps=[].filter.call(g.children,function(c){return c.classList.contains("panel");});if(ps.length<2)return;
+  var n=Math.max.apply(null,ps.map(function(p){return p.children.length;}));
+  ps.forEach(function(p){p.style.display="grid";p.style.gridRow="span "+n;p.style.gridTemplateRows="subgrid";p.style.rowGap="6px";p.style.alignContent="start";});
+});}catch(e){console.error("panel align",e);}})();
+</script>
+</body></html>
