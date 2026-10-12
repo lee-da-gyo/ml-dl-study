@@ -356,6 +356,12 @@ svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
 .card pre{font-size:12px;padding:10px 12px;white-space:pre-wrap}
 .speech{display:flex;flex-direction:column;gap:12px;line-height:1.85}
 .insight{line-height:1.85;white-space:pre-line}
+/* 위클리 05 코드 색 (Python 문법 강조) */
+:root{--sy-k:#8a3ffc;--sy-s:#0f7a55;--sy-n:#b4460c;--sy-f:#2448c9;--sy-d:#a15c00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}}
+:root[data-theme="dark"]{--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}
+pre .sy-k{color:var(--sy-k);font-weight:600} pre .sy-s{color:var(--sy-s)} pre .sy-n{color:var(--sy-n)}
+pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .sy-b{color:var(--sy-n);font-style:italic}
 </style>
 </head><body>
 
@@ -1219,6 +1225,25 @@ function safe(name,fn){try{fn();}catch(e){console.error(name,e);}}
 const later=fn=>setTimeout(()=>safe("later",fn),20);
 const fmtN=n=>n.toLocaleString("ko-KR");
 
+/* Python 문법 강조: 주석·키워드·내장 함수·문자열·숫자·호출·데코레이터 */
+const SY_KW=new Set("import from as def return for in if elif else with try except finally while class lambda not and or is None True False yield pass break continue raise global assert".split(" "));
+const SY_BI=new Set("print range len enumerate zip min max sum abs dict list tuple set int float str bool isinstance super open map sorted".split(" "));
+const SY_RE=/(#.*)|(@[A-Za-z_][\w.]*)|([rbfu]?"(?:[^"\\n]|\.)*"|[rbfu]?'(?:[^'\\n]|\.)*')|(\b\d+(?:\.\d+)?(?:e[-+]?\d+)?\b)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)/g;
+function hlPre(pre){
+  if(pre.closest(".card"))return;   // 오류 메시지 블록은 그대로
+  const w=document.createTreeWalker(pre,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".c,.cnt,[class^='sy-']")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{const t=n.nodeValue,frag=document.createDocumentFragment();let last=0,m;SY_RE.lastIndex=0;
+    while((m=SY_RE.exec(t))){let cls=null;
+      if(m[1])cls="c";else if(m[2])cls="sy-d";else if(m[3])cls="sy-s";else if(m[4])cls="sy-n";
+      else if(m[5])cls=SY_KW.has(m[5])?"sy-k":SY_BI.has(m[5])?"sy-b":"sy-f";
+      else if(SY_KW.has(m[6]))cls="sy-k";else if(m[6]==="self")cls="sy-b";
+      if(!cls)continue;
+      if(m.index>last)frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+      const sp=document.createElement("span");sp.className=cls;sp.textContent=m[0];frag.appendChild(sp);last=m.index+m[0].length;}
+    if(!last)return;if(last<t.length)frag.appendChild(document.createTextNode(t.slice(last)));n.parentNode.replaceChild(frag,n);});
+}
+
 /* ---------- 실험 1: define-by-run 그래프 ---------- */
 safe("graph",function(){
   const LINES=["def f(x):","    h = x","    while h.abs() < 4:     # 반복 횟수가 x에 따라 다르다","        h = h * 2","    if h > 0:              # 분기도 x에 따라 다르다","        return h ** 2","    return -3 * h"];
@@ -1238,6 +1263,7 @@ safe("graph",function(){
     const svg=$("#dgSvg");clear(svg);
     if(x===0){
       LINES.forEach((ln,i)=>{const s=document.createElement("span");s.className=i===2||i===3?"rec":"";s.innerHTML='<span class="cnt">'+(i<2?"×1":(i<4?"×∞":"×0"))+"</span>";s.appendChild(document.createTextNode(ln));code.appendChild(s);code.appendChild(document.createTextNode("\n"));});
+      hlPre(code);
       ["#dgOps","#dgAuto","#dgNum"].forEach(s=>$(s).textContent="–");
       el("text",{x:330,y:90,"text-anchor":"middle","font-size":13,class:"taf"},svg,"h = 0 × 2 = 0 … while 조건이 영원히 참 → 함수가 끝나지 않음");
       $("#dgMsg").textContent="x = 0이면 h를 아무리 2배 해도 0이라 while이 끝나지 않습니다. 즉시 실행 방식은 Python 코드를 그대로 돌리므로 Python에서 생길 일이 똑같이 생깁니다. 이런 무한 반복도 일반 Python 디버거로 바로 멈춰서 볼 수 있다는 것이 define-by-run의 장점입니다.";
@@ -1247,6 +1273,7 @@ safe("graph",function(){
     const cnt=[1,1,R.k+1,R.k,1,R.br,1-R.br];
     LINES.forEach((ln,i)=>{const s=document.createElement("span");const recd=(i===3&&R.k>0)||(i===5&&R.br)||(i===6&&!R.br);s.className=cnt[i]?(recd?"rec":""):"off";
       s.innerHTML='<span class="cnt">×'+cnt[i]+"</span>";s.appendChild(document.createTextNode(ln));code.appendChild(s);code.appendChild(document.createTextNode("\n"));});
+    hlPre(code);
     // 그래프
     const W=660,gap=14,nw=Math.min(78,(W-20-gap*(n))/(n+1));
     const total=(n+1)*nw+n*gap,x0=(W-total)/2,y=46,h=44;
@@ -1574,6 +1601,9 @@ safe("batch",function(){
   $("#btE").addEventListener("change",go);$("#btR").addEventListener("change",()=>safe("bt",render));$("#btB").addEventListener("change",()=>safe("bt",render));
   go();
 });
+
+/* ---------- 코드 블록 문법 강조 ---------- */
+safe("syntax",function(){document.querySelectorAll("pre:not(.rules)").forEach(hlPre);});
 
 /* ---------- 퀴즈 ---------- */
 safe("quiz",function(){
