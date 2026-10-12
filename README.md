@@ -1,6 +1,6 @@
 # ML·DL 스터디 문제
 
-머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 8편 공개)로 정리하는 곳입니다.
+머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 9편 공개)로 정리하는 곳입니다.
 글로만 설명하지 않고, 값을 직접 조작하며 개념을 익힐 수 있는 **인터랙티브 실험**과 **핵심 퀴즈**를 함께 연결했습니다.
 
 👉 **웹페이지로 보기**: [https://lee-da-gyo.github.io/ml-dl-study/](https://lee-da-gyo.github.io/ml-dl-study/)
@@ -17,6 +17,7 @@
 | 04 | 머신러닝과 딥러닝 · 하이퍼파라미터 · 과적합 진단 · 설명 가능한 모델 | 머신러닝과 딥러닝의 포함관계 / 딥러닝 하이퍼파라미터 / 훈련 99%·테스트 70% 진단 / 대출 거절 사유와 모델 선택 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%204.%20%EB%A8%B8%EC%8B%A0%EB%9F%AC%EB%8B%9D%EA%B3%BC%20%EB%94%A5%EB%9F%AC%EB%8B%9D%20%C2%B7%20%ED%95%98%EC%9D%B4%ED%8D%BC%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%20%C2%B7%20%EA%B3%BC%EC%A0%81%ED%95%A9%20%EC%A7%84%EB%8B%A8%20%C2%B7%20%EC%84%A4%EB%AA%85%20%EA%B0%80%EB%8A%A5%ED%95%9C%20%EB%AA%A8%EB%8D%B8.html) |
 | 05 | PyTorch·TensorFlow · 텐서 · 기울기 소실 · 배치 크기 | PyTorch와 TensorFlow 비교 / 텐서와 NumPy 배열 / 20층 시그모이드의 기울기 소실 / GPU 메모리와 배치 크기 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%205.%20PyTorch%C2%B7TensorFlow%20%C2%B7%20%ED%85%90%EC%84%9C%20%C2%B7%20%EA%B8%B0%EC%9A%B8%EA%B8%B0%20%EC%86%8C%EC%8B%A4%20%C2%B7%20%EB%B0%B0%EC%B9%98%20%ED%81%AC%EA%B8%B0.html) |
 | 06 | CNN 레이어 · 오토인코더 · 완전연결층과 위치 변화 | CNN을 구성하는 레이어의 역할 / 오토인코더와 인코더·디코더 / 완전연결층의 파라미터 폭증과 위치 민감성 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%206.%20CNN%20%EB%A0%88%EC%9D%B4%EC%96%B4%20%C2%B7%20%EC%98%A4%ED%86%A0%EC%9D%B8%EC%BD%94%EB%8D%94%20%C2%B7%20%EC%99%84%EC%A0%84%EC%97%B0%EA%B2%B0%EC%B8%B5%EA%B3%BC%20%EC%9C%84%EC%B9%98%20%EB%B3%80%ED%99%94.html) |
+| 07 | 리사이징·정규화 · 데이터 증강 · 전이 학습 · RNN · 오토인코더 | 이미지 리사이징과 정규화의 이유 / 데이터 증강과 이미지 증강 기법 / 전이 학습의 활용 / 긴 문장에서 RNN이 앞 단어를 잊는 이유 / 입력을 복사하는 오토인코더 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%207.%20%EB%A6%AC%EC%82%AC%EC%9D%B4%EC%A7%95%C2%B7%EC%A0%95%EA%B7%9C%ED%99%94%20%C2%B7%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%A6%9D%EA%B0%95%20%C2%B7%20%EC%A0%84%EC%9D%B4%20%ED%95%99%EC%8A%B5%20%C2%B7%20RNN%20%C2%B7%20%EC%98%A4%ED%86%A0%EC%9D%B8%EC%BD%94%EB%8D%94.html) |
 | 08 | YOLO · mAP · 새 이미지 성능 저하 · 소규모 의료 이미지 | YOLO의 특징과 장점 / mAP의 개념과 활용 / 학습 정확도는 높은데 새 이미지에서 성능 저하 / 의료 이미지 300장으로 처음부터 학습 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%208.%20YOLO%20%C2%B7%20mAP%20%C2%B7%20%EC%83%88%20%EC%9D%B4%EB%AF%B8%EC%A7%80%20%EC%84%B1%EB%8A%A5%20%EC%A0%80%ED%95%98%20%C2%B7%20%EC%86%8C%EA%B7%9C%EB%AA%A8%20%EC%9D%98%EB%A3%8C%20%EC%9D%B4%EB%AF%B8%EC%A7%80.html) |
 | 10 | Semantic·Instance Segmentation · Panoptic · 객체 추적 | 자율주행 영상에서 픽셀의 클래스 구분과 차량 개체 구별 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%2010.%20Semantic%C2%B7Instance%20Segmentation%20%C2%B7%20Panoptic%20%C2%B7%20%EA%B0%9D%EC%B2%B4%20%EC%B6%94%EC%A0%81.html) |
 
@@ -79,6 +80,17 @@
 | 층별 출력 크기·파라미터·수용 영역 | 작은 CNN·VGG-16의 층별 모양과 파라미터, Flatten + FC 헤드와 GAP + Linear 헤드의 파라미터 비중, 3×3 적층에 따른 수용 영역 |
 | 오토인코더 압축·복원·이상 탐지 | 선형(PCA 부분공간)과 비선형 오토인코더의 복원, 잠재 차원과 항등 함수, 복원 오차 임계값의 탐지율·오경보·AUROC, 학습 범위 밖 z를 디코딩한 결과 |
 | 물체를 처음 보는 위치로 옮기기 | 왼쪽에서만 학습한 FC·Conv+Flatten·Conv+GAP의 위치별 정확도, 위치별 가중치와 GAP의 불변성, 이동 증강의 효과 |
+
+## 위클리 페이퍼 07에서 해 볼 수 있는 것
+
+| 실험 | 확인하는 개념 |
+| --- | --- |
+| 세 가지 리사이징 방식 | 늘이기 · 중앙 자르기 · 패딩으로 224×224를 만들 때 원의 왜곡 비율, 남는 면적, 가장자리 물체가 잘리는 비율, 패딩 면적 |
+| 입력 스케일과 경사 하강법 | 0~255 · ÷255 · 표준화 입력의 조건수와 loss 곡선, 같은 학습률에서 원본 입력이 출렁이는 이유, ÷255만으로는 바뀌지 않는 수렴 속도 |
+| 증강을 골라 켜고 신경망 학습 | 이동 · 밝기 · 노이즈 · 좌우 반전 증강별 검증 정확도, 실제 분포 차이를 메우는 증강의 효과, 라벨을 바꾸는 좌우 반전의 손해 |
+| 처음부터 vs 특징 추출 vs 미세 조정 | 사전 학습한 신경망으로 훈련 데이터 수와 도메인 차이에 따른 세 방식의 정확도, 부정적 전이 |
+| 위치별 기울기 (RNN vs LSTM) | 역전파로 계산한 단어 위치별 기울기 노름, W의 최대 특이값과 tanh 포화, 망각 게이트 편향의 효과 |
+| 병목과 잡음 제거로 복사기 고치기 | 선형 오토인코더의 닫힌 해로 잠재 차원과 학습 잡음에 따른 복원 오차와 무작위 잡음 통과율, 항등 함수가 되는 조건 |
 
 ## 위클리 페이퍼 08에서 해 볼 수 있는 것
 

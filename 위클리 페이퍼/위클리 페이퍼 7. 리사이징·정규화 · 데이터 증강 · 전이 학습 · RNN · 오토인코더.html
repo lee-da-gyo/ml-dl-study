@@ -1,0 +1,1875 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>위클리 페이퍼 07</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 위클리 #1~#5와 같은 모눈 노트 위의 학습 카드. 질문마다 [한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈] */
+:root{
+  --bg:#f3f5f8; --paper:#ffffff; --grid:#e3e8ef;
+  --ink:#1b2433; --muted:#5b6678; --line:#d5dce6;
+  --accent:#2448c9; --accent-soft:#e6ecfb;
+  --mark:#ffe36b; --add:#0f7a55; --add-soft:#e1f4ec; --fix:#c2410c; --fix-soft:#fdeee4;
+  --code-bg:#f0f2f6;
+  --f-display:"Black Han Sans","IBM Plex Sans KR",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4,h5{text-wrap:balance;margin:0}
+p{margin:0}
+header.top{display:flex;flex-direction:column;gap:10px}
+header.top .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+header.top h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,5vw,38px);line-height:1.25}
+header.top p{color:var(--muted);max-width:68ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:8px;flex-wrap:wrap;
+  background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+nav.toc a{text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--paper);
+  padding:5px 11px;border-radius:999px;font-size:13.5px;font-weight:500}
+nav.toc a.iv{border-style:dashed}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:4px;letter-spacing:.04em;vertical-align:2px;white-space:nowrap}
+.b-add{background:var(--add-soft);color:var(--add)}
+.b-fix{background:var(--fix-soft);color:var(--fix)}
+.b-core{background:var(--accent-soft);color:var(--accent)}
+.b-lab{background:var(--ink);color:var(--paper)}
+.tag-ex{display:inline-block;font-size:11px;font-weight:700;padding:0 7px;border-radius:4px;border:1px dashed var(--muted);color:var(--muted);letter-spacing:.04em;vertical-align:2px;line-height:1.7;white-space:nowrap}
+mark{background:var(--mark);color:inherit;padding:0 2px;border-radius:2px}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+
+section.q{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,4vw,36px);
+  display:flex;flex-direction:column;gap:28px;scroll-margin-top:64px}
+.qhead{display:flex;gap:16px;align-items:flex-start}
+.qnum{font-family:var(--f-display);font-size:44px;line-height:1;color:var(--accent);white-space:nowrap}
+.qnum.iv{font-size:30px;padding-top:4px}
+.qhead h2{font-size:clamp(18px,3vw,23px);font-weight:700;line-height:1.45}
+.qhead .min{min-width:0;display:flex;flex-direction:column;gap:4px}
+.qhead .kind{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.oneline{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 8px 8px 0;font-size:16.5px;font-weight:500}
+.oneline small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em;margin-bottom:2px}
+h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.part{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-bottom:-12px}
+.block{display:flex;flex-direction:column;gap:14px}
+.muted{color:var(--muted)}
+.fig{border:1px dashed var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+.fig figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+figure{margin:0}
+.formula{font-family:var(--f-mono);font-size:15px;text-align:center;padding:14px 10px;background:var(--code-bg);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.formula .fb{color:var(--accent);font-weight:600}.formula .fv{color:var(--fix);font-weight:600}.formula .fn{color:var(--muted);font-weight:600}
+
+/* demo shell */
+.demo{border:1.5px solid var(--ink);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--paper)}
+.demo-head{display:flex;flex-direction:column;gap:4px}
+.demo-head .t{font-weight:700;font-size:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.demo-head .how{font-size:13.5px;color:var(--muted)}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
+button.btn{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+button.btn:hover{border-color:var(--accent);color:var(--accent)}
+button.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{font:inherit;font-size:14px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+input[type=range]{accent-color:var(--accent);width:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px}
+.stat{background:var(--code-bg);border-radius:8px;padding:8px 10px;min-width:0}
+.stat .k{font-size:11.5px;color:var(--muted);font-weight:700;line-height:1.4}
+.stat .v{font-family:var(--f-mono);font-size:15px;font-variant-numeric:tabular-nums}
+.stat.em{background:var(--accent-soft)} .stat.em .v{color:var(--accent);font-weight:600}
+.stat.warn{background:var(--fix-soft)} .stat.warn .v{color:var(--fix);font-weight:600}
+.stat.ok{background:var(--add-soft)} .stat.ok .v{color:var(--add);font-weight:600}
+.insight{font-size:14.5px;border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:720px){.split{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.panels{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.panel h5{font-size:14px}
+.panel .cap{font-size:12.5px;color:var(--muted)}
+.svgbox svg{width:100%;height:auto;display:block}
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.sw.c{border-radius:50%}
+.sw.ln{height:3px;width:16px;border-radius:0;vertical-align:3px}
+.sw.dash{height:0;width:16px;border-radius:0;border-top:2px dashed var(--ink);vertical-align:3px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code-bg);font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td b{color:var(--accent)}
+table.num td,table.num th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 10px}
+table.num td:first-child{font-family:var(--f-body);font-weight:700}
+table.num td:last-child{font-family:var(--f-body)}
+.df{font-family:var(--f-mono);font-size:12.5px;min-width:620px}
+.df td,.df th{padding:6px 10px;white-space:nowrap}
+.df td.memo{font-family:var(--f-body);white-space:normal;min-width:180px}
+.df .na{color:var(--fix);font-weight:600}
+.df tr.drop td{text-decoration:line-through;opacity:.5}
+.df .chg{background:var(--mark);border-radius:3px;padding:0 3px}
+.df .fill{background:var(--add-soft);color:var(--add);border-radius:3px;padding:0 3px;font-weight:600}
+
+/* cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h4{font-size:15.5px}
+.card p,.card li{font-size:14.5px}
+.card ul{margin:0;padding-left:18px}
+.card .k{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em}
+.card.add{border-color:var(--add);background:var(--add-soft)} .card.add .k{color:var(--add)}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.mini{grid-template-columns:1fr}}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:s}
+.step{position:relative;border:1px solid var(--line);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--paper)}
+.step::before{counter-increment:s;content:"STEP " counter(s);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.step b{font-size:15px}
+.step span{font-size:13px;color:var(--muted);line-height:1.55}
+.step code{font-size:11.5px}
+.step.add{border-color:var(--add);background:var(--add-soft)} .step.add::before{color:var(--add)}
+@media (max-width:820px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.flow{grid-template-columns:1fr}}
+
+.codewrap{display:flex;flex-direction:column;gap:6px}
+.codecap{font-size:12.5px;color:var(--muted)}
+pre{margin:0;font-family:var(--f-mono);font-size:13px;line-height:1.65;background:var(--code-bg);border-radius:10px;padding:14px 16px;overflow-x:auto}
+pre .c{color:var(--muted)}
+pre .hl{background:var(--mark);border-radius:3px}
+.note{border-radius:10px;padding:14px 16px;font-size:14.5px;display:flex;flex-direction:column;gap:8px}
+.note.add{background:var(--add-soft)}
+.note.fix{background:var(--fix-soft)}
+.note b.t{font-size:13px;letter-spacing:.05em}
+.note.add b.t{color:var(--add)} .note.fix b.t{color:var(--fix)}
+.was{display:block;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--fix);text-decoration-thickness:1.5px}
+.now{display:block}
+.lbl-was,.lbl-now{font-weight:700;color:var(--fix);margin-right:4px}
+.pair{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:var(--paper);border-radius:8px}
+
+.speech{border:2px solid var(--ink);border-radius:12px;padding:18px 18px 16px;position:relative;font-size:15px}
+.speech::before{content:"면접 30초 답변";position:absolute;top:-11px;left:14px;background:var(--paper);padding:0 8px;font-size:12px;font-weight:700;letter-spacing:.06em}
+
+/* svg */
+svg text{font-family:var(--f-body);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+svg .ax{stroke:var(--line);stroke-width:1.5;fill:none}
+svg .gl{stroke:var(--grid);stroke-width:1;fill:none}
+svg .c0{fill:var(--accent)} svg .c1{fill:var(--add)} svg .c2{fill:var(--fix)}
+svg .cg{fill:var(--muted);fill-opacity:.55}
+svg .r0{fill:var(--accent);fill-opacity:.10} svg .r1{fill:var(--add);fill-opacity:.12} svg .r2{fill:var(--fix);fill-opacity:.12}
+svg .cent{stroke:var(--ink);stroke-width:3;fill:none}
+svg .pt{fill:var(--accent);fill-opacity:.85}
+svg .ptx{fill:var(--fix)}
+svg .fitln{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .mseln{stroke:var(--accent);stroke-width:2;stroke-dasharray:7 5;fill:none}
+svg .maeln{stroke:var(--add);stroke-width:2;stroke-dasharray:3 4;fill:none}
+svg .res{stroke:var(--fix);stroke-width:1.5;fill:none}
+svg .sq{fill:var(--fix);fill-opacity:.14;stroke:var(--fix);stroke-opacity:.45;stroke-width:1}
+svg .truef{stroke:var(--ink);stroke-width:2;stroke-dasharray:6 4;fill:none}
+svg .thin{stroke:var(--accent);stroke-width:1.2;stroke-opacity:.35;fill:none}
+svg .meanf{stroke:var(--add);stroke-width:3;fill:none}
+svg .lb{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .lv{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .lt{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .ln{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+svg .cur{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3}
+svg .ring{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .bull{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .shot{fill:var(--fix);stroke:var(--paper);stroke-width:1}
+svg .ftr{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+svg .fva{fill:var(--fix)}
+svg .pos-t{fill:var(--ink)} svg .pos-v{fill:var(--paper)}
+svg .bar-a{fill:var(--fix)} svg .bar-b{fill:var(--add)}
+svg .curve{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .curvefill{fill:var(--accent-soft)}
+svg .tail{fill:var(--fix);fill-opacity:.35}
+svg .vmean{stroke:var(--add);stroke-width:2.5}
+svg .vmed{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:5 3}
+svg .trl{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .val{stroke:var(--fix);stroke-width:2.5;fill:none}
+
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:12px}
+.qz{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.qz .qt{font-weight:600}
+.qz .qt span{color:var(--accent);margin-right:6px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:14.5px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;line-height:1.5}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--add);background:var(--add-soft)}
+.opt.wrong{border-color:var(--fix);background:var(--fix-soft)}
+.exp{font-size:14px;background:var(--code-bg);border-radius:8px;padding:10px 12px}
+.exp b.ok{color:var(--add)} .exp b.no{color:var(--fix)}
+
+footer{font-size:13px;color:var(--muted);text-align:center}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+nav.pager a,nav.pager span{display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;line-height:1.4;min-width:0}
+nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
+nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
+nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
+/* 위클리 03에서 이어 쓰는 스타일 */
+svg .leaf0{fill:var(--accent);fill-opacity:.13} svg .leaf1{fill:var(--add);fill-opacity:.17}
+svg .leafb{fill:none;stroke:var(--paper);stroke-width:1.2}
+svg .p0{fill:var(--accent)} svg .p1{fill:var(--add)}
+svg .p0,svg .p1{stroke:var(--paper);stroke-width:.8}
+svg .trueb{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+svg .box{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .boxa{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .boxg{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .boxf{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+svg .ahp{fill:var(--muted)}
+svg .edge{stroke:var(--line);stroke-width:2;fill:none}
+svg .edgea{stroke:var(--accent);stroke-width:2;fill:none}
+svg .tac{fill:var(--accent)} svg .tad{fill:var(--add)} svg .taf{fill:var(--fix)}
+svg .modelc{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .treec{stroke:var(--add);stroke-width:2.5;fill:none}
+svg .resp{fill:var(--fix);fill-opacity:.8}
+svg .zero{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+svg .nanl{stroke:var(--fix);stroke-width:2;stroke-dasharray:4 3}
+svg .barp{fill:var(--accent);fill-opacity:.75}
+svg .barm{fill:var(--fix)}
+table.ldt{min-width:680px;font-size:13.5px}
+table.ldt th,table.ldt td{padding:7px 10px;text-align:center;vertical-align:middle}
+table.ldt td:first-child,table.ldt th:first-child{text-align:left}
+table.ldt td:first-child{font-weight:700}
+td.ld{position:relative;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.ld .bar{position:absolute;left:4px;top:22%;height:56%;border-radius:3px;background:var(--accent);opacity:.2}
+td.ld .bar.neg{background:var(--fix)}
+td.ld .n{position:relative}
+td.ld.hi .n{font-weight:700;color:var(--accent)}
+td.ld.tr{color:var(--muted)}
+th.grp{text-align:center!important;border-left:1px solid var(--line)}
+td.gl,th.gl{border-left:1px solid var(--line)}
+table.heat{min-width:420px}
+table.heat td,table.heat th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 6px}
+table.heat td:first-child,table.heat th:first-child{font-family:var(--f-body)}
+table.dec td{font-variant-numeric:tabular-nums}
+table.dec td.best{color:var(--add);font-weight:700}
+.treebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;padding:6px}
+.treebox svg{display:block;max-width:none;margin:0 auto}
+svg .boxd{fill:var(--paper);stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+svg .lf0{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5} svg .lf1{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .trunc{fill:var(--code-bg);stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+pre.rules{font-size:12.5px;line-height:1.6;max-height:320px;overflow:auto;white-space:pre}
+.formula.left{text-align:left;white-space:pre;line-height:1.9}
+.sl5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sl5 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:440px){.sl5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.opt,.exp,.insight,.stat .v{overflow-wrap:anywhere}
+select{max-width:100%}
+/* 위클리 04 추가 스타일 */
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.tri{grid-template-columns:1fr}}
+.tri .panel .acc{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tri .panel .acc b{color:var(--accent)}
+.sl4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sl4 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+svg .gpt{fill:var(--ink)} svg .rpt{fill:var(--fix)}
+svg .gpt,svg .rpt{stroke:var(--paper);stroke-width:1}
+svg .bestr{fill:none;stroke:var(--ink);stroke-width:2}
+svg .opt{fill:none;stroke:var(--add);stroke-width:2.5}
+svg .hm{fill:var(--accent)}
+svg .venn0{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
+svg .venn1{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .venn2{fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:1.5}
+svg .venn3{fill:var(--add-soft);stroke:var(--add);stroke-width:2}
+.verdict{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.verdict .big{font-family:var(--f-mono);font-size:20px;font-variant-numeric:tabular-nums}
+.verdict ol,.verdict ul{margin:0;padding-left:20px;font-size:14px}
+.verdict .k{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+table.contrib{min-width:0;font-size:13.5px}
+table.contrib td,table.contrib th{padding:6px 8px}
+/* 위클리 05 추가 스타일 */
+.codecols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.codecols{grid-template-columns:1fr}}
+.codecols pre{font-size:12.3px}
+.codecols .codecap b{color:var(--ink)}
+pre.lines{white-space:pre}
+pre.lines .cnt{display:inline-block;min-width:3.2em;color:var(--muted);user-select:none}
+pre.lines .off{opacity:.38}
+pre.lines .rec{background:var(--accent-soft);border-radius:3px}
+svg .gn{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+svg .gx{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .go{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .gb{stroke:var(--fix);stroke-width:1.5;fill:none;stroke-dasharray:5 4}
+svg .ahf{fill:var(--fix)}
+svg .stg{fill:var(--code-bg);stroke:var(--line);stroke-width:1.5}
+svg .stgc{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .seg0{fill:var(--accent);fill-opacity:.85} svg .seg1{fill:var(--accent);fill-opacity:.5} svg .seg2{fill:var(--accent);fill-opacity:.28}
+svg .seg3{fill:var(--add);fill-opacity:.75} svg .seg4{fill:var(--muted);fill-opacity:.45} svg .seg5{fill:var(--code-bg);stroke:var(--line);stroke-width:1}
+svg .sgc{stroke:var(--accent);stroke-width:2.5;fill:none} svg .tnc{stroke:var(--add);stroke-width:2.5;fill:none} svg .rlc{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .satz{fill:var(--fix);fill-opacity:.08}
+svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
+.repl{font-family:var(--f-mono);font-size:13px;background:var(--code-bg);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.repl .in{color:var(--muted)}
+.repl .in::before{content:">>> ";color:var(--accent)}
+.repl .er{color:var(--fix);font-weight:600}
+.repl .okv{color:var(--add);font-weight:600}
+.sh{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:4px}
+.sh.y{background:var(--fix-soft);color:var(--fix)} .sh.n{background:var(--add-soft);color:var(--add)}
+.sl3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.sl3 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl3{grid-template-columns:1fr}}
+/* 위클리 05 가독성: 문단·불릿 */
+.oneline p,.note p,.card p,.speech p,.how p{margin:0}
+.oneline{display:flex;flex-direction:column;gap:8px}
+.oneline small{margin-bottom:-4px}
+.oneline ul,.note ul,.card ul,.how ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px}
+.oneline ul{font-size:15.5px}
+.demo-head .how{display:flex;flex-direction:column;gap:8px;line-height:1.75}
+.note{gap:12px}
+.note p,.card p,.note li,.card li{line-height:1.8}
+.pair{gap:8px;padding:14px 16px}
+.now{display:flex;flex-direction:column;gap:10px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack .card{padding:18px 20px;gap:10px}
+.card pre{font-size:12px;padding:10px 12px;white-space:pre-wrap}
+.speech{display:flex;flex-direction:column;gap:12px;line-height:1.85}
+.insight{line-height:1.85;white-space:pre-line}
+header.top p.flowline{color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 14px;width:fit-content;max-width:100%}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px;white-space:nowrap}
+/* 위클리 05 코드 색 (Python 문법 강조) */
+:root{--sy-k:#8a3ffc;--sy-s:#0f7a55;--sy-n:#b4460c;--sy-f:#2448c9;--sy-d:#a15c00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}}
+:root[data-theme="dark"]{--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}
+pre .sy-k{color:var(--sy-k);font-weight:600} pre .sy-s{color:var(--sy-s)} pre .sy-n{color:var(--sy-n)}
+pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .sy-b{color:var(--sy-n);font-style:italic}
+/* 원래 답안은 취소선 없이 그대로 읽히게 */
+.was{text-decoration:none!important;color:var(--ink)!important}
+/* 수치 칸: 같은 줄의 칸끼리 제목 높이를 맞춰 값이 같은 높이에서 시작하게 한다 */
+.stats{grid-auto-rows:auto}
+.stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
+.stat .v .nw{white-space:nowrap}
+.stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
+.stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
+.stat .v .sub{white-space:normal}
+/* 위클리 07 추가 스타일 */
+.pixrow{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+.pixrow figure{display:flex;flex-direction:column;gap:2px;align-items:center;font-size:11.5px;color:var(--muted)}
+.pixrow svg{width:54px;height:54px;display:block;border:1px solid var(--line);border-radius:4px}
+.pixrow figure.orig svg{border:2px solid var(--accent)}
+.toggles{display:flex;flex-wrap:wrap;gap:8px}
+table.num.res td:nth-child(2){font-family:var(--f-mono)}
+table.num.res td.best{color:var(--add);font-weight:700}
+table.num.res td.bad{color:var(--fix);font-weight:700}
+svg .imgbg{fill:var(--code-bg)}
+svg .gridl{stroke:var(--muted);stroke-opacity:.35;stroke-width:1;fill:none}
+svg .obj{fill:var(--accent);fill-opacity:.8}
+svg .pad{fill:var(--muted);fill-opacity:.3}
+svg .cropr{fill:none;stroke:var(--fix);stroke-width:2;stroke-dasharray:6 4}
+svg .frame{fill:none;stroke:var(--ink);stroke-width:1.5}
+svg .lk{fill:var(--code-bg);stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+svg .tr{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .trn{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+.codecols>.codewrap{min-width:0}
+</style>
+</head><body>
+
+<div class="wrap" id="top">
+  <nav class="pager" aria-label="위클리 이동">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%206.%20CNN%20레이어%20·%20오토인코더%20·%20완전연결층과%20위치%20변화.html" rel="prev">‹ 이전 · 06 CNN 레이어 · 오토인코더</a>
+    <a href="위클리%20페이퍼%208.%20YOLO%20·%20mAP%20·%20새%20이미지%20성능%20저하%20·%20소규모%20의료%20이미지.html" rel="next">다음 · 08 YOLO · mAP · 새 이미지 성능 저하 · 소규모 의료 이미지 ›</a>
+  </nav>
+  <header class="top">
+    <div class="eyebrow">WEEKLY PAPER 07 · 이미지 입력 준비, 전이 학습, 순환 신경망과 오토인코더</div>
+    <h1>리사이징·정규화 · 데이터 증강 · 전이 학습 · RNN · 오토인코더</h1>
+    <p>실습 해설 3문항과 면접 2문항을 정리했습니다. 각 문항은 아래 순서로 읽으면 됩니다.</p>
+    <p class="flowline"><b>한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈</b></p>
+    <p>원래 답안(실습 해설과 작성 답안)을 고친 부분은 아래 표시로 구분했습니다.</p>
+    <div class="legend">
+      <span><span class="badge b-core">핵심</span> 꼭 알아야 할 개념</span>
+      <span><span class="badge b-add">보충</span> 원래 답안에 새로 더한 내용</span>
+      <span><span class="badge b-fix">정정</span> 원래 답안에서 틀렸거나 과장된 부분</span>
+      <span><span class="badge b-lab">실험</span> 값을 바꿔 보는 인터랙티브</span>
+      <span><span class="tag-ex">예시</span> 설명용으로 만든 가상의 값</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="질문 바로가기">
+    <a href="#q1">Q1 리사이징·정규화</a>
+    <a href="#q2">Q2 데이터 증강</a>
+    <a href="#q3">Q3 전이 학습</a>
+    <a class="iv" href="#m1">면접 1 RNN 장기 의존성</a>
+    <a class="iv" href="#m2">면접 2 복사하는 오토인코더</a>
+    <a href="#sum">총정리</a>
+  </nav>
+
+  <!-- ===================== Q1 ===================== -->
+  <section class="q" id="q1">
+    <div class="qhead"><div class="qnum">Q1</div><div class="min"><div class="kind">실습 해설</div><h2>이미지를 모델에 입력하기 전에 리사이징(Resizing)과 정규화(Normalization)를 하는 이유는 무엇인가요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p><b>리사이징</b>은 크기가 제각각인 이미지를 같은 H×W로 맞춰 <mark>하나의 배치 텐서(N×C×H×W)로 쌓고</mark>, 사전 학습 모델이 학습한 해상도와 물체 크기에 맞추는 작업이다. <b>정규화</b>는 0~255 픽셀을 0~1로 바꾼 뒤 채널별 <b>(x − 평균) / 표준편차</b>로 입력을 0 근처에 모으는 작업이다.</p>
+      <ul>
+        <li><b>리사이징에서 조심할 것</b>: 종횡비 왜곡, 가장자리 물체 잘림, 물체가 너무 작아지는 것</li>
+        <li><b>정규화가 주는 것</b>: 손실 곡면의 <b>조건수</b>가 좋아져 큰 학습률로 빨리 수렴하고, 사전 학습 모델과 <b>같은 입력 분포</b>를 맞춘다</li>
+      </ul>
+      <p>입력 정규화는 경사 소실의 해결책이 아니라 <b>최적화 조건 개선</b>이다. 사전 학습 모델에는 <mark>학습 당시와 똑같은 전처리</mark>를 써야 한다.</p>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="flow">
+      <div class="step"><b>원본 읽기</b><span>PIL 이미지 H×W×3, <code>uint8</code> 0~255. 흑백·RGBA는 <code>.convert("RGB")</code>로 3채널</span></div>
+      <div class="step"><b>리사이징</b><span><code>Resize(256)</code>: 짧은 변을 256으로(비율 유지) → <code>CenterCrop(224)</code></span></div>
+      <div class="step"><b>텐서 변환</b><span><code>ToTensor()</code>: 3×224×224 <code>float32</code>, 값은 ÷255로 0~1</span></div>
+      <div class="step"><b>채널별 정규화</b><span><code>Normalize(mean, std)</code> 뒤 <code>unsqueeze(0)</code>로 1×3×224×224</span></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> Normalize 뒤 값은 0~1이 아니다 (ImageNet 통계)</h3>
+      <div class="tbl"><table class="num" style="min-width:560px">
+        <thead><tr><th>채널</th><th>평균 μ</th><th>표준편차 σ</th><th>픽셀 0 → </th><th>픽셀 0.5 → </th><th>픽셀 1 → </th></tr></thead>
+        <tbody>
+          <tr><td>R</td><td>0.485</td><td>0.229</td><td>−2.118</td><td>0.066</td><td>2.249</td></tr>
+          <tr><td>G</td><td>0.456</td><td>0.224</td><td>−2.036</td><td>0.196</td><td>2.429</td></tr>
+          <tr><td>B</td><td>0.406</td><td>0.225</td><td>−1.804</td><td>0.418</td><td>2.640</td></tr>
+        </tbody>
+      </table></div>
+      <p>정규화한 입력은 약 <b>−2.1 ~ 2.6</b> 범위입니다. 이 평균·표준편차는 ImageNet 훈련 이미지의 채널별 통계이므로, 다른 데이터에 쓰면 결과의 평균이 정확히 0, 표준편차가 정확히 1이 되지는 않습니다.</p>
+    </div>
+
+    <div class="demo" id="demo-resize">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 1</span> 세 가지 리사이징 방식으로 224×224 만들기 <span class="tag-ex">예시 이미지 · 격자와 공 하나</span></div>
+        <div class="how">
+          <p>원본에는 <b>정사각형 격자</b>와 <b>원 모양의 공</b>이 있습니다. 같은 원본을 세 방식으로 224×224로 바꿔, 모양이 찌그러지는지 · 무엇이 잘리는지 · 빈칸이 얼마나 생기는지를 계산합니다.</p>
+          <ul>
+            <li><b>늘이기</b> <code>Resize((224, 224))</code>: 가로·세로를 따로 맞춘다</li>
+            <li><b>중앙 자르기</b> <code>Resize(256)</code> + <code>CenterCrop(224)</code>: 비율을 유지하고 가운데를 자른다</li>
+            <li><b>패딩</b>(레터박스): 긴 변을 224에 맞추고 남는 곳을 채운다</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sl3">
+        <label for="rsR">원본 크기<select id="rsR"><option value="640x480">640×480 (4:3 가로)</option><option value="1920x1080" selected>1920×1080 (16:9 가로)</option><option value="480x640">480×640 (3:4 세로)</option><option value="500x500">500×500 (정사각형)</option><option value="2400x1000">2400×1000 (파노라마)</option></select></label>
+        <label for="rsX">공의 가로 위치: <output id="rsXOut" for="rsX">80%</output><input type="range" id="rsX" min="5" max="95" step="1" value="80"></label>
+        <label for="rsS">공의 지름 (짧은 변 대비): <output id="rsSOut" for="rsS">30%</output><input type="range" id="rsS" min="10" max="60" step="2" value="30"></label>
+      </div>
+      <figure class="fig" style="padding:10px">
+        <div class="svgbox" style="max-width:420px;margin:0 auto"><svg id="rsOrig" viewBox="0 0 420 240" role="img" aria-label="원본 이미지와 중앙 자르기 영역"></svg></div>
+        <figcaption>원본 · 주황 점선 = <code>CenterCrop(224)</code>이 남기는 영역</figcaption>
+      </figure>
+      <div class="tri">
+        <div class="panel"><h5>늘이기</h5><div class="svgbox"><svg id="rsA" viewBox="0 0 224 224" role="img" aria-label="늘이기 결과"></svg></div><div class="cap">전체가 남지만 비율이 바뀐다</div></div>
+        <div class="panel"><h5>중앙 자르기</h5><div class="svgbox"><svg id="rsB" viewBox="0 0 224 224" role="img" aria-label="중앙 자르기 결과"></svg></div><div class="cap">비율은 그대로, 가장자리가 잘린다</div></div>
+        <div class="panel"><h5>패딩 (레터박스)</h5><div class="svgbox"><svg id="rsC" viewBox="0 0 224 224" role="img" aria-label="패딩 결과"></svg></div><div class="cap">전부 남지만 빈칸이 생기고 작아진다</div></div>
+      </div>
+      <div class="tbl"><table class="num res" style="min-width:640px">
+        <thead><tr><th>방식</th><th>공 모양 (가로÷세로)</th><th>원본에서 남는 면적</th><th>패딩 면적</th><th>공이 보이는 비율</th><th>공 지름 (픽셀)</th></tr></thead>
+        <tbody id="rsTbl"></tbody>
+      </table></div>
+      <p class="insight" id="rsMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="demo" id="demo-norm">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 2</span> 입력 스케일만 바꿔 같은 모델을 학습하기 <span class="tag-ex">예시 데이터 · 8×8 흑백 이미지 400장, 이진 분류</span></div>
+        <div class="how">
+          <p>이미지마다 <b>조명</b>(전체 밝기 40~200)이 다르고, 클래스는 <b>밝은 부분이 위쪽 절반인지 아래쪽 절반인지</b>로 정해집니다. 같은 로지스틱 회귀를 전체 배치 경사 하강법으로 학습하면서 입력만 세 가지로 바꿉니다.</p>
+          <ul>
+            <li><b>원본</b>: 0~255 그대로</li>
+            <li><b>÷255</b>: 0~1 (<code>ToTensor</code>와 같은 처리)</li>
+            <li><b>표준화</b>: ÷255 뒤 (x − 평균) / 표준편차 (흑백이라 채널 1개의 <code>Normalize</code>와 같음, 통계는 이 데이터로 계산)</li>
+          </ul>
+          <p><b>조건수 κ</b>는 손실 곡면이 방향마다 얼마나 다르게 휘었는지를 나타냅니다(픽셀 입력 행렬 XᵀX/n의 최대 ÷ 최소 고윳값). κ가 클수록 경사 하강법이 느립니다.</p>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="nmM" style="font-weight:600">학습률</label>
+        <select id="nmM"><option value="same" selected>세 방식 모두 0.1 (흔한 기본값)</option><option value="best">방식마다 안전한 최대치 (1/L)</option></select>
+        <label for="nmT" style="font-weight:600">스텝 수</label>
+        <select id="nmT"><option value="100">100</option><option value="500" selected>500</option><option value="2000">2,000</option></select>
+      </div>
+      <figure class="fig" style="padding:10px">
+        <div class="svgbox"><svg id="nmSvg" viewBox="0 0 640 230" role="img" aria-label="입력 방식별 학습 loss 곡선"></svg></div>
+        <div class="keyrow">
+          <span><span class="sw ln" style="background:var(--fix)"></span>원본 0~255</span>
+          <span><span class="sw ln" style="background:var(--accent)"></span>÷255</span>
+          <span><span class="sw ln" style="background:var(--add)"></span>표준화</span>
+          <span>세로축 = 훈련 loss, 1 이상은 맨 위에 붙여 표시</span>
+        </div>
+      </figure>
+      <div class="tbl"><table class="num res" style="min-width:600px">
+        <thead><tr><th>입력</th><th>값 범위</th><th>조건수 κ</th><th>학습률</th><th>최종 loss</th><th>훈련 정확도</th></tr></thead>
+        <tbody id="nmTbl"></tbody>
+      </table></div>
+      <p class="insight" id="nmMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 전처리는 직접 쓰기보다 가중치에서 가져온다</h3>
+      <div class="codecols">
+        <div class="codewrap"><div class="codecap"><b>직접 쓰기</b> · 작성 답안의 코드</div>
+<pre>from PIL import Image
+import torch
+from torchvision import transforms
+
+preprocess = transforms.Compose([
+    transforms.Resize(256),         # 짧은 변 256, 비율 유지
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),          # 0~255 → 0~1, C×H×W
+    transforms.Normalize(mean=(0.485, 0.456, 0.406),
+                         std=(0.229, 0.224, 0.225)),
+])
+
+def preprocess_image(image: Image.Image) -> torch.Tensor:
+    return preprocess(image).unsqueeze(0)   # 1×C×H×W</pre></div>
+        <div class="codewrap"><div class="codecap"><b>가중치에 딸린 전처리</b> · 학습 당시 설정을 그대로 쓴다</div>
+<pre>from PIL import Image
+import torch
+from torchvision import models
+
+weights = models.ResNet18_Weights.DEFAULT
+preprocess = weights.transforms()   # resize 256, crop 224, mean·std
+print(preprocess)                   # 설정을 눈으로 확인
+
+image = Image.open("cat.jpg").convert("RGB")   # 3채널 보장
+x = preprocess(image).unsqueeze(0)  # 1×3×224×224
+model = models.resnet18(weights=weights).eval()
+with torch.inference_mode():
+    probs = model(x).softmax(dim=1)</pre></div>
+      </div>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 실습 해설에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">딥러닝 모델은 고정된 크기의 입력을 받도록 설계되므로, 다양한 크기의 이미지를 일관된 형태로 맞춰야 합니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>모든 모델이 고정 크기만 받는 것은 아닙니다. torchvision의 ResNet은 마지막에 <code>AdaptiveAvgPool2d</code>가 있어 크기가 다른 이미지도 그대로 처리합니다. 크기를 맞추는 실제 이유는 다음 세 가지입니다.</p>
+          <ul>
+            <li><b>배치</b>: 한 배치의 이미지는 같은 H×W여야 하나의 텐서로 쌓인다</li>
+            <li><b>구조</b>: <code>Flatten</code> 뒤 완전연결 층이 있는 모델(VGG식), 위치 임베딩 개수가 정해진 ViT는 입력 크기가 고정된다</li>
+            <li><b>사전 학습 조건</b>: 224로 학습한 모델은 물체가 그 정도 크기로 보일 때 가장 잘 맞힌다</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">이렇게 하면 모델이 더 안정적으로 학습할 수 있으며, 특히 경사 소실(vanishing gradient) 문제를 완화하는 데 도움이 됩니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>입력 정규화는 <b>첫 층에 들어가는 값</b>의 크기와 중심만 맞춥니다. 깊은 층을 거치며 기울기가 지수적으로 작아지는 경사 소실은 활성화 함수 · 초기화 · 잔차 연결 · 정규화 층으로 해결합니다(위클리 05 면접 1).</p>
+          <p>입력 정규화의 실제 효과는 <b>최적화 조건 개선</b>입니다. 모든 입력이 양수이고 평균이 크면 손실 곡면이 한 방향으로 길쭉해져(조건수 증가) 학습률을 작게 잡아야 하고 수렴이 느립니다(실험 2). 시그모이드 · tanh 첫 층이 0~255 입력으로 포화되는 것을 막는 간접 효과는 있지만, 그것을 경사 소실 해결이라고 부르면 과장입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 가장 흔한 조용한 버그</div><h4>학습과 추론의 전처리가 다르다</h4>
+        <p>전처리가 달라도 오류는 나지 않고 <b>정확도만 떨어집니다</b>. 그래서 찾기 어렵습니다. 자주 나오는 경우는 다음과 같습니다.</p>
+        <ul>
+          <li><b>색 순서</b>: OpenCV <code>cv2.imread</code>는 <b>BGR</b>로 읽는다. <code>cv2.cvtColor(img, cv2.COLOR_BGR2RGB)</code>로 바꾼다</li>
+          <li><b>값 범위</b>: 학습은 0~1 뒤 Normalize, 서비스는 0~255 그대로</li>
+          <li><b>통계와 보간법</b>: 다른 mean · std, 다른 리사이즈 보간법</li>
+        </ul>
+        <p>사전 학습 모델은 <code>weights.transforms()</code>로 전처리를 가져오고, 서비스 코드에서도 같은 함수를 재사용합니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 평균과 표준편차는 어디서</div><h4>훈련 데이터로만 계산한다</h4>
+        <p>사전 학습 모델을 쓰면 그 모델의 통계(ImageNet)를 그대로 씁니다. 처음부터 학습하면서 의료 · 위성 · 현미경처럼 자연 사진과 다른 데이터를 쓸 때는 <b>훈련 세트에서만</b> 채널별 평균 · 표준편차를 계산합니다. 검증 · 테스트 세트까지 넣어 계산하면 정보 누수입니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · torchvision v2</div><h4><code>ToTensor</code> 대신 <code>ToImage</code> + <code>ToDtype</code></h4>
+        <p><code>torchvision.transforms.v2</code>에서는 <code>ToTensor</code>가 지원 중단(deprecated) 예정이고 <code>v2.ToImage()</code> + <code>v2.ToDtype(torch.float32, scale=True)</code>가 권장됩니다. 이 조합이 0~255 → 0~1 변환을 합니다. v2는 이미지와 함께 바운딩 박스 · 마스크도 같은 변환으로 옮겨 주어, 탐지 · 분할에서 좌표를 따로 고칠 필요가 없습니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>리사이징은 크기가 제각각인 이미지를 같은 높이와 너비로 맞춰 <b>하나의 배치 텐서로 쌓기 위해</b> 합니다. 사전 학습 모델을 쓸 때는 그 모델이 학습한 해상도, 예를 들어 짧은 변 256으로 줄이고 가운데 224를 자르는 조건에 맞춰야 성능이 납니다. 이때 그냥 224×224로 늘이면 <b>종횡비가 왜곡</b>되므로 비율을 유지하고 자르거나 패딩합니다.</p>
+      <p>정규화는 0~255 픽셀을 0~1로 바꾼 뒤 채널별 평균을 빼고 표준편차로 나눠 입력을 0 근처에 모읍니다. 입력이 모두 큰 양수이면 손실 곡면이 한쪽으로 길쭉해져 학습률을 작게 잡아야 하는데, 정규화하면 <b>조건수가 좋아져</b> 더 빨리, 안정적으로 수렴합니다.</p>
+      <p>사전 학습 모델에는 <b>학습 당시와 같은 평균, 표준편차, 리사이즈 규칙</b>을 써야 하고, 저는 weights.transforms로 가져와 학습과 서비스에 똑같이 쓰겠습니다. 참고로 입력 정규화는 최적화를 돕는 것이지 깊은 층의 경사 소실을 해결하는 방법은 아닙니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== Q2 ===================== -->
+  <section class="q" id="q2">
+    <div class="qhead"><div class="qnum">Q2</div><div class="min"><div class="kind">실습 해설</div><h2>데이터 증강(Data Augmentation)이란 무엇이며, 이미지 데이터에서 주로 사용하는 증강 기법에는 어떤 것들이 있나요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>데이터 증강은 학습할 때마다 <mark>라벨이 바뀌지 않는 무작위 변환</mark>을 걸어, 모델이 "이 정도 변화는 같은 것"이라는 <b>불변성</b>을 배우게 하는 규제 기법이다. 핵심은 개수를 늘리는 것이 아니라 <b>훈련 데이터와 실제 환경의 차이</b>를 메우는 것이다.</p>
+      <ul>
+        <li><b>기하 변환</b>: 뒤집기, 무작위 자르기·크기 조절, 회전·이동</li>
+        <li><b>색·화질</b>: 밝기·대비·채도, 블러, 노이즈</li>
+        <li><b>가림·혼합</b>: Random Erasing, MixUp, CutMix</li>
+        <li><b>자동 정책</b>: AutoAugment, RandAugment, TrivialAugment</li>
+      </ul>
+      <p>고르는 기준은 두 가지다. <mark>라벨을 보존하는가, 실제 환경에서 일어나는 변화인가.</mark></p>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 주요 증강 기법과 라벨이 바뀌는 경우</h3>
+      <div class="tbl"><table style="min-width:880px">
+        <thead><tr><th style="width:13%">범주</th><th style="width:27%">torchvision 변환</th><th style="width:30%">모델이 배우는 불변성</th><th>쓰면 안 되는 경우</th></tr></thead>
+        <tbody>
+          <tr><td><b>뒤집기</b></td><td><code>RandomHorizontalFlip</code>, <code>RandomVerticalFlip</code></td><td>좌우(위아래) 방향</td><td>글자·숫자, 좌회전·우회전 표지, 장기의 좌우 위치가 의미 있는 의료 영상. 수직 반전은 위아래가 없는 항공·위성·현미경 영상에서만</td></tr>
+          <tr><td><b>자르기·크기</b></td><td><code>RandomResizedCrop</code> (기본 면적 8~100%, 비율 3/4~4/3)</td><td>위치, 구도, 물체 크기</td><td>물체가 작으면 잘려 나가 라벨이 사라진다. 탐지는 박스 좌표도 함께 변환</td></tr>
+          <tr><td><b>회전·이동</b></td><td><code>RandomRotation</code>, <code>RandomAffine</code></td><td>기울어짐, 위치</td><td>방향이 라벨인 과제. 180° 회전한 숫자 6은 9</td></tr>
+          <tr><td><b>색</b></td><td><code>ColorJitter</code>, <code>RandomGrayscale</code></td><td>조명, 카메라 색감</td><td>색이 라벨인 과제(신호등, 과일 익은 정도, 피부 병변 색)</td></tr>
+          <tr><td><b>화질</b></td><td><code>GaussianBlur</code>, <code>v2.GaussianNoise</code></td><td>초점, 센서 잡음</td><td>미세한 질감이 라벨인 과제(결함 검사)에서 과하게 쓰는 것</td></tr>
+          <tr><td><b>가림</b></td><td><code>RandomErasing</code> (텐서에 적용)</td><td>일부가 가려진 물체</td><td>판단 근거가 작은 한 부분일 때 그 부분을 지우면 라벨이 사라진다</td></tr>
+          <tr><td><b>혼합</b></td><td><code>v2.MixUp</code>, <code>v2.CutMix</code> (배치 단위)</td><td>클래스 사이를 부드럽게, 부분만 보고도 판단</td><td>라벨도 같은 비율로 섞어야 한다(MixUp은 섞은 비율 λ, CutMix는 붙인 면적 비율)</td></tr>
+          <tr><td><b>자동 정책</b></td><td><code>AutoAugment</code>, <code>RandAugment</code>, <code>TrivialAugmentWide</code></td><td>여러 변환을 무작위 조합</td><td>정책은 ImageNet 같은 자연 사진 기준. 도메인이 다르면 포함된 변환을 확인</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="demo" id="demo-aug">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 3</span> 증강을 골라 켜고 작은 신경망을 직접 학습하기 <span class="tag-ex">예시 데이터 · 12×12 이미지 4클래스 (← → ○ +)</span></div>
+        <div class="how">
+          <p>훈련 이미지는 모두 <b>가운데 근처</b>(±1픽셀)에 <b>비슷한 밝기</b>로 찍혔습니다. 검증 이미지는 실제 환경처럼 <b>±2픽셀 이동, 밝기 0.6~1.4배</b>로 흩어져 있습니다(클래스당 250장).</p>
+          <p>신경망(입력 144 → 은닉 48 → 4)을 이 페이지에서 60에포크 학습합니다. 켠 증강은 <b>매 에포크 새로 무작위로</b> 적용되며(파일을 늘리지 않음), 결과는 무작위 시작 2번의 평균입니다.</p>
+          <ul>
+            <li><b>이동</b>: ±2픽셀 &nbsp;·&nbsp; <b>밝기</b>: 0.6~1.4배 &nbsp;·&nbsp; <b>노이즈</b>: 표준편차 0.1</li>
+            <li><b>좌우 반전</b>: 50% 확률. 라벨은 그대로 둔다 → ←가 →로 보이는데 라벨은 ←</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="agN" style="font-weight:600">클래스당 훈련 이미지</label>
+        <select id="agN"><option value="5">5장</option><option value="10" selected>10장</option><option value="20">20장</option><option value="40">40장</option></select>
+        <span style="font-weight:600">증강</span>
+        <div class="toggles">
+          <button type="button" class="btn" data-aug="shift" aria-pressed="false">이동</button>
+          <button type="button" class="btn" data-aug="bright" aria-pressed="false">밝기</button>
+          <button type="button" class="btn" data-aug="noise" aria-pressed="false">노이즈</button>
+          <button type="button" class="btn" data-aug="flip" aria-pressed="false">좌우 반전</button>
+        </div>
+      </div>
+      <div class="split">
+        <div class="side">
+          <div class="codecap">훈련 이미지 한 장과, 지금 켠 증강으로 만든 변형 7개 (파란 테두리 = 원본)</div>
+          <div class="pixrow" id="agPrev"></div>
+          <div class="codecap">검증 이미지 예 (실제 환경)</div>
+          <div class="pixrow" id="agVal"></div>
+        </div>
+        <div class="side">
+          <div class="stats">
+            <div class="stat"><div class="k">훈련 정확도 (원본 훈련 이미지)</div><div class="v" id="agTr">–</div></div>
+            <div class="stat em"><div class="k">검증 정확도 (4클래스)</div><div class="v" id="agTe">–</div></div>
+            <div class="stat"><div class="k">← · → 검증 정확도</div><div class="v" id="agAr">–</div></div>
+            <div class="stat"><div class="k">○ · + 검증 정확도</div><div class="v" id="agOt">–</div></div>
+            <div class="stat ok"><div class="k">증강 없이 학습한 검증 정확도</div><div class="v" id="agBase">–</div></div>
+          </div>
+        </div>
+      </div>
+      <p class="insight" id="agMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">훈련용·검증용 전처리를 나누고, MixUp·CutMix는 배치에 적용하기 (torchvision v2)</div>
+<pre>import torch
+from torch import nn
+from torchvision.transforms import v2
+
+MEAN, STD = (0.485, 0.456, 0.406), (0.229, 0.224, 0.225)
+train_tf = v2.Compose([
+    v2.ToImage(),
+    v2.RandomResizedCrop(224, antialias=True),
+    v2.RandomHorizontalFlip(p=0.5),                  # 좌우가 라벨을 바꾸지 않을 때만
+    v2.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
+    v2.ToDtype(torch.float32, scale=True),          # 0~255 → 0~1
+    v2.Normalize(MEAN, STD),
+    v2.RandomErasing(p=0.25),                       # 텐서 단계에서 일부 가리기
+])
+val_tf = v2.Compose([                               # 검증·테스트: 무작위 없음
+    v2.ToImage(), v2.Resize(256, antialias=True), v2.CenterCrop(224),
+    v2.ToDtype(torch.float32, scale=True), v2.Normalize(MEAN, STD),
+])
+
+mix = v2.RandomChoice([v2.CutMix(num_classes=NUM_CLASSES),
+                       v2.MixUp(num_classes=NUM_CLASSES)])
+for images, labels in train_loader:
+    images, labels = mix(images, labels)            # labels: (N, 클래스 수) 비율
+    loss = nn.functional.cross_entropy(model(images), labels)</pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 실습 해설에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">기존 데이터에 다양한 변형을 가하여 새로운 학습 데이터를 생성하는 기법입니다. … 이를 통해 과적합(overfitting)을 방지하고</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>보통은 새 파일을 만들어 데이터 수를 늘리지 않습니다. <code>Dataset</code>이 이미지를 읽을 때마다 <b>그때그때 무작위 변환</b>을 걸어(온라인 증강), 같은 원본이 에포크마다 다른 모습으로 들어갑니다. 저장 공간은 그대로이고 변형의 가짓수는 사실상 무한합니다.</p>
+          <p>또 증강은 새로운 정보를 만들지 않습니다. "이 변환으로는 라벨이 바뀌지 않는다"는 <b>사전 지식을 주입</b>하는 규제입니다. 그래서 과적합을 <b>방지</b>하는 것이 아니라 <b>완화</b>하며, 잘못 고른 증강은 오히려 성능을 떨어뜨립니다(실험 3의 좌우 반전).</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">특히 수평 뒤집기는 이미지 데이터가 좌우 대칭성을 가질 때 효과적인 방법입니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>조건은 이미지가 대칭인 것이 아니라 <b>좌우를 뒤집어도 라벨이 같은 것</b>(라벨 불변)입니다.</p>
+          <ul>
+            <li>옆을 보는 고양이 사진은 대칭이 아니지만, 뒤집어도 고양이이므로 수평 뒤집기가 효과적이다</li>
+            <li>← 화살표와 글자는 뒤집으면 다른 라벨이 된다. 실험 3에서 반전을 켜면 ← · → 정확도가 50% 근처로 떨어진다</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 실험 3에서 볼 것</div><h4>증강은 실제 차이를 메울 때 효과가 크다</h4>
+        <p>훈련과 검증의 차이가 <b>위치</b>이므로 <b>이동</b> 증강이 검증 정확도를 크게 올립니다. 반면 <b>밝기</b>만 켜면 거의 그대로입니다. 밝기는 이 문제의 주된 차이가 아니기 때문입니다.</p>
+        <p>그래서 증강을 고르기 전에 <b>실제 입력이 훈련 데이터와 어떻게 다른지</b>(촬영 각도, 조명, 거리, 기기)부터 확인합니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 검증과 테스트</div><h4>무작위 증강은 훈련에만</h4>
+        <p>검증 · 테스트에 무작위 변환을 걸면 같은 모델도 평가할 때마다 점수가 달라져 모델끼리 비교할 수 없습니다. 검증에는 <code>Resize</code> · <code>CenterCrop</code> · <code>Normalize</code>처럼 <b>결정적인 전처리</b>만 씁니다.</p>
+        <p>예외는 <b>TTA(Test-Time Augmentation)</b>입니다. 원본과 뒤집은 이미지처럼 정해진 변형 여러 개의 예측을 평균하는 기법으로, 평가 규칙을 고정해 두고 씁니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 강도도 하이퍼파라미터</div><h4>세게 걸수록 좋은 것이 아니다</h4>
+        <p>증강이 강하면 훈련이 어려워져 <b>과소적합</b>이 될 수 있고, 학습을 더 오래 해야 효과가 납니다. RandAugment는 변환 개수 N과 강도 M 두 값만으로 이 강도를 조절하게 만든 방법입니다. 작은 모델일수록 약한 증강이 맞는 경우가 많으므로 검증 성능으로 강도를 고릅니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>데이터 증강은 학습할 때마다 이미지에 <b>라벨이 바뀌지 않는 무작위 변환</b>을 걸어, 모델이 그런 변화에 흔들리지 않도록 가르치는 규제 기법입니다. 보통 파일을 늘리지 않고 데이터 로더에서 매 에포크 새로 변환합니다.</p>
+      <p>이미지에서는 좌우 뒤집기, 무작위 자르기와 크기 조절, 회전과 이동 같은 <b>기하 변환</b>, 밝기·대비·채도를 바꾸는 <b>색 변환</b>, 블러와 노이즈, 일부를 가리는 Random Erasing, 이미지와 라벨을 함께 섞는 <b>MixUp과 CutMix</b>를 주로 씁니다.</p>
+      <p>중요한 건 <b>라벨 보존</b>입니다. 숫자 6을 180도 돌리면 9가 되고, 화살표나 글자는 뒤집으면 의미가 바뀝니다. 그래서 실제 환경에서 생기는 변화에 맞춰 증강을 고르고, 검증과 테스트에는 무작위 증강을 쓰지 않겠습니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q2"></div>
+    </div>
+  </section>
+
+  <!-- ===================== Q3 ===================== -->
+  <section class="q" id="q3">
+    <div class="qhead"><div class="qnum">Q3</div><div class="min"><div class="kind">실습 해설</div><h2>Transfer Learning(전이 학습)이란 무엇이며, 이미지 분류 모델에서 어떻게 활용할 수 있나요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>전이 학습은 대규모 데이터(예: ImageNet-1k, 약 128만 장 · 1,000클래스)로 학습한 모델의 <b>표현</b>, 즉 특징 추출기를 새 과제에 재사용하는 방법이다. 이미지 분류에서는 두 가지로 쓴다.</p>
+      <ul>
+        <li><b>특징 추출</b>: 백본을 동결하고 새 분류 헤드만 학습한다. 데이터가 적고 도메인이 비슷할 때</li>
+        <li><b>미세 조정</b>: 헤드를 먼저 맞춘 뒤 <mark>출력 쪽 블록부터</mark> 풀어 작은 학습률로 함께 학습한다. 데이터가 충분하거나 도메인 차이가 클 때</li>
+      </ul>
+      <p>얼마나 풀지는 <mark>데이터 양 × 도메인 유사도</mark>로 정하고, 사전 학습 때의 전처리도 함께 가져온다. 도메인이 많이 다르면 오히려 손해를 볼 수도 있다(<b>부정적 전이</b>).</p>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> ResNet-18에서 무엇을 얼리고 무엇을 학습하나</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 680 228" role="img" aria-label="특징 추출, 부분 미세 조정, 전체 미세 조정에서 동결하는 층과 학습하는 층">
+          <g font-size="12" font-weight="700">
+            <text x="0" y="22" class="mut">입력 →</text>
+            <text x="148" y="22" text-anchor="middle" class="mut">conv1 · layer1</text>
+            <text x="268" y="22" text-anchor="middle" class="mut">layer2</text>
+            <text x="378" y="22" text-anchor="middle" class="mut">layer3</text>
+            <text x="488" y="22" text-anchor="middle" class="mut">layer4</text>
+            <text x="608" y="22" text-anchor="middle" class="mut">fc (새 헤드)</text>
+          </g>
+          <g font-size="12">
+            <text x="0" y="66" font-weight="700">특징 추출</text>
+            <rect x="96" y="46" width="104" height="32" rx="6" class="lk"/><text x="148" y="67" text-anchor="middle" class="mut">동결</text>
+            <rect x="216" y="46" width="104" height="32" rx="6" class="lk"/><text x="268" y="67" text-anchor="middle" class="mut">동결</text>
+            <rect x="326" y="46" width="104" height="32" rx="6" class="lk"/><text x="378" y="67" text-anchor="middle" class="mut">동결</text>
+            <rect x="436" y="46" width="104" height="32" rx="6" class="lk"/><text x="488" y="67" text-anchor="middle" class="mut">동결</text>
+            <rect x="556" y="46" width="104" height="32" rx="6" class="trn"/><text x="608" y="67" text-anchor="middle">학습 1e-3</text>
+
+            <text x="0" y="122" font-weight="700">부분 미세 조정</text>
+            <rect x="96" y="102" width="104" height="32" rx="6" class="lk"/><text x="148" y="123" text-anchor="middle" class="mut">동결</text>
+            <rect x="216" y="102" width="104" height="32" rx="6" class="lk"/><text x="268" y="123" text-anchor="middle" class="mut">동결</text>
+            <rect x="326" y="102" width="104" height="32" rx="6" class="lk"/><text x="378" y="123" text-anchor="middle" class="mut">동결</text>
+            <rect x="436" y="102" width="104" height="32" rx="6" class="tr"/><text x="488" y="123" text-anchor="middle">학습 1e-4</text>
+            <rect x="556" y="102" width="104" height="32" rx="6" class="trn"/><text x="608" y="123" text-anchor="middle">학습 1e-3</text>
+
+            <text x="0" y="178" font-weight="700">전체 미세 조정</text>
+            <rect x="96" y="158" width="104" height="32" rx="6" class="tr"/><text x="148" y="179" text-anchor="middle">1e-5</text>
+            <rect x="216" y="158" width="104" height="32" rx="6" class="tr"/><text x="268" y="179" text-anchor="middle">3e-5</text>
+            <rect x="326" y="158" width="104" height="32" rx="6" class="tr"/><text x="378" y="179" text-anchor="middle">1e-4</text>
+            <rect x="436" y="158" width="104" height="32" rx="6" class="tr"/><text x="488" y="179" text-anchor="middle">3e-4</text>
+            <rect x="556" y="158" width="104" height="32" rx="6" class="trn"/><text x="608" y="179" text-anchor="middle">1e-3</text>
+          </g>
+          <line class="arr" x1="96" y1="212" x2="660" y2="212"/>
+          <polygon class="ahp" points="660,212 652,208 652,216"/>
+          <text x="96" y="226" font-size="11" class="mut">범용 특징 (엣지 · 색 · 질감)</text>
+          <text x="660" y="226" font-size="11" text-anchor="end" class="mut">과제 특화 특징 (부분 · 물체)</text>
+        </svg></div>
+        <figcaption>입력 쪽 층일수록 범용적이라 오래 얼려 두고, 출력 쪽부터 풀어 줍니다. 학습률 숫자는 AdamW 기준의 <b>예시</b>이며, 층마다 다르게 주는 것을 차등 학습률이라고 합니다.</figcaption>
+      </figure>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 데이터 양 × 도메인 유사도로 전략 고르기</h3>
+      <div class="tbl"><table style="min-width:720px">
+        <thead><tr><th style="width:18%"></th><th style="width:41%">도메인이 비슷함 (일반 사진)</th><th>도메인이 다름 (의료·위성·산업 검사)</th></tr></thead>
+        <tbody>
+          <tr><td><b>데이터 적음</b><br><span class="muted" style="font-size:12.5px">클래스당 수십~수백 장</span></td><td><b>특징 추출</b>. 백본은 얼리고 헤드만 학습해 과적합을 막는다</td><td>가장 어렵다. 뒤쪽 블록만 작은 학습률로 풀거나, 더 앞쪽 층의 특징을 쓴다. 강한 증강과 같은 도메인의 사전 학습 모델을 우선 찾는다</td></tr>
+          <tr><td><b>데이터 많음</b><br><span class="muted" style="font-size:12.5px">클래스당 수천 장 이상</span></td><td><b>전체 미세 조정</b>(작은 학습률). 대개 가장 높은 성능</td><td><b>전체 미세 조정</b>. 사전 학습은 수렴을 빠르게 해 주지만, 최종 성능 이득은 작을 수 있다</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="demo" id="demo-tl">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 4</span> 처음부터 학습 vs 특징 추출 vs 미세 조정 <span class="tag-ex">예시 데이터 · 입력 32차원, 은닉층 32개 신경망</span></div>
+        <div class="how">
+          <p>먼저 <b>원천 과제</b>(24클래스, 6,000개)로 신경망을 사전 학습합니다. ImageNet 사전 학습을 아주 작게 흉내 낸 것입니다. 그다음 <b>목표 과제</b>(이진 분류)를 훈련 데이터 수를 바꿔 가며 세 방식으로 학습하고, 따로 떼어 둔 1,000개로 정확도를 잽니다(무작위 시작 3번 평균).</p>
+          <ul>
+            <li><b>처음부터</b>: 무작위 초기화한 같은 구조를 전부 학습</li>
+            <li><b>특징 추출</b>: 사전 학습한 은닉층을 얼리고 출력 헤드만 학습</li>
+            <li><b>미세 조정</b>: 특징 추출로 헤드를 맞춘 뒤, 은닉층을 풀어 10배 작은 학습률로 이어서 학습</li>
+          </ul>
+          <p><b>도메인 차이</b>는 목표 과제를 만드는 특징이 원천 과제의 특징과 얼마나 다른지입니다. 0이면 같은 특징, 1이면 무관한 특징입니다.</p>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="tlG" style="font-weight:600">도메인 차이</label>
+        <select id="tlG"><option value="0" selected>0 (같은 특징)</option><option value="0.5">0.5 (절반쯤 다름)</option><option value="1">1 (무관)</option></select>
+        <label for="tlN" style="font-weight:600">살펴볼 훈련 데이터 수</label>
+        <select id="tlN"><option value="10">10</option><option value="30" selected>30</option><option value="100">100</option><option value="300">300</option><option value="1000">1,000</option></select>
+      </div>
+      <figure class="fig" style="padding:10px">
+        <div class="svgbox"><svg id="tlSvg" viewBox="0 0 640 240" role="img" aria-label="훈련 데이터 수에 따른 세 방식의 검증 정확도"></svg></div>
+        <div class="keyrow">
+          <span><span class="sw ln" style="background:var(--muted)"></span>처음부터</span>
+          <span><span class="sw ln" style="background:var(--accent)"></span>특징 추출</span>
+          <span><span class="sw ln" style="background:var(--add)"></span>미세 조정</span>
+          <span><span class="sw dash"></span>찍기 수준 50%</span>
+        </div>
+      </figure>
+      <div class="stats">
+        <div class="stat"><div class="k">원천 과제 정확도 (사전 학습 후)</div><div class="v" id="tlSrc">–</div></div>
+        <div class="stat"><div class="k">처음부터</div><div class="v" id="tlS">–</div></div>
+        <div class="stat em"><div class="k">특징 추출</div><div class="v" id="tlF">–</div></div>
+        <div class="stat ok"><div class="k">미세 조정</div><div class="v" id="tlT">–</div></div>
+      </div>
+      <p class="insight" id="tlMsg" aria-live="polite">이 실험은 화면에 보일 때 계산합니다.</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">2단계 전이 학습: 헤드만 학습 → 출력 쪽 블록을 풀고 옵티마이저를 다시 만든다</div>
+<pre>import torch
+from torch import nn
+from torchvision import models
+
+weights = models.ResNet18_Weights.DEFAULT
+model = models.resnet18(weights=weights)
+preprocess = weights.transforms()                  # 사전 학습과 같은 전처리
+
+for p in model.parameters():                       # 1단계: 백본 전체 동결
+    p.requires_grad = False
+model.fc = nn.Linear(model.fc.in_features, 3)      # 새 층은 requires_grad=True로 생긴다
+optimizer = torch.optim.AdamW(model.fc.parameters(), lr=1e-3)
+# ... 헤드만 몇 에포크 학습
+
+for p in model.layer4.parameters():                # 2단계: 출력 쪽 블록부터 해제
+    p.requires_grad = True
+optimizer = torch.optim.AdamW([                    # 새로 푼 층을 반드시 옵티마이저에 넣는다
+    {"params": model.layer4.parameters(), "lr": 1e-4},
+    {"params": model.fc.parameters(), "lr": 1e-3},
+], weight_decay=1e-4)</pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 실습 해설에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">특정 층(예: 상위 몇 개 층)은 고정하고, 나머지 층들은 새로운 데이터에 맞춰 학습할 수 있도록 설정하여</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>방향이 반대입니다. <b>상위 층</b>(출력 쪽)은 원래 과제에 특화된 특징을 담고 있어 새 과제에 맞춰 <b>풀어야 하는</b> 층입니다. 고정하는 쪽은 엣지 · 색 · 질감처럼 범용적인 <b>하위 층</b>(입력 쪽)입니다(Yosinski 외, 2014).</p>
+          <p>순서는 <b>헤드 학습 → 출력 쪽 블록부터 점진적으로 해제</b>이고, 풀어 준 층에는 헤드보다 작은 학습률을 줍니다. 작성 답안은 이 점을 이미 바르게 지적했습니다.</p>
+        </div>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">사전 학습된 모델의 합성곱 층(Convolutional Layers)은 일반적인 이미지 특징(엣지, 패턴, 질감 등)을 잘 학습하고 있기 때문에, 이 부분을 그대로 사용하고</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>합성곱 층 <b>전체</b>가 범용적인 것은 아닙니다. 범용성은 앞쪽 층에서 크고, 뒤쪽 층으로 갈수록 ImageNet 클래스(개 품종, 자동차 부품 등)에 특화됩니다.</p>
+          <p>그래서 도메인이 비슷하면 합성곱 층 전체를 그대로 써도 되지만, 도메인이 다르면 특징 추출만으로는 성능이 낮고 뒤쪽 블록을 미세 조정해야 합니다(실험 4에서 도메인 차이 1).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 코드에서 자주 하는 실수</div><h4>풀었는데 학습이 안 된다</h4>
+        <ul>
+          <li><b>옵티마이저 누락</b>: 1단계에서 <code>model.fc.parameters()</code>만 넣어 만든 옵티마이저는, 나중에 <code>requires_grad=True</code>로 바꾼 층을 갱신하지 않는다. 위 코드처럼 다시 만들거나 <code>add_param_group</code>으로 추가한다</li>
+          <li><b>배치 정규화 통계</b>: <code>requires_grad=False</code>로 얼려도 <code>model.train()</code> 상태면 BN의 running mean · var는 계속 바뀐다. 데이터가 적으면 BN 층을 <code>eval()</code>로 두어 통계까지 고정한다</li>
+          <li><b>전처리 불일치</b>: 사전 학습과 다른 mean · std를 쓰면 특징이 어긋난다(Q1)</li>
+        </ul>
+      </div>
+      <div class="card add"><div class="k">보충 · 항상 이득은 아니다</div><h4>부정적 전이와 도메인 차이</h4>
+        <p>실험 4에서 도메인 차이가 1이면 특징 추출이 처음부터 학습보다 <b>낮고</b>, 데이터가 많을수록 격차가 커집니다. 얼려 둔 특징이 목표 과제에 맞지 않기 때문입니다. 미세 조정은 이 손해를 일부 회복합니다.</p>
+        <p>실제 연구도 비슷합니다. He 외(2019)는 COCO 탐지에서 처음부터 충분히 오래 학습하면 ImageNet 사전 학습과 비슷한 정확도에 도달함을 보였고, Raghu 외(2019)는 의료 영상에서 ImageNet 사전 학습의 이득이 주로 <b>빠른 수렴</b>이라고 보고했습니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 특징 추출을 빠르게</div><h4>특징을 한 번만 계산해 저장한다</h4>
+        <p>백본을 완전히 얼리고 증강을 쓰지 않는다면, 모든 이미지의 백본 출력(ResNet-18은 512차원)을 <b>한 번만 계산해 저장</b>하고 그 위에서 로지스틱 회귀나 작은 헤드를 학습하면 됩니다. 에포크마다 백본을 다시 돌리지 않아 수십 배 빠릅니다. 증강을 쓰면 매번 이미지가 달라지므로 이 방법은 쓸 수 없습니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>전이 학습은 ImageNet 같은 대규모 데이터로 학습한 모델의 <b>특징 추출 능력</b>을 새 과제에 재사용하는 방법입니다. 적은 데이터와 짧은 학습으로도 높은 성능을 얻을 수 있습니다.</p>
+      <p>이미지 분류에서는 마지막 분류 층을 새 클래스 수에 맞게 바꾸고, 데이터가 적으면 백본을 얼린 채 헤드만 학습하는 <b>특징 추출</b>부터 합니다. 성능이 부족하면 <b>출력 쪽 블록부터</b> 풀어 헤드보다 작은 학습률로 <b>미세 조정</b>합니다. 입력 쪽 층은 엣지나 질감 같은 범용 특징이라 오래 얼려 둡니다.</p>
+      <p>이때 사전 학습과 같은 전처리를 쓰고, 새로 푼 층을 옵티마이저에 넣었는지, 배치 정규화 통계가 바뀌는지 확인하겠습니다. 도메인이 많이 다르면 특징 추출만으로는 부족하거나 손해일 수 있어서, 처음부터 학습한 모델과 검증 성능으로 비교하겠습니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q3"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 면접 1 ===================== -->
+  <section class="q" id="m1">
+    <div class="qhead"><div class="qnum iv">면접 1</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>긴 영화 리뷰 문장의 감성(긍정/부정)을 분류하는 모델에 기본 RNN을 사용했어요. 그런데 문장 맨 앞에 나온 중요한 단어의 정보가, 문장 끝에서 예측할 때는 거의 반영되지 않는 것 같아요. 어떤 원인을 의심할 건가요? 어떻게 해결할 건가요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>1순위는 <mark>기본 RNN의 장기 의존성 문제</mark>다. 역전파는 시점마다 야코비안 <b>∂hₜ/∂hₜ₋₁ = diag(1 − hₜ²)·W</b>를 곱하므로, 앞 단어까지 가는 기울기가 거리에 따라 <b>지수적으로</b> 작아진다. 순전파에서도 고정 크기 은닉 상태를 매 시점 덮어써 앞 정보가 희석된다.</p>
+      <ul>
+        <li><b>먼저 배제</b>: 전처리 버그. 길이 제한에서 앞부분이 <b>잘렸거나</b>, 마지막 출력이 <b>패딩 위치</b>를 읽는 경우</li>
+        <li><b>확인</b>: 위치별 기울기 노름, 앞 단어를 가리거나 바꾸는 테스트, 문장 길이별 정확도</li>
+        <li><b>해결</b>: <b>LSTM · GRU</b>(덧셈으로 이어지는 셀 경로), <b>양방향</b>과 모든 시점을 쓰는 <b>어텐션 · 풀링</b>, 긴 문서는 <b>Transformer</b>. 기울기 클리핑은 폭주 대책이다</li>
+      </ul>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 앞 단어로 가는 기울기는 곱셈을 T번 거친다</h3>
+      <div class="formula">∂L/∂h<sub>1</sub> = ∂L/∂h<sub>T</sub> · ∂h<sub>T</sub>/∂h<sub>T−1</sub> ⋯ ∂h<sub>2</sub>/∂h<sub>1</sub> ,&nbsp;&nbsp; <span class="fv">∂h<sub>t</sub>/∂h<sub>t−1</sub> = diag(1 − h<sub>t</sub><sup>2</sup>) · W<sub>hh</sub></span></div>
+      <p>tanh의 미분은 1 이하이므로 각 야코비안의 크기는 <b>W<sub>hh</sub>의 최대 특이값 σ<sub>max</sub></b>를 넘지 못합니다. σ<sub>max</sub> &lt; 1이면 기울기는 거리 k에 대해 σ<sub>max</sub><sup>k</sup> 이하로 <b>반드시</b> 줄어듭니다. 반대로 σ<sub>max</sub> &gt; 1은 폭주가 일어나기 위한 필요조건일 뿐 충분조건은 아닙니다(Pascanu 외, 2013).</p>
+      <div class="formula">LSTM: c<sub>t</sub> = <span class="fb">f<sub>t</sub></span> ⊙ c<sub>t−1</sub> + i<sub>t</sub> ⊙ g<sub>t</sub> &nbsp;⇒&nbsp; 셀 상태 직접 경로 ∂c<sub>t</sub>/∂c<sub>t−1</sub> = diag(<span class="fb">f<sub>t</sub></span>)</div>
+      <p>LSTM은 셀 상태를 <b>더하기</b>로 이어 갑니다. 망각 게이트 f<sub>t</sub>가 1 근처로 열려 있으면 이 경로에서는 기울기가 거의 줄지 않습니다. 그래서 망각 게이트 편향을 1로 초기화하는 것이 표준 관행입니다(Gers 외 2000, Jozefowicz 외 2015).</p>
+    </div>
+
+    <div class="demo" id="demo-rnn">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 5</span> 마지막 출력이 각 위치의 단어에 얼마나 민감한가 <span class="tag-ex">예시 · 학습 전 무작위 가중치, 은닉 32</span></div>
+        <div class="how">
+          <p>길이 T인 무작위 문장(단어 임베딩 8차원)을 RNN과 LSTM에 넣고, 마지막 출력 u·h<sub>T</sub>를 각 위치 t의 입력 x<sub>t</sub>로 미분한 <b>기울기 노름 ‖∂출력/∂x<sub>t</sub>‖</b>을 역전파로 정확히 계산합니다. 문장 8개의 평균(로그)이며, <b>마지막 단어의 값을 1로 두고</b> 비교합니다.</p>
+          <ul>
+            <li><b>RNN</b>: h<sub>t</sub> = tanh(W<sub>hh</sub>h<sub>t−1</sub> + W<sub>xh</sub>x<sub>t</sub>), W<sub>hh</sub>의 최대 특이값을 고른다</li>
+            <li><b>LSTM</b>: PyTorch 기본 초기화(±1/√32 균등분포)에 망각 게이트 편향만 바꾼다</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ctrls">
+        <label for="rnT" style="font-weight:600">문장 길이 T</label>
+        <select id="rnT"><option value="20">20</option><option value="50" selected>50</option><option value="100">100</option><option value="200">200</option></select>
+        <label for="rnS" style="font-weight:600">RNN σ<sub>max</sub>(W<sub>hh</sub>)</label>
+        <select id="rnS"><option value="0.5">0.5</option><option value="0.9" selected>0.9</option><option value="1">1.0</option><option value="1.5">1.5</option><option value="3">3.0</option></select>
+        <label for="rnB" style="font-weight:600">LSTM 망각 게이트 편향</label>
+        <select id="rnB"><option value="0">0 (PyTorch 기본)</option><option value="1" selected>1</option><option value="3">3</option></select>
+      </div>
+      <figure class="fig" style="padding:10px">
+        <div class="svgbox"><svg id="rnSvg" viewBox="0 0 640 240" role="img" aria-label="위치별 기울기 노름, 마지막 단어 대비"></svg></div>
+        <div class="keyrow">
+          <span><span class="sw ln" style="background:var(--fix)"></span>기본 RNN</span>
+          <span><span class="sw ln" style="background:var(--add)"></span>LSTM</span>
+          <span><span class="sw dash"></span>마지막 단어의 1%</span>
+          <span>가로축 왼쪽 = 문장 맨 앞 단어</span>
+        </div>
+      </figure>
+      <div class="stats">
+        <div class="stat warn"><div class="k">RNN 첫 단어 ÷ 마지막 단어</div><div class="v" id="rnR1">–</div></div>
+        <div class="stat ok"><div class="k">LSTM 첫 단어 ÷ 마지막 단어</div><div class="v" id="rnL1">–</div></div>
+        <div class="stat"><div class="k">1% 이상 남는 거리 (단어 수)</div><div class="v" id="rnD">–</div></div>
+      </div>
+      <p class="insight" id="rnMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 증상이 같아 보이는 원인 구분하기</h3>
+      <div class="tbl"><table style="min-width:880px">
+        <thead><tr><th style="width:22%">의심 원인</th><th style="width:38%">확인 방법</th><th>해결</th></tr></thead>
+        <tbody>
+          <tr><td><b>앞부분이 잘림</b></td><td>Keras <code>pad_sequences</code>는 기본값이 <code>truncating="pre"</code>라서 maxlen보다 긴 문장의 <b>앞부분을 버린다</b>. 실제 입력 토큰을 복원해 출력해 본다</td><td><code>truncating="post"</code>, maxlen을 길이 분포의 95% 지점 이상으로, 또는 앞·뒤를 함께 남기기</td></tr>
+          <tr><td><b>패딩 위치를 읽음</b></td><td>뒤쪽 패딩 배치에서 <code>output[:, -1]</code>을 쓰면 짧은 문장은 패딩을 지난 상태를 읽는다</td><td><code>pack_padded_sequence</code> 후 <code>h_n</code> 사용, 또는 실제 길이 위치에서 꺼내기, 마스킹</td></tr>
+          <tr><td><b>기울기 소실</b></td><td>위치별 ‖∂L/∂x<sub>t</sub>‖가 앞으로 갈수록 로그 축에서 직선으로 감소(실험 5). 앞 단어를 바꿔도 예측이 거의 안 변함</td><td>LSTM · GRU, 망각 게이트 편향 1, 직교 초기화</td></tr>
+          <tr><td><b>기울기 폭주</b></td><td>loss가 갑자기 튀거나 NaN, 기울기 노름이 스텝마다 급증</td><td>기울기 클리핑(<code>clip_grad_norm_</code>), 학습률 낮추기</td></tr>
+          <tr><td><b>잘린 역전파 (TBPTT)</b></td><td>긴 시퀀스를 k스텝씩 끊어 역전파하면 k보다 먼 의존성은 학습 신호가 없다</td><td>분류는 문장 전체로 역전파하거나 k를 충분히 크게</td></tr>
+          <tr><td><b>마지막 상태 하나에 압축</b></td><td>문장 길이별 정확도가 길수록 떨어짐</td><td>양방향 + 모든 시점의 어텐션 풀링 또는 평균·최대 풀링</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 해결책이 듣는 이유</h3>
+      <div class="tbl"><table style="min-width:820px">
+        <thead><tr><th style="width:20%">방법</th><th style="width:46%">앞 단어 정보가 끝까지 가는 원리</th><th>주의</th></tr></thead>
+        <tbody>
+          <tr><td><b>LSTM</b></td><td>셀 상태를 더하기로 전달, 망각 게이트가 열려 있으면 곱셈으로 줄지 않는다</td><td>수백 단어 이상에서는 여전히 약해진다. 순차 계산이라 느리다</td></tr>
+          <tr><td><b>GRU</b></td><td>업데이트 게이트 z로 h<sub>t</sub> = (1 − z)⊙h<sub>t−1</sub> + z⊙h̃<sub>t</sub>, 이전 상태를 그대로 넘기는 경로</td><td>파라미터가 LSTM의 약 3/4. 성능은 과제마다 비슷</td></tr>
+          <tr><td><b>양방향 RNN</b></td><td>역방향 RNN은 문장 끝에서 출발해 <b>맨 앞 단어를 마지막에</b> 읽는다. 두 방향의 마지막 상태를 이어 붙인다</td><td>문장 전체를 미리 볼 수 있는 분류 과제에만(실시간 생성 불가)</td></tr>
+          <tr><td><b>어텐션 · 풀링</b></td><td>모든 시점의 은닉 상태에 가중치를 주어 합치므로 앞 단어에서 출력까지 경로가 1단계</td><td>어텐션 가중치를 설명으로 그대로 믿지는 않는다</td></tr>
+          <tr><td><b>Transformer</b></td><td>셀프 어텐션으로 모든 토큰 쌍이 직접 연결, 병렬 계산</td><td>계산량이 길이의 제곱. 사전 학습 모델(BERT 계열) 미세 조정이 실무 기본</td></tr>
+          <tr><td><b>기울기 클리핑</b></td><td>기울기 노름이 임계값을 넘으면 줄인다</td><td>폭주 대책. 작아진 기울기를 키우지는 못한다</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">양방향 LSTM 감성 분류기: 패딩을 건너뛰고, 망각 게이트 편향을 1로</div>
+<pre>import torch
+from torch import nn
+from torch.nn.utils.rnn import pack_padded_sequence
+
+class SentimentLSTM(nn.Module):
+    def __init__(self, vocab_size, emb=128, hidden=128):
+        super().__init__()
+        self.emb = nn.Embedding(vocab_size, emb, padding_idx=0)
+        self.lstm = nn.LSTM(emb, hidden, batch_first=True, bidirectional=True)
+        self.fc = nn.Linear(2 * hidden, 1)
+        with torch.no_grad():                            # 게이트 순서: i, f, g, o
+            for name, p in self.lstm.named_parameters():
+                if name.startswith("bias_ih"):
+                    p[hidden:2 * hidden].fill_(1.0)      # 망각 게이트 편향 1
+
+    def forward(self, tokens, lengths):                  # 뒤쪽 패딩 배치
+        packed = pack_padded_sequence(self.emb(tokens), lengths.cpu(),
+                                      batch_first=True, enforce_sorted=False)
+        _, (h_n, _) = self.lstm(packed)                  # 실제 길이 위치의 마지막 상태
+        h = torch.cat([h_n[-2], h_n[-1]], dim=1)         # 정방향 끝 + 역방향 끝(문장 맨 앞)
+        return self.fc(h).squeeze(1)                     # BCEWithLogitsLoss와 함께</pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">곱해지는 값이 계속 1보다 작으면 기울기가 거의 0이 되는 경사 소실이 발생합니다. 반대로 계속 크면 경사 폭주가 발생할 수 있습니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span>곱해지는 것은 숫자가 아니라 <b>야코비안 행렬</b>입니다. 행렬은 방향마다 늘이고 줄이는 정도가 달라서 "1보다 작다"를 그대로 적용할 수 없고, <b>최대 특이값</b>(행렬이 벡터를 가장 많이 늘이는 배율)으로 따져야 합니다.</p>
+          <ul>
+            <li><b>소실</b>: tanh RNN에서 σ<sub>max</sub>(W<sub>hh</sub>) &lt; 1이면 반드시 지수적으로 줄어든다(충분조건)</li>
+            <li><b>폭주</b>: σ<sub>max</sub> &gt; 1이어야 가능하지만(필요조건), 그렇다고 반드시 폭주하지는 않는다. tanh가 포화되면 diag(1 − h²)가 작아져 오히려 소실되기도 한다(실험 5의 σ<sub>max</sub> = 3)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 모델을 바꾸기 전에</div><h4>데이터 파이프라인부터 의심한다</h4>
+        <p>"앞 단어가 반영되지 않는다"는 증상은 RNN 구조보다 <b>전처리 버그</b>에서 더 흔하게 나옵니다. Keras <code>pad_sequences</code>의 기본값(<code>padding="pre"</code>, <code>truncating="pre"</code>)은 긴 리뷰의 <b>앞부분을 잘라 버리므로</b>, 그 단어는 애초에 모델에 들어가지 않습니다.</p>
+        <p>그래서 실제로 모델에 들어간 토큰을 다시 단어로 바꿔 출력해 보고, 길이 분포와 maxlen을 확인하는 것이 첫 단계입니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 원인을 수치로 확인</div><h4>가림 테스트와 위치 바꾸기</h4>
+        <ul>
+          <li><b>가림 테스트</b>: 앞부분의 핵심 단어를 <code>&lt;unk&gt;</code>로 바꿨을 때 예측 확률 변화가, 같은 단어를 뒤에 뒀을 때보다 훨씬 작으면 위치 문제다</li>
+          <li><b>합성 검증</b>: "최고였다" 같은 결정적 단어를 앞 · 중간 · 끝에 넣은 문장을 만들어 위치별 정확도를 비교한다</li>
+          <li><b>길이별 정확도</b>: 길이 구간마다 정확도를 나눠, 긴 문장에서만 떨어지는지 본다</li>
+        </ul>
+      </div>
+      <div class="card add"><div class="k">보충 · 실무 선택</div><h4>지금이라면 사전 학습 Transformer</h4>
+        <p>감성 분류 같은 문장 분류는 BERT 계열 사전 학습 모델을 미세 조정하는 것이 일반적인 기준선입니다. 최대 입력 길이(예: 512토큰)를 넘는 리뷰는 앞 · 뒤를 함께 남기거나 구간으로 나눠 예측을 합칩니다. LSTM은 자원이 매우 제한된 환경이나 순차 처리가 필요한 경우의 선택지입니다.</p>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>먼저 기본 RNN의 <b>장기 의존성 문제</b>를 의심하겠습니다. 역전파는 시점마다 순환 가중치와 tanh 미분으로 된 야코비안을 곱하는데, 이 행렬의 최대 특이값이 1보다 작으면 앞 단어까지 가는 기울기가 <b>거리에 따라 지수적으로 사라집니다</b>. 순전파에서도 고정 크기 은닉 상태를 계속 덮어써 앞 정보가 희석됩니다.</p>
+      <p>다만 모델 탓으로 단정하기 전에 <b>전처리</b>를 확인하겠습니다. 길이를 자를 때 앞부분이 잘렸는지, 패딩 위치의 출력을 읽고 있지는 않은지 봅니다. 그다음 위치별 기울기 노름과, 앞 단어를 가리거나 위치를 옮겼을 때의 예측 변화로 원인을 확인합니다.</p>
+      <p>해결은 셀 상태를 더하기로 전달하는 <b>LSTM이나 GRU</b>로 바꾸고 망각 게이트 편향을 1로 둡니다. <b>양방향</b>으로 맨 앞 단어를 역방향이 마지막에 읽게 하고, 모든 시점을 쓰는 <b>어텐션 풀링</b>을 더하겠습니다. 문장이 매우 길면 사전 학습 Transformer를 쓰고, 기울기 클리핑은 폭주가 보일 때 함께 쓰겠습니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="m1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 면접 2 ===================== -->
+  <section class="q" id="m2">
+    <div class="qhead"><div class="qnum iv">면접 2</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>이미지 압축을 위해 오토인코더를 학습시켰는데, 결과를 확인해보니 그냥 입력을 그대로 복사해서 출력하는 것처럼 동작해요. 복원 오차는 거의 0이지만, 정작 유의미한 특징을 학습한 것 같지는 않아요. 어떤 문제가 생긴 것일까요? 어떻게 바로잡을 건가요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <p>오토인코더가 <mark>항등 함수(복사)</mark>를 배운 것이다. 복원 손실만 최소화하면, 정보를 줄이도록 강제하는 장치가 없는 한 복사가 가장 쉬운 해답이다.</p>
+      <ul>
+        <li><b>원인</b>: 병목이 입력만큼 크다(과완전), 인코더→디코더 <b>스킵 연결</b>이 병목을 우회한다, 규제 없이 복원 손실만 쓴다</li>
+        <li><b>확인</b>: 의미 없는 <b>무작위 잡음 이미지도 잘 복원되면</b> 복사기다. 검증 오차, 잠재 표현의 선형 프로브도 본다</li>
+        <li><b>해결</b>: 병목 축소, <b>잡음 제거(denoising) · 희소 · VAE</b> 규제, 스킵 연결 제거. 압축이 목적이면 <b>양자화 + 엔트로피 부호화</b>로 비트 수와 화질을 함께 평가한다</li>
+      </ul>
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 복사가 일어나는 두 경로</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 680 200" role="img" aria-label="오토인코더의 병목과 병목을 우회하는 스킵 연결">
+          <defs><marker id="ahA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ahp"/></marker>
+          <marker id="ahF" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="ahf"/></marker></defs>
+          <rect x="10" y="80" width="80" height="60" rx="6" class="box"/><text x="50" y="114" text-anchor="middle" font-size="12.5" font-weight="700">입력 x</text>
+          <polygon points="120,62 250,92 250,128 120,158" class="boxa"/><text x="182" y="114" text-anchor="middle" font-size="12.5" font-weight="700">인코더</text>
+          <rect x="280" y="88" width="64" height="44" rx="6" class="boxg"/><text x="312" y="108" text-anchor="middle" font-size="12" font-weight="700">잠재 z</text><text x="312" y="124" text-anchor="middle" font-size="11" class="mut">k차원</text>
+          <polygon points="374,92 504,62 504,158 374,128" class="boxa"/><text x="440" y="114" text-anchor="middle" font-size="12.5" font-weight="700">디코더</text>
+          <rect x="534" y="80" width="80" height="60" rx="6" class="box"/><text x="574" y="114" text-anchor="middle" font-size="12.5" font-weight="700">복원 x̂</text>
+          <line class="arr" x1="90" y1="110" x2="118" y2="110" marker-end="url(#ahA)"/>
+          <line class="arr" x1="250" y1="110" x2="278" y2="110" marker-end="url(#ahA)"/>
+          <line class="arr" x1="344" y1="110" x2="372" y2="110" marker-end="url(#ahA)"/>
+          <line class="arr" x1="504" y1="110" x2="532" y2="110" marker-end="url(#ahA)"/>
+          <path d="M185,62 C185,32 440,32 440,62" class="gb" marker-end="url(#ahF)"/>
+          <text x="312" y="18" text-anchor="middle" font-size="12" class="taf" font-weight="700">② 스킵 연결: 병목을 거치지 않고 정보가 그대로 전달</text>
+          <text x="312" y="160" text-anchor="middle" font-size="12" class="taf" font-weight="700">① k가 입력 차원만큼 크면 복사 가능</text>
+          <text x="312" y="188" text-anchor="middle" font-size="11.5" class="mut">손실 ‖x − x̂‖²만 줄이면 둘 중 하나만 있어도 x̂ = x가 최적해</text>
+        </svg></div>
+        <figcaption>U-Net처럼 인코더와 디코더를 잇는 스킵 연결은 분할에서는 세부를 살리는 장점이지만, 압축 · 표현 학습에서는 병목을 무력화하는 누수입니다. 오토인코더의 구조와 쓰임 자체는 위클리 06 Q2에서 다뤘습니다.</figcaption>
+      </figure>
+    </div>
+
+    <div class="demo" id="demo-ae">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 6</span> 병목 크기와 잡음 제거로 "복사기" 만들고 고치기 <span class="tag-ex">예시 데이터 · 8×8 이미지, 흐릿한 점 하나</span></div>
+        <div class="how">
+          <p>이미지는 64픽셀이지만 실제로는 <b>점의 가로 위치 · 세로 위치 · 크기 · 밝기</b> 네 가지로 만들어졌습니다(훈련 400장, 검증 400장). 선형 오토인코더는 MSE의 최적해가 PCA와 같아서, 학습 대신 <b>닫힌 해</b>로 정확히 계산합니다.</p>
+          <ul>
+            <li><b>잠재 차원 k</b>: 병목의 크기. 64면 입력과 같다</li>
+            <li><b>잡음 제거</b>: 학습 입력에 잡음을 섞고 깨끗한 원본을 복원하게 한다. 이때 최적 가중치는 Σ<sub>i≤k</sub> λ<sub>i</sub>/(λ<sub>i</sub>+σ²)·v<sub>i</sub>v<sub>i</sub><sup>T</sup> (λ, v는 공분산의 고윳값 · 고유벡터)</li>
+          </ul>
+          <p><b>무작위 잡음 통과율</b>은 평균 이미지에 의미 없는 백색 잡음을 더해 넣었을 때, 그 잡음이 출력에 얼마나 남는지입니다. 100%면 무엇이든 통과시키는 복사기입니다.</p>
+        </div>
+      </div>
+      <div class="sl3">
+        <label for="aeK">잠재 차원 k: <output id="aeKOut" for="aeK">64</output><input type="range" id="aeK" min="1" max="64" step="1" value="64"></label>
+        <label for="aeS">학습 입력 잡음 σ (잡음 제거)<select id="aeS"><option value="0" selected>0 (일반 오토인코더)</option><option value="0.05">0.05</option><option value="0.15">0.15</option><option value="0.3">0.3</option></select></label>
+        <label for="aeI">보여 줄 검증 이미지<select id="aeI"><option value="0" selected>1번</option><option value="1">2번</option><option value="2">3번</option></select></label>
+      </div>
+      <div class="split">
+        <div class="side">
+          <div class="pixrow" id="aeImgs"></div>
+          <div class="svgbox"><svg id="aeSvg" viewBox="0 0 400 210" role="img" aria-label="잠재 차원에 따른 검증 복원 오차와 잡음 통과율"></svg></div>
+          <div class="keyrow">
+            <span><span class="sw ln" style="background:var(--accent)"></span>검증 복원 오차 (왼쪽 축, 로그)</span>
+            <span><span class="sw ln" style="background:var(--fix)"></span>잡음 통과율 (오른쪽 축)</span>
+          </div>
+        </div>
+        <div class="side">
+          <div class="stats">
+            <div class="stat em"><div class="k">검증 복원 MSE</div><div class="v" id="aeVal">–</div></div>
+            <div class="stat warn"><div class="k">무작위 잡음 통과율</div><div class="v" id="aePass">–</div></div>
+            <div class="stat"><div class="k">훈련 복원 MSE</div><div class="v" id="aeTr">–</div></div>
+            <div class="stat ok"><div class="k">잠재 크기 / 입력 크기</div><div class="v" id="aeRate">–</div></div>
+          </div>
+        </div>
+      </div>
+      <p class="insight" id="aeMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 복사기를 고치는 방법</h3>
+      <div class="tbl"><table style="min-width:820px">
+        <thead><tr><th style="width:22%">방법</th><th style="width:44%">복사를 막는 원리</th><th>주의</th></tr></thead>
+        <tbody>
+          <tr><td><b>병목 축소</b> (과소완전)</td><td>k를 데이터의 실제 자유도 근처로 줄여 정보를 버리도록 강제</td><td>디코더가 아주 강력하면 작은 k로도 훈련 데이터를 외울 수 있다</td></tr>
+          <tr><td><b>잡음 제거 AE</b> (Vincent 외, 2008)</td><td>입력은 손상, 정답은 원본. 복사하면 잡음까지 복원해 손해이므로 데이터의 구조를 배운다</td><td>잡음 종류(가우시안, 마스킹)와 세기가 하이퍼파라미터</td></tr>
+          <tr><td><b>희소 AE</b></td><td>잠재 활성에 L1 또는 KL 희소성 벌점, 큰 k여도 소수만 켜진다</td><td>벌점 세기 조절이 필요</td></tr>
+          <tr><td><b>수축 AE</b></td><td>‖∂z/∂x‖² 벌점으로 입력의 작은 변화에 잠재 표현이 둔감하게</td><td>야코비안 계산 비용</td></tr>
+          <tr><td><b>VAE</b></td><td>KL 항이 잠재 분포를 사전 분포로 끌어당겨 정보량을 제한, 매끄러운 잠재 공간</td><td>복원이 흐릿해지기 쉽다. KL 가중치 β 조절</td></tr>
+          <tr><td><b>스킵 연결 제거</b></td><td>모든 정보가 병목을 지나게 한다</td><td>필요하면 병목 이후 디코더 안에서만 스킵 연결</td></tr>
+          <tr><td><b>양자화 + 엔트로피 모델</b> (Ballé 외, 2017)</td><td>잠재값을 정수로 반올림하고 확률 모델로 부호화, 손실 = 비트 수 + λ·왜곡</td><td>압축 모델은 이 목적 함수로 학습해야 실제 파일이 작아진다</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">잡음 제거 학습 한 스텝과, 복사기인지 확인하는 검사</div>
+<pre>import torch
+from torch import nn
+
+def train_step(model, x, optimizer, noise_std=0.2):
+    noisy = x + noise_std * torch.randn_like(x)        # 입력만 손상
+    loss = nn.functional.mse_loss(model(noisy), x)    # 정답은 깨끗한 원본
+    optimizer.zero_grad(set_to_none=True)
+    loss.backward()
+    optimizer.step()
+    return loss.item()
+
+@torch.no_grad()
+def copy_test(model, x_val, train_mean):
+    model.eval()
+    mse = nn.functional.mse_loss
+    noise = train_mean + 0.2 * torch.randn_like(x_val)    # 평균 이미지 + 의미 없는 잡음
+    val_err = mse(model(x_val), x_val).item()
+    baseline = mse(train_mean.expand_as(noise), noise)    # 잡음을 전부 지웠을 때의 오차
+    pass_rate = 1 - mse(model(noise), noise) / baseline   # 잡음이 출력에 남은 비율
+    return val_err, pass_rate.item()                  # pass_rate ≈ 1이면 복사기</pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 작성 답안에서 바로잡을 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">의심해야 할 원인 … 훈련 데이터를 암기했을 가능성이 있습니다.</span></span>
+        <div class="now">
+          <p><span class="lbl-now">정정</span><b>암기</b>와 <b>복사</b>는 증상이 다릅니다. 둘을 같은 원인 목록에 두면 진단이 흐려집니다.</p>
+          <ul>
+            <li><b>암기(과적합)</b>: 훈련 이미지는 잘 복원하지만 <b>검증 이미지는 못 한다</b></li>
+            <li><b>복사(항등 함수)</b>: 훈련 · 검증은 물론 <b>무작위 잡음까지</b> 잘 복원한다</li>
+          </ul>
+          <p>질문의 "그대로 복사하는 것처럼 동작"은 복사입니다. 검증 오차와 잡음 통과율을 함께 보면 둘을 구분할 수 있습니다(실험 6).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card add"><div class="k">보충 · 작은 병목도 만능이 아니다</div><h4>강력한 디코더는 1차원으로도 외운다</h4>
+        <p>이론적으로 인코더 · 디코더가 충분히 강력하면, 잠재 차원이 1이어도 각 훈련 샘플에 번호를 매겨 그대로 외울 수 있습니다(Goodfellow 외, 『Deep Learning』 14장). 그래서 병목 축소만으로 끝내지 말고 <b>검증 오차</b>와 <b>규제</b>를 함께 써야 합니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · 압축률은 차원 수가 아니다</div><h4>파일 크기는 비트 수로 잰다</h4>
+        <p>잠재 벡터 k개를 <code>float32</code>로 저장하면 4k바이트입니다. 64×64 RGB 원본(12,288바이트)을 k = 3,072로 줄여도 float32면 12,288바이트로 같아서 압축이 전혀 아닙니다.</p>
+        <p>실제 학습 기반 압축은 잠재값을 <b>양자화</b>하고 <b>엔트로피 부호화</b>한 뒤, <b>bpp</b>(픽셀당 비트)와 PSNR · SSIM · MS-SSIM을 함께 그린 <b>rate–distortion 곡선</b>으로 JPEG · WebP 같은 기존 코덱과 비교합니다.</p>
+      </div>
+      <div class="card add"><div class="k">보충 · "유의미한 특징"을 재는 법</div><h4>복원 오차 말고 다른 지표</h4>
+        <ul>
+          <li><b>선형 프로브</b>: 잠재 벡터 위에 로지스틱 회귀를 학습해, 라벨이 있는 소량의 데이터에서 분류 성능을 본다</li>
+          <li><b>잠재 보간</b>: 두 이미지의 잠재 벡터 사이를 이었을 때 중간 복원이 자연스러운지 본다</li>
+          <li><b>잡음 강건성</b>: 입력에 잡음을 넣어도 잠재 벡터가 크게 바뀌지 않는지 본다</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="speech">
+      <p>복원 오차가 거의 0인데 쓸모 있는 특징이 없다면, 오토인코더가 <b>항등 함수</b>, 즉 복사를 배운 것입니다. 복원 손실만 줄이면 복사가 가장 쉬운 해답이라, 정보를 줄이도록 강제하는 장치가 없으면 이렇게 됩니다.</p>
+      <p>원인은 두 가지를 먼저 보겠습니다. 잠재 차원이 입력에 가까울 만큼 크거나, U-Net처럼 <b>스킵 연결</b>이 병목을 우회하는 경우입니다. 확인은 의미 없는 <b>무작위 잡음 이미지</b>를 넣어 보는 것입니다. 잡음까지 그대로 복원하면 복사기이고, 검증 이미지만 못 하면 복사가 아니라 암기입니다.</p>
+      <p>해결은 병목을 줄이고 스킵 연결을 없앤 뒤, 입력에 잡음을 넣고 원본을 맞히는 <b>잡음 제거 오토인코더</b>나 희소성, VAE 같은 규제를 넣겠습니다. 압축이 목적이면 잠재값을 <b>양자화하고 엔트로피 부호화</b>해서 픽셀당 비트 수와 PSNR, SSIM을 함께 보는 rate–distortion으로 평가하겠습니다.</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="m2"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 총정리 ===================== -->
+  <section class="q" id="sum">
+    <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 리사이징·정규화 (실습 해설)</td><td><span class="badge b-fix">오류</span></td><td>입력 크기 통일, ResNet의 224×224, 0~1 또는 평균 0·표준편차 1로 조정</td><td>"정규화가 경사 소실을 완화"는 과장(효과는 조건수 개선). 모든 모델이 고정 크기만 받는 것은 아님</td></tr>
+        <tr><td>Q1 작성 답안</td><td><span class="badge b-add">정확</span></td><td>배치 구성, 종횡비 왜곡과 대안, Normalize 뒤 음수 가능, 경사 소실 정정, 사전 학습 통계 일치</td><td>weights.transforms()로 전처리 가져오기, RGB 변환, BGR·보간법 불일치 같은 조용한 버그 추가</td></tr>
+        <tr><td>Q2 데이터 증강 (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>회전·뒤집기·자르기·색 변화·노이즈의 목적, 일반화 향상</td><td>새 데이터 생성이 아니라 온라인 무작위 변환, 과적합은 완화. 뒤집기 조건은 대칭이 아니라 라벨 불변</td></tr>
+        <tr><td>Q2 작성 답안</td><td><span class="badge b-add">정확</span></td><td>라벨 보존 조건, MixUp·CutMix, 증강은 훈련에만, 비교 실험 설계</td><td>증강은 실제 분포 차이를 메울 때 효과가 큼, 강도도 하이퍼파라미터</td></tr>
+        <tr><td>Q3 전이 학습 (실습 해설)</td><td><span class="badge b-fix">오류</span></td><td>특징 추출과 미세 조정의 구분, ImageNet 사전 학습의 장점</td><td>"상위 층을 고정"은 반대(하위 층을 고정, 출력 쪽부터 해제). 합성곱 층 전체가 범용인 것은 아님</td></tr>
+        <tr><td>Q3 작성 답안</td><td><span class="badge b-core">보완</span></td><td>동결 코드, 뒤쪽 블록부터 해제, 작은 학습률, BN 주의</td><td>새로 푼 층을 옵티마이저에 다시 넣어야 함, 부정적 전이 가능성</td></tr>
+        <tr><td>면접 1 RNN (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>경사 소실·폭주, LSTM·GRU·양방향·어텐션·Transformer, 클리핑은 폭주 대책, 마스크 확인</td><td>"1보다 작으면"은 행렬이라 최대 특이값으로 따져야 함. 앞부분이 잘리는 truncation 기본값 점검 추가</td></tr>
+        <tr><td>면접 2 오토인코더 (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>항등 함수, 병목·스킵 연결, 잡음 제거·희소·수축·VAE, 양자화와 rate–distortion</td><td>암기와 복사는 증상이 다름. 무작위 잡음 통과 검사로 복사 확인</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <nav class="pager" aria-label="위클리 이동 (하단)">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%206.%20CNN%20레이어%20·%20오토인코더%20·%20완전연결층과%20위치%20변화.html" rel="prev">‹ 이전 · 06 CNN 레이어 · 오토인코더</a>
+    <a href="위클리%20페이퍼%208.%20YOLO%20·%20mAP%20·%20새%20이미지%20성능%20저하%20·%20소규모%20의료%20이미지.html" rel="next">다음 · 08 YOLO · mAP · 새 이미지 성능 저하 · 소규모 의료 이미지 ›</a>
+    <a href="#top">↑ 맨 위로</a>
+  </nav>
+
+  <footer>위클리 페이퍼 07 · 리사이징과 정규화 / 데이터 증강 / 전이 학습 / 면접 2문항 · <span class="tag-ex">예시</span> 표시가 있는 값은 설명용 가상 데이터입니다</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){let u=0;while(!u)u=r();const v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const minus=s=>String(s).replace(/-/g,"−");
+const pct=v=>(v*100).toFixed(1)+"%";
+const sup=n=>String(n).split("").map(c=>"⁰¹²³⁴⁵⁶⁷⁸⁹"["0123456789".indexOf(c)]||(c==="-"?"⁻":c)).join("");
+function sci(v){if(!isFinite(v))return "발산";if(v===0)return "0";const e=Math.floor(Math.log10(Math.abs(v)));const m=v/Math.pow(10,e);if(e>=-2&&e<=3)return minus(+v.toPrecision(3)+"");return minus(m.toFixed(1))+"×10"+sup(e);}
+function clear(s){while(s.firstChild)s.removeChild(s.firstChild);}
+function safe(name,fn){try{fn();}catch(e){console.error(name,e);}}
+const later=fn=>setTimeout(()=>safe("later",fn),20);
+function whenVisible(node,fn){if(!("IntersectionObserver" in window)){later(fn);return;}
+  const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();later(fn);}},{rootMargin:"300px"});io.observe(node);}
+
+/* Python 문법 강조: 주석·키워드·내장 함수·문자열·숫자·호출·데코레이터 */
+const SY_KW=new Set("import from as def return for in if elif else with try except finally while class lambda not and or is None True False yield pass break continue raise global assert".split(" "));
+const SY_BI=new Set("print range len enumerate zip min max sum abs dict list tuple set int float str bool isinstance super open map sorted".split(" "));
+const SY_RE=/(#.*)|(@[A-Za-z_][\w.]*)|([rbfu]?"(?:[^"\\\n]|\\.)*"|[rbfu]?'(?:[^'\\\n]|\\.)*')|(\b\d+(?:\.\d+)?(?:e[-+]?\d+)?\b)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)/g;
+function hlPre(pre){
+  if(pre.closest(".card"))return;
+  const w=document.createTreeWalker(pre,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".c,.cnt,[class^='sy-']")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+  nodes.forEach(n=>{const t=n.nodeValue,frag=document.createDocumentFragment();let last=0,m;SY_RE.lastIndex=0;
+    while((m=SY_RE.exec(t))){let cls=null;
+      if(m[1])cls="c";else if(m[2])cls="sy-d";else if(m[3])cls="sy-s";else if(m[4])cls="sy-n";
+      else if(m[5])cls=SY_KW.has(m[5])?"sy-k":SY_BI.has(m[5])?"sy-b":"sy-f";
+      else if(SY_KW.has(m[6]))cls="sy-k";else if(m[6]==="self")cls="sy-b";
+      if(!cls)continue;
+      if(m.index>last)frag.appendChild(document.createTextNode(t.slice(last,m.index)));
+      const sp=document.createElement("span");sp.className=cls;sp.textContent=m[0];frag.appendChild(sp);last=m.index+m[0].length;}
+    if(!last)return;if(last<t.length)frag.appendChild(document.createTextNode(t.slice(last)));n.parentNode.replaceChild(frag,n);});
+}
+
+/* 공통: 축 그리기 */
+function axes(svg,o){
+  const tx=v=>o.xlog?Math.log10(v):v, ty=v=>o.ylog?Math.log10(v):v;
+  const X=v=>o.l+(tx(v)-tx(o.x0))/(tx(o.x1)-tx(o.x0))*(o.W-o.l-o.r);
+  const Y=v=>o.H-o.b-(ty(v)-ty(o.y0))/(ty(o.y1)-ty(o.y0))*(o.H-o.t-o.b);
+  (o.yt||[]).forEach(v=>{el("line",{x1:o.l,x2:o.W-o.r,y1:Y(v),y2:Y(v),class:"gl"},svg);
+    el("text",{x:o.l-6,y:Y(v)+4,"text-anchor":"end","font-size":10.5,class:"mut"},svg,o.yf?o.yf(v):String(v));});
+  (o.xt||[]).forEach(v=>{el("text",{x:X(v),y:o.H-o.b+15,"text-anchor":"middle","font-size":10.5,class:"mut"},svg,o.xf?o.xf(v):String(v));});
+  el("line",{x1:o.l,x2:o.W-o.r,y1:o.H-o.b,y2:o.H-o.b,class:"ax"},svg);
+  el("line",{x1:o.l,x2:o.l,y1:o.t,y2:o.H-o.b,class:"ax"},svg);
+  if(o.xl)el("text",{x:(o.l+o.W-o.r)/2,y:o.H-2,"text-anchor":"middle","font-size":11,class:"mut"},svg,o.xl);
+  if(o.yl)el("text",{x:12,y:(o.t+o.H-o.b)/2,"text-anchor":"middle","font-size":11,class:"mut",transform:"rotate(-90 12 "+((o.t+o.H-o.b)/2)+")"},svg,o.yl);
+  return {X,Y};
+}
+function path(pts){return pts.map((p,i)=>(i?"L":"M")+p[0].toFixed(1)+","+p[1].toFixed(1)).join("");}
+
+/* 대칭 행렬 고윳값 분해 (야코비 회전) */
+function jacobiEig(Ain,n){
+  const A=Float64Array.from(Ain),V=new Float64Array(n*n);for(let i=0;i<n;i++)V[i*n+i]=1;
+  for(let sweep=0;sweep<60;sweep++){
+    let off=0;for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)off+=A[i*n+j]*A[i*n+j];
+    if(off<1e-22)break;
+    for(let p=0;p<n;p++)for(let q=p+1;q<n;q++){
+      const apq=A[p*n+q];if(Math.abs(apq)<1e-300)continue;
+      const app=A[p*n+p],aqq=A[q*n+q],th=(aqq-app)/(2*apq);
+      const t=Math.sign(th||1)/(Math.abs(th)+Math.sqrt(th*th+1)),c=1/Math.sqrt(t*t+1),s=t*c;
+      for(let k=0;k<n;k++){const akp=A[k*n+p],akq=A[k*n+q];A[k*n+p]=c*akp-s*akq;A[k*n+q]=s*akp+c*akq;}
+      for(let k=0;k<n;k++){const apk=A[p*n+k],aqk=A[q*n+k];A[p*n+k]=c*apk-s*aqk;A[q*n+k]=s*apk+c*aqk;}
+      for(let k=0;k<n;k++){const vkp=V[k*n+p],vkq=V[k*n+q];V[k*n+p]=c*vkp-s*vkq;V[k*n+q]=s*vkp+c*vkq;}
+    }
+  }
+  const idx=[...Array(n).keys()].sort((a,b)=>A[b*n+b]-A[a*n+a]);
+  return {val:idx.map(i=>A[i*n+i]),vec:idx.map(i=>{const v=new Float64Array(n);for(let k=0;k<n;k++)v[k]=V[k*n+i];return v;})};
+}
+
+/* 픽셀 이미지 그리기 */
+function pixImg(host,img,S,cap,cls){
+  const f=document.createElement("figure");if(cls)f.className=cls;
+  const s=el("svg",{viewBox:"0 0 "+S+" "+S,role:"img","aria-label":cap||"픽셀 이미지"},null);
+  el("rect",{x:0,y:0,width:S,height:S,fill:"var(--paper)"},s);
+  for(let y=0;y<S;y++)for(let x=0;x<S;x++){const v=Math.max(0,Math.min(1,img[y*S+x]));if(v>0.02)el("rect",{x:x,y:y,width:1.02,height:1.02,fill:"var(--ink)","fill-opacity":v.toFixed(2)},s);}
+  f.appendChild(s);if(cap){const c=document.createElement("figcaption");c.textContent=cap;f.appendChild(c);}
+  host.appendChild(f);
+}
+
+/* ---------- 실험 1: 리사이징 세 방식 ---------- */
+safe("resize",function(){
+  let uid=0;
+  function scene(svg,W,H,m,obj,box,padBg){
+    // m: 원본 좌표 → 그림 좌표 {sx,sy,ox,oy}, box: [x,y,w,h] 결과 틀
+    const id="rsc"+(uid++);
+    const cp=el("clipPath",{id},el("defs",null,svg));el("rect",{x:box[0],y:box[1],width:box[2],height:box[3]},cp);
+    const g=el("g",{"clip-path":"url(#"+id+")"},svg);
+    if(padBg)el("rect",{x:box[0],y:box[1],width:box[2],height:box[3],class:"pad"},g);
+    el("rect",{x:m.ox,y:m.oy,width:W*m.sx,height:H*m.sy,class:"imgbg"},g);
+    const step=Math.min(W,H)/6;
+    for(let u=step;u<W-1e-6;u+=step)el("line",{x1:m.ox+u*m.sx,x2:m.ox+u*m.sx,y1:m.oy,y2:m.oy+H*m.sy,class:"gridl"},g);
+    for(let v=step;v<H-1e-6;v+=step)el("line",{x1:m.ox,x2:m.ox+W*m.sx,y1:m.oy+v*m.sy,y2:m.oy+v*m.sy,class:"gridl"},g);
+    el("ellipse",{cx:m.ox+obj.cx*m.sx,cy:m.oy+obj.cy*m.sy,rx:obj.r*m.sx,ry:obj.r*m.sy,class:"obj"},g);
+    el("rect",{x:box[0],y:box[1],width:box[2],height:box[3],class:"frame"},svg);
+  }
+  function visibleFrac(obj,x0,y0,x1,y1){let inC=0,inW=0;const N=160;
+    for(let i=0;i<N;i++)for(let j=0;j<N;j++){const u=obj.cx-obj.r+(i+.5)/N*2*obj.r,v=obj.cy-obj.r+(j+.5)/N*2*obj.r;
+      if((u-obj.cx)**2+(v-obj.cy)**2>obj.r*obj.r)continue;inC++;if(u>=x0&&u<=x1&&v>=y0&&v<=y1)inW++;}
+    return inW/inC;}
+  function render(){
+    const [W,H]=$("#rsR").value.split("x").map(Number);
+    const pos=+$("#rsX").value/100,dia=+$("#rsS").value/100;
+    $("#rsXOut").textContent=Math.round(pos*100)+"%";$("#rsSOut").textContent=Math.round(dia*100)+"%";
+    const r=dia*Math.min(W,H)/2,obj={r,cx:r+(W-2*r)*pos,cy:Math.min(Math.max(H*0.55,r),H-r)};
+    // 원본
+    const so=$("#rsOrig");clear(so);
+    const f=Math.min(400/W,220/H),ow=W*f,oh=H*f,ox=(420-ow)/2,oy=(240-oh)/2;
+    scene(so,W,H,{sx:f,sy:f,ox,oy},obj,[ox,oy,ow,oh],false);
+    const s=256/Math.min(W,H),cw=224/s;
+    const cx0=(W-cw)/2,cy0=(H-cw)/2;
+    el("rect",{x:ox+cx0*f,y:oy+cy0*f,width:cw*f,height:cw*f,class:"cropr"},so);
+    // 늘이기
+    const A=$("#rsA");clear(A);const sxA=224/W,syA=224/H;
+    scene(A,W,H,{sx:sxA,sy:syA,ox:0,oy:0},obj,[0,0,224,224],false);
+    // 중앙 자르기
+    const B=$("#rsB");clear(B);
+    scene(B,W,H,{sx:s,sy:s,ox:-(W*s-224)/2,oy:-(H*s-224)/2},obj,[0,0,224,224],false);
+    // 패딩
+    const C=$("#rsC");clear(C);const sc=224/Math.max(W,H);
+    scene(C,W,H,{sx:sc,sy:sc,ox:(224-W*sc)/2,oy:(224-H*sc)/2},obj,[0,0,224,224],true);
+    // 수치
+    const shapeA=sxA/syA,keptB=cw*cw/(W*H),visB=visibleFrac(obj,cx0,cy0,cx0+cw,cy0+cw),padC=1-(W*sc)*(H*sc)/(224*224);
+    const dA=[2*r*sxA,2*r*syA],dB=2*r*s,dC=2*r*sc;
+    const tb=$("#rsTbl");tb.innerHTML="";
+    const rows=[
+      ["늘이기",shapeA.toFixed(2),"100%","0%","100%",Math.round(dA[0])+" × "+Math.round(dA[1]),Math.abs(shapeA-1)>0.02?1:-1,-1,-1,-1],
+      ["중앙 자르기","1.00",pct(keptB),"0%",pct(visB),String(Math.round(dB)),-1,keptB<0.999?1:-1,-1,visB<0.995?1:-1],
+      ["패딩","1.00","100%",pct(padC),"100%",String(Math.round(dC)),-1,-1,padC>0.001?1:-1,-1]];
+    rows.forEach(rw=>{const tr=document.createElement("tr");
+      rw.slice(0,6).forEach((c,i)=>{const td=document.createElement("td");td.textContent=c;
+        if(i===1&&rw[6]>0)td.className="bad";if(i===2&&rw[7]>0)td.className="bad";if(i===3&&rw[8]>0)td.className="bad";if(i===4&&rw[9]>0)td.className="bad";
+        tr.appendChild(td);});tb.appendChild(tr);});
+    let msg;
+    if(W===H){msg="정사각형 원본은 세 방식 모두 공 모양이 그대로입니다.\n차이는 중앙 자르기가 가장자리를 잘라 낸다는 것뿐입니다 (남는 면적 "+pct(keptB)+", 공이 보이는 비율 "+pct(visB)+").";}
+    else{
+      msg="늘이기 → 원이 타원으로 바뀜 (가로÷세로 "+shapeA.toFixed(2)+", 원이면 1.00)\n"+
+          "중앙 자르기 → 모양은 그대로, 원본 면적 중 남는 부분 "+pct(keptB)+", 공이 보이는 비율 "+pct(visB)+"\n"+
+          "패딩 → 공은 온전하지만 빈칸 "+pct(padC)+", 공 지름 "+Math.round(dC)+"픽셀 (중앙 자르기에서는 "+Math.round(dB)+"픽셀)";
+      if(visB<0.995)msg+="\n\n공이 가장자리에 있어 중앙 자르기가 정답 물체를 잘라 냈습니다. 이런 사진이 많다면 추론은 패딩으로 하고, 학습에서는 RandomResizedCrop으로 다양한 위치를 보여 줍니다.";
+      else msg+="\n\n공이 가운데 근처라 중앙 자르기가 왜곡도 손실도 없는 가장 좋은 선택입니다. 공을 가장자리로 옮겨 보세요.";
+    }
+    $("#rsMsg").textContent=msg;
+  }
+  ["#rsR","#rsX","#rsS"].forEach(s=>$(s).addEventListener("input",()=>safe("resize",render)));
+  render();
+});
+
+/* ---------- 실험 2: 입력 스케일과 경사 하강법 ---------- */
+safe("norm",function(){
+  const n=400,D=64,r=mulberry32(2024);
+  const raw=[],y=[];
+  for(let i=0;i<n;i++){const L=40+160*r(),c=r()<0.5?1:0;y.push(c);const row=new Float64Array(D);
+    for(let p=0;p<D;p++){const up=Math.floor(p/8)<4;const spot=(c===1&&up)||(c===0&&!up)?8:0;row[p]=Math.max(0,Math.min(255,L+spot+25*gauss(r)));}
+    raw.push(row);}
+  let mu=0;raw.forEach(rw=>rw.forEach(v=>mu+=v/255));mu/=n*D;let sd=0;raw.forEach(rw=>rw.forEach(v=>sd+=(v/255-mu)**2));sd=Math.sqrt(sd/(n*D));
+  const schemes=[
+    {name:"원본",rng:"0~255",cls:"lv",col:"var(--fix)",f:v=>v},
+    {name:"÷255",rng:"0~1",cls:"lb",col:"var(--accent)",f:v=>v/255},
+    {name:"표준화",rng:"",cls:"lt",col:"var(--add)",f:v=>(v/255-mu)/sd}];
+  schemes.forEach(sc=>{
+    sc.X=raw.map(rw=>{const a=new Float64Array(D+1);for(let p=0;p<D;p++)a[p]=sc.f(rw[p]);a[D]=1;return a;});
+    const M=new Float64Array((D+1)*(D+1));sc.X.forEach(a=>{for(let i=0;i<=D;i++){const ai=a[i];for(let j=0;j<=D;j++)M[i*(D+1)+j]+=ai*a[j]/n;}});
+    const e=jacobiEig(M,D+1);sc.Lip=e.val[0]/4;   // 로지스틱 loss 헤시안 ≤ XᵀX/(4n): 학습률 1/L
+    const Mp=new Float64Array(D*D);for(let i=0;i<D;i++)for(let j=0;j<D;j++)Mp[i*D+j]=M[i*(D+1)+j];
+    const ep=jacobiEig(Mp,D);sc.kappa=ep.val[0]/ep.val[D-1];   // 조건수: 픽셀 입력만
+    let lo=Infinity,hi=-Infinity;sc.X.forEach(a=>{for(let p=0;p<D;p++){lo=Math.min(lo,a[p]);hi=Math.max(hi,a[p]);}});
+    if(!sc.rng)sc.rng=minus(lo.toFixed(1))+"~"+minus(hi.toFixed(1));
+  });
+  const sp=z=>z>0?z+Math.log1p(Math.exp(-z)):Math.log1p(Math.exp(z));
+  function train(sc,eta,T){
+    const w=new Float64Array(D+1),hist=[];const g=new Float64Array(D+1);
+    const lossAcc=()=>{let L=0,ok=0;for(let i=0;i<n;i++){let z=0;const a=sc.X[i];for(let j=0;j<=D;j++)z+=w[j]*a[j];L+=y[i]?sp(-z):sp(z);if((z>0?1:0)===y[i])ok++;}return [L/n,ok/n];};
+    for(let t=0;t<=T;t++){
+      const la=lossAcc();hist.push(la[0]);if(t===T)return {hist,loss:la[0],acc:la[1]};
+      g.fill(0);for(let i=0;i<n;i++){const a=sc.X[i];let z=0;for(let j=0;j<=D;j++)z+=w[j]*a[j];const p=1/(1+Math.exp(-z)),d=(p-y[i])/n;for(let j=0;j<=D;j++)g[j]+=d*a[j];}
+      for(let j=0;j<=D;j++)w[j]-=eta*g[j];
+    }
+  }
+  const cache={};
+  function render(){
+    const mode=$("#nmM").value,T=+$("#nmT").value,key=mode+T;
+    if(!cache[key])cache[key]=schemes.map(sc=>{const eta=mode==="same"?0.1:1/sc.Lip;return Object.assign({eta},train(sc,eta,T));});
+    const R=cache[key];
+    const svg=$("#nmSvg");clear(svg);
+    const top=1.0,bot=0;
+    const ax=axes(svg,{W:640,H:230,l:48,r:14,t:10,b:30,x0:0,x1:T,y0:bot,y1:top,yt:[0,0.2,0.4,0.6,0.8,1.0],yf:v=>v===1?"1 이상":v.toFixed(1),xt:[0,T/4,T/2,3*T/4,T].map(Math.round),xl:"경사 하강법 스텝",yl:"훈련 loss"});
+    R.forEach((res,k)=>{const pts=res.hist.map((L,t)=>[ax.X(t),ax.Y(Math.max(bot,Math.min(top,isFinite(L)?L:top)))]);
+      el("path",{d:path(pts),fill:"none",stroke:schemes[k].col,"stroke-width":2.5},svg);});
+    const tb=$("#nmTbl");tb.innerHTML="";
+    const best=Math.min(...R.map(x=>x.loss));
+    R.forEach((res,k)=>{const sc=schemes[k],tr=document.createElement("tr");
+      [sc.name,sc.rng,sci(sc.kappa),sci(res.eta),sci(res.loss),pct(res.acc)].forEach((c,i)=>{const td=document.createElement("td");td.textContent=c;
+        if(i===4){if(res.loss<=best*1.001)td.className="best";else if(!(res.loss<0.69))td.className="bad";}tr.appendChild(td);});
+      tb.appendChild(tr);});
+    const [a,b,c]=R;let msg;
+    if(mode==="same"){
+      msg="같은 학습률 0.1에서 최종 loss: 원본 "+sci(a.loss)+" · ÷255 "+sci(b.loss)+" · 표준화 "+sci(c.loss)+" (시작값 0.693)\n\n"+
+          "원본 0~255 입력은 학습률이 너무 커서 가중치가 매 스텝 크게 출렁이고, loss가 시작값보다도 큽니다. 정확도가 높게 나오는 순간에도 틀린 샘플에 극단적인 확률을 주는 상태입니다. "+
+          "입력이 255배 크면 손실 곡면의 곡률은 255²배가 되므로, 0~1 입력에 맞는 학습률이 0~255 입력에는 너무 큽니다.";
+    }else{
+      msg="방식마다 안전한 최대 학습률(1/L)을 쓰면 원본도 출렁이지 않습니다. 같은 "+T+"스텝 뒤 loss: 원본 "+sci(a.loss)+" · ÷255 "+sci(b.loss)+" · 표준화 "+sci(c.loss)+"\n\n"+
+          "원본과 ÷255는 조건수가 같고 곡선도 거의 같습니다. ÷255만으로는 알맞은 학습률의 단위가 바뀔 뿐입니다. 차이는 평균을 빼는 표준화에서 납니다. 모든 픽셀이 양수이면 '전체 밝기' 방향이 가장 가팔라 학습률을 그 방향에 맞춰 줄여야 하고, 클래스를 가르는 완만한 방향으로는 조금씩밖에 못 움직입니다. 평균을 빼면 이 불균형(κ)이 줄어 같은 스텝에서 더 내려갑니다.";
+    }
+    $("#nmMsg").textContent=msg;
+  }
+  ["#nmM","#nmT"].forEach(s=>$(s).addEventListener("change",()=>{$("#nmMsg").textContent="계산 중…";later(render);}));
+  later(render);
+});
+
+/* ---------- 실험 3: 데이터 증강 ---------- */
+safe("aug",function(){
+  const S=12,P=S*S,NAMES=["←","→","○","+"];
+  function glyph(c){const g=new Float64Array(P);const set=(y,x)=>{g[y*S+x]=1;};
+    if(c===0){for(let x=3;x<10;x++)set(6,x);for(let k=1;k<4;k++){set(6-k,3+k);set(6+k,3+k);}}
+    if(c===1){for(let x=2;x<9;x++)set(6,x);for(let k=1;k<4;k++){set(6-k,8-k);set(6+k,8-k);}}
+    if(c===2){for(let i=0;i<60;i++){const a=i/59*2*Math.PI;set(Math.round(6+3.2*Math.sin(a)),Math.round(6+3.2*Math.cos(a)));}}
+    if(c===3){for(let k=2;k<11;k++){set(6,k);set(k,6);}}
+    return g;}
+  const G=[0,1,2,3].map(glyph);
+  function shift(img,dx,dy){const o=new Float64Array(P);for(let y=0;y<S;y++)for(let x=0;x<S;x++){const sx=x-dx,sy=y-dy;if(sx>=0&&sx<S&&sy>=0&&sy<S)o[y*S+x]=img[sy*S+sx];}return o;}
+  const ri=(r,a,b)=>a+Math.floor(r()*(b-a+1));
+  function make(c,r,maxs,b0,b1,noise){const img=shift(G[c],ri(r,-maxs,maxs),ri(r,-maxs,maxs));const a=b0+(b1-b0)*r();for(let i=0;i<P;i++)img[i]=img[i]*a+noise*gauss(r);return img;}
+  function augment(src,r,o){let img=src;
+    if(o.shift)img=shift(img,ri(r,-2,2),ri(r,-2,2));
+    if(o.flip&&r()<0.5){const f=new Float64Array(P);for(let y=0;y<S;y++)for(let x=0;x<S;x++)f[y*S+x]=img[y*S+(S-1-x)];img=f;}
+    if(o.bright||o.noise){const f=Float64Array.from(img);const a=o.bright?0.6+0.8*r():1;for(let i=0;i<P;i++)f[i]=f[i]*a+(o.noise?0.1*gauss(r):0);img=f;}
+    return img;}
+  const rt=mulberry32(99),test=[],yt=[];
+  for(let c=0;c<4;c++)for(let i=0;i<250;i++){test.push(make(c,rt,2,0.6,1.4,0.1));yt.push(c);}
+  const H=48,K=4;
+  function run(n,o,seed){
+    const r=mulberry32(1000+seed),tr=[],ytr=[];
+    for(let c=0;c<4;c++)for(let i=0;i<n;i++){tr.push(make(c,r,1,0.9,1.1,0.05));ytr.push(c);}
+    const W1=new Float64Array(P*H),b1=new Float64Array(H),W2=new Float64Array(H*K),b2=new Float64Array(K);
+    for(let i=0;i<P*H;i++)W1[i]=gauss(r)*Math.sqrt(2/P);for(let i=0;i<H*K;i++)W2[i]=gauss(r)*Math.sqrt(1/H);
+    const a=new Float64Array(H),h=new Float64Array(H),p=new Float64Array(K),gh=new Float64Array(H),lr=0.03;
+    function fwd(x){for(let j=0;j<H;j++){let s=b1[j];for(let i=0;i<P;i++)s+=x[i]*W1[i*H+j];a[j]=s;h[j]=s>0?s:0;}
+      let mx=-Infinity;for(let k=0;k<K;k++){let s=b2[k];for(let j=0;j<H;j++)s+=h[j]*W2[j*K+k];p[k]=s;if(s>mx)mx=s;}
+      let z=0;for(let k=0;k<K;k++){p[k]=Math.exp(p[k]-mx);z+=p[k];}for(let k=0;k<K;k++)p[k]/=z;}
+    const idx=[...Array(tr.length).keys()];
+    for(let ep=0;ep<60;ep++){
+      for(let i=idx.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+      for(const i of idx){const x=augment(tr[i],r,o);fwd(x);p[ytr[i]]-=1;
+        for(let j=0;j<H;j++){let s=0;for(let k=0;k<K;k++)s+=W2[j*K+k]*p[k];gh[j]=a[j]>0?s:0;}
+        for(let j=0;j<H;j++)for(let k=0;k<K;k++)W2[j*K+k]-=lr*h[j]*p[k];for(let k=0;k<K;k++)b2[k]-=lr*p[k];
+        for(let i2=0;i2<P;i2++){const xi=x[i2];if(xi===0)continue;for(let j=0;j<H;j++)W1[i2*H+j]-=lr*xi*gh[j];}
+        for(let j=0;j<H;j++)b1[j]-=lr*gh[j];}
+    }
+    const pred=x=>{fwd(x);let b=0;for(let k=1;k<K;k++)if(p[k]>p[b])b=k;return b;};
+    let okTr=0;tr.forEach((x,i)=>{if(pred(x)===ytr[i])okTr++;});
+    let ok=0,okA=0,okO=0;test.forEach((x,i)=>{const c=pred(x)===yt[i];if(c){ok++;if(yt[i]<2)okA++;else okO++;}});
+    return [okTr/tr.length,ok/test.length,okA/500,okO/500];
+  }
+  const cache={};
+  function result(n,o){const key=n+"|"+["shift","bright","noise","flip"].filter(k=>o[k]).join(",");
+    if(!cache[key]){const a=run(n,o,0),b=run(n,o,1);cache[key]=a.map((v,i)=>(v+b[i])/2);}return cache[key];}
+  const opts=()=>{const o={};document.querySelectorAll("#demo-aug [data-aug]").forEach(b=>{o[b.dataset.aug]=b.getAttribute("aria-pressed")==="true";});return o;};
+  function preview(){
+    const o=opts(),host=$("#agPrev");host.innerHTML="";
+    const r=mulberry32(7),src=make(0,r,1,0.9,1.1,0.05);
+    pixImg(host,src,S,"원본 ←","orig");
+    const r2=mulberry32(31);for(let i=0;i<7;i++){pixImg(host,augment(src,r2,o),S,"변형 "+(i+1));}
+    const hv=$("#agVal");if(!hv.firstChild){[0,1,2,3,250,520,760,999].forEach(i=>pixImg(hv,test[i],S,NAMES[yt[i]]));}
+  }
+  function render(){
+    const n=+$("#agN").value,o=opts();
+    const R=result(n,o),B=result(n,{});
+    $("#agTr").textContent=pct(R[0]);$("#agTe").textContent=pct(R[1]);$("#agAr").textContent=pct(R[2]);$("#agOt").textContent=pct(R[3]);$("#agBase").textContent=pct(B[1]);
+    const on=["shift","bright","noise","flip"].filter(k=>o[k]),label={shift:"이동",bright:"밝기",noise:"노이즈",flip:"좌우 반전"};
+    let msg;
+    if(!on.length){msg="증강 없이 학습하면 훈련 정확도 "+pct(R[0])+", 검증 정확도 "+pct(R[1])+" (찍기 수준 25%)\n\n훈련 이미지를 거의 외웠지만, 위치가 조금만 달라져도 맞히지 못합니다. 전형적인 과적합입니다. 증강을 하나씩 켜 보세요.";}
+    else{
+      const d=R[1]-B[1];
+      msg="켠 증강: "+on.map(k=>label[k]).join(" · ")+"\n검증 정확도 "+pct(B[1])+" → "+pct(R[1])+" ("+(d>=0?"+":"−")+Math.abs(d*100).toFixed(1)+"%p)";
+      if(o.flip&&o.shift)msg+="\n\n좌우 반전 때문에 ← · → 정확도가 찍기 수준인 50% 근처입니다 ("+pct(R[2])+"). 뒤집힌 ←에 ← 라벨을 붙여 학습했으니 모델은 두 화살표를 구별할 근거를 잃었습니다. ○ · +는 뒤집어도 같은 모양이라 영향이 없습니다 ("+pct(R[3])+").";
+      else if(o.flip)msg+="\n\n좌우 반전은 ← · →의 라벨을 섞어 버리고 ("+pct(R[2])+"), 훈련과 검증의 실제 차이인 위치는 메우지 못해 ○ · +도 낮습니다 ("+pct(R[3])+"). 이동을 함께 켜면 ○ · +만 회복되고 화살표는 50% 근처에 남습니다.";
+      else if(!o.shift)msg+="\n\n훈련과 검증의 차이는 '위치'인데 켠 증강이 위치를 바꾸지 않아 효과가 작습니다. 이동을 켜 보세요.";
+      else msg+="\n\n이동 증강이 훈련과 검증의 실제 차이(위치)를 메워 검증 정확도가 크게 올랐습니다. 증강을 켜면 원본 훈련 이미지 정확도는 같거나 낮아질 수 있는데, 외우기 어려워진 것이지 나빠진 것이 아닙니다.";
+    }
+    $("#agMsg").textContent=msg;
+  }
+  function update(){preview();$("#agMsg").textContent="계산 중…";["#agTr","#agTe","#agAr","#agOt","#agBase"].forEach(s=>$(s).textContent="…");later(render);}
+  document.querySelectorAll("#demo-aug [data-aug]").forEach(b=>b.addEventListener("click",()=>{b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")==="true"?"false":"true");update();}));
+  $("#agN").addEventListener("change",update);
+  preview();whenVisible($("#demo-aug"),render);
+});
+
+/* ---------- 실험 4: 전이 학습 ---------- */
+safe("transfer",function(){
+  const D=32,F=12,H=32,K=24,Ns=6000,NS=[10,30,100,300,1000];
+  const R0=mulberry32(1);
+  const mat=(rows,cols,sd,r)=>{const m=new Float64Array(rows*cols);for(let i=0;i<m.length;i++)m[i]=gauss(r)*sd;return m;};
+  const A=mat(F,D,1/Math.sqrt(D),R0),cB=mat(F,1,0.3,R0),B=mat(K,F,1,R0),Rr=mat(F,D,1/Math.sqrt(D),R0);
+  function phi(x,g){const out=new Float64Array(F),nrm=Math.sqrt((1-g)**2+g*g);
+    for(let f=0;f<F;f++){let s=0;for(let d=0;d<D;d++)s+=((1-g)*A[f*D+d]+g*Rr[f*D+d])/nrm*x[d];s+=cB[f];out[f]=s>0?s:0;}return out;}
+  const randX=r=>{const x=new Float64Array(D);for(let d=0;d<D;d++)x[d]=gauss(r);return x;};
+  let pre=null;
+  function pretrain(){
+    const r=mulberry32(7),Xs=[],ys=[];
+    for(let i=0;i<Ns;i++){const x=randX(R0),f=phi(x,0);let b=0,bv=-Infinity;for(let k=0;k<K;k++){let s=0;for(let j=0;j<F;j++)s+=B[k*F+j]*f[j];if(s>bv){bv=s;b=k;}}Xs.push(x);ys.push(b);}
+    const W1=mat(D,H,Math.sqrt(2/D),r),b1=new Float64Array(H),W2=mat(H,K,Math.sqrt(1/H),r),b2=new Float64Array(K),lr=0.05,bs=32;
+    const a=new Float64Array(H),h=new Float64Array(H),p=new Float64Array(K);
+    const gW1=new Float64Array(D*H),gb1=new Float64Array(H),gW2=new Float64Array(H*K),gb2=new Float64Array(K),gh=new Float64Array(H);
+    function fwd(x){for(let j=0;j<H;j++){let s=b1[j];for(let d=0;d<D;d++)s+=x[d]*W1[d*H+j];a[j]=s;h[j]=s>0?s:0;}
+      let mx=-Infinity;for(let k=0;k<K;k++){let s=b2[k];for(let j=0;j<H;j++)s+=h[j]*W2[j*K+k];p[k]=s;if(s>mx)mx=s;}let z=0;for(let k=0;k<K;k++){p[k]=Math.exp(p[k]-mx);z+=p[k];}for(let k=0;k<K;k++)p[k]/=z;}
+    const idx=[...Array(Ns).keys()];
+    for(let ep=0;ep<15;ep++){
+      for(let i=Ns-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+      for(let s0=0;s0<Ns;s0+=bs){gW1.fill(0);gb1.fill(0);gW2.fill(0);gb2.fill(0);const m=Math.min(bs,Ns-s0);
+        for(let q=s0;q<s0+m;q++){const i=idx[q],x=Xs[i];fwd(x);p[ys[i]]-=1;
+          for(let j=0;j<H;j++){let s=0;for(let k=0;k<K;k++){s+=W2[j*K+k]*p[k];gW2[j*K+k]+=h[j]*p[k];}gh[j]=a[j]>0?s:0;gb1[j]+=gh[j];}
+          for(let k=0;k<K;k++)gb2[k]+=p[k];
+          for(let d=0;d<D;d++){const xd=x[d];for(let j=0;j<H;j++)gW1[d*H+j]+=xd*gh[j];}}
+        for(let i=0;i<D*H;i++)W1[i]-=lr*gW1[i]/m;for(let j=0;j<H;j++)b1[j]-=lr*gb1[j]/m;for(let i=0;i<H*K;i++)W2[i]-=lr*gW2[i]/m;for(let k=0;k<K;k++)b2[k]-=lr*gb2[k]/m;}
+    }
+    let ok=0;for(let i=0;i<Ns;i++){fwd(Xs[i]);let b=0;for(let k=1;k<K;k++)if(p[k]>p[b])b=k;if(b===ys[i])ok++;}
+    pre={W1,b1,acc:ok/Ns};
+  }
+  function trainBin(X,y,W1i,b1i,trainBody,epochs,lrH,lrB,r,w2i){
+    const W1=Float64Array.from(W1i),b1=Float64Array.from(b1i),w2=w2i?Float64Array.from(w2i):new Float64Array(H);let b2=0;const lam=1e-3,n=X.length,bs=16;
+    const a=new Float64Array(H),h=new Float64Array(H),gW1=new Float64Array(D*H),gb1=new Float64Array(H),gw2=new Float64Array(H);
+    const idx=[...Array(n).keys()];
+    for(let ep=0;ep<epochs;ep++){
+      for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+      for(let s0=0;s0<n;s0+=bs){const m=Math.min(bs,n-s0);gw2.fill(0);let gb2=0;if(trainBody){gW1.fill(0);gb1.fill(0);}
+        for(let q=s0;q<s0+m;q++){const i=idx[q],x=X[i];let z=b2;
+          for(let j=0;j<H;j++){let s=b1[j];for(let d=0;d<D;d++)s+=x[d]*W1[d*H+j];a[j]=s;h[j]=s>0?s:0;z+=h[j]*w2[j];}
+          const dz=(1/(1+Math.exp(-z))-y[i])/m;gb2+=dz;
+          for(let j=0;j<H;j++){gw2[j]+=h[j]*dz;if(trainBody&&a[j]>0){const gj=dz*w2[j];gb1[j]+=gj;for(let d=0;d<D;d++)gW1[d*H+j]+=x[d]*gj;}}}
+        if(trainBody){for(let i=0;i<D*H;i++)W1[i]-=lrB*gW1[i];for(let j=0;j<H;j++)b1[j]-=lrB*gb1[j];}
+        for(let j=0;j<H;j++)w2[j]-=lrH*(gw2[j]+lam*w2[j]);b2-=lrH*gb2;}
+    }
+    return {W1,b1,w2,b2};
+  }
+  function acc(X,y,M){let ok=0;for(let i=0;i<X.length;i++){let z=M.b2;for(let j=0;j<H;j++){let s=M.b1[j];for(let d=0;d<D;d++)s+=X[i][d]*M.W1[d*H+j];if(s>0)z+=s*M.w2[j];}if((z>0?1:0)===y[i])ok++;}return ok/X.length;}
+  const cache={};
+  function compute(g){
+    if(cache[g])return cache[g];
+    const res=NS.map(()=>[0,0,0]);
+    for(let seed=0;seed<3;seed++){
+      const r=mulberry32(100+seed),w=new Float64Array(F);for(let j=0;j<F;j++)w[j]=gauss(r);
+      const X=[],s=[];for(let i=0;i<3000;i++){const x=randX(r);X.push(x);const f=phi(x,g);let v=0;for(let j=0;j<F;j++)v+=w[j]*f[j];s.push(v);}
+      const thr=[...s].sort((a,b)=>a-b)[1500],y=s.map(v=>v>thr?1:0);
+      const Xte=X.slice(2000),yte=y.slice(2000);
+      NS.forEach((n,ni)=>{
+        const Xtr=X.slice(0,n),ytr=y.slice(0,n),ep=Math.max(30,Math.floor(3000/n)),rr=mulberry32(500+seed*7+ni);
+        const W1s=mat(D,H,Math.sqrt(2/D),rr),w2s=mat(H,1,Math.sqrt(1/H),rr);
+        const M0=trainBin(Xtr,ytr,W1s,new Float64Array(H),true,ep,0.1,0.1,rr,w2s);
+        const M1=trainBin(Xtr,ytr,pre.W1,pre.b1,false,ep,0.1,0,rr,null);
+        const M2=trainBin(Xtr,ytr,M1.W1,M1.b1,true,ep,0.1,0.01,rr,M1.w2);
+        res[ni][0]+=acc(Xte,yte,M0)/3;res[ni][1]+=acc(Xte,yte,M1)/3;res[ni][2]+=acc(Xte,yte,M2)/3;
+      });
+    }
+    cache[g]=res;return res;
+  }
+  function render(){
+    if(!pre)pretrain();
+    const g=+$("#tlG").value,res=compute(g),ni=NS.indexOf(+$("#tlN").value);
+    const svg=$("#tlSvg");clear(svg);
+    const ax=axes(svg,{W:640,H:240,l:48,r:14,t:10,b:32,x0:8,x1:1250,xlog:true,y0:0.45,y1:1,yt:[0.5,0.6,0.7,0.8,0.9,1],yf:v=>Math.round(v*100)+"%",xt:NS,xl:"목표 과제 훈련 데이터 수 (로그 축)",yl:"검증 정확도"});
+    el("line",{x1:ax.X(8),x2:ax.X(1250),y1:ax.Y(0.5),y2:ax.Y(0.5),stroke:"var(--ink)","stroke-width":1.2,"stroke-dasharray":"5 4"},svg);
+    const cols=["var(--muted)","var(--accent)","var(--add)"];
+    [0,1,2].forEach(m=>{const pts=NS.map((n,i)=>[ax.X(n),ax.Y(res[i][m])]);el("path",{d:path(pts),fill:"none",stroke:cols[m],"stroke-width":2.5},svg);
+      pts.forEach((p,i)=>el("circle",{cx:p[0],cy:p[1],r:i===ni?5.5:3.5,fill:cols[m],stroke:"var(--paper)","stroke-width":1.2},svg));});
+    el("line",{x1:ax.X(NS[ni]),x2:ax.X(NS[ni]),y1:10,y2:208,class:"cur"},svg);
+    const v=res[ni];$("#tlSrc").textContent=pct(pre.acc);$("#tlS").textContent=pct(v[0]);$("#tlF").textContent=pct(v[1]);$("#tlT").textContent=pct(v[2]);
+    const names=["처음부터","특징 추출","미세 조정"],bi=v.indexOf(Math.max(...v));
+    const fe=res.map(x=>x[1]-x[0]);
+    let msg="훈련 데이터 "+NS[ni]+"개: 처음부터 "+pct(v[0])+" · 특징 추출 "+pct(v[1])+" · 미세 조정 "+pct(v[2])+" (가장 높은 방식: "+names[bi]+")\n\n";
+    const pp=d=>(d>=0?"+":"−")+Math.abs(d*100).toFixed(1)+"%p";
+    if(g===0)msg+="도메인이 같으면 사전 학습한 특징이 그대로 쓸모 있어, 데이터가 적은 구간에서 전이 학습의 이득이 큽니다 (특징 추출 − 처음부터: 10개 "+pp(fe[0])+", 100개 "+pp(fe[2])+"). 1,000개에서는 처음부터 학습이 특징 추출을 따라잡고 ("+pp(fe[4])+"), 특징까지 고치는 미세 조정이 가장 높습니다.";
+    else if(g===1)msg+="도메인이 무관하면 얼려 둔 특징이 목표 과제에 맞지 않아, 특징 추출이 처음부터 학습보다 낮고 데이터가 많을수록 격차가 커집니다 (30개 "+pp(fe[1])+", 1,000개 "+pp(fe[4])+"). 이것이 부정적 전이입니다. 미세 조정은 손해를 일부 줄이지만, 작은 학습률로는 처음부터 학습을 따라잡지 못합니다.";
+    else msg+="도메인이 절반쯤 다르면, 데이터가 적을 때는 세 방식이 비슷하고 데이터가 많아질수록 특징 추출이 뒤처집니다 (1,000개 "+pp(fe[4])+"). 이 구간에서는 미세 조정과 처음부터 학습을 검증 성능으로 비교해 고릅니다.";
+    $("#tlMsg").textContent=msg;
+  }
+  function update(){$("#tlMsg").textContent="계산 중…";later(render);}
+  ["#tlG","#tlN"].forEach(s=>$(s).addEventListener("change",update));
+  whenVisible($("#demo-tl"),()=>{$("#tlMsg").textContent="계산 중…";later(render);});
+});
+
+/* ---------- 실험 5: 위치별 기울기 (RNN vs LSTM) ---------- */
+safe("rnn",function(){
+  const H=32,D=8,NSEQ=8;
+  function matG(rows,cols,sd,r){const m=new Float64Array(rows*cols);for(let i=0;i<m.length;i++)m[i]=gauss(r)*sd;return m;}
+  function sigmaMax(W,n){let v=new Float64Array(n).fill(1/Math.sqrt(n)),s=0;
+    for(let it=0;it<200;it++){const u=new Float64Array(n);for(let i=0;i<n;i++){let t=0;for(let j=0;j<n;j++)t+=W[i*n+j]*v[j];u[i]=t;}
+      const w=new Float64Array(n);for(let j=0;j<n;j++){let t=0;for(let i=0;i<n;i++)t+=W[i*n+j]*u[i];w[j]=t;}
+      let nr=0;for(let j=0;j<n;j++)nr+=w[j]*w[j];nr=Math.sqrt(nr);s=Math.sqrt(nr);for(let j=0;j<n;j++)v[j]=w[j]/nr;}
+    return s;}
+  const rW=mulberry32(5),Wbase=matG(H,H,1/Math.sqrt(H),rW),sb=sigmaMax(Wbase,H),Wxh=matG(H,D,1/Math.sqrt(D),rW);
+  const u=matG(H,1,1,rW);{let n=0;u.forEach(v=>n+=v*v);n=Math.sqrt(n);for(let i=0;i<H;i++)u[i]/=n;}
+  const rL=mulberry32(6),k=1/Math.sqrt(H),G4=4*H,IN=H+D;
+  const WL=new Float64Array(G4*IN),bih=new Float64Array(G4),bhh=new Float64Array(G4);
+  for(let i=0;i<WL.length;i++)WL[i]=(2*rL()-1)*k;for(let i=0;i<G4;i++){bih[i]=(2*rL()-1)*k;bhh[i]=(2*rL()-1)*k;}
+  const rX=mulberry32(8),SEQ=[];for(let s=0;s<NSEQ;s++){const xs=[];for(let t=0;t<200;t++){const x=new Float64Array(D);for(let d=0;d<D;d++)x[d]=gauss(rX);xs.push(x);}SEQ.push(xs);}
+  const sg=z=>1/(1+Math.exp(-z));
+  function rnnGrad(xs,T,W){
+    const hs=[new Float64Array(H)];
+    for(let t=0;t<T;t++){const hp=hs[t],h=new Float64Array(H);for(let i=0;i<H;i++){let s=0;for(let j=0;j<H;j++)s+=W[i*H+j]*hp[j];for(let d=0;d<D;d++)s+=Wxh[i*D+d]*xs[t][d];h[i]=Math.tanh(s);}hs.push(h);}
+    const out=new Float64Array(T);let dh=Float64Array.from(u);
+    for(let t=T;t>=1;t--){const h=hs[t],da=new Float64Array(H);for(let i=0;i<H;i++)da[i]=dh[i]*(1-h[i]*h[i]);
+      let nx=0;for(let d=0;d<D;d++){let s=0;for(let i=0;i<H;i++)s+=Wxh[i*D+d]*da[i];nx+=s*s;}out[t-1]=Math.sqrt(nx);
+      const nd=new Float64Array(H);for(let j=0;j<H;j++){let s=0;for(let i=0;i<H;i++)s+=W[i*H+j]*da[i];nd[j]=s;}dh=nd;}
+    let dm=0;for(let t=1;t<=T;t++)for(let i=0;i<H;i++)dm+=(1-hs[t][i]*hs[t][i])/(T*H);
+    tanhD.push(dm);
+    return out;}
+  let tanhD=[];
+  function lstmGrad(xs,T,bf){
+    const b=new Float64Array(G4);for(let i=0;i<G4;i++)b[i]=bih[i]+bhh[i];
+    if(bf>0)for(let i=H;i<2*H;i++)b[i]=bf+bhh[i];
+    const hs=[new Float64Array(H)],cs=[new Float64Array(H)],gs=[];
+    for(let t=0;t<T;t++){const hp=hs[t],cp=cs[t],z=new Float64Array(G4);
+      for(let r=0;r<G4;r++){let s=b[r];const o=r*IN;for(let j=0;j<H;j++)s+=WL[o+j]*hp[j];for(let d=0;d<D;d++)s+=WL[o+H+d]*xs[t][d];z[r]=s;}
+      const ig=new Float64Array(H),fg=new Float64Array(H),gg=new Float64Array(H),og=new Float64Array(H),c=new Float64Array(H),h=new Float64Array(H);
+      for(let j=0;j<H;j++){ig[j]=sg(z[j]);fg[j]=sg(z[H+j]);gg[j]=Math.tanh(z[2*H+j]);og[j]=sg(z[3*H+j]);c[j]=fg[j]*cp[j]+ig[j]*gg[j];h[j]=og[j]*Math.tanh(c[j]);}
+      gs.push({ig,fg,gg,og});hs.push(h);cs.push(c);}
+    const out=new Float64Array(T);let dh=Float64Array.from(u),dc=new Float64Array(H);
+    for(let t=T;t>=1;t--){const {ig,fg,gg,og}=gs[t-1],c=cs[t],cp=cs[t-1],dz=new Float64Array(G4),ndc=new Float64Array(H);
+      for(let j=0;j<H;j++){const tc=Math.tanh(c[j]),dct=dc[j]+dh[j]*og[j]*(1-tc*tc);
+        dz[3*H+j]=dh[j]*tc*og[j]*(1-og[j]);dz[j]=dct*gg[j]*ig[j]*(1-ig[j]);dz[2*H+j]=dct*ig[j]*(1-gg[j]*gg[j]);dz[H+j]=dct*cp[j]*fg[j]*(1-fg[j]);ndc[j]=dct*fg[j];}
+      const din=new Float64Array(IN);for(let r=0;r<G4;r++){const g=dz[r];if(g===0)continue;const o=r*IN;for(let q=0;q<IN;q++)din[q]+=WL[o+q]*g;}
+      let nx=0;for(let d=0;d<D;d++)nx+=din[H+d]*din[H+d];out[t-1]=Math.sqrt(nx);
+      dh=din.slice(0,H);dc=ndc;}
+    return out;}
+  function avgLog(fn,T){const acc=new Float64Array(T);SEQ.forEach(xs=>{const g=fn(xs);for(let t=0;t<T;t++)acc[t]+=Math.log10(Math.max(g[t],1e-300))/NSEQ;});const last=acc[T-1];return Array.from(acc,v=>v-last);}
+  function reach(rel){const T=rel.length;for(let t=T-1;t>=0;t--)if(rel[t]<-2)return T-1-t;return null;}
+  function render(){
+    const T=+$("#rnT").value,sm=+$("#rnS").value,bf=+$("#rnB").value;
+    const W=Wbase.map(v=>v*sm/sb);
+    tanhD=[];const R=avgLog(xs=>rnnGrad(xs,T,W),T),L=avgLog(xs=>lstmGrad(xs,T,bf),T);
+    const dmean=tanhD.reduce((a,b)=>a+b,0)/tanhD.length;
+    const lo=Math.max(-16,Math.floor(Math.min(...R,...L,-3))),hi=Math.max(1,Math.ceil(Math.max(...R,...L)));
+    const svg=$("#rnSvg");clear(svg);
+    const yt=[];const stp=Math.max(1,Math.ceil((hi-lo)/8));for(let v=hi;v>=lo;v-=stp)yt.push(v);
+    const xt=[1,Math.round(T/4),Math.round(T/2),Math.round(3*T/4),T];
+    const ax=axes(svg,{W:640,H:240,l:52,r:14,t:10,b:32,x0:1,x1:T,y0:lo,y1:hi,yt,yf:v=>v===0?"1":"10"+sup(v),xt,xl:"단어 위치 t (1 = 문장 맨 앞, "+T+" = 마지막)",yl:"마지막 단어 대비"});
+    el("line",{x1:ax.X(1),x2:ax.X(T),y1:ax.Y(-2),y2:ax.Y(-2),stroke:"var(--ink)","stroke-width":1.2,"stroke-dasharray":"5 4"},svg);
+    const cl=v=>Math.max(lo,Math.min(hi,v));
+    el("path",{d:path(R.map((v,i)=>[ax.X(i+1),ax.Y(cl(v))])),class:"lv"},svg);
+    el("path",{d:path(L.map((v,i)=>[ax.X(i+1),ax.Y(cl(v))])),fill:"none",stroke:"var(--add)","stroke-width":2.5},svg);
+    const f=v=>sci(Math.pow(10,v));
+    $("#rnR1").textContent=R[0]<lo?"10"+sup(lo)+" 미만":f(R[0]);$("#rnL1").textContent=L[0]<lo?"10"+sup(lo)+" 미만":f(L[0]);
+    const dr=reach(R),dl=reach(L);
+    const ds=d=>d===null?T+" 전체":d+"단어";
+    $("#rnD").innerHTML='<span class="pr"><span class="pl">RNN</span>'+ds(dr)+'</span><span class="pr"><span class="pl">LSTM</span>'+ds(dl)+"</span>";
+    let msg="맨 앞 단어의 기울기는 마지막 단어 대비 기본 RNN (σmax = "+sm+") "+f(R[0])+"배, LSTM (망각 편향 "+bf+") "+f(L[0])+"배입니다.\n\n";
+    if(sm<1)msg+="σmax가 1보다 작으면 RNN 기울기는 한 단어 거리마다 최대 "+sm+"배로 줄어드는 지수 감소를 피할 수 없습니다. 로그 축에서 직선으로 떨어지는 모양이 그 증거입니다.";
+    else if(R[0]>0.5)msg+="σmax가 1보다 크면 기울기가 줄지 않거나 오히려 커질 수 있습니다(폭주 쪽). 이때는 학습이 불안정해져 기울기 클리핑이 필요합니다.";
+    else{msg+="σmax가 1 이상인데도 RNN 기울기가 줄어듭니다. 은닉 상태의 tanh 미분 1 − h²가 1보다 작아 (평균 "+dmean.toFixed(2)+") 야코비안 diag(1 − h²)·W가 W만큼 늘리지 못하기 때문입니다. σmax가 클수록 은닉 상태가 ±1 근처로 포화되어 이 값이 더 작아집니다. 그래서 σmax > 1은 폭주의 필요조건일 뿐입니다.";
+      if(R[0]>L[0])msg+=" 이 설정에서는 RNN의 기울기가 LSTM보다 더 남지만, σmax가 큰 RNN은 은닉 상태가 ±1에 몰리고 작은 변화에도 궤적이 크게 달라져 학습이 불안정하므로 해결책으로 쓰지 않습니다.";}
+    msg+=bf>=1?" LSTM은 망각 게이트가 열려 있어(σ("+bf+") ≈ "+(1/(1+Math.exp(-bf))).toFixed(2)+") 셀 경로의 기울기가 천천히 줄어듭니다.":" 망각 편향이 0 근처면 망각 게이트가 약 0.5로 반쯤 닫혀 LSTM도 빠르게 잊습니다. 편향을 1로 바꿔 보세요.";
+    $("#rnMsg").textContent=msg;
+  }
+  ["#rnT","#rnS","#rnB"].forEach(s=>$(s).addEventListener("change",()=>{$("#rnMsg").textContent="계산 중…";later(render);}));
+  later(render);
+});
+
+/* ---------- 실험 6: 선형 오토인코더의 병목과 잡음 제거 ---------- */
+safe("ae",function(){
+  const S=8,P=64,r=mulberry32(77);
+  function blob(){const cx=1+5*r(),cy=1+5*r(),s=0.7+0.7*r(),a=0.5+0.5*r(),img=new Float64Array(P);
+    for(let y=0;y<S;y++)for(let x=0;x<S;x++)img[y*S+x]=a*Math.exp(-((x-cx)**2+(y-cy)**2)/(2*s*s))+0.02*gauss(r);return img;}
+  const tr=[],va=[];for(let i=0;i<400;i++)tr.push(blob());for(let i=0;i<400;i++)va.push(blob());
+  const mu=new Float64Array(P);tr.forEach(x=>{for(let i=0;i<P;i++)mu[i]+=x[i]/tr.length;});
+  const C=new Float64Array(P*P);tr.forEach(x=>{for(let i=0;i<P;i++){const di=x[i]-mu[i];for(let j=0;j<P;j++)C[i*P+j]+=di*(x[j]-mu[j])/tr.length;}});
+  const E=jacobiEig(C,P),lam=E.val.map(v=>Math.max(v,0)),V=E.vec;
+  const noise=[];const rn=mulberry32(5);for(let i=0;i<200;i++){const z=new Float64Array(P);for(let p=0;p<P;p++)z[p]=mu[p]+0.2*gauss(rn);noise.push(z);}   // 평균 이미지 + 백색 잡음
+  const totVar=lam.reduce((a,b)=>a+b,0)/P;
+  const coef=set=>set.map(x=>V.map(v=>{let s=0;for(let i=0;i<P;i++)s+=v[i]*(x[i]-mu[i]);return s;}));
+  const cTr=coef(tr),cVa=coef(va),cNo=coef(noise);
+  const noiseBase=noise.reduce((s,x)=>{let t=0;for(let i=0;i<P;i++)t+=(x[i]-mu[i])**2;return s+t;},0);
+  function curve(cs,k,sig){let tot=0;cs.forEach(c=>{for(let i=0;i<P;i++){const sh=i<k?lam[i]/(lam[i]+sig*sig):0;tot+=((1-sh)*c[i])**2;}});return tot;}
+  const mse=(cs,k,sig)=>curve(cs,k,sig)/(cs.length*P);
+  const pass=(k,sig)=>1-curve(cNo,k,sig)/noiseBase;
+  function recon(x,k,sig){const c=V.map(v=>{let s=0;for(let i=0;i<P;i++)s+=v[i]*(x[i]-mu[i]);return s;});const o=Float64Array.from(mu);
+    for(let q=0;q<k;q++){const sh=lam[q]/(lam[q]+sig*sig);for(let i=0;i<P;i++)o[i]+=sh*c[q]*V[q][i];}return o;}
+  function render(){
+    const k=+$("#aeK").value,sig=+$("#aeS").value,ii=+$("#aeI").value;$("#aeKOut").textContent=k;
+    const vm=mse(cVa,k,sig),tm=mse(cTr,k,sig),ps=pass(k,sig);
+    $("#aeVal").textContent=sci(vm);$("#aePass").textContent=pct(ps);$("#aeTr").textContent=sci(tm);$("#aeRate").innerHTML=k+" / 64<span class=\"sub\">입력의 "+pct(k/64)+"</span>";
+    const host=$("#aeImgs");host.innerHTML="";const x=va[ii],z=noise[ii];
+    pixImg(host,x,S,"검증 원본");pixImg(host,recon(x,k,sig),S,"복원");pixImg(host,z,S,"잡음 입력");pixImg(host,recon(z,k,sig),S,"잡음 복원");
+    const svg=$("#aeSvg");clear(svg);
+    const ys=[],pp=[];for(let q=1;q<=64;q++){ys.push(Math.max(mse(cVa,q,sig),1e-7));pp.push(pass(q,sig));}
+    const lo=-7,hi=-1;
+    const ax=axes(svg,{W:400,H:210,l:46,r:40,t:10,b:30,x0:1,x1:64,y0:Math.pow(10,lo),y1:Math.pow(10,hi),ylog:true,yt:[-7,-6,-5,-4,-3,-2,-1].map(v=>Math.pow(10,v)),yf:v=>"10"+sup(Math.round(Math.log10(v))),xt:[1,8,16,32,48,64],xl:"잠재 차원 k"});
+    const Y2=v=>10+(1-v)*(210-10-30);
+    [0,0.5,1].forEach(v=>el("text",{x:400-36,y:Y2(v)+4,"font-size":10.5,class:"mut"},svg,Math.round(v*100)+"%"));
+    el("path",{d:path(ys.map((v,i)=>[ax.X(i+1),ax.Y(Math.max(Math.pow(10,lo),Math.min(Math.pow(10,hi),v)))])),fill:"none",stroke:"var(--accent)","stroke-width":2.5},svg);
+    el("path",{d:path(pp.map((v,i)=>[ax.X(i+1),Y2(v)])),fill:"none",stroke:"var(--fix)","stroke-width":2.5},svg);
+    el("line",{x1:ax.X(k),x2:ax.X(k),y1:10,y2:180,class:"cur"},svg);
+    let msg;
+    if(sig===0&&k===64)msg="k = 64 (입력과 같은 크기)이면 최적해가 단위 행렬입니다. 검증 오차가 "+(vm<1e-12?"0":"사실상 0 ("+sci(vm)+")")+"이지만, 무작위 잡음도 그대로 통과합니다 (통과율 "+pct(ps)+"). 손실은 완벽한데 아무 구조도 배우지 않은 복사기입니다.";
+    else{
+      const r2=1-vm/totVar;
+      msg="k = "+k+", 학습 잡음 σ = "+sig+": 검증 이미지 분산의 "+pct(r2)+" 복원, 잡음 통과율 "+pct(ps)+"\n\n";
+      const tip=sig>0?"k를 줄이거나 학습 잡음 σ를 키워 보세요.":"k를 줄이거나 학습 잡음을 넣어 보세요.";
+      if(ps>0.9)msg+="잡음이 거의 그대로 통과하므로 아직 복사기에 가깝습니다. "+tip;
+      else if(r2<0.9)msg+="잡음은 걸러 내지만 데이터 자체도 덜 복원합니다(과소적합). "+(sig>0?"학습 잡음 σ를 줄이거나 k를 늘려 보세요.":"k를 늘려 보세요.");
+      else if(ps>0.5)msg+="데이터는 잘 복원하지만 의미 없는 잡음도 절반 넘게 통과합니다. "+tip;
+      else msg+="데이터의 구조(점의 모양)는 잘 복원하면서 의미 없는 잡음은 대부분 걸러 냅니다. 이것이 '유의미한 특징을 배운' 상태입니다.";
+      if(sig>0&&k===64)msg+=" 병목이 없어도(k = 64) 잡음 제거 학습만으로 단위 행렬에서 벗어나 복사가 깨집니다.";
+    }
+    $("#aeMsg").textContent=msg;
+  }
+  $("#aeK").addEventListener("input",()=>safe("ae",render));["#aeS","#aeI"].forEach(s=>$(s).addEventListener("change",()=>safe("ae",render)));
+  render();
+});
+
+/* ---------- 코드 블록 문법 강조 ---------- */
+safe("syntax",function(){document.querySelectorAll("pre").forEach(hlPre);});
+
+/* ---------- 퀴즈 ---------- */
+safe("quiz",function(){
+  const Q={
+    q1:[
+      {q:"ImageNet 통계(R 채널 평균 0.485, 표준편차 0.229)로 Normalize하면, R 채널의 픽셀값 0(검정)은 얼마가 되나?",o:["0","−0.485","−2.118","−1"],a:2,e:"ToTensor 뒤 값은 0이고, (0 − 0.485) / 0.229 ≈ −2.118입니다. 그래서 Normalize 뒤의 입력은 0~1이 아니라 약 −2.1~2.6 범위입니다."},
+      {q:"1920×1080 사진을 Resize((224, 224))로 바꾸면 사진 속 원은 어떻게 되나?",o:["원 그대로","가로로 넓적한 타원","세로로 길쭉한 타원 (가로가 세로의 약 0.56배)","가장자리가 잘린 원"],a:2,e:"가로는 224/1920 ≈ 0.117배, 세로는 224/1080 ≈ 0.207배로 줄어 가로가 더 많이 줄어듭니다. 가로÷세로 = 1080/1920 = 0.5625입니다(실험 1)."},
+      {q:"사전 학습 ResNet으로 추론하는 코드에서 Normalize를 빠뜨렸다. 어떤 일이 생기나?",o:["입력 shape이 달라 오류가 난다","오류 없이 실행되지만 입력 분포가 학습 때와 달라 정확도가 떨어진다","정확도에는 아무 영향이 없다","GPU에서만 오류가 난다"],a:1,e:"텐서 모양은 같으므로 오류가 나지 않습니다. 그래서 더 위험한 조용한 버그입니다. weights.transforms()로 학습 당시 전처리를 그대로 가져와 쓰면 막을 수 있습니다."}
+    ],
+    q2:[
+      {q:"손글씨 숫자 분류(MNIST)에 가장 부적절한 증강은?",o:["±10° 회전","1~2픽셀 이동","180° 회전과 좌우 반전","약한 가우시안 노이즈"],a:2,e:"180° 회전하면 6이 9가 되고, 좌우 반전한 숫자는 실제로 쓰지 않는 모양입니다. 라벨을 보존하지 못하는 증강입니다."},
+      {q:"검증 데이터에도 RandomResizedCrop을 매번 적용하면 어떤 문제가 생기나?",o:["검증 정확도가 항상 올라간다","같은 모델도 평가할 때마다 점수가 달라져, 모델이나 에포크끼리 비교할 수 없다","과적합이 사라진다","아무 영향이 없다"],a:1,e:"검증은 모델 선택의 기준이므로 결정적이어야 합니다. 검증에는 Resize · CenterCrop · Normalize만 씁니다. 여러 변형의 예측을 평균하는 TTA는 규칙을 고정해 쓰는 별도 기법입니다."},
+      {q:"MixUp에서 λ = 0.7로 고양이(클래스 0) 이미지와 개(클래스 1) 이미지를 섞었다. 손실 계산에 쓸 정답은?",o:["고양이 (0)","개 (1)","[0.7, 0.3]","[0.5, 0.5]"],a:2,e:"이미지를 0.7 · 고양이 + 0.3 · 개로 섞었으므로 라벨도 같은 비율로 섞은 확률 벡터를 씁니다. PyTorch의 cross_entropy는 이런 확률 라벨을 그대로 받습니다."}
+    ],
+    q3:[
+      {q:"일반 사진(ImageNet과 비슷한 도메인) 클래스당 100장으로 3클래스 분류기를 만든다. 가장 먼저 시도할 전략은?",o:["모든 층을 무작위 초기화해 처음부터 학습","백본을 동결하고 새 분류 헤드만 학습 (특징 추출)","모든 층을 큰 학습률로 미세 조정","입력 쪽 층만 학습하고 나머지는 동결"],a:1,e:"데이터가 적고 도메인이 비슷하면 사전 학습 특징이 그대로 쓸모 있으므로 헤드만 학습해 과적합을 막습니다. 부족하면 출력 쪽 블록부터 작은 학습률로 풉니다."},
+      {q:"헤드만 학습한 뒤 layer4의 requires_grad를 True로 바꿨는데 layer4 가중치가 전혀 바뀌지 않는다. 옵티마이저는 처음에 AdamW(model.fc.parameters())로 만들었다. 원인은?",o:["학습률이 너무 크다","layer4 파라미터가 옵티마이저에 등록되어 있지 않다","requires_grad는 학습 도중 바꿀 수 없다","배치 정규화 때문이다"],a:1,e:"기울기는 계산되지만, 옵티마이저는 등록된 파라미터만 갱신합니다. 옵티마이저를 다시 만들거나 add_param_group으로 layer4를 추가해야 합니다."},
+      {q:"사전 학습 CNN에서 새 과제와 상관없이 가장 범용적인 특징을 담은 층은?",o:["입력에 가까운 앞쪽 층 (엣지 · 색 · 질감)","출력에 가까운 뒤쪽 층","마지막 분류 층","모든 층이 똑같이 범용적"],a:0,e:"앞쪽 층은 어떤 이미지에도 쓰이는 엣지 · 색 · 질감을, 뒤쪽 층은 원래 과제의 클래스에 특화된 특징을 배웁니다(Yosinski 외, 2014). 그래서 미세 조정은 뒤쪽 층부터 풉니다."}
+    ],
+    m1:[
+      {q:"tanh RNN에서 W_hh의 최대 특이값이 0.8이다. 50단어 떨어진 앞 단어까지 가는 기울기는 최대 몇 배가 되나?",o:["0.8 × 50 = 40배","0.8⁵⁰ ≈ 1.4 × 10⁻⁵배","0.8배","1배"],a:1,e:"tanh의 미분은 1 이하라서 야코비안 하나가 기울기를 늘리는 배율은 최대 0.8입니다. 50번 곱하면 0.8⁵⁰ ≈ 1.4 × 10⁻⁵이 상한입니다."},
+      {q:"Keras pad_sequences(seqs, maxlen=100)을 기본값으로 쓰면 300토큰짜리 리뷰는 어떻게 되나?",o:["앞 100토큰만 남는다","뒤 100토큰만 남고 앞 200토큰은 버려진다","오류가 난다","가운데 100토큰이 남는다"],a:1,e:"기본값 truncating=\"pre\"는 앞부분을 자릅니다. 문장 맨 앞의 중요한 단어가 애초에 모델에 들어가지 않는 원인이 될 수 있어, 모델을 바꾸기 전에 확인해야 합니다."},
+      {q:"기울기 클리핑이 직접 해결하는 문제는?",o:["기울기 폭주","기울기 소실","패딩 처리 오류","과적합"],a:0,e:"클리핑은 기울기 노름이 임계값을 넘을 때 줄이는 방법이라 폭주를 막습니다. 이미 작아진 기울기를 키우지는 못하므로 소실에는 LSTM · GRU · 어텐션이 필요합니다."}
+    ],
+    m2:[
+      {q:"학습한 오토인코더에 의미 없는 무작위 잡음 이미지를 넣었더니 잡음이 거의 그대로 복원됐다. 가장 가능성 높은 해석은?",o:["잘 일반화된 좋은 모델이다","항등 함수(복사)를 배웠다","훈련 데이터를 암기했다","학습률이 너무 작다"],a:1,e:"데이터의 구조를 배운 모델은 그 구조에 맞지 않는 잡음을 걸러 냅니다. 무엇이든 통과시킨다면 복사기입니다. 암기라면 오히려 처음 보는 입력의 복원이 나빠야 합니다."},
+      {q:"잡음 제거 오토인코더에서 손실을 계산할 때 정답(target)은?",o:["잡음 섞인 입력","깨끗한 원본","잠재 벡터","섞은 잡음"],a:1,e:"입력은 손상시키고 정답은 깨끗한 원본으로 둡니다. 그대로 복사하면 잡음까지 출력해 손실이 커지므로, 모델은 데이터의 구조를 배울 수밖에 없습니다."},
+      {q:"이미지 압축 모델의 성능 평가로 가장 적절한 것은?",o:["훈련 데이터의 복원 MSE","잠재 차원 수 ÷ 입력 차원 수","양자화·엔트로피 부호화 뒤의 bpp와 PSNR · SSIM (rate–distortion)","모델 파라미터 수"],a:2,e:"파일 크기는 차원 수가 아니라 비트 수로 정해집니다. 실제 비트스트림의 bpp와 화질 지표를 함께 그려 기존 코덱과 비교해야 합니다."}
+    ]
+  };
+  document.querySelectorAll(".quiz").forEach(host=>{
+    const list=Q[host.dataset.quiz]||[];
+    list.forEach((it,qi)=>{
+      const box=document.createElement("div");box.className="qz";
+      const t=document.createElement("div");t.className="qt";t.innerHTML="<span>Q"+(qi+1)+".</span>";t.appendChild(document.createTextNode(it.q));box.appendChild(t);
+      const opts=document.createElement("div");opts.className="opts";box.appendChild(opts);
+      const exp=document.createElement("div");exp.className="exp";exp.hidden=true;exp.setAttribute("aria-live","polite");
+      const btns=it.o.map((o,oi)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=String.fromCharCode(9312+oi)+" "+o;
+        b.addEventListener("click",()=>{btns.forEach((x,xi)=>{x.classList.remove("right","wrong");if(xi===it.a)x.classList.add("right");});if(oi!==it.a)b.classList.add("wrong");
+          exp.hidden=false;exp.innerHTML=(oi===it.a?'<b class="ok">정답입니다.</b> ':'<b class="no">오답입니다.</b> 정답은 '+String.fromCharCode(9312+it.a)+"번. ");exp.appendChild(document.createTextNode(it.e));});
+        opts.appendChild(b);return b;});
+      box.appendChild(exp);host.appendChild(box);
+    });
+  });
+});
+})();
+</script>
+<script>
+/* 나란히 놓인 그림 칸: 칸끼리 제목·그림·설명 줄을 같은 높이로 맞춘다 */
+(function(){try{document.querySelectorAll(".panels,.tri").forEach(function(g){
+  var ps=[].filter.call(g.children,function(c){return c.classList.contains("panel");});if(ps.length<2)return;
+  var n=Math.max.apply(null,ps.map(function(p){return p.children.length;}));
+  ps.forEach(function(p){p.style.display="grid";p.style.gridRow="span "+n;p.style.gridTemplateRows="subgrid";p.style.rowGap="6px";p.style.alignContent="start";});
+});}catch(e){console.error("panel align",e);}})();
+</script>
+</body></html>
