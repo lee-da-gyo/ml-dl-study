@@ -686,7 +686,7 @@ def miou(pred, target, num_classes, ignore_index=255):
           <tr><td><b>공간 정보</b></td><td>평탄화(flatten)에서 위치 구조를 버림</td><td>끝까지 특징 지도 형태로 유지</td></tr>
           <tr><td><b>해상도 복원</b></td><td>필요 없음</td><td>전치 합성곱 업샘플링 + 스킵 연결</td></tr>
           <tr><td><b>손실</b></td><td>이미지당 교차 엔트로피 1개</td><td>픽셀마다 교차 엔트로피를 구해 합산 · 평균</td></tr>
-          <tr><td><b>성능 (논문)</b></td><td>–</td><td>PASCAL VOC 2011 검증 mean IU: FCN-32s 59.4 → FCN-16s 62.4 → FCN-8s 62.7. VOC 2012 테스트 62.2로 당시 최고 대비 20% 상대 향상</td></tr>
+          <tr><td><b>성능 (논문)</b></td><td>–</td><td>PASCAL VOC 2011 검증 mean IU: FCN-32s 59.4 → FCN-16s 62.4 → FCN-8s 62.7. VOC 2012 테스트 mean IU 62.2, 당시 최고 대비 20% 상대 향상</td></tr>
         </tbody>
       </table></div>
     </div>
@@ -801,7 +801,7 @@ class FCN8sHead(nn.Module):
       <div class="pair">
         <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">그러나 FCN은 완전 연결층을 제거하고, 대신 컨볼루션 연산만을 사용하여 전체 이미지의 공간적 정보를 유지하면서 픽셀 단위로 클래스를 예측할 수 있도록 설계되었습니다.</span></span>
         <div class="now">
-          <p><span class="lbl-now">정정</span>FCN은 완전 연결층을 <b>제거하지 않고 합성곱으로 바꿉니다</b>. fc6의 가중치 행렬 4096 × 25,088을 7×7 합성곱 필터 4,096개로 그대로 옮겨 쓰며(위 코드), 덕분에 ImageNet으로 학습한 분류 가중치를 분할에 재사용할 수 있었습니다. 이것이 FCN의 핵심 전이 학습 방법입니다.</p>
+          <p><span class="lbl-now">정정</span>FCN은 완전 연결층을 <b>제거하지 않고 합성곱으로 바꿉니다</b>. fc6의 가중치 행렬 4,096 × 25,088을 7×7 합성곱 필터 4,096개로 그대로 옮겨 쓰며(위 코드), 덕분에 ImageNet으로 학습한 분류 가중치를 분할에 재사용할 수 있었습니다. 이것이 FCN의 핵심 전이 학습 방법입니다.</p>
           <p>또 "컨볼루션 연산만" 쓰는 것도 아닙니다. ReLU, 최대 풀링, 전치 합성곱 업샘플링, 스킵 더하기, (원 구현의) 크롭이 들어 있습니다. 논문이 말하는 <b>fully convolutional</b>은 모든 층이 합성곱 · 풀링 · 원소별 활성화처럼 <b>국소 영역에만 의존하는 연산</b>이라 어떤 크기의 입력에도 적용된다는 뜻입니다.</p>
         </div>
       </div>
@@ -1148,7 +1148,7 @@ def sample(shape):
       <div class="pair">
         <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">훈련 과정에서 모델은 노이즈가 추가된 데이터를 보고, 이를 원래 데이터로 복원하는 방법을 학습합니다.</span></span>
         <div class="now">
-          <p><span class="lbl-now">정정</span>대표적인 DDPM의 신경망은 원래 데이터 x<sub>0</sub>가 아니라 <b>넣은 노이즈 ε를 예측</b>합니다. ε · x<sub>0</sub> · v 예측은 위 식으로 서로 바꿀 수 있는 동등한 매개변수화입니다. 최적의 노이즈 예측 ε*는 노이즈 섞인 분포의 score와 ∇log p<sub>t</sub>(x<sub>t</sub>) = −ε*(x<sub>t</sub>, t) / √(1 − ᾱ<sub>t</sub>)로 연결됩니다.</p>
+          <p><span class="lbl-now">정정</span>대표적인 DDPM의 신경망은 원래 데이터(x<sub>0</sub>)가 아니라 <b>넣은 노이즈 ε를 예측</b>합니다. ε · x<sub>0</sub> · v 예측은 위 식으로 서로 바꿀 수 있는 동등한 매개변수화입니다. 최적의 노이즈 예측 ε*는 노이즈 섞인 분포의 score와 ∇log p<sub>t</sub>(x<sub>t</sub>) = −ε*(x<sub>t</sub>, t) / √(1 − ᾱ<sub>t</sub>)로 연결됩니다.</p>
           <p>또 학습할 때 체인 전체를 복원하지 않고 <b>t 하나를 골라 한 단계만</b> 학습합니다. 생성할 때도 특정 원본을 되찾는 것이 아니라 학습한 분포에서 <b>새 표본을 뽑는</b> 것입니다(실험 6).</p>
         </div>
       </div>
