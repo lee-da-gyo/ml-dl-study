@@ -318,6 +318,7 @@ pre .c{color:var(--muted)}
 .stats{grid-auto-rows:auto}
 .stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
 .stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
+.stat .v .nw{white-space:nowrap}
 </style>
 </head><body>
 
@@ -404,7 +405,7 @@ pre .c{color:var(--muted)}
         </div>
       </div>
       <div class="stats">
-        <div class="stat"><div class="k">실제 깊이 · 리프 수</div><div class="v" id="dtShape">–</div></div>
+        <div class="stat"><div class="k">실제 깊이</div><div class="v" id="dtShape">–</div></div>
         <div class="stat em"><div class="k">훈련 정확도</div><div class="v" id="dtTr">–</div></div>
         <div class="stat em"><div class="k">테스트 정확도</div><div class="v" id="dtTe">–</div></div>
         <div class="stat"><div class="k">루트 분할 규칙</div><div class="v" id="dtRoot" style="font-size:13px">–</div></div>
@@ -595,7 +596,7 @@ pre .c{color:var(--muted)}
         <div class="stat"><div class="k">트리 수 M</div><div class="v" id="gbSM">–</div></div>
         <div class="stat em"><div class="k">훈련 MSE</div><div class="v" id="gbSTr">–</div></div>
         <div class="stat em"><div class="k">테스트 MSE</div><div class="v" id="gbSTe">–</div></div>
-        <div class="stat ok"><div class="k">테스트 MSE 최저 (그때 M)</div><div class="v" id="gbSBest">–</div></div>
+        <div class="stat ok"><div class="k">테스트 MSE 최저</div><div class="v" id="gbSBest">–</div></div>
       </div>
       <p class="insight" id="gbMsg" aria-live="polite"></p>
     </div>
@@ -930,7 +931,7 @@ fa.noise_variance_                                <span class="c"># 변수별 �
       </div>
       <div class="stats">
         <div class="stat" id="nnAmpBox"><div class="k">가파른 방향 증폭률 |1 − η·50|</div><div class="v" id="nnAmp">–</div></div>
-        <div class="stat"><div class="k">loss 최저 (스텝)</div><div class="v" id="nnMin">–</div></div>
+        <div class="stat"><div class="k">loss 최저</div><div class="v" id="nnMin">–</div></div>
         <div class="stat"><div class="k">처음 Inf가 된 스텝</div><div class="v" id="nnInf">–</div></div>
         <div class="stat"><div class="k">처음 NaN이 된 스텝</div><div class="v" id="nnNaN">–</div></div>
       </div>
@@ -1280,7 +1281,7 @@ safe("tree",function(){
     const t=fit(TR,d,ml);
     draw(t);const bb=chart(d,ml);
     const tra=acc(t,TR),tea=acc(t,TEST);
-    $("#dtShape").textContent=realDepth(t)+" · "+leaves(t,[]).length+"개";
+    $("#dtShape").innerHTML=realDepth(t)+'<span class="sub">'+"리프 "+leaves(t,[]).length+"개"+'</span>';
     $("#dtTr").textContent=pct(tra);$("#dtTe").textContent=pct(tea);
     const rule=t.l?fmt(t.f,t.t):"분할 없음";$("#dtRoot").textContent=rule;
     treeSvg(t);
@@ -1375,7 +1376,7 @@ safe("gb",function(){
     el("circle",{cx:cx(S.bm),cy:cy(S.te[S.bm]),r:4.5,class:"c1"},C);
     el("line",{x1:cx(M),y1:ct,x2:cx(M),y2:cb,class:"cur"},C);
     $("#gbSM").textContent=M;$("#gbSTr").textContent=f3(S.tr[M]);$("#gbSTe").textContent=f3(S.te[M]);
-    $("#gbSBest").textContent=f3(S.te[S.bm])+" (M="+S.bm+")";
+    $("#gbSBest").innerHTML=f3(S.te[S.bm])+'<span class="sub">'+"트리 "+S.bm+"개일 때"+'</span>';
     let msg="η="+eta+", 깊이 "+dep+": 테스트 MSE는 트리 "+S.bm+"개에서 가장 낮습니다("+f3(S.te[S.bm])+", 잡음 한계 0.1225).\n";
     if(M===0)msg+="M=0은 모든 x에 평균 하나를 예측하는 상태로, 편향이 가장 큽니다. 슬라이더를 오른쪽으로 옮겨 보세요.";
     else if(M<S.bm*0.4)msg+="지금은 사인 곡선을 아직 따라가지 못하는 과소적합 구간입니다. 트리를 더하면 훈련·테스트 오차가 함께 줄어듭니다. 이것이 부스팅이 편향을 줄이는 과정입니다.";
@@ -1494,8 +1495,8 @@ safe("nan",function(){
     if(fInf>=0){el("circle",{cx:sx(fInf),cy:sy(hi),r:4.5,class:"c2"},svg);el("text",{x:sx(fInf)-6,y:Tp+12,"text-anchor":"end","font-size":11.5,class:"taf"},svg,"Inf");}
     if(fNaN>=0){el("line",{x1:sx(fNaN),y1:Tp,x2:sx(fNaN),y2:B,class:"nanl"},svg);el("text",{x:sx(fNaN)+5,y:Tp+12,"font-size":11.5,"font-weight":700,class:"taf"},svg,"NaN");}
     const amp=Math.abs(1-eta*LB);const ab=$("#nnAmpBox");ab.classList.remove("warn","ok");ab.classList.add(amp>1?"warn":"ok");
-    $("#nnAmp").textContent=amp.toFixed(2)+(amp>1?" > 1 발산":" < 1 수렴");
-    $("#nnMin").textContent=Ls[mi].toExponential(1).replace("e-","e−").replace("e+","e")+" ("+mi+")";
+    $("#nnAmp").innerHTML=amp.toFixed(2)+'<span class="sub">'+(amp>1?"1보다 커서 발산":"1보다 작아 수렴")+'</span>';
+    $("#nnMin").innerHTML=Ls[mi].toExponential(1).replace("e-","e−").replace("e+","e")+'<span class="sub">'+mi+"스텝에서"+'</span>';
     $("#nnInf").textContent=fInf>=0?fInf:"없음";$("#nnNaN").textContent=fNaN>=0?fNaN:"없음";
     let msg;
     const PN={"64":"FP64","32":"FP32","16":"FP16"}[mode];

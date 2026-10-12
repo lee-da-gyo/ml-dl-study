@@ -370,6 +370,10 @@ pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .s
 .stats{grid-auto-rows:auto}
 .stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
 .stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
+.stat .v .nw{white-space:nowrap}
+.stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
+.stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
+.stat .v .sub{white-space:normal}
 </style>
 </head><body>
 
@@ -538,7 +542,7 @@ def train_step(x, y):
             <div class="stat em"><div class="k">이번에 기록된 연산 수</div><div class="v" id="dgOps">–</div></div>
             <div class="stat em"><div class="k">autograd df/dx</div><div class="v" id="dgAuto">–</div></div>
             <div class="stat"><div class="k">수치 미분 (ε = 10⁻⁶)</div><div class="v" id="dgNum">–</div></div>
-            <div class="stat"><div class="k">tf.function 그래프 수 · Python float / 텐서</div><div class="v" id="dgTF">–</div></div>
+            <div class="stat"><div class="k">tf.function 그래프 수</div><div class="v" id="dgTF">–</div></div>
           </div>
           <div class="muted" style="font-size:12.5px;line-height:1.7">
             <b>기록된 연산 수 읽는 법</b>
@@ -858,8 +862,8 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
         <div class="stat em"><div class="k">기울기 노름 비 (층 1 / 층 20)</div><div class="v" id="vnRatio">–</div></div>
         <div class="stat em"><div class="k">변화율 비 (층 1 / 층 20)</div><div class="v" id="vnURatio">–</div></div>
         <div class="stat"><div class="k">학습 전 포화 뉴런 비율 (ReLU는 죽은 뉴런)</div><div class="v" id="vnSat">–</div></div>
-        <div class="stat"><div class="k">훈련 loss 시작 → 끝</div><div class="v" id="vnLoss">–</div></div>
-        <div class="stat"><div class="k">훈련 정확도 (다수 클래스 기준선)</div><div class="v" id="vnAcc">–</div></div>
+        <div class="stat"><div class="k">훈련 loss (학습 후)</div><div class="v" id="vnLoss">–</div></div>
+        <div class="stat"><div class="k">훈련 정확도 (학습 후)</div><div class="v" id="vnAcc">–</div></div>
       </div>
       <p class="insight" id="vnMsg" aria-live="polite">계산 중…</p>
     </div>
@@ -1027,7 +1031,7 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
         <div class="stat em"><div class="k">들어가는 최대 마이크로 배치</div><div class="v" id="mmMax">–</div></div>
         <div class="stat em"><div class="k">유효 배치 (마이크로 배치 × 누적 × GPU)</div><div class="v" id="mmUse">–</div></div>
         <div class="stat ok"><div class="k">100만 개 기준 에포크당 업데이트</div><div class="v" id="mmUpd">–</div></div>
-        <div class="stat"><div class="k">상대 계산 시간 (체크포인팅)</div><div class="v" id="mmTime">–</div></div>
+        <div class="stat"><div class="k">상대 계산 시간</div><div class="v" id="mmTime">–</div></div>
       </div>
       <p class="insight" id="mmMsg" aria-live="polite"></p>
     </div>
@@ -1065,7 +1069,7 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
       </div>
       <div class="stats">
         <div class="stat"><div class="k">이 배치의 학습률</div><div class="v" id="btLr">–</div></div>
-        <div class="stat"><div class="k">에포크당 업데이트 (이 데이터 / 100만 개)</div><div class="v" id="btUpd">–</div></div>
+        <div class="stat"><div class="k">에포크당 업데이트</div><div class="v" id="btUpd">–</div></div>
         <div class="stat em"><div class="k">이 배치의 검증 loss</div><div class="v" id="btVal">–</div></div>
         <div class="stat ok"><div class="k">이 규칙에서 가장 좋은 배치</div><div class="v" id="btBest">–</div></div>
       </div>
@@ -1311,7 +1315,7 @@ safe("graph",function(){
     const auto=R.g[0],eps=1e-6,num=(fx(x+eps)-fx(x-eps))/(2*eps);
     $("#dgOps").innerHTML=(R.k+1)+'개<span class="sub">2배 '+R.k+"번 + "+(R.br?"제곱":"−3배")+" 1번</span>";
     $("#dgAuto").textContent=fv(auto);$("#dgNum").textContent=fv(num);
-    $("#dgTF").textContent=tried.size+"개 / 1개";
+    $("#dgTF").innerHTML='<span class="pr"><span class="pl">Python float</span>'+tried.size+"개"+'</span><span class="pr"><span class="pl">텐서</span>'+"1개"+'</span>';
     const mism=Math.abs(num-auto)>1e-3*Math.max(1,Math.abs(auto));
     let msg="x = "+minus(x.toFixed(1))+"에서는 while이 "+R.k+"번 돌고 "+(R.br?"h > 0":"h ≤ 0")+" 쪽 분기로 가서, 연산 "+(R.k+1)+"개가 기록됐습니다. x를 바꾸면 그래프의 길이와 마지막 연산이 바뀝니다. PyTorch는 호출할 때마다 이렇게 그래프를 새로 만들고 backward() 뒤에 버리므로 Python의 while·if를 그대로 쓸 수 있습니다. ";
     msg+="\n";
@@ -1480,9 +1484,9 @@ safe("vanish",function(){
     chart($("#vnG"),S.gn,"lb");chart($("#vnU"),S.rel,"meanf");
     const gr=S.gn[1]/S.gn[L],ur=S.rel[1]/S.rel[L];
     $("#vnRatio").textContent=sci(gr);$("#vnURatio").textContent=S.diverged?"발산":sci(ur);
-    $("#vnSat").textContent=pct(S.sat)+(actK==="relu"?" (죽은 뉴런)":" (포화)");
-    $("#vnLoss").textContent=(S.loss0>1e3?sci(S.loss0):f3(S.loss0))+" → "+(S.diverged?"발산":(S.loss1>1e3?sci(S.loss1):f3(S.loss1)));
-    $("#vnAcc").textContent=(S.diverged?"–":pct(S.acc1))+" ("+pct(BASE)+")";
+    $("#vnSat").textContent=pct(S.sat);
+    $("#vnLoss").innerHTML=(S.diverged?"발산":(S.loss1>1e3?sci(S.loss1):f3(S.loss1)))+'<span class="sub">'+"시작 "+(S.loss0>1e3?sci(S.loss0):f3(S.loss0))+'</span>';
+    $("#vnAcc").innerHTML=(S.diverged?"–":pct(S.acc1))+'<span class="sub">'+"기준선 "+pct(BASE)+'</span>';
     const name={sigmoid:"시그모이드",tanh:"tanh",relu:"ReLU"}[actK],iname={xavier:"Xavier",he:"He",big:"표준정규"}[initK];
     let msg=name+" · "+iname+" 초기화 · 잔차 "+(res?"있음":"없음")+" · "+(optK==="sgd"?"SGD":"Adam")+". ";
     const learned=!S.diverged&&S.acc1>BASE+0.1;
@@ -1535,10 +1539,10 @@ safe("mem",function(){
     el("text",{x:L,y:12,"font-size":11.5,"font-weight":700},S,"GPU "+G+"GB 중 · 고정 "+fix.toFixed(2)+"GB + 활성화 "+(micro*act).toFixed(2)+"GB (마이크로 배치 "+micro+")");
     if(cx>G)el("text",{x:R,y:12,"text-anchor":"end","font-size":11.5,"font-weight":700,class:"taf"},S,"메모리 초과");
     $("#mmFix").textContent=fix.toFixed(2)+" GB";
-    $("#mmMax").textContent=maxB?fmtN(maxB):"0 (들어가지 않음)";
+    $("#mmMax").innerHTML=maxB?fmtN(maxB):'0<span class="sub">들어가지 않음</span>';
     $("#mmUse").innerHTML=micro?fmtN(eff)+'<span class="sub">'+micro+" × "+acc+" × "+ng+"</span>":"–";
     $("#mmUpd").textContent=micro?fmtN(Math.ceil(1e6/eff))+"회":"–";
-    $("#mmTime").textContent=ck?"약 1.33배 (순전파 재계산)":"1배";
+    $("#mmTime").innerHTML=ck?'약 1.33배<span class="sub">체크포인팅: 순전파 재계산</span>':'1배<span class="sub">재계산 없음</span>';
     let msg;
     if(room<=0)msg="파라미터·기울기·옵티마이저 상태만으로 "+fix.toFixed(2)+"GB라 예약분을 빼면 활성화를 넣을 자리가 없습니다. 배치를 줄여서는 해결되지 않습니다. FSDP·ZeRO로 고정 부분을 GPU 여러 대에 나누거나, 8비트 옵티마이저, 더 큰 GPU가 필요합니다.";
     else if(!micro)msg="샘플 하나의 활성화("+(act*1024).toFixed(0)+"MB)도 남은 "+room.toFixed(2)+"GB에 들어가지 않습니다. 활성화 체크포인팅이나 AMP를 켜거나 입력 크기를 줄여 보세요.";
@@ -1603,10 +1607,10 @@ safe("batch",function(){
     el("text",{x:(Lx+Rx)/2,y:206,"text-anchor":"middle","font-size":11,class:"mut"},C,"배치 크기");
     const lr=lrOf(rule,Bs),v=RS[rule][Bs];
     $("#btLr").textContent=+lr.toPrecision(3)+"";
-    $("#btUpd").textContent=fmtN(Math.ceil(NTR/Bs))+" / "+fmtN(Math.ceil(1e6/Bs));
-    $("#btVal").textContent=isFinite(v)?v.toFixed(4)+" (하한 "+OPT.toFixed(4)+")":"발산";
+    $("#btUpd").innerHTML='<span class="pr"><span class="pl">이 데이터</span>'+fmtN(Math.ceil(NTR/Bs))+'</span><span class="pr"><span class="pl">100만 개</span>'+fmtN(Math.ceil(1e6/Bs))+'</span>';
+    $("#btVal").innerHTML=(isFinite(v)?v.toFixed(4):"발산")+'<span class="sub">하한 '+OPT.toFixed(4)+"</span>";
     let best=null;for(const B of BSET){const q=RS[rule][B];if(isFinite(q)&&(best===null||q<RS[rule][best]))best=B;}
-    $("#btBest").textContent=best?fmtN(best)+" ("+RS[rule][best].toFixed(4)+")":"–";
+    $("#btBest").innerHTML=best?fmtN(best)+'<span class="sub">'+"검증 loss "+RS[rule][best].toFixed(4)+'</span>':"–";
     const f=RS.fixed,li=RS.linear,sq=RS.sqrt;
     let msg="배치 8에서 미니배치 기울기의 코사인 유사도는 "+COS[8].toFixed(2)+", 배치 512에서 "+COS[512].toFixed(2)+"입니다. 배치가 작을수록 기울기 방향의 잡음이 크고, 커질수록 전체 기울기에 가까워지지만 그 개선은 점점 줄어듭니다. ";
     msg+="\n학습률을 고정하면 배치 크기 "+fmtN(8192)+"에서는 "+E+"에포크 동안 업데이트를 "+E+"번밖에 못 해서 검증 loss("+(isFinite(f[8192])?f[8192].toFixed(3):"발산")+")가 배치 32("+f[32].toFixed(3)+")보다 나쁩니다. ";

@@ -341,6 +341,9 @@ pre .c{color:var(--muted)}
 .stats{grid-auto-rows:auto}
 .stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
 .stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
+.stat .v .nw{white-space:nowrap}
+.stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
+.stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
 </style>
 </head><body>
 
@@ -630,7 +633,7 @@ pre .c{color:var(--muted)}
       <div class="stats">
         <div class="stat em"><div class="k">이 에포크의 훈련 정확도</div><div class="v" id="rgTr">–</div></div>
         <div class="stat em"><div class="k">이 에포크의 검증 정확도</div><div class="v" id="rgVa">–</div></div>
-        <div class="stat ok"><div class="k">조기 종료 지점 (검증 정확도)</div><div class="v" id="rgBest">–</div></div>
+        <div class="stat ok"><div class="k">조기 종료 지점</div><div class="v" id="rgBest">–</div></div>
         <div class="stat" id="rgGapBox"><div class="k">마지막 − 최저 검증 loss</div><div class="v" id="rgGap">–</div></div>
       </div>
       <p class="insight" id="rgMsg" aria-live="polite">계산 중…</p>
@@ -987,11 +990,11 @@ print(pd.Series(adv.feature_importances_, X_adv.columns).nlargest(5))   <span cl
         </div>
       </div>
       <div class="stats">
-        <div class="stat em"><div class="k">테스트 AUC 점수표 / 트리</div><div class="v" id="lnAuc">–</div></div>
+        <div class="stat em"><div class="k">테스트 AUC</div><div class="v" id="lnAuc">–</div></div>
         <div class="stat"><div class="k">트리가 내는 서로 다른 부도 확률 수</div><div class="v" id="lnLv">–</div></div>
-        <div class="stat" id="lnDecBox"><div class="k">재학습 후 결정이 바뀐 신청자 (점수표 / 트리)</div><div class="v" id="lnDec">다시 뽑기 전</div></div>
-        <div class="stat"><div class="k">트리 루트 분할 (이전 → 현재)</div><div class="v" id="lnRoot" style="font-size:13px">–</div></div>
-        <div class="stat" id="lnRsBox"><div class="k">재학습 후 사유 1순위 항목이 바뀐 거절자 (점수표 / 트리)</div><div class="v" id="lnRs">다시 뽑기 전</div></div>
+        <div class="stat" id="lnDecBox"><div class="k">재학습 후 결정이 바뀐 신청자</div><div class="v" id="lnDec">다시 뽑기 전</div></div>
+        <div class="stat"><div class="k">트리 루트 분할</div><div class="v" id="lnRoot" style="font-size:13px">–</div></div>
+        <div class="stat" id="lnRsBox"><div class="k">재학습 후 사유 1순위 항목이 바뀐 거절자</div><div class="v" id="lnRs">다시 뽑기 전</div></div>
       </div>
       <p class="insight" id="lnMsg" aria-live="polite"></p>
     </div>
@@ -1186,7 +1189,7 @@ safe("mldl",function(){
     $("#mdAccA").textContent=pct(aA);$("#mdAccB").textContent=pct(aB);$("#mdAccC").textContent=pct(aC);
     $("#mdBase").textContent=pct(base);$("#mdDiff").textContent=pp(aB-aC);$("#mdTrC").textContent=pct(trC);
     const opsB=1500*n*4,opsC=1500*n*(H*6+1);
-    $("#mdCost").textContent="약 "+Math.round(opsC/opsB)+"배 ("+Math.max(1,Math.round(t3-t2))+"ms / "+Math.max(1,Math.round(t2-t1))+"ms)";
+    $("#mdCost").innerHTML="약 "+Math.round(opsC/opsB)+"배"+'<span class="sub">'+Math.max(1,Math.round(t3-t2))+"ms / "+Math.max(1,Math.round(t2-t1))+"ms"+'</span>';
     const fname=kind==="ring"?"x₁²+x₂²":"x₁·x₂";
     let msg="① 원래 좌표만 쓴 로지스틱 회귀는 직선 하나로만 나눌 수 있어 "+pct(aA)+(aA<base-0.01?"로, 다수 클래스만 찍는 기준선("+pct(base)+")보다도 낮습니다. ":"에 그칩니다(다수 클래스 기준선 "+pct(base)+"). ");
     msg+="\n② 사람이 '"+fname+"'라는 특징 하나를 알려 주면 파라미터 4개로 "+pct(aB)+"입니다. ";
@@ -1252,7 +1255,7 @@ safe("reg",function(){
     el("circle",{cx:cx(best.ep),cy:cy(best.vaL),r:4.5,class:"c1"},C);
     el("line",{x1:cx(E),y1:T,x2:cx(E),y2:Bt,class:"cur"},C);
     $("#rgTr").textContent=pct(cur.trA);$("#rgVa").textContent=pct(cur.vaA);
-    $("#rgBest").textContent="에포크 "+best.ep+" ("+pct(best.vaA)+")";
+    $("#rgBest").innerHTML="에포크 "+best.ep+'<span class="sub">'+"검증 정확도 "+pct(best.vaA)+'</span>';
     const gap=last.vaL-best.vaL;$("#rgGap").textContent=f3(gap);
     const gb=$("#rgGapBox");gb.classList.remove("warn","ok");gb.classList.add(gap>0.05?"warn":"ok");
     let msg="";
@@ -1307,7 +1310,7 @@ safe("hps",function(){
     const k=Math.round(Math.sqrt(B));
     $("#hsG").textContent=gb.s.toFixed(3);$("#hsR").textContent=rb.s.toFixed(3);
     $("#hsRm").textContent=(sum/RUN).toFixed(3);$("#hsP").textContent=pct(win/RUN);
-    $("#hsU").textContent="격자 "+k+"개 / 랜덤 "+B+"개";
+    $("#hsU").innerHTML='<span class="pr"><span class="pl">격자</span>'+k+"개"+'</span><span class="pr"><span class="pl">랜덤</span>'+B+"개"+'</span>';
     let msg;
     if(scale==="lin"){const share=1-(0.01-LMIN)/(LMAX-LMIN);
       msg="학습률을 10⁻⁵~10⁻¹에서 선형으로 뽑으면 약 "+Math.round(share*100)+"%가 10⁻²보다 큰 값입니다. 아래 줄의 점이 오른쪽 끝에 몰린 것을 보세요.\n좋은 값(약 2.5×10⁻³)이 있는 구간을 거의 시도하지 못해 랜덤 평균 최고가 "+(sum/RUN).toFixed(3)+"에 그칩니다.\n학습률·가중치 감쇠처럼 자릿수가 바뀌는 값은 로그 척도로 뽑아야 합니다.";}
@@ -1375,7 +1378,7 @@ safe("gap",function(){
     el("text",{x:br,y:by(base)-4,"text-anchor":"end","font-size":10.5,class:"mut"},Bv,"다수 클래스 기준선 "+pct(base));
     el("text",{x:(bl+br)/2,y:194,"text-anchor":"middle","font-size":11,class:"mut"},Bv,"훈련 정확도는 자기 자신도 이웃에 포함해 잰 값");
     $("#gpAdv").textContent=adv.auc.toFixed(3);
-    $("#gpFeat").textContent=NAMES[adv.fj]+" (단독 AUC "+adv.fa.toFixed(2)+")";
+    $("#gpFeat").innerHTML=NAMES[adv.fj]+'<span class="sub">'+"단독 AUC "+adv.fa.toFixed(2)+'</span>';
     const g1=trA-cv,g2=cv-teA;
     let msg="훈련 "+pct(trA)+" · CV "+pct(cv)+" · 테스트 "+pct(teA)+".\n";
     if(g2>0.08&&adv.auc>0.7){
@@ -1454,8 +1457,8 @@ safe("loan",function(){
       const b1=leaf(prev.tree,x).rate>=cut,b2=leaf(cur.tree,x).rate>=cut;if(b1!==b2)dT++;
       if(b1&&b2){nT++;const q1=treeReasons(prev.tree,x),q2=treeReasons(cur.tree,x);if(!q1.length||!q2.length||q1[0].f!==q2[0].f)rT++;}}
     const N=TEST.X.length;
-    $("#lnDec").textContent=pct(dS/N)+" / "+pct(dT/N);
-    $("#lnRs").textContent=(nS?pct(rS/nS):"–")+" / "+(nT?pct(rT/nT):"–");
+    $("#lnDec").innerHTML='<span class="pr"><span class="pl">점수표</span>'+pct(dS/N)+'</span><span class="pr"><span class="pl">트리</span>'+pct(dT/N)+'</span>';
+    $("#lnRs").innerHTML='<span class="pr"><span class="pl">점수표</span>'+(nS?pct(rS/nS):"–")+'</span><span class="pr"><span class="pl">트리</span>'+(nT?pct(rT/nT):"–")+'</span>';
     return {dS:dS/N,dT:dT/N,rS:nS?rS/nS:0,rT:nT?rT/nT:0};}
   function render(){
     const x=sl.map((s,j)=>+s.value);F.forEach((ft,j)=>$("#lnO"+j).textContent=x[j]+ft.u);
@@ -1477,11 +1480,11 @@ safe("loan",function(){
     const tr=treeReasons(cur.tree,x);
     $("#lnTR").innerHTML=rejT?(tr.length?tr.map(o=>"<li>"+o.txt+"</li>").join(""):"<li>위험한 쪽 조건 없음</li>"):"<li>승인이라 사유 없음</li>";
     const aS=auc(TEST.X.map(q=>sLogit(w,q)),TEST.Y),aT=auc(TEST.X.map(q=>leaf(cur.tree,q).rate),TEST.Y);
-    $("#lnAuc").textContent=aS.toFixed(3)+" / "+aT.toFixed(3);
+    $("#lnAuc").innerHTML='<span class="pr"><span class="pl">점수표</span>'+aS.toFixed(3)+'</span><span class="pr"><span class="pl">트리</span>'+aT.toFixed(3)+'</span>';
     $("#lnLv").textContent=leaves(cur.tree)+"개";
     const cmp=compare();
     const rootTxt=t=>t.l?cond(t.f,t.t,true):"(분할 없음)";
-    $("#lnRoot").textContent=(prev?rootTxt(prev.tree)+" → ":"")+rootTxt(cur.tree);
+    $("#lnRoot").innerHTML=rootTxt(cur.tree)+(prev?'<span class="sub">이전: '+rootTxt(prev.tree)+"</span>":"");
     let msg="같은 신청자에게 점수표는 "+pct(ps)+", 트리는 "+pct(lf.rate)+"의 부도 확률을 냅니다. 트리는 리프 "+leaves(cur.tree)+"개 중 하나의 평균만 내므로 같은 리프의 신청자는 조건이 달라도 모두 같은 확률을 받습니다. 위험 순위를 거칠게 매기는 셈이라 테스트 AUC(점수표 "+aS.toFixed(3)+", 트리 "+aT.toFixed(3)+")도 트리가 "+(aT<aS?"더 낮습니다":"더 높습니다")+". ";
     if(rejS!==rejT)msg+="\n지금은 두 모델의 결정이 다릅니다. 어느 모델을 쓰느냐가 이 고객의 대출 여부를 바꿉니다. ";
     if(cmp){msg+="\n다시 학습했더니 결정이 바뀐 신청자는 점수표 "+pct(cmp.dS)+", 트리 "+pct(cmp.dT)+"입니다.";

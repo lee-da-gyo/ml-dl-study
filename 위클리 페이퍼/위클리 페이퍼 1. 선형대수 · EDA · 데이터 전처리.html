@@ -276,6 +276,9 @@ pre .c{color:var(--muted)}
 .stats{grid-auto-rows:auto}
 .stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
 .stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
+.stat .v .nw{white-space:nowrap}
+.stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
+.stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
 </style>
 
 <div class="wrap" id="top">
@@ -764,7 +767,7 @@ df = df.sort_values('updated_at').drop_duplicates(subset='customer_id', keep='la
         <div class="stat"><div class="k">평균</div><div class="v" id="olMean">–</div></div>
         <div class="stat"><div class="k">중앙값</div><div class="v" id="olMed">–</div></div>
         <div class="stat"><div class="k">표준편차 σ</div><div class="v" id="olSd">–</div></div>
-        <div class="stat"><div class="k">Q1 / Q3</div><div class="v" id="olQ">–</div></div>
+        <div class="stat"><div class="k">사분위수</div><div class="v" id="olQ">–</div></div>
         <div class="stat"><div class="k">IQR 경계</div><div class="v" id="olFence">–</div></div>
         <div class="stat"><div class="k">Z 경계 (평균±3σ)</div><div class="v" id="olZb">–</div></div>
         <div class="stat" id="olIqrBox"><div class="k">IQR 이상치</div><div class="v" id="olNIqr">–</div></div>
@@ -926,7 +929,7 @@ const minus=s=>String(s).replace("-","−");
     const proj=pts.map(p=>p[0]*c+p[1]*s);
     pts.forEach((p,i)=>{const fx=C+proj[i]*c*S,fy=C-proj[i]*s*S;el("line",{x1:C+p[0]*S,y1:C-p[1]*S,x2:fx,y2:fy,class:"proj"},sDyn);el("circle",{cx:fx,cy:fy,r:2.6,class:"foot"},sDyn);});
     const v=varAt(deg);
-    $("#pcaCur").textContent=v.toFixed(2)+" ("+(v/l1*100).toFixed(0)+"%)";
+    $("#pcaCur").innerHTML=v.toFixed(2)+'<span class="sub">'+"λ₁의 "+(v/l1*100).toFixed(0)+"%"+'</span>';
     strip.textContent="";
     el("line",{x1:10,y1:30,x2:350,y2:30,class:"pc1"},strip);
     proj.forEach(q=>el("circle",{cx:Math.max(8,Math.min(352,C+q*S)),cy:30,r:3.2,class:"pt",style:"fill-opacity:.45"},strip));
@@ -1090,8 +1093,8 @@ const minus=s=>String(s).replace("-","−");
     order.forEach(([v,i])=>{const x=X(v);let r=0;while(rows[r]!==undefined&&x-rows[r]<14)r++;rows[r]=x;const c=circles[i];c.setAttribute("cx",x);c.setAttribute("cy",AX-11-r*14);c.setAttribute("class","drag "+(fI[i]?"p-iqr":"p-norm")+(fZ[i]?" p-z":""));c.setAttribute("aria-valuenow",v);c.setAttribute("aria-valuetext",v+"만원"+(fI[i]?", IQR 이상치":"")+(fZ[i]?", Z 이상치":""));});
     const nI=fI.filter(Boolean).length,nZ=fZ.filter(Boolean).length;
     $("#olMean").textContent=fmt1(m);$("#olMed").textContent=fmt1(md);$("#olSd").textContent=fmt1(sd);
-    $("#olQ").textContent=fmt1(q1)+" / "+fmt1(q3);$("#olFence").textContent=minus(fmt1(lo))+" ~ "+fmt1(hi);
-    $("#olZb").textContent=minus(fmt1(zlo))+" ~ "+fmt1(zhi);
+    $("#olQ").innerHTML='<span class="pr"><span class="pl">Q1</span>'+fmt1(q1)+'</span><span class="pr"><span class="pl">Q3</span>'+fmt1(q3)+'</span>';$("#olFence").innerHTML='<span class="pr"><span class="pl">아래</span>'+minus(fmt1(lo))+'</span><span class="pr"><span class="pl">위</span>'+fmt1(hi)+'</span>';
+    $("#olZb").innerHTML='<span class="pr"><span class="pl">아래</span>'+minus(fmt1(zlo))+'</span><span class="pr"><span class="pl">위</span>'+fmt1(zhi)+'</span>';
     $("#olNIqr").textContent=nI+"개";$("#olNZ").textContent=nZ+"개";
     $("#olIqrBox").className="stat"+(nI?" warn":"");$("#olZBox").className="stat"+(nZ?" warn":"");
     const gap=m-md;let msg;
