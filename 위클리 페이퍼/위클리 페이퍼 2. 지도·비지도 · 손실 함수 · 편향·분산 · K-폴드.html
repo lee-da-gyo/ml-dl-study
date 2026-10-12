@@ -229,10 +229,22 @@ svg .val{stroke:var(--fix);stroke-width:2.5;fill:none}
 footer{font-size:13px;color:var(--muted);text-align:center}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+nav.pager a,nav.pager span{display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;line-height:1.4;min-width:0}
+nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
+nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
+nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
 </style>
 </head><body>
 
-<div class="wrap">
+<div class="wrap" id="top">
+  <nav class="pager" aria-label="위클리 이동">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%201.%20선형대수%20·%20EDA%20·%20데이터%20전처리.html" rel="prev">‹ 이전 · 01 선형대수 · EDA · 데이터 전처리</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+  </nav>
   <header class="top">
     <div class="eyebrow">WEEKLY PAPER 02 · 머신러닝 학습의 원리</div>
     <h1>지도·비지도 학습 · 손실 함수 · 편향과 분산 · K-폴드 교차 검증</h1>
@@ -1062,6 +1074,14 @@ print(m["_merge"].value_counts())</pre>
       </tbody>
     </table></div>
   </section>
+
+  <nav class="pager" aria-label="위클리 이동 (하단)">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%201.%20선형대수%20·%20EDA%20·%20데이터%20전처리.html" rel="prev">‹ 이전 · 01 선형대수 · EDA · 데이터 전처리</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+    <a href="#top">↑ 맨 위로</a>
+  </nav>
 
   <footer>위클리 페이퍼 02 · 지도·비지도 / 손실 함수 / 편향·분산 / K-폴드 / 면접 3문항 · <span class="tag-ex">예시</span> 표시가 있는 값은 설명용 가상 데이터입니다</footer>
 </div>

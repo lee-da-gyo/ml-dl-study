@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="선형대수, EDA, 결측·중복·이상치 처리를 실험과 퀴즈로 정리한 학습 노트">
-<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}nav.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+nav.pager a,nav.pager span{display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;line-height:1.4;min-width:0}
+nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
+nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
+nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
+</style>
 <title>위클리 페이퍼 Q1–Q3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -242,8 +248,13 @@ html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 
-<div class="wrap">
-  <a href="../" style="font-size:14px;color:var(--accent);text-decoration:none;font-weight:600">← ML·DL 스터디 노트 목차</a>
+<div class="wrap" id="top">
+  <nav class="pager" aria-label="위클리 이동">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <span class="off" aria-disabled="true">‹ 이전 위클리 없음</span>
+    <a href="위클리%20페이퍼%202.%20지도·비지도%20·%20손실%20함수%20·%20편향·분산%20·%20K-폴드.html" rel="next">다음 · 02 지도·비지도 · 손실 함수 · 편향·분산 ›</a>
+  </nav>
   <header class="top">
     <div class="eyebrow">WEEKLY PAPER 01 · 머신러닝 기초</div>
     <h1>선형대수 · EDA · 데이터 전처리</h1>
@@ -696,6 +707,14 @@ df['purchase_log']  = np.log1p(df['purchase'])                     <span class="
       <div class="quiz" data-quiz="q3"></div>
     </div>
   </section>
+
+  <nav class="pager" aria-label="위클리 이동 (하단)">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <span class="off" aria-disabled="true">‹ 이전 위클리 없음</span>
+    <a href="위클리%20페이퍼%202.%20지도·비지도%20·%20손실%20함수%20·%20편향·분산%20·%20K-폴드.html" rel="next">다음 · 02 지도·비지도 · 손실 함수 · 편향·분산 ›</a>
+    <a href="#top">↑ 맨 위로</a>
+  </nav>
 
   <footer>위클리 페이퍼 정리 · 선형대수 / EDA / 데이터 전처리 · <span class="tag-ex">예시</span> 표시가 있는 값은 설명용 가상 데이터입니다</footer>
 </div>

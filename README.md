@@ -11,7 +11,7 @@
 
 | 주차 | 주제 | 주요 질문 | 바로 보기 |
 | --- | --- | --- | --- |
-| 01 | 선형대수 · EDA · 데이터 전처리 | 점점 더 ML에 필요한 이유 / EDA란 무엇인가 / 결측·중복·이상치 처리 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%201.%20%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98%20%C2%B7%20EDA%20%C2%B7%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%A0%84%EC%B2%98%EB%A6%AC.html) |
+| 01 | 선형대수 · EDA · 데이터 전처리 | 선형대수가 ML에 필요한 이유 / EDA란 무엇인가 / 결측·중복·이상치 처리 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%201.%20%EC%84%A0%ED%98%95%EB%8C%80%EC%88%98%20%C2%B7%20EDA%20%C2%B7%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%A0%84%EC%B2%98%EB%A6%AC.html) |
 | 02 | 지도·비지도 · 손실 함수 · 편향·분산 · K-폴드 | 지도와 비지도 학습의 차이 / 손실 함수란 / 편향과 분산의 관계 / K-폴드의 K 선택 + 면접 3문항 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%202.%20%EC%A7%80%EB%8F%84%C2%B7%EB%B9%84%EC%A7%80%EB%8F%84%20%C2%B7%20%EC%86%90%EC%8B%A4%20%ED%95%A8%EC%88%98%20%C2%B7%20%ED%8E%B8%ED%96%A5%C2%B7%EB%B6%84%EC%82%B0%20%C2%B7%20K-%ED%8F%B4%EB%93%9C.html) |
 
 ## 위클리 페이퍼 01에서 해 볼 수 있는 것
