@@ -359,11 +359,14 @@ svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
 header.top p.flowline{color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 14px;width:fit-content;max-width:100%}
 .stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px;white-space:nowrap}
 /* 위클리 05 코드 색 (Python 문법 강조) */
-:root{--sy-k:#8a3ffc;--sy-s:#0f7a55;--sy-n:#b4460c;--sy-f:#2448c9;--sy-d:#a15c00}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}}
-:root[data-theme="dark"]{--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}
+/* 코드 색: 예약어 보라 · 문자열 빨강 · 숫자 청록 · 내장 함수 파랑 · 타입 하늘 · 함수·클래스 이름 노랑 · 데코레이터 노랑 · 주석 회색 · 오류 빨간 물결 밑줄 */
+:root{--sy-k:#8a3ffc;--sy-s:#c53030;--sy-n:#0f766e;--sy-b:#1f5fd1;--sy-t:#0369a1;--sy-f:#a16207;--sy-d:#a16207;--sy-err:#e5484d}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sy-k:#c4a1ff;--sy-s:#ff7b72;--sy-n:#5fd4c4;--sy-b:#82aaff;--sy-t:#7dd3fc;--sy-f:#f2cc60;--sy-d:#f2cc60;--sy-err:#ff6b6b}}
+:root[data-theme="dark"]{--sy-k:#c4a1ff;--sy-s:#ff7b72;--sy-n:#5fd4c4;--sy-b:#82aaff;--sy-t:#7dd3fc;--sy-f:#f2cc60;--sy-d:#f2cc60;--sy-err:#ff6b6b}
 pre .sy-k{color:var(--sy-k);font-weight:600} pre .sy-s{color:var(--sy-s)} pre .sy-n{color:var(--sy-n)}
-pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .sy-b{color:var(--sy-n);font-style:italic}
+pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .sy-b{color:var(--sy-b)} pre .sy-t{color:var(--sy-t)}
+pre .sy-self{color:var(--sy-k);font-style:italic} pre .c{color:var(--muted)}
+.sy-err,.repl .in:has(+ .er){text-decoration:underline wavy var(--sy-err);text-decoration-thickness:1.5px;text-underline-offset:4px;text-decoration-skip-ink:none}
 /* 원래 답안은 취소선 없이 그대로 읽히게 */
 .was{text-decoration:none!important;color:var(--ink)!important}
 /* 수치 칸: 같은 줄의 칸끼리 제목 높이를 맞춰 값이 같은 높이에서 시작하게 한다 */
@@ -1249,7 +1252,8 @@ const fmtN=n=>n.toLocaleString("ko-KR");
 
 /* Python 문법 강조: 주석·키워드·내장 함수·문자열·숫자·호출·데코레이터 */
 const SY_KW=new Set("import from as def return for in if elif else with try except finally while class lambda not and or is None True False yield pass break continue raise global assert".split(" "));
-const SY_BI=new Set("print range len enumerate zip min max sum abs dict list tuple set int float str bool isinstance super open map sorted".split(" "));
+const SY_BI=new Set("print range len enumerate zip min max sum abs isinstance super open map sorted round any all iter next getattr setattr hasattr reversed format input id hash vars dir callable".split(" "));
+const SY_TY=new Set("int float str bool tuple list dict set frozenset bytes bytearray complex object type".split(" "));
 const SY_RE=/(#.*)|(@[A-Za-z_][\w.]*)|([rbfu]?"(?:[^"\\\n]|\\.)*"|[rbfu]?'(?:[^'\\\n]|\\.)*')|(\b\d+(?:\.\d+)?(?:e[-+]?\d+)?\b)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)/g;
 function hlPre(pre){
   if(pre.closest(".card"))return;   // 오류 메시지 블록은 그대로
@@ -1258,8 +1262,8 @@ function hlPre(pre){
   nodes.forEach(n=>{const t=n.nodeValue,frag=document.createDocumentFragment();let last=0,m;SY_RE.lastIndex=0;
     while((m=SY_RE.exec(t))){let cls=null;
       if(m[1])cls="c";else if(m[2])cls="sy-d";else if(m[3])cls="sy-s";else if(m[4])cls="sy-n";
-      else if(m[5])cls=SY_KW.has(m[5])?"sy-k":SY_BI.has(m[5])?"sy-b":"sy-f";
-      else if(SY_KW.has(m[6]))cls="sy-k";else if(m[6]==="self")cls="sy-b";
+      else if(m[5])cls=SY_KW.has(m[5])?"sy-k":SY_TY.has(m[5])?"sy-t":SY_BI.has(m[5])?"sy-b":"sy-f";
+      else if(SY_KW.has(m[6]))cls="sy-k";else if(SY_TY.has(m[6]))cls="sy-t";else if(m[6]==="self"||m[6]==="cls")cls="sy-self";else if(/\b(def|class)\s+$/.test(t.slice(0,m.index))||/^[A-Z](?=\w*[a-z])\w*$/.test(m[6]))cls="sy-f";
       if(!cls)continue;
       if(m.index>last)frag.appendChild(document.createTextNode(t.slice(last,m.index)));
       const sp=document.createElement("span");sp.className=cls;sp.textContent=m[0];frag.appendChild(sp);last=m.index+m[0].length;}
