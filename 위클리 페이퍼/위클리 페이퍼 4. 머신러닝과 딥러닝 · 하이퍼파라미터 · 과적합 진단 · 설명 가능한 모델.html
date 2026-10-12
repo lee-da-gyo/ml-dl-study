@@ -344,6 +344,8 @@ pre .c{color:var(--muted)}
 .stat .v .nw{white-space:nowrap}
 .stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
 .stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
+.tri .panel .acc{display:flex;flex-direction:column;gap:2px}
+.tri .panel .acc>span{white-space:nowrap}
 </style>
 </head><body>
 
@@ -452,9 +454,9 @@ pre .c{color:var(--muted)}
         <button type="button" class="btn pri" id="mdNew">학습 데이터 다시 뽑기</button>
       </div>
       <div class="tri">
-        <div class="panel"><h5>① 전통 ML · 원래 좌표</h5><div class="svgbox"><svg id="mdA" viewBox="0 0 200 200" role="img" aria-label="원래 좌표만 쓴 로지스틱 회귀의 결정 영역"></svg></div><div class="acc">테스트 <b id="mdAccA">–</b> · 파라미터 3개</div></div>
-        <div class="panel"><h5>② 전통 ML · 사람이 만든 특징 추가</h5><div class="svgbox"><svg id="mdB" viewBox="0 0 200 200" role="img" aria-label="사람이 만든 특징을 더한 로지스틱 회귀의 결정 영역"></svg></div><div class="acc">테스트 <b id="mdAccB">–</b> · 파라미터 4개</div></div>
-        <div class="panel"><h5>③ 딥러닝 · 원래 좌표만 받는 MLP</h5><div class="svgbox"><svg id="mdC" viewBox="0 0 200 200" role="img" aria-label="신경망의 결정 영역"></svg></div><div class="acc">테스트 <b id="mdAccC">–</b> · 파라미터 65개</div></div>
+        <div class="panel"><h5>① 전통 ML · 원래 좌표</h5><div class="svgbox"><svg id="mdA" viewBox="0 0 200 200" role="img" aria-label="원래 좌표만 쓴 로지스틱 회귀의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccA">–</b></span><span>파라미터 3개</span></div></div>
+        <div class="panel"><h5>② 전통 ML · 사람이 만든 특징 추가</h5><div class="svgbox"><svg id="mdB" viewBox="0 0 200 200" role="img" aria-label="사람이 만든 특징을 더한 로지스틱 회귀의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccB">–</b></span><span>파라미터 4개</span></div></div>
+        <div class="panel"><h5>③ 딥러닝 · 원래 좌표만 받는 MLP</h5><div class="svgbox"><svg id="mdC" viewBox="0 0 200 200" role="img" aria-label="신경망의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccC">–</b></span><span>파라미터 65개</span></div></div>
       </div>
       <div class="keyrow">
         <span><span class="sw c" style="background:var(--add)"></span>양성 학습 데이터</span>
@@ -1563,5 +1565,13 @@ safe("quiz",function(){
   }
   try{document.querySelectorAll("pre:not(.rules)").forEach(hl);}catch(e){console.error("syntax",e);}
 })();
+</script>
+<script>
+/* 나란히 놓인 그림 칸: 칸끼리 제목·그림·설명 줄을 같은 높이로 맞춘다 */
+(function(){try{document.querySelectorAll(".panels,.tri").forEach(function(g){
+  var ps=[].filter.call(g.children,function(c){return c.classList.contains("panel");});if(ps.length<2)return;
+  var n=Math.max.apply(null,ps.map(function(p){return p.children.length;}));
+  ps.forEach(function(p){p.style.display="grid";p.style.gridRow="span "+n;p.style.gridTemplateRows="subgrid";p.style.rowGap="6px";p.style.alignContent="start";});
+});}catch(e){console.error("panel align",e);}})();
 </script>
 </body></html>
