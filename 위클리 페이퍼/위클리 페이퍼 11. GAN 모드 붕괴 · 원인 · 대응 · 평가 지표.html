@@ -758,7 +758,7 @@ const fmtN=n=>n.toLocaleString("ko-KR");
 /* Python 문법 강조: 주석·키워드·내장 함수·문자열·숫자·호출·데코레이터 */
 const SY_KW=new Set("import from as def return for in if elif else with try except finally while class lambda not and or is None True False yield pass break continue raise global assert".split(" "));
 const SY_BI=new Set("print range len enumerate zip min max sum abs dict list tuple set int float str bool isinstance super open map sorted".split(" "));
-const SY_RE=/(#.*)|(@[A-Za-z_][\w.]*)|([rbfu]?"(?:[^"\\n]|\.)*"|[rbfu]?'(?:[^'\\n]|\.)*')|(\b\d+(?:\.\d+)?(?:e[-+]?\d+)?\b)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)/g;
+const SY_RE=/(#.*)|(@[A-Za-z_][\w.]*)|([rbfu]?"(?:[^"\\\n]|\\.)*"|[rbfu]?'(?:[^'\\\n]|\\.)*')|(\b\d+(?:\.\d+)?(?:e[-+]?\d+)?\b)|([A-Za-z_]\w*)(?=\()|([A-Za-z_]\w*)/g;
 function hlPre(pre){
   if(pre.closest(".card"))return;   // 오류 메시지 블록은 그대로
   const w=document.createTreeWalker(pre,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".c,.cnt,[class^='sy-']")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
@@ -814,7 +814,7 @@ safe("kl",function(){
       el("polyline",Object.assign({points:q.join(" "),fill:"none","stroke-width":k<2?5.5:2.2,"stroke-opacity":k<2?0.45:1},STY[k]),S);});
     R.out.forEach((o,k)=>{$(IDS[k]).innerHTML='<span class="pr"><span class="pl">μ</span>'+o.mu.toFixed(2)+'</span><span class="pr"><span class="pl">σ</span>'+o.s.toFixed(2)+'</span><span class="sub">'+(o.one?"한쪽 봉우리만 덮음":"두 봉우리 사이를 넓게 덮음")+"</span>";});
     const one=R.out.map((o,k)=>o.one?NAMES[k]:null).filter(Boolean),both=R.out.map((o,k)=>o.one?null:NAMES[k]).filter(Boolean);
-    let msg="d = "+d.toFixed(2)+"에서 ";
+    let msg="d = "+d.toFixed(2)+"일 때 ";
     if(!one.length)msg+="네 목적함수 모두 두 봉우리 가운데(μ ≈ 0)에 σ를 넓힌 가우시안을 고릅니다. 봉우리가 가까우면 가운데를 덮어도 손해가 작기 때문입니다.";
     else if(!both.length)msg+="네 목적함수 모두 한쪽 봉우리만 덮습니다.";
     else msg+=both.join(" · ")+" 목적은 두 봉우리 사이를 넓게 덮고(데이터가 없는 가운데에도 확률을 둠), "+one.join(" · ")+" 목적은 한쪽 봉우리만 정확히 덮고 다른 봉우리를 통째로 버립니다.";
@@ -936,7 +936,7 @@ safe("gan",function(){
     if(Math.max(...ms)!==Math.min(...ms))msg+=" 같은 설정인데도 시드에 따라 "+Math.min(...ms)+"개에서 "+Math.max(...ms)+"개까지 갈립니다.";
     const base=results["1|1|0"];
     if(base&&k!=="1|1|0"){const b=modesOf(base),ba=b.reduce((a,c)=>a+c,0)/4;
-      msg+="\n기준(1 : 1, 끔)의 평균 "+ba.toFixed(2)+"과 비교하면 "+(avg<ba-0.25?"모드가 줄었습니다.":avg>ba+0.25?"모드가 늘었습니다.":"비슷합니다.");}
+      msg+="\n기준(1 : 1, 끔)의 평균("+ba.toFixed(2)+")과 비교하면 "+(avg<ba-0.25?"모드가 줄었습니다.":avg>ba+0.25?"모드가 늘었습니다.":"비슷합니다.");}
     const pair=mb?results[nd+"|"+ng+"|0"]:results[nd+"|"+ng+"|1"];
     if(pair){const pa=modesOf(pair).reduce((a,c)=>a+c,0)/4;
       msg+="\n같은 업데이트 비에서 Minibatch StdDev를 "+(mb?"끈":"켠")+" 결과의 평균은 "+pa.toFixed(2)+"입니다. ";
@@ -987,7 +987,7 @@ safe("metric",function(){
     if(kind==="ok")msg+="\n같은 분포에서 뽑았으므로 FID가 실제 vs 실제 값("+F0.toFixed(3)+")보다 크지 않고, 두 지표 모두 높습니다. 표본이 유한해 FID가 정확히 0이 되지는 않습니다.";
     if(kind==="half"||kind==="one")msg+="\nPrecision은 높게 유지되지만 Recall이 덮은 봉우리 비율("+modes+"/8 = "+(modes/8).toFixed(3)+") 근처로 떨어집니다. 이미지 한 장 한 장은 진짜 같은데 종류가 부족한 모드 붕괴의 지문입니다.";
     if(kind==="wide")msg+="\n이번에는 반대로 Recall은 높고 Precision이 떨어집니다. 다양하긴 하지만 봉우리 밖의 '어색한' 샘플이 많다는 뜻으로, 붕괴와는 다른 문제입니다."+(F<=Math.max(2*F0,0.05)?" 이 경우 FID("+F.toFixed(3)+")도 실제 vs 실제 값 수준이라 품질 저하를 거의 잡지 못합니다. 공분산이 조금만 커지기 때문입니다.":"");
-    if(kind==="blob")msg+="\n샘플 대부분이 봉우리 밖, 원 안쪽에 퍼져 있어 Precision이 "+pr.toFixed(3)+"에 그칩니다. 그런데도 FID("+F.toFixed(3)+")는 모드 누락("+Fh.toFixed(3)+")이나 완전 붕괴("+Fo.toFixed(3)+")보다 훨씬 낮습니다. 평균과 공분산을 실제 데이터와 같게 만든 분포라, 두 통계량만 비교하는 FID로는 거의 구별되지 않기 때문입니다. 실제 FID는 고차원 Inception 특징을 쓰므로 이렇게 극단적이지는 않지만, 평균 · 공분산만 본다는 한계는 같습니다.";
+    if(kind==="blob")msg+="\n샘플 대부분이 봉우리 밖, 원 안쪽에 퍼져 있어 Precision("+pr.toFixed(3)+")이 낮습니다. 그런데도 FID("+F.toFixed(3)+")는 모드 누락("+Fh.toFixed(3)+")이나 완전 붕괴("+Fo.toFixed(3)+")보다 훨씬 낮습니다. 평균과 공분산을 실제 데이터와 같게 만든 분포라, 두 통계량만 비교하는 FID로는 거의 구별되지 않기 때문입니다. 실제 FID는 고차원 Inception 특징을 쓰므로 이렇게 극단적이지는 않지만, 평균 · 공분산만 본다는 한계는 같습니다.";
     if(N<=100)msg+="\n샘플이 100개뿐이면 실제 vs 실제 FID도 커집니다. FID는 표본 수에 따라 편향되므로 같은 개수끼리만 비교해야 합니다.";
     $("#mtMsg").textContent=msg;}
   const go=()=>{$("#mtMsg").textContent="계산 중…";later(render);};
@@ -1004,7 +1004,7 @@ safe("quiz",function(){
     q1:[
       {q:"생성자의 비포화 손실 −log D(G(z))만으로는 다양한 얼굴이 보장되지 않는 가장 근본적인 이유는?",o:["판별자가 샘플을 하나씩 채점하므로, 모든 z가 같은 고득점 이미지를 내도 손실이 커지지 않는다","로그 때문에 기울기가 항상 0이 된다","잠재벡터 z의 차원이 항상 너무 작다","생성자는 판별자보다 항상 약하다"],a:0,e:"손실이 샘플별 점수의 평균이라 샘플끼리 비교하는 항이 없습니다. 판별자를 고정하면 모든 z를 argmax D로 보내는 것이 최적이 됩니다. Minibatch StdDev처럼 판별자가 배치 단위 통계를 보게 하는 기법이 이 빈틈을 막습니다."},
       {q:"ProGAN · StyleGAN의 Minibatch StdDev 층에 대한 설명으로 맞는 것은?",o:["생성자 입력 z에 배치 표준편차를 더한다","판별자 입력 이미지를 배치 표준편차로 나눠 표준화한다","판별자 마지막 블록 직전에, 샘플 간 특징 표준편차의 평균을 특징 맵 한 장으로 붙인다","배치 정규화를 다르게 부르는 이름이다"],a:2,e:"특징 표준편차를 모든 특징 · 위치에 걸쳐 평균한 숫자 하나를 특징 맵 한 장으로 복제해 이어 붙입니다. 배치의 생성 샘플이 서로 비슷하면 이 값이 실제 배치보다 작아져 판별자가 알아챕니다."},
-      {q:"새 기법을 넣었더니 Precision 0.95, Recall 0.20이 나왔고 FID는 기준 모델보다 조금 나쁜 정도다. 가장 알맞은 해석은?",o:["품질과 다양성이 모두 충분하다","생성 이미지는 실제처럼 보이지만 실제 분포의 일부만 덮는다. 모드 누락 · 붕괴를 의심한다","이미지가 흐리고 어색하다","FID가 크게 나쁘지 않으므로 문제없다"],a:1,e:"Precision은 품질, Recall은 포괄 범위입니다. FID는 특징의 평균 · 공분산만 비교하는 숫자 하나라서 다양성 부족을 크게 드러내지 못할 수 있습니다(실험 3). 고정 z 격자와 함께 확인해야 합니다."}
+      {q:"새 기법을 넣었더니 Recall만 크게 떨어졌다(Precision 0.95, Recall 0.20). FID는 기준 모델보다 조금 나쁜 정도다. 가장 알맞은 해석은?",o:["품질과 다양성이 모두 충분하다","생성 이미지는 실제처럼 보이지만 실제 분포의 일부만 덮는다. 모드 누락 · 붕괴를 의심한다","이미지가 흐리고 어색하다","FID가 크게 나쁘지 않으므로 문제없다"],a:1,e:"Precision은 품질, Recall은 포괄 범위입니다. FID는 특징의 평균 · 공분산만 비교하는 숫자 하나라서 다양성 부족을 크게 드러내지 못할 수 있습니다(실험 3). 고정 z 격자와 함께 확인해야 합니다."}
     ]
   };
   document.querySelectorAll(".quiz").forEach(host=>{
