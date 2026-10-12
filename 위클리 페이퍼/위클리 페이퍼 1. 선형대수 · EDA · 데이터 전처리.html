@@ -189,7 +189,7 @@ svg .gl{stroke:var(--grid);stroke-width:1;fill:none}
 svg .pc1{stroke:var(--accent);stroke-width:3;fill:none}
 svg .pc2{stroke:var(--add);stroke-width:3;fill:none}
 svg .ghost{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:6 5;fill:none}
-svg .proj{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3;fill:none;opacity:.8}
+svg .proj{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3;fill:none;opacity:.45}
 svg .foot{fill:var(--accent)}
 svg .box{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
 svg .med{stroke:var(--accent);stroke-width:3}
@@ -643,13 +643,13 @@ df = df.sort_values('updated_at').drop_duplicates(subset='customer_id', keep='la
         <div class="t"><span class="badge b-lab">실험 5</span> 이상치 실험: 점을 끌어서 극단값 만들기 <span class="tag-ex">예시 데이터 · 가상의 고객 15명 월 구매액 (만원)</span></div>
         <div class="how">아래 점들을 좌우로 드래그하세요 (키보드: 점 선택 후 ← →, Shift와 함께 누르면 10씩). 평균·중앙값, 박스플롯, IQR 경계(주황 점선), Z-score 경계(초록 점선)가 바로 다시 계산됩니다.</div>
       </div>
-      <div class="svgbox"><svg id="olSvg" viewBox="0 0 700 230" role="img" aria-label="드래그 가능한 점, 박스플롯, 이상치 경계"></svg></div>
+      <div class="svgbox" style="overflow-x:auto"><svg id="olSvg" style="min-width:620px" viewBox="0 0 700 252" role="img" aria-label="드래그 가능한 점, 박스플롯, 이상치 경계"></svg></div>
       <div class="keyrow">
         <span><span class="sw c" style="background:var(--accent)"></span>정상</span>
         <span><span class="sw c" style="background:var(--fix)"></span>IQR 기준 이상치</span>
         <span><span class="sw c" style="border:3px solid var(--ink)"></span>Z-score 기준 이상치 (|z|&gt;3)</span>
-        <span><span class="sw" style="background:var(--add)"></span>▼ 평균</span>
-        <span><span class="sw" style="background:var(--accent)"></span>◆ 중앙값</span>
+        <span><span class="sw" style="background:var(--add)"></span>▲ 평균</span>
+        <span><span class="sw" style="background:var(--accent);width:3px"></span>박스 안 굵은 선 = 중앙값</span>
       </div>
       <div class="ctrls">
         <button type="button" class="btn" id="olReset">예시 초기화</button>
@@ -762,7 +762,9 @@ const minus=s=>String(s).replace("-","−");
   const svg=$("#pcaSvg"),strip=$("#pcaStrip"),curve=$("#pcaCurve"),ang=$("#pcaAng");
   const S=34,C=180;
   let pts=[],Sxx=0,Syy=0,Sxy=0,pcAng=0,l1=0,l2=0,seed=11,anim=null;
-  const sGrid=el("g",null,svg),sGhost=el("g",null,svg),sDyn=el("g",null,svg),sPts=el("g",null,svg);
+  const defs=el("defs",null,svg),cp=el("clipPath",{id:"pcaClip"},defs);el("rect",{x:0,y:0,width:360,height:360,rx:8},cp);
+  const sGrid=el("g",{"clip-path":"url(#pcaClip)"},svg),sGhost=el("g",{"clip-path":"url(#pcaClip)"},svg),sDyn=el("g",{"clip-path":"url(#pcaClip)"},svg),sPts=el("g",null,svg);
+  el("rect",{x:0.5,y:0.5,width:359,height:359,rx:8,class:"ax"},svg);
   for(let k=-5;k<=5;k++){el("line",{x1:C+k*S,y1:0,x2:C+k*S,y2:360,class:"gl"},sGrid);el("line",{x1:0,y1:C+k*S,x2:360,y2:C+k*S,class:"gl"},sGrid);}
   el("line",{x1:0,y1:C,x2:360,y2:C,class:"ax"},sGrid);el("line",{x1:C,y1:0,x2:C,y2:360,class:"ax"},sGrid);
   el("text",{x:352,y:C-6,"text-anchor":"end","font-size":11,class:"mut"},sGrid,"특성 1");
@@ -809,7 +811,7 @@ const minus=s=>String(s).replace("-","−");
     $("#pcaCur").textContent=v.toFixed(2)+" ("+(v/l1*100).toFixed(0)+"%)";
     strip.textContent="";
     el("line",{x1:10,y1:30,x2:350,y2:30,class:"pc1"},strip);
-    proj.forEach(q=>el("circle",{cx:Math.max(8,Math.min(352,C+q*S)),cy:30,r:4,class:"pt"},strip));
+    proj.forEach(q=>el("circle",{cx:Math.max(8,Math.min(352,C+q*S)),cy:30,r:3.2,class:"pt",style:"fill-opacity:.45"},strip));
     const sd=Math.sqrt(v);
     el("line",{x1:C-sd*S,y1:44,x2:C+sd*S,y2:44,style:"stroke:var(--fix);stroke-width:2"},strip);
     el("text",{x:10,y:13,"font-size":10.5,class:"mut"},strip,"현재 축으로 줄인 1차원 결과 · 주황 막대 = ±1 표준편차");
@@ -926,10 +928,11 @@ const minus=s=>String(s).replace("-","−");
   let vals=[...base],drag=-1;
   const X=v=>30+v*3.2;
   const sStat=el("g",null,svg),sDyn=el("g",null,svg),sPts=el("g",null,svg);
-  el("line",{x1:30,y1:196,x2:670,y2:196,class:"ax"},sStat);
-  for(let t=0;t<=200;t+=20){el("line",{x1:X(t),y1:196,x2:X(t),y2:201,class:"ax"},sStat);el("text",{x:X(t),y:215,"font-size":11,"text-anchor":"middle",class:"mut"},sStat,t);}
-  el("text",{x:670,y:228,"font-size":10.5,"text-anchor":"end",class:"mut"},sStat,"월 구매액 (만원, 예시)");
-  const circles=vals.map((v,i)=>{const c=el("circle",{r:8,tabindex:0,class:"drag p-norm",role:"slider","aria-valuemin":0,"aria-valuemax":200,"aria-label":"고객 "+(i+1)+" 구매액"},sPts);
+  const AX=212;
+  el("line",{x1:30,y1:AX,x2:670,y2:AX,class:"ax"},sStat);
+  for(let t=0;t<=200;t+=20){el("line",{x1:X(t),y1:AX,x2:X(t),y2:AX+5,class:"ax"},sStat);el("text",{x:X(t),y:AX+20,"font-size":11,"text-anchor":"middle",class:"mut"},sStat,t);}
+  el("text",{x:670,y:AX+36,"font-size":10.5,"text-anchor":"end",class:"mut"},sStat,"월 구매액 (만원, 예시)");
+  const circles=vals.map((v,i)=>{const c=el("circle",{r:6.5,tabindex:0,class:"drag p-norm",role:"slider","aria-valuemin":0,"aria-valuemax":200,"aria-label":"고객 "+(i+1)+" 구매액"},sPts);
     c.addEventListener("pointerdown",e=>{drag=i;svg.setPointerCapture(e.pointerId);e.preventDefault();});
     c.addEventListener("keydown",e=>{const d=e.shiftKey?10:1;if(e.key==="ArrowRight"||e.key==="ArrowUp"){vals[i]=Math.min(200,vals[i]+d);render();e.preventDefault();}if(e.key==="ArrowLeft"||e.key==="ArrowDown"){vals[i]=Math.max(0,vals[i]-d);render();e.preventDefault();}});
     return c;});
@@ -944,25 +947,29 @@ const minus=s=>String(s).replace("-","−");
     sDyn.textContent="";
     const cl=v=>Math.max(0,Math.min(200,v));
     // fences
-    [[lo,"IQR 하한"],[hi,"IQR 상한"]].forEach(([v,lb],k)=>{if(v>=0&&v<=200){el("line",{x1:X(v),y1:22,x2:X(v),y2:192,class:"fence"},sDyn);el("text",{x:X(v),y:14,"font-size":10.5,"text-anchor":k?"start":"end",dx:k?-2:2,style:"fill:var(--fix)"},sDyn,lb+" "+fmt1(v));}});
-    [[zlo,"평균−3σ"],[zhi,"평균+3σ"]].forEach(([v,lb],k)=>{if(v>=0&&v<=200){el("line",{x1:X(v),y1:22,x2:X(v),y2:192,class:"zline"},sDyn);el("text",{x:X(v),y:30,"font-size":10.5,"text-anchor":k?"start":"end",dx:k?-2:2,style:"fill:var(--add)"},sDyn,lb+" "+fmt1(v));}});
+    // 경계선 라벨: 하한은 선 왼쪽, 상한은 선 오른쪽 (화면 가장자리에서는 안쪽으로)
+    const fenceLabel=(v,lb,k,y,color)=>{const x=X(v);let anchor=k?"start":"end",dx=k?5:-5;if(!k&&x<140){anchor="start";dx=5;}if(k&&x>560){anchor="end";dx=-5;}
+      el("text",{x,y,dx,"font-size":10.5,"text-anchor":anchor,style:"fill:"+color},sDyn,lb+" "+fmt1(v));};
+    [[lo,"IQR 하한"],[hi,"IQR 상한"]].forEach(([v,lb],k)=>{if(v>=0&&v<=200){el("line",{x1:X(v),y1:20,x2:X(v),y2:AX-2,class:"fence"},sDyn);fenceLabel(v,lb,k,14,"var(--fix)");}});
+    [[zlo,"평균−3σ"],[zhi,"평균+3σ"]].forEach(([v,lb],k)=>{if(v>=0&&v<=200){el("line",{x1:X(v),y1:34,x2:X(v),y2:AX-2,class:"zline"},sDyn);fenceLabel(v,lb,k,30,"var(--add)");}
+      else if(k&&v>200){el("text",{x:X(200),y:30,"font-size":10.5,"text-anchor":"end",style:"fill:var(--add)"},sDyn,lb+" "+fmt1(v)+" → 그림 밖");}
+      else if(!k&&v<0&&zhi>0){el("text",{x:X(0),y:30,"font-size":10.5,"text-anchor":"start",style:"fill:var(--add)"},sDyn,"← "+lb+" "+minus(fmt1(v)));}});
     // boxplot
     const inside=vals.filter((v,i)=>!fI[i]);const wl=Math.min(...inside),wh=Math.max(...inside);
-    el("line",{x1:X(wl),y1:62,x2:X(q1),y2:62,class:"wh"},sDyn);el("line",{x1:X(q3),y1:62,x2:X(wh),y2:62,class:"wh"},sDyn);
-    el("line",{x1:X(wl),y1:52,x2:X(wl),y2:72,class:"wh"},sDyn);el("line",{x1:X(wh),y1:52,x2:X(wh),y2:72,class:"wh"},sDyn);
-    el("rect",{x:X(q1),y:44,width:Math.max(1,X(q3)-X(q1)),height:36,rx:3,class:"box"},sDyn);
-    el("line",{x1:X(md),y1:44,x2:X(md),y2:80,class:"med"},sDyn);
-    // mean/median markers
-    const yM=100;
-    el("path",{d:"M"+(X(md)-7)+","+yM+" L"+X(md)+","+(yM-7)+" L"+(X(md)+7)+","+yM+" L"+X(md)+","+(yM+7)+" Z",class:"medmk"},sDyn);
-    el("path",{d:"M"+(X(m)-7)+","+(yM+10)+" L"+(X(m)+7)+","+(yM+10)+" L"+X(m)+","+(yM+20)+" Z",class:"meanmk"},sDyn);
-    const far=Math.abs(X(m)-X(md))>60;
-    el("text",{x:X(md),y:yM-11,"font-size":11,"text-anchor":"middle",style:"fill:var(--accent)","font-weight":700},sDyn,"중앙값 "+fmt1(md));
-    el("text",{x:X(m)+(far?0:10),y:yM+33,"font-size":11,"text-anchor":far?"middle":"start",style:"fill:var(--add)","font-weight":700},sDyn,"평균 "+fmt1(m));
-    // points
-    const lanes=[146,164,182];
+    const bT=44,bB=74,bM=(bT+bB)/2;
+    el("line",{x1:X(wl),y1:bM,x2:X(q1),y2:bM,class:"wh"},sDyn);el("line",{x1:X(q3),y1:bM,x2:X(wh),y2:bM,class:"wh"},sDyn);
+    el("line",{x1:X(wl),y1:bM-9,x2:X(wl),y2:bM+9,class:"wh"},sDyn);el("line",{x1:X(wh),y1:bM-9,x2:X(wh),y2:bM+9,class:"wh"},sDyn);
+    el("rect",{x:X(q1),y:bT,width:Math.max(1,X(q3)-X(q1)),height:bB-bT,rx:3,class:"box"},sDyn);
+    el("line",{x1:X(md),y1:bT,x2:X(md),y2:bB,class:"med"},sDyn);
+    // 평균: 박스 아래 ▲, 라벨은 중앙값과 반대 방향으로 벌려서 겹치지 않게
+    el("path",{d:"M"+(X(m)-6)+","+(bB+14)+" L"+(X(m)+6)+","+(bB+14)+" L"+X(m)+","+(bB+4)+" Z",class:"meanmk"},sDyn);
+    const yL=bB+30,meanRight=m>=md;
+    el("text",{x:X(md),y:yL,dx:meanRight?-4:4,"font-size":11,"text-anchor":meanRight?"end":"start",style:"fill:var(--accent)","font-weight":700},sDyn,"중앙값 "+fmt1(md));
+    el("text",{x:X(m),y:yL,dx:meanRight?4:-4,"font-size":11,"text-anchor":meanRight?"start":"end",style:"fill:var(--add)","font-weight":700},sDyn,"평균 "+fmt1(m));
+    // points: 가까운 점은 위로 쌓기 (겹침 방지)
     const order=vals.map((v,i)=>[v,i]).sort((a,b)=>a[0]-b[0]);
-    order.forEach(([v,i],k)=>{const c=circles[i];c.setAttribute("cx",X(v));c.setAttribute("cy",lanes[k%3]);c.setAttribute("class","drag "+(fI[i]?"p-iqr":"p-norm")+(fZ[i]?" p-z":""));c.setAttribute("aria-valuenow",v);c.setAttribute("aria-valuetext",v+"만원"+(fI[i]?", IQR 이상치":"")+(fZ[i]?", Z 이상치":""));});
+    const rows=[];
+    order.forEach(([v,i])=>{const x=X(v);let r=0;while(rows[r]!==undefined&&x-rows[r]<14)r++;rows[r]=x;const c=circles[i];c.setAttribute("cx",x);c.setAttribute("cy",AX-11-r*14);c.setAttribute("class","drag "+(fI[i]?"p-iqr":"p-norm")+(fZ[i]?" p-z":""));c.setAttribute("aria-valuenow",v);c.setAttribute("aria-valuetext",v+"만원"+(fI[i]?", IQR 이상치":"")+(fZ[i]?", Z 이상치":""));});
     const nI=fI.filter(Boolean).length,nZ=fZ.filter(Boolean).length;
     $("#olMean").textContent=fmt1(m);$("#olMed").textContent=fmt1(md);$("#olSd").textContent=fmt1(sd);
     $("#olQ").textContent=fmt1(q1)+" / "+fmt1(q3);$("#olFence").textContent=minus(fmt1(lo))+" ~ "+fmt1(hi);
