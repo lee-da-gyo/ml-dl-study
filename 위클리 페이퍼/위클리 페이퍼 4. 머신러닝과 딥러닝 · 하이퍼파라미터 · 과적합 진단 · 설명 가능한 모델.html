@@ -1,0 +1,1339 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>위클리 페이퍼 04</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: 위클리 #1~#3과 같은 모눈 노트 위의 학습 카드. 질문마다 [한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈] */
+:root{
+  --bg:#f3f5f8; --paper:#ffffff; --grid:#e3e8ef;
+  --ink:#1b2433; --muted:#5b6678; --line:#d5dce6;
+  --accent:#2448c9; --accent-soft:#e6ecfb;
+  --mark:#ffe36b; --add:#0f7a55; --add-soft:#e1f4ec; --fix:#c2410c; --fix-soft:#fdeee4;
+  --code-bg:#f0f2f6;
+  --f-display:"Black Han Sans","IBM Plex Sans KR",sans-serif;
+  --f-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151c; --paper:#171c25; --grid:#1d2430;
+  --ink:#e6eaf1; --muted:#9aa5b8; --line:#2b3442;
+  --accent:#8aa6ff; --accent-soft:#1f2a47;
+  --mark:#6b5a12; --add:#4fd1a0; --add-soft:#13302a; --fix:#ff9a62; --fix-soft:#3a2216;
+  --code-bg:#10141b; color-scheme:dark}
+
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px;}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4,h5{text-wrap:balance;margin:0}
+p{margin:0}
+header.top{display:flex;flex-direction:column;gap:10px}
+header.top .eyebrow{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700}
+header.top h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,5vw,38px);line-height:1.25}
+header.top p{color:var(--muted);max-width:68ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;color:var(--muted)}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;gap:8px;flex-wrap:wrap;
+  background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line)}
+nav.toc a{text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--paper);
+  padding:5px 11px;border-radius:999px;font-size:13.5px;font-weight:500}
+nav.toc a.iv{border-style:dashed}
+nav.toc a:hover,nav.toc a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:4px;letter-spacing:.04em;vertical-align:2px;white-space:nowrap}
+.b-add{background:var(--add-soft);color:var(--add)}
+.b-fix{background:var(--fix-soft);color:var(--fix)}
+.b-core{background:var(--accent-soft);color:var(--accent)}
+.b-lab{background:var(--ink);color:var(--paper)}
+.tag-ex{display:inline-block;font-size:11px;font-weight:700;padding:0 7px;border-radius:4px;border:1px dashed var(--muted);color:var(--muted);letter-spacing:.04em;vertical-align:2px;line-height:1.7;white-space:nowrap}
+mark{background:var(--mark);color:inherit;padding:0 2px;border-radius:2px}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+
+section.q{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,4vw,36px);
+  display:flex;flex-direction:column;gap:28px;scroll-margin-top:64px}
+.qhead{display:flex;gap:16px;align-items:flex-start}
+.qnum{font-family:var(--f-display);font-size:44px;line-height:1;color:var(--accent);white-space:nowrap}
+.qnum.iv{font-size:30px;padding-top:4px}
+.qhead h2{font-size:clamp(18px,3vw,23px);font-weight:700;line-height:1.45}
+.qhead .min{min-width:0;display:flex;flex-direction:column;gap:4px}
+.qhead .kind{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--muted)}
+.oneline{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 8px 8px 0;font-size:16.5px;font-weight:500}
+.oneline small{display:block;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em;margin-bottom:2px}
+h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.part{font-size:12px;font-weight:700;letter-spacing:.1em;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-bottom:-12px}
+.block{display:flex;flex-direction:column;gap:14px}
+.muted{color:var(--muted)}
+.fig{border:1px dashed var(--line);border-radius:10px;padding:16px;overflow-x:auto}
+.fig figcaption{font-size:13px;color:var(--muted);margin-top:10px}
+figure{margin:0}
+.formula{font-family:var(--f-mono);font-size:15px;text-align:center;padding:14px 10px;background:var(--code-bg);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.formula .fb{color:var(--accent);font-weight:600}.formula .fv{color:var(--fix);font-weight:600}.formula .fn{color:var(--muted);font-weight:600}
+
+/* demo shell */
+.demo{border:1.5px solid var(--ink);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:14px;background:var(--paper)}
+.demo-head{display:flex;flex-direction:column;gap:4px}
+.demo-head .t{font-weight:700;font-size:16px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.demo-head .how{font-size:13.5px;color:var(--muted)}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
+button.btn{font:inherit;font-size:13.5px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+button.btn:hover{border-color:var(--accent);color:var(--accent)}
+button.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button.btn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select{font:inherit;font-size:14px;padding:4px 8px;border-radius:6px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+input[type=range]{accent-color:var(--accent);width:100%}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px}
+.stat{background:var(--code-bg);border-radius:8px;padding:8px 10px;min-width:0}
+.stat .k{font-size:11.5px;color:var(--muted);font-weight:700;line-height:1.4}
+.stat .v{font-family:var(--f-mono);font-size:15px;font-variant-numeric:tabular-nums}
+.stat.em{background:var(--accent-soft)} .stat.em .v{color:var(--accent);font-weight:600}
+.stat.warn{background:var(--fix-soft)} .stat.warn .v{color:var(--fix);font-weight:600}
+.stat.ok{background:var(--add-soft)} .stat.ok .v{color:var(--add);font-weight:600}
+.insight{font-size:14.5px;border-left:3px solid var(--accent);padding:4px 0 4px 12px}
+.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:720px){.split{grid-template-columns:1fr}}
+.side{display:flex;flex-direction:column;gap:12px;min-width:0}
+.panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:620px){.panels{grid-template-columns:1fr}}
+.panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.panel h5{font-size:14px}
+.panel .cap{font-size:12.5px;color:var(--muted)}
+.svgbox svg{width:100%;height:auto;display:block}
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.sw.c{border-radius:50%}
+.sw.ln{height:3px;width:16px;border-radius:0;vertical-align:3px}
+.sw.dash{height:0;width:16px;border-radius:0;border-top:2px dashed var(--ink);vertical-align:3px}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--code-bg);font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.03em}
+tr:last-child td{border-bottom:0}
+td b{color:var(--accent)}
+table.num td,table.num th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 10px}
+table.num td:first-child{font-family:var(--f-body);font-weight:700}
+table.num td:last-child{font-family:var(--f-body)}
+.df{font-family:var(--f-mono);font-size:12.5px;min-width:620px}
+.df td,.df th{padding:6px 10px;white-space:nowrap}
+.df td.memo{font-family:var(--f-body);white-space:normal;min-width:180px}
+.df .na{color:var(--fix);font-weight:600}
+.df tr.drop td{text-decoration:line-through;opacity:.5}
+.df .chg{background:var(--mark);border-radius:3px;padding:0 3px}
+.df .fill{background:var(--add-soft);color:var(--add);border-radius:3px;padding:0 3px;font-weight:600}
+
+/* cards grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card h4{font-size:15.5px}
+.card p,.card li{font-size:14.5px}
+.card ul{margin:0;padding-left:18px}
+.card .k{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.08em}
+.card.add{border-color:var(--add);background:var(--add-soft)} .card.add .k{color:var(--add)}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.mini{grid-template-columns:1fr}}
+
+/* flow */
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;counter-reset:s}
+.step{position:relative;border:1px solid var(--line);border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--paper)}
+.step::before{counter-increment:s;content:"STEP " counter(s);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.1em}
+.step b{font-size:15px}
+.step span{font-size:13px;color:var(--muted);line-height:1.55}
+.step code{font-size:11.5px}
+.step.add{border-color:var(--add);background:var(--add-soft)} .step.add::before{color:var(--add)}
+@media (max-width:820px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:440px){.flow{grid-template-columns:1fr}}
+
+.codewrap{display:flex;flex-direction:column;gap:6px}
+.codecap{font-size:12.5px;color:var(--muted)}
+pre{margin:0;font-family:var(--f-mono);font-size:13px;line-height:1.65;background:var(--code-bg);border-radius:10px;padding:14px 16px;overflow-x:auto}
+pre .c{color:var(--muted)}
+pre .hl{background:var(--mark);border-radius:3px}
+.note{border-radius:10px;padding:14px 16px;font-size:14.5px;display:flex;flex-direction:column;gap:8px}
+.note.add{background:var(--add-soft)}
+.note.fix{background:var(--fix-soft)}
+.note b.t{font-size:13px;letter-spacing:.05em}
+.note.add b.t{color:var(--add)} .note.fix b.t{color:var(--fix)}
+.was{display:block;color:var(--muted);text-decoration:line-through;text-decoration-color:var(--fix);text-decoration-thickness:1.5px}
+.now{display:block}
+.lbl-was,.lbl-now{font-weight:700;color:var(--fix);margin-right:4px}
+.pair{display:flex;flex-direction:column;gap:2px;padding:8px 10px;background:var(--paper);border-radius:8px}
+
+.speech{border:2px solid var(--ink);border-radius:12px;padding:18px 18px 16px;position:relative;font-size:15px}
+.speech::before{content:"면접 30초 답변";position:absolute;top:-11px;left:14px;background:var(--paper);padding:0 8px;font-size:12px;font-weight:700;letter-spacing:.06em}
+
+/* svg */
+svg text{font-family:var(--f-body);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+svg .ax{stroke:var(--line);stroke-width:1.5;fill:none}
+svg .gl{stroke:var(--grid);stroke-width:1;fill:none}
+svg .c0{fill:var(--accent)} svg .c1{fill:var(--add)} svg .c2{fill:var(--fix)}
+svg .cg{fill:var(--muted);fill-opacity:.55}
+svg .r0{fill:var(--accent);fill-opacity:.10} svg .r1{fill:var(--add);fill-opacity:.12} svg .r2{fill:var(--fix);fill-opacity:.12}
+svg .cent{stroke:var(--ink);stroke-width:3;fill:none}
+svg .pt{fill:var(--accent);fill-opacity:.85}
+svg .ptx{fill:var(--fix)}
+svg .fitln{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .mseln{stroke:var(--accent);stroke-width:2;stroke-dasharray:7 5;fill:none}
+svg .maeln{stroke:var(--add);stroke-width:2;stroke-dasharray:3 4;fill:none}
+svg .res{stroke:var(--fix);stroke-width:1.5;fill:none}
+svg .sq{fill:var(--fix);fill-opacity:.14;stroke:var(--fix);stroke-opacity:.45;stroke-width:1}
+svg .truef{stroke:var(--ink);stroke-width:2;stroke-dasharray:6 4;fill:none}
+svg .thin{stroke:var(--accent);stroke-width:1.2;stroke-opacity:.35;fill:none}
+svg .meanf{stroke:var(--add);stroke-width:3;fill:none}
+svg .lb{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .lv{stroke:var(--fix);stroke-width:2.5;fill:none}
+svg .lt{stroke:var(--ink);stroke-width:2.5;fill:none}
+svg .ln{stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 4;fill:none}
+svg .cur{stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3}
+svg .ring{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .bull{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .shot{fill:var(--fix);stroke:var(--paper);stroke-width:1}
+svg .ftr{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+svg .fva{fill:var(--fix)}
+svg .pos-t{fill:var(--ink)} svg .pos-v{fill:var(--paper)}
+svg .bar-a{fill:var(--fix)} svg .bar-b{fill:var(--add)}
+svg .curve{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .curvefill{fill:var(--accent-soft)}
+svg .tail{fill:var(--fix);fill-opacity:.35}
+svg .vmean{stroke:var(--add);stroke-width:2.5}
+svg .vmed{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:5 3}
+svg .trl{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .val{stroke:var(--fix);stroke-width:2.5;fill:none}
+
+/* quiz */
+.quiz{display:flex;flex-direction:column;gap:12px}
+.qz{border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.qz .qt{font-weight:600}
+.qz .qt span{color:var(--accent);margin-right:6px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;font:inherit;font-size:14.5px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer;line-height:1.5}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--add);background:var(--add-soft)}
+.opt.wrong{border-color:var(--fix);background:var(--fix-soft)}
+.exp{font-size:14px;background:var(--code-bg);border-radius:8px;padding:10px 12px}
+.exp b.ok{color:var(--add)} .exp b.no{color:var(--fix)}
+
+footer{font-size:13px;color:var(--muted);text-align:center}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+nav.pager{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}
+nav.pager a,nav.pager span{display:inline-flex;align-items:center;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:var(--paper);color:var(--ink);text-decoration:none;font-weight:500;line-height:1.4;min-width:0}
+nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var(--accent);outline:none}
+nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
+nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
+nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
+/* 위클리 03에서 이어 쓰는 스타일 */
+svg .leaf0{fill:var(--accent);fill-opacity:.13} svg .leaf1{fill:var(--add);fill-opacity:.17}
+svg .leafb{fill:none;stroke:var(--paper);stroke-width:1.2}
+svg .p0{fill:var(--accent)} svg .p1{fill:var(--add)}
+svg .p0,svg .p1{stroke:var(--paper);stroke-width:.8}
+svg .trueb{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:5 4;fill:none}
+svg .box{fill:var(--paper);stroke:var(--line);stroke-width:1.5}
+svg .boxa{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .boxg{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .boxf{fill:var(--fix-soft);stroke:var(--fix);stroke-width:1.5}
+svg .arr{stroke:var(--muted);stroke-width:1.5;fill:none}
+svg .ahp{fill:var(--muted)}
+svg .edge{stroke:var(--line);stroke-width:2;fill:none}
+svg .edgea{stroke:var(--accent);stroke-width:2;fill:none}
+svg .tac{fill:var(--accent)} svg .tad{fill:var(--add)} svg .taf{fill:var(--fix)}
+svg .modelc{stroke:var(--accent);stroke-width:2.5;fill:none}
+svg .treec{stroke:var(--add);stroke-width:2.5;fill:none}
+svg .resp{fill:var(--fix);fill-opacity:.8}
+svg .zero{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+svg .nanl{stroke:var(--fix);stroke-width:2;stroke-dasharray:4 3}
+svg .barp{fill:var(--accent);fill-opacity:.75}
+svg .barm{fill:var(--fix)}
+table.ldt{min-width:680px;font-size:13.5px}
+table.ldt th,table.ldt td{padding:7px 10px;text-align:center;vertical-align:middle}
+table.ldt td:first-child,table.ldt th:first-child{text-align:left}
+table.ldt td:first-child{font-weight:700}
+td.ld{position:relative;font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+td.ld .bar{position:absolute;left:4px;top:22%;height:56%;border-radius:3px;background:var(--accent);opacity:.2}
+td.ld .bar.neg{background:var(--fix)}
+td.ld .n{position:relative}
+td.ld.hi .n{font-weight:700;color:var(--accent)}
+td.ld.tr{color:var(--muted)}
+th.grp{text-align:center!important;border-left:1px solid var(--line)}
+td.gl,th.gl{border-left:1px solid var(--line)}
+table.heat{min-width:420px}
+table.heat td,table.heat th{text-align:center;font-family:var(--f-mono);font-variant-numeric:tabular-nums;padding:8px 6px}
+table.heat td:first-child,table.heat th:first-child{font-family:var(--f-body)}
+table.dec td{font-variant-numeric:tabular-nums}
+table.dec td.best{color:var(--add);font-weight:700}
+.treebox{overflow-x:auto;border:1px solid var(--line);border-radius:10px;padding:6px}
+.treebox svg{display:block;max-width:none;margin:0 auto}
+svg .boxd{fill:var(--paper);stroke:var(--muted);stroke-width:1.5;stroke-dasharray:4 3}
+svg .lf0{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5} svg .lf1{fill:var(--add-soft);stroke:var(--add);stroke-width:1.5}
+svg .trunc{fill:var(--code-bg);stroke:var(--line);stroke-width:1.2;stroke-dasharray:3 3}
+pre.rules{font-size:12.5px;line-height:1.6;max-height:320px;overflow:auto;white-space:pre}
+.formula.left{text-align:left;white-space:pre;line-height:1.9}
+.sl5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.sl5 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:440px){.sl5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.opt,.exp,.insight,.stat .v{overflow-wrap:anywhere}
+select{max-width:100%}
+/* 위클리 04 추가 스타일 */
+.tri{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:720px){.tri{grid-template-columns:1fr}}
+.tri .panel .acc{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.tri .panel .acc b{color:var(--accent)}
+.sl4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.sl4 label{font-size:12.5px;font-weight:700;display:flex;flex-direction:column;gap:2px;min-width:0}
+@media (max-width:620px){.sl4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+svg .gpt{fill:var(--ink)} svg .rpt{fill:var(--fix)}
+svg .gpt,svg .rpt{stroke:var(--paper);stroke-width:1}
+svg .bestr{fill:none;stroke:var(--ink);stroke-width:2}
+svg .opt{fill:none;stroke:var(--add);stroke-width:2.5}
+svg .hm{fill:var(--accent)}
+svg .venn0{fill:var(--paper);stroke:var(--muted);stroke-width:1.5}
+svg .venn1{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+svg .venn2{fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:1.5}
+svg .venn3{fill:var(--add-soft);stroke:var(--add);stroke-width:2}
+.verdict{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.verdict .big{font-family:var(--f-mono);font-size:20px;font-variant-numeric:tabular-nums}
+.verdict ol,.verdict ul{margin:0;padding-left:20px;font-size:14px}
+.verdict .k{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--muted)}
+table.contrib{min-width:0;font-size:13.5px}
+table.contrib td,table.contrib th{padding:6px 8px}
+</style>
+</head><body>
+
+<div class="wrap" id="top">
+  <nav class="pager" aria-label="위클리 이동">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%203.%20결정%20트리%20·%20부스팅%20·%20PCA·요인%20분석.html" rel="prev">‹ 이전 · 03 결정 트리 · 부스팅 · PCA·요인 분석</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+  </nav>
+  <header class="top">
+    <div class="eyebrow">WEEKLY PAPER 04 · 머신러닝과 딥러닝, 튜닝, 일반화 진단과 설명 가능성</div>
+    <h1>머신러닝과 딥러닝 · 하이퍼파라미터 · 과적합 진단 · 설명 가능한 모델</h1>
+    <p>실습 해설 2문항과 면접 2문항을 정리했습니다. 각 문항은 <b>한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈</b> 순서로 읽으면 됩니다. 원래 답안(실습 해설과 작성 답안)에서 틀린 부분은 주황색 <b>정정</b>, 새로 더한 내용은 초록색 <b>보충</b>으로 표시했습니다.</p>
+    <div class="legend">
+      <span><span class="badge b-core">핵심</span> 꼭 알아야 할 개념</span>
+      <span><span class="badge b-add">보충</span> 원래 답안에 새로 더한 내용</span>
+      <span><span class="badge b-fix">정정</span> 원래 답안에서 틀렸거나 과장된 부분</span>
+      <span><span class="badge b-lab">실험</span> 값을 바꿔 보는 인터랙티브</span>
+      <span><span class="tag-ex">예시</span> 설명용으로 만든 가상의 값</span>
+    </div>
+  </header>
+
+  <nav class="toc" aria-label="질문 바로가기">
+    <a href="#q1">Q1 머신러닝 ⊃ 딥러닝</a>
+    <a href="#q2">Q2 하이퍼파라미터</a>
+    <a class="iv" href="#m1">면접 1 훈련 99% · 테스트 70%</a>
+    <a class="iv" href="#m2">면접 2 대출 거절 사유</a>
+    <a href="#sum">총정리</a>
+  </nav>
+
+  <!-- ===================== Q1 ===================== -->
+  <section class="q" id="q1">
+    <div class="qhead"><div class="qnum">Q1</div><div class="min"><div class="kind">실습 해설</div><h2>딥러닝과 머신러닝 간의 포함관계에 대해 설명해주세요.</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      <mark>딥러닝은 머신러닝의 하위 분야</mark>다. 더 정확히는 인공지능 ⊃ 머신러닝 ⊃ 표현 학습 ⊃ 딥러닝이다. 둘을 가르는 기준은 "신경망을 쓰는가"보다 <mark>입력을 어떤 특징으로 바꿀지를 사람이 정하는가, 여러 층이 데이터에서 직접 배우는가</mark>이다. 그래서 모든 딥러닝은 머신러닝이지만, 선형 회귀·결정 트리·SVM처럼 딥러닝이 아닌 머신러닝도 많다.
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 포함관계와 각 영역의 예</h3>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 640 300" role="img" aria-label="인공지능 안에 머신러닝, 그 안에 표현 학습, 그 안에 딥러닝이 들어 있는 포함관계 그림">
+          <rect class="venn0" x="6" y="6" width="628" height="288" rx="18"/>
+          <text x="22" y="32" font-size="14" font-weight="700">인공지능 (AI)</text>
+          <text x="22" y="52" font-size="12" class="mut">규칙 기반 전문가 시스템, 탐색·계획(체스 엔진의 탐색), 지식 베이스</text>
+          <rect class="venn1" x="40" y="66" width="580" height="216" rx="16"/>
+          <text x="56" y="90" font-size="14" font-weight="700" class="tac">머신러닝 (ML)</text>
+          <text x="56" y="110" font-size="12" class="mut">데이터로 규칙을 학습: 선형·로지스틱 회귀, 결정 트리, SVM, k-NN, GBDT</text>
+          <rect class="venn2" x="76" y="124" width="530" height="146" rx="14"/>
+          <text x="92" y="148" font-size="14" font-weight="700" class="tac">표현 학습</text>
+          <text x="92" y="168" font-size="12" class="mut">특징(표현) 자체를 데이터에서 학습: 얕은 오토인코더, PCA 같은 차원 축소</text>
+          <rect class="venn3" x="112" y="182" width="480" height="76" rx="12"/>
+          <text x="128" y="208" font-size="14" font-weight="700" class="tad">딥러닝 (DL)</text>
+          <text x="128" y="230" font-size="12" class="mut">여러 층이 단순한 특징 → 복잡한 특징을 차례로 학습</text>
+          <text x="128" y="248" font-size="12" class="mut">다층 퍼셉트론(MLP), CNN, RNN, 트랜스포머</text>
+        </svg></div>
+        <figcaption>Goodfellow·Bengio·Courville의 <i>Deep Learning</i>(2016) 1장의 벤 다이어그램과 같은 구조입니다. 인공지능에는 학습하지 않는 방법(사람이 규칙을 직접 쓰는 시스템)도 들어 있으므로 "AI = 머신러닝"도 아닙니다.</figcaption>
+      </figure>
+      <figure class="fig">
+        <div class="svgbox"><svg viewBox="0 0 640 196" role="img" aria-label="전통 머신러닝은 사람이 만든 특징 다음에 학습되는 모델이 오고, 딥러닝은 특징 추출부터 분류까지 모두 학습된다">
+          <defs><marker id="ahQ" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ahp" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+          <text x="10" y="18" font-size="13" font-weight="700">전통적인 머신러닝</text>
+          <rect class="box" x="10" y="32" width="100" height="44" rx="8"/><text x="60" y="58" text-anchor="middle" font-size="12.5">입력 (사진)</text>
+          <rect class="boxf" x="150" y="32" width="190" height="44" rx="8"/><text x="245" y="52" text-anchor="middle" font-size="12.5">사람이 설계한 특징</text><text x="245" y="68" text-anchor="middle" font-size="11" class="mut">HOG·SIFT, 단어 빈도, 파생 변수</text>
+          <rect class="boxa" x="380" y="32" width="140" height="44" rx="8"/><text x="450" y="52" text-anchor="middle" font-size="12.5">학습되는 모델</text><text x="450" y="68" text-anchor="middle" font-size="11" class="mut">SVM, 로지스틱 회귀</text>
+          <rect class="box" x="560" y="32" width="70" height="44" rx="8"/><text x="595" y="58" text-anchor="middle" font-size="12.5">출력</text>
+          <line class="arr" x1="110" y1="54" x2="147" y2="54" marker-end="url(#ahQ)"/><line class="arr" x1="340" y1="54" x2="377" y2="54" marker-end="url(#ahQ)"/><line class="arr" x1="520" y1="54" x2="557" y2="54" marker-end="url(#ahQ)"/>
+          <text x="10" y="112" font-size="13" font-weight="700">딥러닝 (종단 간 학습)</text>
+          <rect class="box" x="10" y="126" width="100" height="44" rx="8"/><text x="60" y="152" text-anchor="middle" font-size="12.5">입력 (픽셀)</text>
+          <rect class="boxg" x="150" y="126" width="110" height="44" rx="8"/><text x="205" y="146" text-anchor="middle" font-size="12.5">층 1</text><text x="205" y="162" text-anchor="middle" font-size="11" class="mut">모서리·색</text>
+          <rect class="boxg" x="270" y="126" width="110" height="44" rx="8"/><text x="325" y="146" text-anchor="middle" font-size="12.5">층 2~3</text><text x="325" y="162" text-anchor="middle" font-size="11" class="mut">무늬·귀·눈</text>
+          <rect class="boxa" x="410" y="126" width="110" height="44" rx="8"/><text x="465" y="146" text-anchor="middle" font-size="12.5">분류 층</text><text x="465" y="162" text-anchor="middle" font-size="11" class="mut">고양이일 확률</text>
+          <rect class="box" x="560" y="126" width="70" height="44" rx="8"/><text x="595" y="152" text-anchor="middle" font-size="12.5">출력</text>
+          <line class="arr" x1="110" y1="148" x2="147" y2="148" marker-end="url(#ahQ)"/><line class="arr" x1="380" y1="148" x2="407" y2="148" marker-end="url(#ahQ)"/><line class="arr" x1="520" y1="148" x2="557" y2="148" marker-end="url(#ahQ)"/>
+          <text x="335" y="190" text-anchor="middle" font-size="11.5" class="mut">초록·파랑 = 데이터로 학습되는 부분, 주황 = 사람이 정하는 부분</text>
+        </svg></div>
+        <figcaption>차이는 "학습되는 범위"입니다. 전통적인 방식은 특징을 사람이 만들고 그 위의 모델만 학습하고, 딥러닝은 특징을 만드는 층까지 한꺼번에 학습합니다. 그렇다고 사람이 할 일이 없어지지는 않습니다. 아래 정정을 보세요.</figcaption>
+      </figure>
+    </div>
+
+    <div class="demo" id="demo-mldl">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 1</span> 사람이 특징을 알려 줄 때 vs 신경망이 스스로 배울 때 <span class="tag-ex">예시 데이터 · 2차원 점, 학습 라벨 5% 잡음</span></div>
+        <div class="how">같은 데이터에 세 모델을 학습합니다. ① 원래 좌표 (x₁, x₂)만 쓴 로지스틱 회귀, ② 사람이 만든 특징 하나(동심원이면 x₁²+x₂², XOR이면 x₁·x₂)를 더한 로지스틱 회귀, ③ 원래 좌표만 받는 은닉층 16개짜리 신경망(MLP)입니다. 이 페이지에서 Adam으로 직접 학습합니다. 학습 데이터 수를 바꿔 가며 ②와 ③의 차이를 보세요. 테스트 정확도는 따로 뽑은 2,500개 점을 실제 규칙(잡음 없음)으로 채점합니다.</div>
+      </div>
+      <div class="ctrls">
+        <label for="mdK" style="font-weight:600">데이터</label>
+        <select id="mdK"><option value="ring" selected>동심원 (안쪽 원 = 양성)</option><option value="xor">XOR (1·3사분면 = 양성)</option></select>
+        <label for="mdN" style="font-weight:600">학습 데이터 수</label>
+        <select id="mdN"><option value="30">30개</option><option value="100" selected>100개</option><option value="300">300개</option><option value="1000">1,000개</option></select>
+        <button type="button" class="btn pri" id="mdNew">학습 데이터 다시 뽑기</button>
+      </div>
+      <div class="tri">
+        <div class="panel"><h5>① 전통 ML · 원래 좌표</h5><div class="svgbox"><svg id="mdA" viewBox="0 0 200 200" role="img" aria-label="원래 좌표만 쓴 로지스틱 회귀의 결정 영역"></svg></div><div class="acc">테스트 <b id="mdAccA">–</b> · 파라미터 3개</div></div>
+        <div class="panel"><h5>② 전통 ML · 사람이 만든 특징 추가</h5><div class="svgbox"><svg id="mdB" viewBox="0 0 200 200" role="img" aria-label="사람이 만든 특징을 더한 로지스틱 회귀의 결정 영역"></svg></div><div class="acc">테스트 <b id="mdAccB">–</b> · 파라미터 4개</div></div>
+        <div class="panel"><h5>③ 딥러닝 · 원래 좌표만 받는 MLP</h5><div class="svgbox"><svg id="mdC" viewBox="0 0 200 200" role="img" aria-label="신경망의 결정 영역"></svg></div><div class="acc">테스트 <b id="mdAccC">–</b> · 파라미터 65개</div></div>
+      </div>
+      <div class="keyrow">
+        <span><span class="sw c" style="background:var(--add)"></span>양성 학습 데이터</span>
+        <span><span class="sw c" style="background:var(--accent)"></span>음성 학습 데이터</span>
+        <span>배경 = 모델이 예측하는 영역</span>
+        <span><span class="sw dash"></span>실제 규칙</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">다수 클래스만 찍을 때 (기준선)</div><div class="v" id="mdBase">–</div></div>
+        <div class="stat em"><div class="k">② − ③ 정확도 차이</div><div class="v" id="mdDiff">–</div></div>
+        <div class="stat"><div class="k">MLP 훈련 정확도</div><div class="v" id="mdTrC">–</div></div>
+        <div class="stat"><div class="k">학습 계산량 (MLP / ②)</div><div class="v" id="mdCost">–</div></div>
+      </div>
+      <p class="insight" id="mdMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 전통적인 머신러닝과 딥러닝 비교 (경향)</h3>
+      <div class="tbl"><table>
+        <thead><tr><th style="width:17%">구분</th><th style="width:40%">전통적인 머신러닝</th><th>딥러닝</th></tr></thead>
+        <tbody>
+          <tr><td><b>대표 모델</b></td><td>선형·로지스틱 회귀, 결정 트리, SVM, k-NN, 랜덤 포레스트, GBDT</td><td>MLP, CNN, RNN, 트랜스포머</td></tr>
+          <tr><td><b>특징(표현)</b></td><td>사람이 만든 특징에 기대는 비중이 크다. 단, 트리 계열은 원래 열에서 상호작용을 스스로 찾는다</td><td>여러 층이 특징을 학습한다. 대신 구조(합성곱, 어텐션)와 데이터 설계가 사람 몫이다</td></tr>
+          <tr><td><b>잘 맞는 데이터</b></td><td>표 형태의 정형 데이터. 중간 규모 정형 데이터에서는 지금도 GBDT가 신경망보다 강한 경우가 많다</td><td>이미지·음성·텍스트처럼 원시 신호가 큰 비정형 데이터</td></tr>
+          <tr><td><b>데이터 요구량</b></td><td>비교적 적다</td><td>처음부터 학습하면 많이 필요하다. 사전 학습 모델을 가져와 미세 조정하면 적은 데이터로도 된다</td></tr>
+          <tr><td><b>계산 비용</b></td><td>CPU로 충분한 경우가 많다</td><td>GPU·TPU가 사실상 필요하다</td></tr>
+          <tr><td><b>설명 가능성</b></td><td>선형 모델·얕은 트리는 높다. 큰 앙상블·커널 SVM은 이미 해석이 어렵다</td><td>낮다. 사후 설명 기법(SHAP, Grad-CAM 등)에 의존한다</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted" style="font-size:14px">표의 내용은 절대 규칙이 아니라 경향입니다. 정형 데이터 비교 연구(Grinsztajn 외, NeurIPS 2022)에서도 중간 규모(약 1만 행) 데이터에서는 트리 기반 모델이 대체로 앞섰습니다.</p>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 실습 해설의 과장된 일반화 두 가지</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">(딥러닝은) 사람이 개입해 특징을 설계하지 않아도 되며, 대량의 데이터를 처리할수록 높은 성능을 발휘합니다.</span></span>
+        <span class="now"><span class="lbl-now">정정</span>줄어드는 것은 <b>특징을 손으로 만드는 부담</b>이지 사람의 개입이 아닙니다. 데이터 수집과 라벨링, 전처리, 모델 구조 선택(이미지에 합성곱을 쓰는 것도 사람이 넣는 사전 지식입니다), 손실 함수와 평가 지표 설계는 여전히 사람이 합니다. 작성 답안은 이 점을 이미 바르게 보완했습니다. "데이터가 많을수록 성능이 높다"도 경향일 뿐이고, 데이터가 적어도 사전 학습 모델을 미세 조정하면 좋은 성능을 낼 수 있습니다.</span>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 실습 해설</span><span class="was" style="display:inline">(머신러닝은) 데이터를 처리하기 위해 사람이 직접 중요한 특징(feature)을 설계하는 작업이 필요합니다.</span></span>
+        <span class="now"><span class="lbl-now">정정</span>전통적인 머신러닝이 사람이 만든 특징에 더 의존하는 <b>경향</b>이 있을 뿐, 필수 조건은 아닙니다. 결정 트리와 GBDT는 원래 열을 그대로 넣어도 비선형 관계와 상호작용을 학습합니다. 또 머신러닝은 딥러닝을 포함하므로, "머신러닝은 특징 설계가 필요하다"는 문장은 "딥러닝이 아닌 전통적인 머신러닝은"으로 범위를 좁혀야 맞습니다.</span>
+      </div>
+    </div>
+
+    <div class="mini">
+      <div class="card add"><div class="k">보충 · 신경망 ≠ 딥러닝</div><h4>층이 하나면 '깊지' 않다</h4><p>은닉층이 없는 퍼셉트론은 신경망이지만 사실상 선형 분류기이고, 시그모이드 출력 하나짜리 신경망은 로지스틱 회귀와 같습니다. 딥러닝의 "깊다"는 여러 층에 걸쳐 표현을 단계적으로 학습한다는 뜻입니다. 실험 1의 ①이 바로 "층 하나짜리 신경망"입니다.</p></div>
+      <div class="card add"><div class="k">보충 · 학습 방식은 공유한다</div><h4>지도·비지도·강화 학습은 둘 다 쓴다</h4><p>지도·비지도·강화 학습은 머신러닝 전체의 학습 방식 분류이고, 딥러닝도 그대로 씁니다(이미지 분류 = 지도, 오토인코더 = 비지도, 알파고 = 강화). 딥러닝에서 특히 중요해진 것은 라벨 없이 데이터 자체에서 문제를 만드는 <b>자기 지도 학습</b>입니다. 언어 모델의 다음 단어 예측이 대표 예입니다.</p></div>
+      <div class="card add"><div class="k">보충 · 무엇을 고를까</div><h4>데이터 형태가 먼저다</h4><p>정형 데이터 수천~수만 행이면 GBDT를 기준 모델로 시작하고, 이미지·음성·텍스트라면 사전 학습된 신경망에서 시작합니다. 해석이 법적으로 필요하면 면접 2처럼 해석 가능한 모델이 우선입니다.</p></div>
+    </div>
+
+    <div class="speech">
+      딥러닝은 머신러닝의 하위 분야이고, 머신러닝은 인공지능의 하위 분야입니다. 머신러닝은 사람이 규칙을 직접 쓰는 대신 데이터에서 규칙을 학습하는 방법 전체이고, 딥러닝은 그중 여러 층의 신경망으로 입력의 표현까지 데이터에서 배우는 방법입니다. 전통적인 머신러닝은 HOG 특징이나 파생 변수처럼 사람이 만든 특징 위에서 모델을 학습하는 경향이 있고, 딥러닝은 특징을 만드는 층까지 종단 간으로 학습해 이미지·음성·텍스트에서 강합니다. 다만 사람의 역할이 사라지는 것은 아니어서 데이터, 구조, 손실과 평가는 여전히 설계해야 하고, 정형 데이터에서는 지금도 GBDT가 강한 경우가 많습니다. 그래서 모든 딥러닝은 머신러닝이지만 모든 머신러닝이 딥러닝은 아닙니다.
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== Q2 ===================== -->
+  <section class="q" id="q2">
+    <div class="qhead"><div class="qnum">Q2</div><div class="min"><div class="kind">실습 해설</div><h2>딥러닝의 성능향상을 위해 고려하는 하이퍼파라미터의 종류에는 어떤 것들이 있는지 설명해주세요.</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      하이퍼파라미터는 <mark>학습 전에 사람이 정하고 검증 데이터로 고르는 설정값</mark>이다(가중치·편향 같은 파라미터는 학습이 정한다). 크게 <b>모델 구조, 최적화, 규제, 데이터</b> 네 묶음이고, 대부분의 경우 <mark>학습률이 가장 큰 영향을 준다.</mark> 값들이 서로 얽혀 있으므로 하나씩 고정해 바꾸기보다 <b>로그 척도의 랜덤 탐색</b>이나 베이지안 최적화로 함께 찾는다.
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 하이퍼파라미터 네 묶음</h3>
+      <div class="tbl"><table style="min-width:820px">
+        <thead><tr><th style="width:11%">묶음</th><th style="width:18%">하이퍼파라미터</th><th style="width:40%">무엇을 바꾸나 · 주의점</th><th>흔한 시작점 · 탐색 범위</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="3"><b>모델 구조</b></td><td>층 수 · 층별 뉴런(채널) 수</td><td>표현력. 작으면 과소적합, 크면 계산량이 늘고 규제 없이는 과적합하기 쉽다. 잔차 연결 없이 깊게만 쌓으면 훈련 오차부터 나빠진다</td><td>작은 모델에서 시작해 훈련 오차가 충분히 낮아질 때까지 키운다</td></tr>
+          <tr><td>은닉층 활성화 함수</td><td>기울기가 잘 흐르는지(최적화)를 정한다. 시그모이드·tanh는 깊으면 기울기가 사라지기 쉽다</td><td>ReLU 계열, 트랜스포머는 GELU</td></tr>
+          <tr><td>모델별 설정</td><td>CNN의 커널 크기, 트랜스포머의 헤드 수·임베딩 차원 등</td><td>검증된 구조의 기본값을 따른다</td></tr>
+          <tr><td rowspan="5"><b>최적화</b></td><td><mark>학습률</mark></td><td>가장 먼저, 가장 넓게 탐색한다. 크면 발산(위클리 3 면접 1), 작으면 느리고 나쁜 지점에 머문다</td><td>Adam 계열 1e-3 근처. 1e-5~1e-1을 <b>로그 척도</b>로</td></tr>
+          <tr><td>옵티마이저</td><td>갱신 규칙. Adam·AdamW는 학습률에 덜 민감하고, SGD+모멘텀은 튜닝하면 일반화가 좋은 경우가 있다</td><td>AdamW, 또는 SGD(모멘텀 0.9)</td></tr>
+          <tr><td>학습률 스케줄</td><td>초반 warm-up으로 불안정을 막고 후반에 줄여 수렴시킨다</td><td>warm-up + 코사인 감소, 또는 step 감소</td></tr>
+          <tr><td>배치 크기</td><td>한 번 갱신에 쓰는 샘플 수. 메모리와 속도를 정하고, 바꾸면 알맞은 학습률도 바뀐다</td><td>메모리가 허락하는 범위에서 먼저 정한다 (32~512)</td></tr>
+          <tr><td>에포크 수</td><td>전체 데이터를 몇 번 볼지. 직접 고르기보다 조기 종료로 정한다</td><td>넉넉히 두고 조기 종료</td></tr>
+          <tr><td rowspan="3"><b>규제</b></td><td>드롭아웃 비율 p</td><td>학습 중 뉴런 출력을 확률 p로 0으로 만든다. 클수록 규제가 강하다</td><td>0.1~0.5</td></tr>
+          <tr><td>가중치 감쇠 · L2 계수</td><td>가중치를 0 쪽으로 당겨 복잡도를 줄인다. Adam에서는 AdamW 방식이 맞다(아래 보충)</td><td>AdamW 1e-4~1e-1 (로그 척도)</td></tr>
+          <tr><td>조기 종료 patience</td><td>검증 성능이 몇 에포크 동안 좋아지지 않으면 멈출지</td><td>5~20 에포크, 가장 좋았던 가중치 복원</td></tr>
+          <tr><td><b>데이터</b></td><td>증강 종류·강도</td><td>뒤집기·자르기·잡음 등으로 학습 데이터를 늘려 일반화를 돕는다. 정답이 바뀌지 않는 변형만 쓴다</td><td>문제에 맞는 약한 증강부터</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted" style="font-size:14px">출력층의 활성화 함수와 손실 함수는 튜닝할 하이퍼파라미터가 아니라 <b>문제 유형으로 정해지는 설계</b>입니다. 이진 분류는 시그모이드 + 이진 교차 엔트로피, 다중 분류는 소프트맥스 + 교차 엔트로피, 회귀는 항등 함수 + MSE가 기본입니다.</p>
+    </div>
+
+    <div class="demo" id="demo-reg">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 2</span> 은닉층 크기·드롭아웃·가중치 감쇠·학습률로 과적합 다루기 <span class="tag-ex">예시 데이터 · 반달 모양 2클래스, 학습 60개 · 검증 1,000개</span></div>
+        <div class="how">은닉층 하나짜리 신경망을 이 페이지에서 1,500에포크 학습합니다(전체 배치, AdamW). 아래 곡선에서 검증 loss가 가장 낮은 에포크가 조기 종료 지점입니다. 에포크 슬라이더로 그 시점의 결정 경계를 보고, 드롭아웃이나 가중치 감쇠를 켜서 검증 loss 곡선이 어떻게 바뀌는지 비교해 보세요. 훈련 loss·정확도는 드롭아웃을 끈 평가 모드로 잽니다.</div>
+      </div>
+      <div class="ctrls">
+        <label for="rgH" style="font-weight:600">은닉 뉴런</label>
+        <select id="rgH"><option value="4">4</option><option value="32">32</option><option value="128" selected>128</option></select>
+        <label for="rgP" style="font-weight:600">드롭아웃 p</label>
+        <select id="rgP"><option value="0" selected>0 (끔)</option><option value="0.2">0.2</option><option value="0.5">0.5</option></select>
+        <label for="rgW" style="font-weight:600">가중치 감쇠 λ</label>
+        <select id="rgW"><option value="0" selected>0 (끔)</option><option value="0.01">0.01</option><option value="0.1">0.1</option><option value="1">1</option></select>
+        <label for="rgL" style="font-weight:600">학습률</label>
+        <select id="rgL"><option value="0.003">0.003</option><option value="0.01" selected>0.01</option><option value="0.03">0.03</option></select>
+      </div>
+      <div class="split">
+        <div class="side">
+          <div class="svgbox"><svg id="rgB" viewBox="0 0 300 240" role="img" aria-label="선택한 에포크의 결정 경계와 학습 데이터"></svg></div>
+          <div class="keyrow">
+            <span><span class="sw c" style="background:var(--add)"></span>클래스 1</span>
+            <span><span class="sw c" style="background:var(--accent)"></span>클래스 0</span>
+            <span>배경 = 그 에포크의 예측 영역</span>
+          </div>
+        </div>
+        <div class="side">
+          <div><label for="rgE" style="font-size:14px;font-weight:600">에포크: <output id="rgEOut" for="rgE">1500</output></label><input type="range" id="rgE" min="0" max="1500" step="25" value="1500"></div>
+          <div class="svgbox"><svg id="rgC" viewBox="0 0 360 200" role="img" aria-label="에포크별 훈련 loss와 검증 loss"></svg></div>
+          <div class="keyrow">
+            <span><span class="sw ln" style="background:var(--accent)"></span>훈련 loss</span>
+            <span><span class="sw ln" style="background:var(--fix)"></span>검증 loss</span>
+            <span><span class="sw c" style="background:var(--add)"></span>조기 종료 지점</span>
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat em"><div class="k">이 에포크의 훈련 정확도</div><div class="v" id="rgTr">–</div></div>
+        <div class="stat em"><div class="k">이 에포크의 검증 정확도</div><div class="v" id="rgVa">–</div></div>
+        <div class="stat ok"><div class="k">조기 종료 지점 (검증 정확도)</div><div class="v" id="rgBest">–</div></div>
+        <div class="stat" id="rgGapBox"><div class="k">마지막 − 최저 검증 loss</div><div class="v" id="rgGap">–</div></div>
+      </div>
+      <p class="insight" id="rgMsg" aria-live="polite">계산 중…</p>
+    </div>
+
+    <div class="demo" id="demo-hps">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 3</span> 같은 시도 횟수, 격자 탐색 vs 랜덤 탐색 <span class="tag-ex">예시 · 가상의 검증 정확도 지형</span></div>
+        <div class="how">검증 정확도가 학습률에는 크게, 드롭아웃에는 조금만 반응하는 지형을 가정했습니다(가장 좋은 값 0.920, 학습률 약 2.5×10⁻³ 근처). 같은 횟수로 격자 탐색(■)과 랜덤 탐색(●)을 해 보고, 학습률을 선형 척도로 뽑으면 어떻게 되는지도 보세요. 랜덤 탐색의 평균 성능은 2,000번 반복해 계산합니다.</div>
+      </div>
+      <div class="ctrls">
+        <label for="hsB" style="font-weight:600">시도 횟수</label>
+        <select id="hsB"><option value="9" selected>9회 (격자 3×3)</option><option value="16">16회 (격자 4×4)</option><option value="25">25회 (격자 5×5)</option></select>
+        <label for="hsS" style="font-weight:600">학습률 척도</label>
+        <select id="hsS"><option value="log" selected>로그 척도 (10⁻⁵~10⁻¹)</option><option value="lin">선형 척도 (10⁻⁵~10⁻¹)</option></select>
+        <button type="button" class="btn pri" id="hsNew">랜덤 탐색 다시 뽑기</button>
+      </div>
+      <div class="svgbox"><svg id="hsSvg" viewBox="0 0 640 290" role="img" aria-label="학습률과 드롭아웃에 따른 검증 정확도 지형과 탐색 지점"></svg></div>
+      <div class="keyrow">
+        <span><span class="sw" style="background:var(--ink)"></span>격자 탐색 지점</span>
+        <span><span class="sw c" style="background:var(--fix)"></span>랜덤 탐색 지점</span>
+        <span>진할수록 검증 정확도가 높음</span>
+        <span><span class="sw ln" style="background:var(--add)"></span>가장 좋은 학습률</span>
+      </div>
+      <div class="stats">
+        <div class="stat em"><div class="k">격자 탐색 최고</div><div class="v" id="hsG">–</div></div>
+        <div class="stat em"><div class="k">랜덤 탐색 최고 (이번)</div><div class="v" id="hsR">–</div></div>
+        <div class="stat ok"><div class="k">랜덤 평균 최고 (2,000회)</div><div class="v" id="hsRm">–</div></div>
+        <div class="stat"><div class="k">랜덤이 격자보다 나을 확률</div><div class="v" id="hsP">–</div></div>
+        <div class="stat"><div class="k">시도한 서로 다른 학습률</div><div class="v" id="hsU">–</div></div>
+      </div>
+      <p class="insight" id="hsMsg" aria-live="polite"></p>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 실습 해설의 설명 중 사실과 다른 부분</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래</span><span class="was" style="display:inline">드롭아웃은 과적합을 방지하기 위해 일부 뉴런을 랜덤하게 제거하는 방식이고</span></span>
+        <span class="now"><span class="lbl-now">정정</span>뉴런을 영구히 없애는 것이 아닙니다. <b>학습할 때만</b> 매 스텝 새로 뽑은 일부 뉴런의 출력을 0으로 만들고, 남은 출력은 1/(1−p)배로 키워 기댓값을 맞춥니다(역 드롭아웃, Keras·PyTorch 방식). <b>추론할 때는 모든 뉴런을 그대로 씁니다.</b> 그래서 Keras는 <code>model.fit()</code> 중에만 드롭아웃이 켜지고 <code>predict()</code>·<code>evaluate()</code>에서는 꺼집니다. 뉴런이나 가중치를 실제로 없애는 것은 가지치기(pruning)라는 다른 기법입니다.</span>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래</span><span class="was" style="display:inline">활성화 함수는 ReLU, sigmoid, tanh 등 여러 종류가 있는데, 문제의 특성과 데이터의 분포에 따라 적절히 선택해야 합니다.</span></span>
+        <span class="now"><span class="lbl-now">정정</span>은닉층과 출력층의 기준이 다릅니다. <b>은닉층</b> 활성화는 데이터 분포가 아니라 기울기가 잘 흐르는지로 고르며 ReLU 계열(트랜스포머는 GELU)이 기본입니다. 시그모이드·tanh는 깊은 망에서 기울기 소실을 일으키기 쉽습니다. <b>출력층</b> 활성화는 문제 유형이 정합니다(이진 분류 시그모이드, 다중 분류 소프트맥스, 회귀 항등 함수). 즉 "데이터 분포에 따라 고른다"는 기준은 어느 쪽에도 맞지 않습니다.</span>
+      </div>
+      <div class="pair">
+        <span><span class="lbl-was">원래</span><span class="was" style="display:inline">레이어 수가 너무 적으면 과소적합될 가능성이 있고, 너무 많으면 과적합이 발생할 수 있으므로</span></span>
+        <span class="now"><span class="lbl-now">정정</span>층을 많이 쌓을 때 먼저 생기는 문제는 과적합이 아니라 <b>학습 자체가 어려워지는 것</b>일 수 있습니다. ResNet 논문(He 외, 2016)에서 잔차 연결 없는 56층 망은 20층 망보다 <b>훈련 오차</b>가 더 높았습니다. 이것은 외운 것이 아니라 최적화가 안 된 것이고, 잔차 연결과 정규화 층(배치·레이어 정규화)으로 해결합니다. 또 지금의 큰 신경망은 파라미터가 데이터보다 훨씬 많아도 규제·데이터 증강과 함께 잘 일반화하므로, "크면 과적합"보다 "크면 계산이 늘고, 규제와 검증이 더 중요해진다"가 정확합니다.</span>
+      </div>
+    </div>
+
+    <div class="mini">
+      <div class="card add"><div class="k">보충 · 배치 크기는 먼저 고정한다</div><h4>검증 성능용 튜닝 대상이 아니다</h4><p>Google의 Deep Learning Tuning Playbook은 배치 크기를 하드웨어와 학습 시간으로 정하고 검증 성능을 높이려고 튜닝하지 말라고 권합니다. 학습률·규제를 다시 맞추고 스텝 수가 충분하면 배치 크기가 달라도 비슷한 성능에 도달하기 때문입니다(Shallue 외, 2018). 배치를 k배로 키울 때 학습률도 k배로 하고 warm-up을 두는 선형 스케일링 규칙(Goyal 외, 2017)은 출발점일 뿐 항상 성립하지는 않습니다.</p></div>
+      <div class="card add"><div class="k">보충 · Adam과 L2는 다르다</div><h4>AdamW를 쓰는 이유</h4><p>SGD에서는 손실에 L2 항을 더하는 것과 가중치 감쇠가 같지만, Adam에서는 L2 기울기도 적응형 분모로 나뉘어 기울기가 큰 가중치일수록 덜 줄어듭니다. 감쇠를 갱신에서 분리한 AdamW(Loshchilov &amp; Hutter, 2019)가 이를 바로잡았고, 실험 2도 AdamW 방식입니다. 또 우리말 "정규화"는 regularization(규제, 이 문항의 의미)과 normalization(배치 정규화, 입력 표준화)을 함께 가리키므로 영어로 구분해 두면 좋습니다.</p></div>
+      <div class="card add"><div class="k">보충 · 탐색 방법</div><h4>격자보다 랜덤, 그다음 베이지안</h4><p>중요한 하이퍼파라미터가 몇 개뿐일 때 격자 탐색은 같은 값을 반복해서 시도합니다. 랜덤 탐색은 같은 횟수로 각 축을 더 촘촘히 봅니다(Bergstra &amp; Bengio, 2012, 실험 3). 학습률·감쇠는 로그 척도로 뽑고, 시도 비용이 크면 Optuna 같은 베이지안 최적화나 성능이 나쁜 시도를 일찍 끊는 Hyperband·ASHA를 씁니다.</p></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-add">보충</span> 실무 튜닝 순서</h3>
+      <div class="flow">
+        <div class="step"><b>평가 틀 고정</b><span>훈련·검증·테스트 분할, 평가 지표, 기준 모델. 테스트는 마지막에 한 번만</span></div>
+        <div class="step"><b>구조·배치 크기 고정</b><span>검증된 구조와 메모리에 맞는 배치 크기로 시작</span></div>
+        <div class="step"><b>학습률부터 탐색</b><span>로그 척도로 넓게, 옵티마이저·스케줄과 함께</span></div>
+        <div class="step"><b>규제 조정</b><span>훈련–검증 격차를 보며 드롭아웃·감쇠·증강, 조기 종료</span></div>
+      </div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">Keras로 규제·조기 종료를 넣고, 학습률과 감쇠를 로그 척도로 랜덤 탐색하기</div>
+<pre>import numpy as np, keras
+from keras import layers
+
+def build(lr, wd, p, units):
+    model = keras.Sequential([
+        keras.Input(shape=(n_features,)),
+        layers.Dense(units, activation="relu"),
+        layers.Dropout(p),                                <span class="c"># 학습 중에만 켜진다</span>
+        layers.Dense(units, activation="relu"),
+        layers.Dropout(p),
+        layers.Dense(1, activation="sigmoid"),            <span class="c"># 출력층은 문제 유형으로 정해진다</span>
+    ])
+    model.compile(optimizer=keras.optimizers.AdamW(learning_rate=lr, weight_decay=wd),
+                  loss="binary_crossentropy", metrics=["accuracy"])
+    return model
+
+rng = np.random.default_rng(0)
+stop = keras.callbacks.EarlyStopping(monitor="val_loss", patience=10, restore_best_weights=True)
+results = []
+for trial in range(20):
+    hp = dict(lr=10 ** rng.uniform(-5, -2),               <span class="c"># 로그 척도</span>
+              wd=10 ** rng.uniform(-5, -1),
+              p=rng.choice([0.0, 0.2, 0.5]),
+              units=int(rng.choice([64, 128, 256])))
+    h = build(**hp).fit(X_tr, y_tr, validation_data=(X_val, y_val), epochs=300,
+                        batch_size=128, callbacks=[stop], verbose=0)
+    results.append((min(h.history["val_loss"]), hp))    <span class="c"># 테스트 세트는 여기서 쓰지 않는다</span>
+best = min(results, key=lambda r: r[0])</pre>
+    </div>
+
+    <div class="speech">
+      하이퍼파라미터는 가중치처럼 학습되는 값이 아니라 학습 전에 정하고 검증 데이터로 고르는 설정값입니다. 크게 네 묶음으로, 층 수와 너비·은닉층 활성화 같은 모델 구조, 학습률·옵티마이저·스케줄·배치 크기 같은 최적화, 드롭아웃·가중치 감쇠·조기 종료 같은 규제, 그리고 데이터 증강이 있습니다. 가장 영향이 큰 것은 대개 학습률이라 로그 척도로 가장 먼저 넓게 탐색하고, 배치 크기는 메모리와 속도로 먼저 정한 뒤 바꾸면 학습률을 다시 맞춥니다. 드롭아웃은 학습 중에만 무작위로 출력을 끄는 규제이고, Adam을 쓸 때는 AdamW로 감쇠를 분리합니다. 탐색은 격자보다 랜덤이나 베이지안 최적화가 효율적이고, 모든 선택은 검증 데이터로 하며 테스트는 마지막에 한 번만 씁니다.
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="q2"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 면접 1 ===================== -->
+  <section class="q" id="m1">
+    <div class="qhead"><div class="qnum iv">면접 1</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>학습 데이터에서는 정확도 99퍼센트가 나오는데, 테스트 데이터에서는 70퍼센트밖에 나오지 않는 모델을 넘겨받았어요. 어떤 원인을 의심하고, 어떤 방법으로 개선을 시도할 건가요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      1순위 의심은 <mark>과적합</mark>이지만, 먼저 <b>측정이 맞는지</b>(기준선, 같은 조건의 평가, 훈련 쪽 누수)와 <b>두 데이터가 같은 분포인지</b>를 확인한다. 가장 빠른 구분법은 <mark>훈련 데이터 안에서 잰 교차 검증(CV) 점수</mark>다. CV도 테스트처럼 낮으면 과적합이고, <mark>CV는 높은데 테스트만 낮으면 훈련·테스트 차이(누수나 분포 변화)</mark>라서 규제를 늘려도 고쳐지지 않는다.
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="flow">
+      <div class="step"><b>기준선과 지표</b><span>다수 클래스 비율, 혼동행렬. 70%가 기준선이면 아무것도 못 배운 것</span></div>
+      <div class="step"><b>같은 조건으로 재기</b><span>훈련 점수도 <code>evaluate()</code>로, 같은 전처리 파이프라인으로</span></div>
+      <div class="step"><b>CV vs 테스트</b><span>훈련 CV 점수와 테스트 점수 비교, 적대적 검증으로 분포 확인</span></div>
+      <div class="step"><b>원인별 처방</b><span>과적합 → 규제·데이터. 누수 → 특징 제거. 분포 변화 → 데이터·분할 재설계</span></div>
+    </div>
+
+    <div class="demo" id="demo-gap">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 4</span> 같은 "훈련 높음, 테스트 낮음"을 세 원인으로 만들어 구분하기 <span class="tag-ex">예시 데이터 · 가상의 이탈 예측, 학습 300명 · 테스트 1,000명, 라벨 잡음 10%</span></div>
+        <div class="how">특징은 가입 기간과 월 이용량(표준화한 값)이고, 이탈 여부는 곡선 경계로 정해집니다. 이 페이지에서 k-최근접 이웃(k-NN)을 학습하고 훈련 정확도, 훈련 데이터의 5-폴드 CV 정확도, 테스트 정확도, 그리고 훈련과 테스트를 구분하는 <b>적대적 검증 AUC</b>를 계산합니다. 상황을 바꾸고 k를 움직여 보세요. k = 1은 학습 데이터를 그대로 외우는 가장 복잡한 모델입니다.</div>
+      </div>
+      <div class="ctrls">
+        <label for="gpM" style="font-weight:600">상황</label>
+        <select id="gpM">
+          <option value="norm" selected>A. 같은 분포, 누수 없음</option>
+          <option value="leak">B. 누수 특징 포함 (해지 상담 기록)</option>
+          <option value="shift">C. 테스트 분포 이동 (가입 기간이 더 긴 고객)</option>
+        </select>
+      </div>
+      <div><label for="gpK" style="font-size:14px;font-weight:600">이웃 수 k: <output id="gpKOut" for="gpK">1</output></label><input type="range" id="gpK" min="1" max="51" step="2" value="1"></div>
+      <div class="split">
+        <div class="side">
+          <div class="svgbox"><svg id="gpSvg" viewBox="0 0 320 240" role="img" aria-label="훈련 데이터와 테스트 데이터의 분포, 실제 경계"></svg></div>
+          <div class="keyrow">
+            <span><span class="sw c" style="background:var(--add)"></span>훈련 · 이탈</span>
+            <span><span class="sw c" style="background:var(--accent)"></span>훈련 · 유지</span>
+            <span><span class="sw c" style="background:var(--muted)"></span>테스트</span>
+            <span><span class="sw dash"></span>실제 경계</span>
+          </div>
+        </div>
+        <div class="side">
+          <div class="svgbox"><svg id="gpBar" viewBox="0 0 320 200" role="img" aria-label="훈련, 교차 검증, 테스트 정확도와 기준선"></svg></div>
+          <div class="stats">
+            <div class="stat"><div class="k">적대적 검증 AUC</div><div class="v" id="gpAdv">–</div></div>
+            <div class="stat"><div class="k">훈련·테스트를 가장 잘 구분하는 특징</div><div class="v" id="gpFeat" style="font-size:13px">–</div></div>
+          </div>
+        </div>
+      </div>
+      <p class="insight" id="gpMsg" aria-live="polite"></p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 세 점수의 패턴으로 원인 좁히기</h3>
+      <p class="muted" style="font-size:14px">증상과 원인이 1:1로 정해지지는 않습니다. 어디부터 볼지 정하는 진단 순서로 쓰고, 실제 원인은 확인 방법으로 검증합니다.</p>
+      <div class="tbl"><table style="min-width:860px">
+        <thead><tr><th style="width:21%">패턴 (훈련 / CV / 테스트)</th><th style="width:22%">의심 원인</th><th style="width:28%">확인 방법</th><th>개선</th></tr></thead>
+        <tbody>
+          <tr><td><b>99 / 71 / 70</b><br><span class="muted" style="font-size:12.5px">CV ≈ 테스트</span></td><td>과적합 (분산이 큼)</td><td>복잡도별 검증 곡선, 데이터 수별 학습 곡선. 데이터를 늘릴수록 격차가 줄면 데이터 추가가 효과적</td><td>복잡도 줄이기(깊이·층·k), 드롭아웃·감쇠, 조기 종료, 증강·데이터 추가, 앙상블</td></tr>
+          <tr><td><b>99 / 98 / 70</b><br><span class="muted" style="font-size:12.5px">CV ≫ 테스트</span></td><td>훈련 쪽 누수, 또는 훈련·테스트 분포 차이</td><td>특징별로 "예측 시점에 이 값을 알 수 있나" 점검. 적대적 검증으로 구분이 잘 되는 특징 찾기</td><td>누수 특징 제거, 타깃 인코딩은 out-of-fold로. 분포 변화면 최근 데이터 확보, 시간 순 분할, 재가중</td></tr>
+          <tr><td><b>테스트 ≈ 다수 클래스 비율</b></td><td>사실상 아무것도 못 배움, 정확도가 맞지 않는 지표</td><td>기준선(다수 클래스, 단순 규칙)과 비교, 혼동행렬·클래스별 재현율</td><td>PR-AUC·F1·재현율 등 목적에 맞는 지표, 클래스 가중치, 임곗값 조정</td></tr>
+          <tr><td><b>훈련 점수만 학습 로그에서 가져옴</b></td><td>측정 조건이 다름</td><td>훈련 데이터도 <code>model.evaluate()</code>로 다시 잼(드롭아웃·증강 꺼진 상태)</td><td>같은 조건, 같은 지표로 비교</td></tr>
+          <tr><td><b>테스트만 따로 전처리</b></td><td>파이프라인 불일치 (테스트에 <code>fit_transform</code>, 범주 매핑·열 순서 차이)</td><td>훈련에서 학습한 변환을 저장해 테스트에 <code>transform</code>만 했는지 확인</td><td><code>Pipeline</code>으로 전처리와 모델을 묶음</td></tr>
+          <tr><td><b>CV는 높은데 그룹이 겹침</b></td><td>같은 고객·환자·세션의 행이 폴드 양쪽에 있음</td><td>ID 기준으로 겹침 확인</td><td><code>GroupKFold</code>, 시간 데이터는 <code>TimeSeriesSplit</code></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">scikit-learn으로 "훈련 / CV / 테스트" 비교와 적대적 검증하기</div>
+<pre>import numpy as np, pandas as pd
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import cross_validate, cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+
+pipe = make_pipeline(StandardScaler(), model)         <span class="c"># 전처리는 폴드마다 훈련 부분에서만 fit</span>
+cv = cross_validate(pipe, X_tr, y_tr, cv=5, return_train_score=True)
+print(cv["train_score"].mean(), cv["test_score"].mean())   <span class="c"># 훈련 vs CV 격차 = 과적합 정도</span>
+print(pipe.fit(X_tr, y_tr).score(X_te, y_te))         <span class="c"># CV vs 테스트 격차 = 분포 차이·누수</span>
+print(max(np.mean(y_te), 1 - np.mean(y_te)))         <span class="c"># 다수 클래스 기준선</span>
+
+<span class="c"># 적대적 검증: 훈련(0)과 테스트(1)를 구분하는 분류기. AUC ≈ 0.5면 같은 분포</span>
+X_adv = pd.concat([X_tr, X_te]); y_adv = np.r_[np.zeros(len(X_tr)), np.ones(len(X_te))]
+adv = RandomForestClassifier(n_estimators=300, random_state=0)
+print(cross_val_score(adv, X_adv, y_adv, cv=5, scoring="roc_auc").mean())
+adv.fit(X_adv, y_adv)
+print(pd.Series(adv.feature_importances_, X_adv.columns).nlargest(5))   <span class="c"># 구분에 쓰인 특징</span></pre>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="note fix">
+      <b class="t">정정 · 누수가 점수를 움직이는 방향을 구분해야 한다</b>
+      <div class="pair">
+        <span><span class="lbl-was">원래 · 작성 답안</span><span class="was" style="display:inline">훈련 데이터와 테스트 데이터가 중복되지 않았는가? … 전체 데이터에 스케일링이나 결측치 처리를 먼저 적용한 뒤 데이터를 나눴다면 데이터 누수가 발생할 수 있습니다. (테스트 70%의 원인 후보로 제시)</span></span>
+        <span class="now"><span class="lbl-now">정정</span>점검 항목 자체는 맞지만, 이 두 가지는 <b>테스트 점수를 부풀리는 방향</b>으로 작용합니다. 테스트 정보가 훈련에 섞이면 테스트가 실제보다 좋아 보이므로 "테스트가 낮다"는 증상의 원인이 될 수 없고, 오히려 실제 격차가 70%보다 더 클 수 있다는 경고입니다. 이 증상과 맞는 것은 <b>훈련 점수만 부풀리는 누수</b>입니다. 예를 들어 예측 시점 이후에 생기는 특징(실험 4의 해지 상담 기록), 행 자신의 정답이 들어간 타깃 인코딩(out-of-fold 없이 계산), 정답과 거의 일대일인 ID성 특징이 그렇습니다. 반대로 테스트 점수를 낮추는 측정 오류는 테스트에 따로 <code>fit_transform</code>을 한 경우처럼 <b>전처리가 서로 다른 경우</b>입니다.</span>
+      </div>
+    </div>
+
+    <div class="mini">
+      <div class="card add"><div class="k">보충 · 99%가 문제인 것은 아니다</div><h4>격차와 상한을 같이 본다</h4><p>트리 앙상블이나 큰 신경망은 훈련 정확도 100%도 흔합니다. 문제는 격차이고, 라벨 잡음이 크면 테스트 정확도의 상한 자체가 낮습니다. 실험 4는 라벨 잡음이 10%라 어떤 모델도 테스트 90%를 넘기 어렵습니다. 같은 데이터를 사람이 다시 라벨링했을 때의 일치율로 상한을 가늠합니다.</p></div>
+      <div class="card add"><div class="k">보충 · 학습 로그의 훈련 정확도</div><h4>드롭아웃이 켜진 상태의 평균이다</h4><p>Keras <code>fit()</code>이 출력하는 훈련 정확도는 드롭아웃·증강이 켜진 상태에서 에포크 동안 변하는 가중치로 잰 평균입니다. 테스트와 비교하려면 학습이 끝난 모델로 <code>evaluate(X_train, y_train)</code>을 다시 재야 합니다.</p></div>
+      <div class="card add"><div class="k">보충 · 개선 순서</div><h4>데이터 → 분할 → 모델</h4><p>누수 특징 제거와 분할 수정이 먼저입니다. 그다음 과적합이면 규제(드롭아웃·감쇠·깊이 제한), 조기 종료, 데이터 증강이나 추가 수집, 앙상블을 차례로 시도하고, 매번 CV와 검증 세트로만 판단합니다. 테스트 세트를 보면서 고치면 테스트에도 과적합합니다.</p></div>
+    </div>
+
+    <div class="speech">
+      훈련 99%, 테스트 70%라면 과적합을 가장 먼저 의심하지만, 바로 규제를 늘리기 전에 세 가지를 확인하겠습니다. 첫째, 다수 클래스 비율과 혼동행렬로 70%가 기준선보다 나은지, 훈련 점수를 테스트와 같은 조건과 같은 전처리로 쟀는지 봅니다. 둘째, 훈련 데이터로 교차 검증을 해서 CV 점수가 테스트처럼 낮으면 과적합, CV는 높은데 테스트만 낮으면 누수나 분포 차이로 봅니다. 이때 예측 시점에 알 수 없는 특징이나 out-of-fold 없이 만든 타깃 인코딩을 찾고, 적대적 검증으로 훈련과 테스트가 구분되는지 확인합니다. 과적합이면 모델 복잡도를 줄이고 드롭아웃·가중치 감쇠·조기 종료, 데이터 증강을 적용하고, 누수나 분포 변화면 특징과 분할 방식을 고칩니다. 판단은 끝까지 검증 데이터로 하고 테스트는 마지막에만 씁니다.
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="m1"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 면접 2 ===================== -->
+  <section class="q" id="m2">
+    <div class="qhead"><div class="qnum iv">면접 2</div><div class="min"><div class="kind">면접 · 전문가 답변</div><h2>은행에서 대출 승인 여부를 예측하는 모델을 만들고 있어요. 법적으로 왜 거절되었는지를 고객에게 설명할 수 있어야 해요. 단일 결정 트리와 랜덤 포레스트나 그레이디언트 부스팅 중 어떤 모델을 선택할 건가요?</h2></div></div>
+
+    <div class="oneline"><small>한 줄 요약</small>
+      둘 중에서는 <mark>깊이를 제한한 단일 결정 트리</mark>다. 모델 자체가 규칙이라 거절 경로를 그대로 보여 줄 수 있기 때문이다. 다만 트리는 재학습할 때마다 분할 기준값이 움직여 같은 고객의 결정이 뒤바뀌기 쉽고, 위험 순위를 거칠게만 매긴다. 실무에서는 <mark>로지스틱 점수표나 단조 제약을 건 부스팅처럼 처음부터 해석 가능한 모델</mark>을 함께 검토하고, 앙상블에 SHAP을 붙인다면 <b>사유가 모델을 충실히 반영하는지 검증</b>한다.
+    </div>
+
+    <div class="part">1 · 그림·표·실험</div>
+
+    <div class="demo" id="demo-loan">
+      <div class="demo-head">
+        <div class="t"><span class="badge b-lab">실험 5</span> 한 신청자의 거절 사유를 두 모델로 만들어 보기 <span class="tag-ex">예시 데이터 · 가상의 대출 신청자 3,000명, 특징 4개</span></div>
+        <div class="how">이 페이지에서 같은 데이터로 <b>로지스틱 점수표</b>(IRLS로 적합)와 <b>깊이 제한 결정 트리</b>(CART, 리프 최소 60명)를 학습합니다. 아래 슬라이더로 신청자를 바꾸면 각 모델의 부도 확률, 승인 여부, 거절 사유가 나옵니다. <b>학습 데이터 다시 뽑기</b>를 누르면 같은 방식으로 다시 학습한 모델이 고정된 신청자 2,000명에게 내는 결정과 사유 1순위 항목(DTI·연체·근속·조회 중 무엇인지)이 얼마나 바뀌는지 잽니다. 기준값만 바뀐 것(DTI &gt; 55.1% → 52.1%)은 같은 사유로 칩니다.</div>
+      </div>
+      <div class="sl4" id="lnSl"></div>
+      <div class="ctrls">
+        <label for="lnCut" style="font-weight:600">거절 기준 부도 확률</label>
+        <select id="lnCut"><option value="0.1">10% 이상</option><option value="0.15" selected>15% 이상</option><option value="0.2">20% 이상</option></select>
+        <label for="lnD" style="font-weight:600">트리 최대 깊이</label>
+        <select id="lnD"><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option></select>
+        <button type="button" class="btn pri" id="lnNew">학습 데이터 다시 뽑기</button>
+      </div>
+      <div class="panels">
+        <div class="verdict">
+          <div class="k">로지스틱 점수표</div>
+          <div class="big" id="lnSP">–</div>
+          <div class="tbl"><table class="contrib"><thead><tr><th>특징</th><th>계수 β</th><th>최선 대비 위험 증가 (로그 오즈)</th></tr></thead><tbody id="lnSBody"></tbody></table></div>
+          <div class="k">거절 사유 (위험 증가가 큰 순)</div><ol id="lnSR"></ol>
+          <div class="k">이 값만 바꾸면 승인 (반사실 설명)</div><ul id="lnSC"></ul>
+        </div>
+        <div class="verdict">
+          <div class="k">깊이 제한 결정 트리</div>
+          <div class="big" id="lnTP">–</div>
+          <div class="k">전체 규칙 · 조건 → 리프 부도율 (학습 인원) 결정, 이 신청자의 리프 강조</div>
+          <pre class="rules" id="lnRules"></pre>
+          <div class="k">거절 사유 (경로에서 위험한 쪽으로 간 조건)</div><ol id="lnTR"></ol>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat em"><div class="k">테스트 AUC 점수표 / 트리</div><div class="v" id="lnAuc">–</div></div>
+        <div class="stat"><div class="k">트리가 내는 서로 다른 부도 확률 수</div><div class="v" id="lnLv">–</div></div>
+        <div class="stat" id="lnDecBox"><div class="k">재학습 후 결정이 바뀐 신청자 (점수표 / 트리)</div><div class="v" id="lnDec">다시 뽑기 전</div></div>
+        <div class="stat"><div class="k">트리 루트 분할 (이전 → 현재)</div><div class="v" id="lnRoot" style="font-size:13px">–</div></div>
+        <div class="stat" id="lnRsBox"><div class="k">재학습 후 사유 1순위 항목이 바뀐 거절자 (점수표 / 트리)</div><div class="v" id="lnRs">다시 뽑기 전</div></div>
+      </div>
+      <p class="insight" id="lnMsg" aria-live="polite"></p>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-core">핵심</span> 후보 모델 비교</h3>
+      <div class="tbl"><table style="min-width:860px">
+        <thead><tr><th style="width:17%">모델</th><th style="width:23%">설명 방식</th><th style="width:21%">장점</th><th style="width:21%">약점</th><th>거절 사유의 일관성</th></tr></thead>
+        <tbody>
+          <tr><td><b>깊이 제한 결정 트리</b></td><td>모델 자체가 규칙. 도착한 리프까지의 경로</td><td>설명이 모델과 정확히 일치한다. 그림 한 장으로 감사 가능</td><td>정확도가 낮고, 리프 수만큼의 거친 위험 등급만 낸다. 재학습 때 구조가 크게 바뀔 수 있다</td><td>한 모델 안에서는 완전히 일관적. 모델 버전 사이에서는 불안정</td></tr>
+          <tr><td><b>로지스틱 점수표</b><br><span class="muted" style="font-size:12.5px">구간화 + 로지스틱 회귀</span></td><td>특징별 점수의 합. 감점이 큰 항목이 사유</td><td>신용평가에서 오래 쓰인 방식. 순위 성능이 안정적이고 사유가 바로 나온다</td><td>비선형·상호작용은 구간화나 파생 변수로 사람이 넣어야 한다</td><td>계수가 연속적으로 변해 재학습에도 비교적 안정적</td></tr>
+          <tr><td><b>단조 제약 GBDT · EBM</b></td><td>제약을 건 부스팅, 특징별 형태 함수의 합(EBM)</td><td>앙상블에 가까운 성능과 해석 가능성. "부채가 늘면 위험이 줄지 않는다"를 보장</td><td>설정과 검증이 더 필요하다. 상호작용 항은 해석이 어려워진다</td><td>제약 덕분에 사유 방향이 뒤집히지 않는다</td></tr>
+          <tr><td><b>랜덤 포레스트 · GBM + SHAP</b></td><td>사후 설명. 예측을 특징별 기여로 분해</td><td>보통 정확도가 가장 높다</td><td>설명은 결정 규칙이 아니라 출력의 분해다. 배경 데이터와 특징 간 상관에 따라 값이 바뀐다</td><td>이유 코드 체계와 충실도·안정성 검증이 필요</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="part">2 · 핵심 정리와 보충</div>
+
+    <div class="mini">
+      <div class="card add"><div class="k">보충 · 경로 ≠ 거절 사유</div><h4>위험한 쪽으로 간 조건만 사유다</h4><p>트리 경로에는 "연체 0회 이하"처럼 신청자에게 <b>유리했던</b> 조건도 들어 있습니다. 거절 사유는 각 분할에서 부도율이 높은 쪽으로 간 조건만 골라야 하고, 실험 5의 트리 사유가 그렇게 만든 것입니다. 또 연체 기록처럼 당장 바꿀 수 없는 사유와, 부채 비율처럼 고객이 행동할 수 있는 사유(반사실 설명)를 구분해 알려 주는 것이 좋습니다.</p></div>
+      <div class="card add"><div class="k">보충 · 재학습 불안정성</div><h4>트리의 약점이 결정에 그대로 나온다</h4><p>위클리 3 실험 1에서 본 것처럼 트리는 데이터가 조금만 바뀌어도 분할 기준값과 위쪽 분할이 바뀝니다. 같은 고객이 모델 버전에 따라 승인과 거절을 오가거나 "DTI 45% 초과", "DTI 57% 초과"처럼 다른 기준을 들으면 감사와 민원 대응이 어렵습니다. 실험 5의 "다시 뽑기"로 점수표와 비교해 보세요. 모델을 바꿀 때는 결정과 사유가 바뀐 고객 비율을 출시 기준에 넣습니다.</p></div>
+      <div class="card add"><div class="k">보충 · 공정성 점검</div><h4>보호 특성을 빼는 것만으로는 부족하다</h4><p>작성 답안대로 우편번호처럼 보호 특성을 간접적으로 드러내는 대리 변수가 있을 수 있습니다. 집단별 승인율, 같은 위험 수준에서의 승인율 차이, 집단별 오류율(실제로 갚을 고객을 거절한 비율)을 함께 봅니다. 공정성 지표들은 동시에 모두 만족시킬 수 없으므로 어떤 기준을 쓸지 업무·법무와 미리 정합니다.</p></div>
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-add">보충</span> 설명 의무의 근거 (2026년 10월 기준 요약)</h3>
+      <div class="tbl"><table>
+        <thead><tr><th style="width:22%">지역 · 법령</th><th>내용</th></tr></thead>
+        <tbody>
+          <tr><td><b>한국 · 신용정보법 제36조의2</b></td><td>개인신용평가회사 등에 자동화평가를 하는지, 그 결과·주요 기준·기초정보의 개요를 설명해 달라고 요구할 수 있고, 유리한 정보를 내거나 기초정보의 정정·삭제를 요구해 결과를 다시 산출하게 할 수 있다.</td></tr>
+          <tr><td><b>한국 · 개인정보 보호법 제37조의2</b></td><td>2024년 3월 15일 시행. 완전히 자동화된 결정이 권리·의무에 중대한 영향을 미치면 거부할 수 있고, 자동화된 결정에 대해 기준과 처리 과정의 설명 등을 요구할 수 있다.</td></tr>
+          <tr><td><b>미국 · ECOA · Regulation B</b></td><td>신용 거절 시 구체적인 주요 사유를 알려야 한다. CFPB는 2022년 "복잡한 알고리즘이라는 이유로 이 의무가 면제되지 않는다"는 해석(Circular 2022-03)을 냈고 2025년에 철회했지만, 사유 통지 의무 자체는 그대로다.</td></tr>
+          <tr><td><b>EU · AI Act</b></td><td>개인의 신용도를 평가하는 AI 시스템을 고위험으로 분류해 위험 관리, 데이터 품질, 기록, 투명성, 사람의 감독 의무를 둔다.</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted" style="font-size:14px">학습용 요약입니다. 적용 범위와 예외, 시행 시점은 개정될 수 있으므로 실제 운영 전에는 법무·준법 부서의 검토가 필요합니다.</p>
+    </div>
+
+    <div class="codewrap">
+      <div class="codecap">해석 가능한 후보 세 가지를 같은 데이터로 학습하기 (특징 순서: DTI, 연체, 근속, 조회)</div>
+<pre>from sklearn.tree import DecisionTreeClassifier, export_text
+from sklearn.linear_model import LogisticRegression
+from lightgbm import LGBMClassifier
+
+tree = DecisionTreeClassifier(max_depth=3, min_samples_leaf=60).fit(X_tr, y_tr)
+print(export_text(tree, feature_names=list(X_tr.columns)))    <span class="c"># 규칙 그대로 감사 자료가 된다</span>
+
+score = LogisticRegression(C=1.0, max_iter=1000).fit(X_tr, y_tr)  <span class="c"># 실무에선 구간화(WoE) 후 적합</span>
+
+<span class="c"># 단조 제약: DTI·연체·조회가 늘면 위험이 줄지 않고(+1), 근속이 늘면 늘지 않는다(−1)</span>
+gbm = LGBMClassifier(max_depth=3, num_leaves=8, n_estimators=300, learning_rate=0.05,
+                     monotone_constraints=[1, 1, -1, 1]).fit(X_tr, y_tr)
+
+<span class="c"># 앙상블을 쓴다면: TreeSHAP은 트리 모델의 출력(로그 오즈)을 특징별로 정확히 분해한다.</span>
+<span class="c"># 단, 결정 규칙 자체는 아니므로 이유 코드 매핑과 충실도·안정성 검증을 따로 한다.</span>
+import shap
+sv = shap.TreeExplainer(gbm).shap_values(X_rejected)</pre>
+    </div>
+
+    <div class="speech">
+      설명 의무가 법적 조건이라면 둘 중에서는 깊이를 제한한 단일 결정 트리를 고르겠습니다. 모델 자체가 if-then 규칙이라 고객이 어떤 조건 때문에 거절됐는지 모델과 정확히 일치하는 설명을 줄 수 있기 때문입니다. 랜덤 포레스트나 부스팅은 보통 더 정확하지만 수백 개 트리의 합이라, SHAP 같은 사후 설명은 출력의 분해일 뿐 결정 규칙이 아니고 사유의 충실도를 따로 검증해야 합니다. 다만 트리는 위험 등급이 거칠고 재학습 때마다 분할 기준이 움직여 같은 고객의 결정과 사유가 달라질 수 있어서, 실무에서는 로지스틱 점수표나 단조 제약을 건 부스팅처럼 처음부터 해석 가능한 모델을 함께 비교하겠습니다. 최종 선택은 부도 탐지 성능, 시간에 따른 안정성, 집단별 공정성, 그리고 재학습 후 사유가 얼마나 바뀌는지까지 검증하고, 법무와 함께 사유 통지 체계를 확정한 뒤 하겠습니다.
+    </div>
+
+    <div class="block">
+      <h3><span class="badge b-lab">퀴즈</span> 자가 점검</h3>
+      <div class="quiz" data-quiz="m2"></div>
+    </div>
+  </section>
+
+  <!-- ===================== 총정리 ===================== -->
+  <section class="q" id="sum">
+    <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
+    <div class="tbl"><table>
+      <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 머신러닝·딥러닝 (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>딥러닝은 머신러닝의 하위 분야, 모든 딥러닝은 머신러닝</td><td>"딥러닝은 사람이 특징을 설계하지 않아도 된다", "머신러닝은 특징 설계가 필요하다"는 과장. 정형 데이터는 GBDT가 강함</td></tr>
+        <tr><td>Q1 작성 답안</td><td><span class="badge b-add">정확</span></td><td>AI ⊃ ML ⊃ DL, 딥러닝도 사람의 설계가 필요, 비교표</td><td>표현 학습 단계, 신경망 ≠ 딥러닝, 비교표는 경향이라는 점 추가</td></tr>
+        <tr><td>Q2 하이퍼파라미터 (실습 해설)</td><td><span class="badge b-fix">오류</span></td><td>구조·학습·규제로 나눈 분류와 학습률·배치 크기 설명</td><td>드롭아웃은 뉴런 '제거'가 아니라 학습 중 일시적으로 끄기. 활성화는 데이터 분포로 고르지 않음. 층이 많으면 과적합 이전에 최적화가 어려워짐</td></tr>
+        <tr><td>Q2 작성 답안</td><td><span class="badge b-core">보완</span></td><td>파라미터와의 구분, 하이퍼파라미터 표, 테스트 데이터를 튜닝에 쓰지 않는 원칙</td><td>배치 크기는 먼저 고정, Adam에는 AdamW, 로그 척도와 랜덤·베이지안 탐색 추가</td></tr>
+        <tr><td>면접 1 99% vs 70% (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>평가 → 데이터 → 모델 순서의 점검, 개선 방법과 지표 목록</td><td>훈련·테스트 중복과 전체 데이터 전처리 누수는 테스트를 부풀리는 방향이라 이 증상의 원인이 아님. CV vs 테스트 비교, 기준선, 적대적 검증 추가</td></tr>
+        <tr><td>면접 2 대출 모델 (작성 답안)</td><td><span class="badge b-add">정확</span></td><td>제한된 단일 트리 우선, SHAP의 한계, 성능·공정성·감사 가능성 검증, 대리 변수</td><td>경로와 거절 사유의 구분, 재학습 불안정성, 점수표·단조 제약 모델, 관련 법령 추가</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <nav class="pager" aria-label="위클리 이동 (하단)">
+    <a class="home" href="../">← 전체 목차</a>
+    <span class="gap" aria-hidden="true"></span>
+    <a href="위클리%20페이퍼%203.%20결정%20트리%20·%20부스팅%20·%20PCA·요인%20분석.html" rel="prev">‹ 이전 · 03 결정 트리 · 부스팅 · PCA·요인 분석</a>
+    <span class="off" aria-disabled="true">다음 위클리 준비 중 ›</span>
+    <a href="#top">↑ 맨 위로</a>
+  </nav>
+
+  <footer>위클리 페이퍼 04 · 머신러닝과 딥러닝 / 하이퍼파라미터 / 면접 2문항 · <span class="tag-ex">예시</span> 표시가 있는 값은 설명용 가상 데이터입니다</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function gauss(r){let u=0;while(!u)u=r();const v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const mean=a=>a.reduce((s,v)=>s+v,0)/a.length;
+const minus=s=>String(s).replace(/-/g,"−");
+const f2=v=>minus(v.toFixed(2));
+const f3=v=>minus(v.toFixed(3));
+const pct=v=>(v*100).toFixed(1)+"%";
+const pp=v=>minus((v*100).toFixed(1))+"%p";
+const sig=z=>1/(1+Math.exp(-z));
+function clear(s){while(s.firstChild)s.removeChild(s.firstChild);}
+function safe(name,fn){try{fn();}catch(e){console.error(name,e);}}
+const later=fn=>setTimeout(()=>safe("later",fn),20);
+/* AUC (동점은 평균 순위) */
+function auc(score,label){const idx=score.map((_,i)=>i).sort((a,b)=>score[a]-score[b]);const rk=new Array(score.length);
+  for(let i=0;i<idx.length;){let j=i;while(j+1<idx.length&&score[idx[j+1]]===score[idx[i]])j++;const r=(i+j)/2+1;for(let k=i;k<=j;k++)rk[idx[k]]=r;i=j+1;}
+  let np=0,s=0;for(let i=0;i<label.length;i++)if(label[i]){np++;s+=rk[i];}const nn=label.length-np;if(!np||!nn)return 0.5;return (s-np*(np+1)/2)/(np*nn);}
+/* 결정 영역 그리기: f(a,b) → 0/1, 좌표 범위 [x0,x1]×[y0,y1] */
+function region(svg,f,x0,x1,y0,y1,W,H,G){const cw=W/G,ch=H/G;
+  for(let i=0;i<G;i++)for(let j=0;j<G;j++){const a=x0+(i+0.5)/G*(x1-x0),b=y1-(j+0.5)/G*(y1-y0);
+    el("rect",{x:(i*cw).toFixed(2),y:(j*ch).toFixed(2),width:(cw+0.4).toFixed(2),height:(ch+0.4).toFixed(2),class:f(a,b)?"leaf1":"leaf0"},svg);}}
+
+/* ---------- 실험 1: 전통 ML vs 딥러닝 ---------- */
+safe("mldl",function(){
+  const H=16,TEST=2500,NOISE=0.05;let seed=1;
+  const truth=(k,a,b)=>k==="ring"?(a*a+b*b<0.4?1:0):(a*b>0?1:0);
+  const hand=(k,a,b)=>k==="ring"?a*a+b*b:a*b;
+  function data(k,n,s,noise){const r=mulberry32(s);const X=[],Y=[];
+    for(let i=0;i<n;i++){const a=r()*2-1,b=r()*2-1;let y=truth(k,a,b);if(noise&&r()<noise)y=1-y;X.push([a,b]);Y.push(y);}return {X,Y};}
+  function adam(th,g,m,v,t,lr){const c1=1-Math.pow(.9,t),c2=1-Math.pow(.999,t);
+    for(let k=0;k<th.length;k++){m[k]=.9*m[k]+.1*g[k];v[k]=.999*v[k]+.001*g[k]*g[k];th[k]-=lr*(m[k]/c1)/(Math.sqrt(v[k]/c2)+1e-8);}}
+  function fitLR(F,Y,ep){const d=F[0].length,n=F.length;const th=new Float64Array(d+1),m=new Float64Array(d+1),v=new Float64Array(d+1),g=new Float64Array(d+1);
+    for(let t=1;t<=ep;t++){g.fill(0);
+      for(let i=0;i<n;i++){let z=th[d];for(let j=0;j<d;j++)z+=th[j]*F[i][j];const e=(sig(z)-Y[i])/n;for(let j=0;j<d;j++)g[j]+=e*F[i][j];g[d]+=e;}
+      adam(th,g,m,v,t,0.1);}
+    return f=>{let z=th[d];for(let j=0;j<d;j++)z+=th[j]*f[j];return z;};}
+  function fitMLP(X,Y,s,ep){const r=mulberry32(s),P=4*H+1,n=X.length;
+    const th=new Float64Array(P),m=new Float64Array(P),v=new Float64Array(P),g=new Float64Array(P),h=new Float64Array(H);
+    for(let j=0;j<H;j++){th[j*2]=gauss(r)*1.5;th[j*2+1]=gauss(r)*1.5;th[2*H+j]=gauss(r)*0.5;th[3*H+j]=gauss(r)*0.5;}
+    for(let t=1;t<=ep;t++){g.fill(0);
+      for(let i=0;i<n;i++){const a=X[i][0],b=X[i][1];let z=th[4*H];
+        for(let j=0;j<H;j++){h[j]=Math.tanh(th[j*2]*a+th[j*2+1]*b+th[2*H+j]);z+=th[3*H+j]*h[j];}
+        const e=(sig(z)-Y[i])/n;g[4*H]+=e;
+        for(let j=0;j<H;j++){g[3*H+j]+=e*h[j];const da=e*th[3*H+j]*(1-h[j]*h[j]);g[j*2]+=da*a;g[j*2+1]+=da*b;g[2*H+j]+=da;}}
+      for(let k=0;k<P;k++)g[k]+=1e-4*th[k];
+      adam(th,g,m,v,t,0.03);}
+    return (a,b)=>{let z=th[4*H];for(let j=0;j<H;j++)z+=th[3*H+j]*Math.tanh(th[j*2]*a+th[j*2+1]*b+th[2*H+j]);return z;};}
+  function draw(svg,kind,pred,X,Y){clear(svg);region(svg,(a,b)=>pred(a,b)>0,-1,1,-1,1,200,200,40);
+    const sx=a=>(a+1)*100,sy=b=>(1-b)*100;
+    if(kind==="ring")el("circle",{cx:100,cy:100,r:Math.sqrt(0.4)*100,class:"trueb"},svg);
+    else{el("line",{x1:100,y1:0,x2:100,y2:200,class:"trueb"},svg);el("line",{x1:0,y1:100,x2:200,y2:100,class:"trueb"},svg);}
+    const rr=X.length>300?1.7:2.6;for(let i=0;i<X.length;i++)el("circle",{cx:sx(X[i][0]).toFixed(1),cy:sy(X[i][1]).toFixed(1),r:rr,class:Y[i]?"p1":"p0"},svg);}
+  function run(){
+    const kind=$("#mdK").value,n=+$("#mdN").value;
+    const tr=data(kind,n,1000*seed+n,NOISE),te=data(kind,TEST,777,0);
+    const t0=performance.now();
+    const fa=fitLR(tr.X,tr.Y,1500);
+    const t1=performance.now();
+    const fb=fitLR(tr.X.map(x=>[x[0],x[1],hand(kind,x[0],x[1])]),tr.Y,1500);
+    const t2=performance.now();
+    const fc=fitMLP(tr.X,tr.Y,seed*31+7,1500);
+    const t3=performance.now();
+    void t0;void t1;
+    const pa=(a,b)=>fa([a,b]),pb=(a,b)=>fb([a,b,hand(kind,a,b)]);
+    const acc=(p,D)=>mean(D.X.map((x,i)=>((p(x[0],x[1])>0?1:0)===D.Y[i])?1:0));
+    const aA=acc(pa,te),aB=acc(pb,te),aC=acc(fc,te),trC=acc(fc,tr);
+    const base=Math.max(mean(te.Y),1-mean(te.Y));
+    draw($("#mdA"),kind,pa,tr.X,tr.Y);draw($("#mdB"),kind,pb,tr.X,tr.Y);draw($("#mdC"),kind,fc,tr.X,tr.Y);
+    $("#mdAccA").textContent=pct(aA);$("#mdAccB").textContent=pct(aB);$("#mdAccC").textContent=pct(aC);
+    $("#mdBase").textContent=pct(base);$("#mdDiff").textContent=pp(aB-aC);$("#mdTrC").textContent=pct(trC);
+    const opsB=1500*n*4,opsC=1500*n*(H*6+1);
+    $("#mdCost").textContent="약 "+Math.round(opsC/opsB)+"배 ("+Math.max(1,Math.round(t3-t2))+"ms / "+Math.max(1,Math.round(t2-t1))+"ms)";
+    const fname=kind==="ring"?"x₁²+x₂²":"x₁·x₂";
+    let msg="① 원래 좌표만 쓴 로지스틱 회귀는 직선 하나로만 나눌 수 있어 "+pct(aA)+(aA<base-0.01?"로, 다수 클래스만 찍는 기준선("+pct(base)+")보다도 낮습니다. ":"에 그칩니다(다수 클래스 기준선 "+pct(base)+"). ");
+    msg+="② 사람이 '"+fname+"'라는 특징 하나를 알려 주면 파라미터 4개로 "+pct(aB)+"입니다. ";
+    if(aB-aC>0.02)msg+="③ MLP는 같은 특징을 스스로 찾아야 해서 학습 "+n+"개로는 "+pct(aC)+"에 머뭅니다"+(trC-aC>0.05?"(훈련 "+pct(trC)+", 적은 데이터를 외운 상태)":"")+". 데이터가 적을 때는 올바른 사전 지식이 큰 모델을 이깁니다. 학습 데이터를 1,000개로 늘려 보세요.";
+    else if(n<300)msg+="이번 표본에서는 ③ MLP("+pct(aC)+")가 ②와 비슷하거나 앞섭니다. 학습 데이터가 "+n+"개뿐이면 어떤 점이 뽑혔는지에 따라 두 모델 모두 결과가 크게 흔들리므로 '다시 뽑기'를 몇 번 눌러 비교해 보세요. 1,000개로 늘리면 두 모델 모두 안정적으로 높아집니다.";
+    else msg+="③ MLP는 특징을 알려 주지 않아도 원래 좌표에서 "+pct(aC)+"까지 올라와 ②와 "+(Math.abs(aB-aC)<=0.02?"거의 같습니다":"비슷하거나 앞섭니다")+". 데이터가 충분하면 은닉층이 필요한 특징을 스스로 배운다는 것이 표현 학습입니다. 대신 계산량은 ②의 약 "+Math.round(opsC/opsB)+"배입니다.";
+    $("#mdMsg").textContent=msg;
+  }
+  const go=()=>{$("#mdMsg").textContent="계산 중…";later(run);};
+  $("#mdK").addEventListener("change",go);$("#mdN").addEventListener("change",go);
+  $("#mdNew").addEventListener("click",()=>{seed++;go();});
+  go();
+});
+
+/* ---------- 실험 2: 규제 하이퍼파라미터와 과적합 ---------- */
+safe("reg",function(){
+  const EP=1500,STEP=25,G=30;
+  function moons(n,s){const r=mulberry32(s);const X=[],Y=[];
+    for(let i=0;i<n;i++){const c=i%2,t=r()*Math.PI;let a,b;if(c===0){a=Math.cos(t);b=Math.sin(t);}else{a=1-Math.cos(t);b=0.5-Math.sin(t);}
+      a+=0.3*gauss(r);b+=0.3*gauss(r);X.push([(a-0.5)/1.2,(b-0.25)/1.2]);Y.push(c);}return {X,Y};}
+  const tr=moons(60,11),va=moons(1000,12);
+  const X0=-1.6,X1=1.6,Y0=-1.3,Y1=1.3;
+  const gridPts=[];for(let j=0;j<G;j++)for(let i=0;i<G;i++)gridPts.push([X0+(i+0.5)/G*(X1-X0),Y1-(j+0.5)/G*(Y1-Y0)]);
+  const cache={};
+  function train(H,p,wd,lr){const key=[H,p,wd,lr].join("|");if(cache[key])return cache[key];
+    const r=mulberry32(4242),P=4*H+1,n=tr.X.length;
+    const th=new Float64Array(P),m=new Float64Array(P),v=new Float64Array(P),g=new Float64Array(P),h=new Float64Array(H),mk=new Float64Array(H);
+    for(let j=0;j<H;j++){th[j*2]=gauss(r)*2;th[j*2+1]=gauss(r)*2;th[2*H+j]=gauss(r);th[3*H+j]=gauss(r)/Math.sqrt(H);}
+    const fwd=(a,b)=>{let z=th[4*H];for(let j=0;j<H;j++)z+=th[3*H+j]*Math.tanh(th[j*2]*a+th[j*2+1]*b+th[2*H+j]);return z;};
+    const evalD=D=>{let L=0,c=0;for(let i=0;i<D.X.length;i++){const z=fwd(D.X[i][0],D.X[i][1]),y=D.Y[i];L+=Math.max(z,0)-z*y+Math.log1p(Math.exp(-Math.abs(z)));if((z>0?1:0)===y)c++;}return [L/D.X.length,c/D.X.length];};
+    const hist=[];const snap=ep=>{const a=evalD(tr),b=evalD(va);hist.push({ep,trL:a[0],trA:a[1],vaL:b[0],vaA:b[1],grid:gridPts.map(q=>fwd(q[0],q[1])>0)});};
+    snap(0);
+    const rd=mulberry32(99);
+    for(let t=1;t<=EP;t++){g.fill(0);
+      for(let i=0;i<n;i++){const a=tr.X[i][0],b=tr.X[i][1];let z=th[4*H];
+        for(let j=0;j<H;j++){h[j]=Math.tanh(th[j*2]*a+th[j*2+1]*b+th[2*H+j]);mk[j]=p>0?(rd()<p?0:1/(1-p)):1;z+=th[3*H+j]*h[j]*mk[j];}
+        const e=(sig(z)-tr.Y[i])/n;g[4*H]+=e;
+        for(let j=0;j<H;j++){if(!mk[j])continue;const hm=h[j]*mk[j];g[3*H+j]+=e*hm;const da=e*th[3*H+j]*mk[j]*(1-h[j]*h[j]);g[j*2]+=da*a;g[j*2+1]+=da*b;g[2*H+j]+=da;}}
+      const c1=1-Math.pow(.9,t),c2=1-Math.pow(.999,t);
+      for(let k=0;k<P;k++){m[k]=.9*m[k]+.1*g[k];v[k]=.999*v[k]+.001*g[k]*g[k];th[k]-=lr*(m[k]/c1)/(Math.sqrt(v[k]/c2)+1e-8);}
+      if(wd>0){for(let j=0;j<H;j++){th[j*2]-=lr*wd*th[j*2];th[j*2+1]-=lr*wd*th[j*2+1];th[3*H+j]-=lr*wd*th[3*H+j];}}
+      if(t%STEP===0)snap(t);}
+    let bi=0;for(let i=1;i<hist.length;i++)if(hist[i].vaL<hist[bi].vaL)bi=i;
+    return cache[key]={hist,bi};}
+  function render(){
+    const H=+$("#rgH").value,p=+$("#rgP").value,wd=+$("#rgW").value,lr=+$("#rgL").value,E=+$("#rgE").value;
+    $("#rgEOut").textContent=E;
+    const S=train(H,p,wd,lr),cur=S.hist[E/STEP],best=S.hist[S.bi],last=S.hist[S.hist.length-1];
+    const B=$("#rgB");clear(B);
+    const cw=300/G,ch=240/G;
+    cur.grid.forEach((c,k)=>{const i=k%G,j=Math.floor(k/G);el("rect",{x:(i*cw).toFixed(2),y:(j*ch).toFixed(2),width:(cw+0.4).toFixed(2),height:(ch+0.4).toFixed(2),class:c?"leaf1":"leaf0"},B);});
+    const sx=a=>(a-X0)/(X1-X0)*300,sy=b=>(Y1-b)/(Y1-Y0)*240;
+    tr.X.forEach((x,i)=>el("circle",{cx:sx(x[0]).toFixed(1),cy:sy(x[1]).toFixed(1),r:3.6,class:tr.Y[i]?"p1":"p0"},B));
+    el("text",{x:6,y:16,"font-size":12,"font-weight":700},B,"에포크 "+E);
+    const C=$("#rgC");clear(C);
+    const L=40,R=350,T=10,Bt=165,ym=1.2;
+    const cx=e=>L+e/EP*(R-L),cy=v=>Bt-Math.min(v,ym)/ym*(Bt-T);
+    for(let v=0;v<=ym+1e-9;v+=0.4){el("line",{x1:L,y1:cy(v),x2:R,y2:cy(v),class:"gl"},C);el("text",{x:L-6,y:cy(v)+4,"text-anchor":"end","font-size":11,class:"mut"},C,v.toFixed(1));}
+    for(let e=0;e<=EP;e+=500)el("text",{x:cx(e),y:Bt+15,"text-anchor":"middle","font-size":11,class:"mut"},C,e);
+    el("text",{x:(L+R)/2,y:194,"text-anchor":"middle","font-size":11.5,class:"mut"},C,"에포크 · 세로축 = 이진 교차 엔트로피 loss");
+    el("polyline",{points:S.hist.map(h=>cx(h.ep).toFixed(1)+","+cy(h.trL).toFixed(1)).join(" "),class:"trl"},C);
+    el("polyline",{points:S.hist.map(h=>cx(h.ep).toFixed(1)+","+cy(h.vaL).toFixed(1)).join(" "),class:"val"},C);
+    el("circle",{cx:cx(best.ep),cy:cy(best.vaL),r:4.5,class:"c1"},C);
+    el("line",{x1:cx(E),y1:T,x2:cx(E),y2:Bt,class:"cur"},C);
+    $("#rgTr").textContent=pct(cur.trA);$("#rgVa").textContent=pct(cur.vaA);
+    $("#rgBest").textContent="에포크 "+best.ep+" ("+pct(best.vaA)+")";
+    const gap=last.vaL-best.vaL;$("#rgGap").textContent=f3(gap);
+    const gb=$("#rgGapBox");gb.classList.remove("warn","ok");gb.classList.add(gap>0.05?"warn":"ok");
+    let msg="";
+    if(last.trA<0.8)msg="마지막 훈련 정확도가 "+pct(last.trA)+"로 낮습니다. 규제가 너무 강하거나 모델이 너무 작은 과소적합입니다. 감쇠나 드롭아웃을 줄이거나 은닉 뉴런을 늘려 보세요.";
+    else if(gap>0.05)msg="검증 loss가 에포크 "+best.ep+"에서 가장 낮고("+f3(best.vaL)+") 그 뒤로 "+f3(gap)+"만큼 올라갑니다. 훈련 loss는 계속 줄어드는데 검증 loss가 오르는 전형적인 과적합입니다. 경계가 학습 점 하나하나를 감싸는지 마지막 에포크에서 확인하고, 드롭아웃·가중치 감쇠를 켜거나 에포크를 조기 종료 지점으로 옮겨 보세요.";
+    else msg="검증 loss가 끝까지 최저점 근처에 머뭅니다(마지막 − 최저 = "+f3(gap)+"). 이 설정에서는 규제나 모델 크기가 과적합을 억제하고 있습니다. 조기 종료 지점의 검증 정확도는 "+pct(best.vaA)+"입니다.";
+    if(p>0)msg+=" 드롭아웃은 학습 중에만 켜집니다. 그래프의 훈련 loss는 드롭아웃을 끈 평가 모드 값이라, 드롭아웃이 켜진 채 기록되는 학습 로그의 훈련 loss보다 대개 낮습니다.";
+    $("#rgMsg").textContent=msg;
+  }
+  const go=()=>{$("#rgMsg").textContent="계산 중…";later(render);};
+  ["#rgH","#rgP","#rgW","#rgL"].forEach(s=>$(s).addEventListener("change",go));
+  $("#rgE").addEventListener("input",()=>safe("rgE",render));
+  go();
+});
+
+/* ---------- 실험 3: 격자 탐색 vs 랜덤 탐색 ---------- */
+safe("hps",function(){
+  const C=-2.6,SD=0.35,U0=-5,U1=-1,D1=0.6,LMIN=1e-5,LMAX=0.1;
+  const score=(u,d)=>0.70+0.22*Math.exp(-(u-C)*(u-C)/(2*SD*SD))-0.015*Math.pow((d-0.3)/0.3,2);
+  let seed=3;
+  const uOf=(r,scale)=>scale==="log"?U0+r*(U1-U0):Math.log10(LMIN+r*(LMAX-LMIN));
+  function grid(B,scale){const k=Math.round(Math.sqrt(B)),pts=[];
+    for(let i=0;i<k;i++)for(let j=0;j<k;j++)pts.push([uOf(i/(k-1),scale),D1*j/(k-1)]);return pts;}
+  function rand(B,scale,r){const pts=[];for(let i=0;i<B;i++)pts.push([uOf(r(),scale),r()*D1]);return pts;}
+  const bestOf=pts=>pts.reduce((b,q)=>{const s=score(q[0],q[1]);return s>b.s?{s,q}:b;},{s:-1,q:null});
+  const svg=$("#hsSvg");
+  const L=60,R=620,T=14,Bt=214;
+  const sx=u=>L+(u-U0)/(U1-U0)*(R-L),sy=d=>Bt-d/D1*(Bt-T);
+  function render(){
+    const B=+$("#hsB").value,scale=$("#hsS").value;
+    const gp=grid(B,scale),rp=rand(B,scale,mulberry32(seed*101+B));
+    const gb=bestOf(gp),rb=bestOf(rp);
+    const mc=mulberry32(55+B);let sum=0,win=0;const RUN=2000;
+    for(let t=0;t<RUN;t++){const b=bestOf(rand(B,scale,mc)).s;sum+=b;if(b>gb.s)win++;}
+    clear(svg);
+    const NX=56,NY=24;
+    for(let i=0;i<NX;i++)for(let j=0;j<NY;j++){const u=U0+(i+0.5)/NX*(U1-U0),d=D1*(j+0.5)/NY;const s=score(u,d);
+      el("rect",{x:(L+i*(R-L)/NX).toFixed(1),y:(Bt-(j+1)*(Bt-T)/NY).toFixed(1),width:((R-L)/NX+0.5).toFixed(1),height:((Bt-T)/NY+0.5).toFixed(1),class:"hm","fill-opacity":Math.max(0.03,(s-0.66)/0.26*0.85).toFixed(3)},svg);}
+    el("rect",{x:L,y:T,width:R-L,height:Bt-T,class:"ax"},svg);
+    el("line",{x1:sx(C),y1:T,x2:sx(C),y2:Bt,class:"opt"},svg);
+    for(let u=U0;u<=U1;u++){el("text",{x:sx(u),y:Bt+15,"text-anchor":"middle","font-size":11,class:"mut"},svg,"1e"+minus(u));}
+    for(const d of [0,0.3,0.6])el("text",{x:L-6,y:sy(d)+4,"text-anchor":"end","font-size":11,class:"mut"},svg,d.toFixed(1));
+    el("text",{x:(L+R)/2,y:Bt+30,"text-anchor":"middle","font-size":11.5,class:"mut"},svg,"학습률 (로그 축) · 세로축 = 드롭아웃");
+    const ry=Bt+44;
+    el("text",{x:L-6,y:ry+4,"text-anchor":"end","font-size":10.5,class:"mut"},svg,"격자");
+    el("text",{x:L-6,y:ry+22,"text-anchor":"end","font-size":10.5,class:"mut"},svg,"랜덤");
+    el("line",{x1:L,y1:ry,x2:R,y2:ry,class:"gl"},svg);el("line",{x1:L,y1:ry+18,x2:R,y2:ry+18,class:"gl"},svg);
+    gp.forEach(q=>{el("rect",{x:sx(q[0])-4,y:sy(q[1])-4,width:8,height:8,class:"gpt"},svg);el("rect",{x:sx(q[0])-3,y:ry-3,width:6,height:6,class:"gpt"},svg);});
+    rp.forEach(q=>{el("circle",{cx:sx(q[0]),cy:sy(q[1]),r:4.2,class:"rpt"},svg);el("circle",{cx:sx(q[0]),cy:ry+18,r:3,class:"rpt"},svg);});
+    el("rect",{x:sx(gb.q[0])-8,y:sy(gb.q[1])-8,width:16,height:16,class:"bestr"},svg);
+    el("circle",{cx:sx(rb.q[0]),cy:sy(rb.q[1]),r:9,class:"bestr"},svg);
+    const k=Math.round(Math.sqrt(B));
+    $("#hsG").textContent=gb.s.toFixed(3);$("#hsR").textContent=rb.s.toFixed(3);
+    $("#hsRm").textContent=(sum/RUN).toFixed(3);$("#hsP").textContent=pct(win/RUN);
+    $("#hsU").textContent="격자 "+k+"개 / 랜덤 "+B+"개";
+    let msg;
+    if(scale==="lin"){const share=1-(0.01-LMIN)/(LMAX-LMIN);
+      msg="학습률을 10⁻⁵~10⁻¹에서 선형으로 뽑으면 약 "+Math.round(share*100)+"%가 10⁻²보다 큰 값입니다. 아래 줄의 점이 오른쪽 끝에 몰린 것을 보세요. 좋은 값(약 2.5×10⁻³)이 있는 구간을 거의 시도하지 못해 랜덤 평균 최고가 "+(sum/RUN).toFixed(3)+"에 그칩니다. 학습률·가중치 감쇠처럼 자릿수가 바뀌는 값은 로그 척도로 뽑아야 합니다.";}
+    else{msg="격자 "+B+"회는 학습률을 "+k+"가지만 시도하고, 같은 학습률에서 영향이 작은 드롭아웃만 바꾸느라 나머지 시도를 씁니다. 랜덤 "+B+"회는 학습률을 "+B+"가지 시도해, 2,000번 반복했을 때 평균 최고 "+(sum/RUN).toFixed(3)+", 격자("+gb.s.toFixed(3)+")보다 나을 확률 "+pct(win/RUN)+"입니다.";
+      if(B===25)msg+=" 격자를 5×5로 늘려도 학습률 값이 10⁻³, 10⁻²처럼 최적점(2.5×10⁻³)을 비껴가면 결과가 나아지지 않습니다. 격자의 성능은 운 좋게 최적점 근처에 눈금이 놓이는지에 달려 있습니다.";}
+    $("#hsMsg").textContent=msg;
+  }
+  $("#hsB").addEventListener("change",render);$("#hsS").addEventListener("change",render);
+  $("#hsNew").addEventListener("click",()=>{seed++;render();});
+  render();
+});
+
+/* ---------- 실험 4: 훈련·CV·테스트 격차 진단 ---------- */
+safe("gap",function(){
+  const NTR=300,NTE=1000;
+  const fb=a=>Math.sin(1.6*a);
+  const NAMES=["가입 기간","월 이용량","해지 상담 기록"];
+  function gen(n,s,mode,isTest){const r=mulberry32(s);const X=[],Y=[];
+    for(let i=0;i<n;i++){const a=(isTest&&mode==="shift")?r()*3:-2+r()*3,b=-1.5+r()*3;let y=b>fb(a)?1:0;if(r()<0.1)y=1-y;
+      const row=[a,b];if(mode==="leak")row.push(isTest?0.3*gauss(r):(y?3:0)+0.3*gauss(r));X.push(row);Y.push(y);}return {X,Y};}
+  const DS={};["norm","leak","shift"].forEach(m=>{DS[m]={tr:gen(NTR,101,m,false),te:gen(NTE,202,m,true)};});
+  const d2=(p,q)=>{let s=0;for(let j=0;j<p.length;j++){const e=p[j]-q[j];s+=e*e;}return s;};
+  function knnVote(trX,trY,q,k,skip){const ds=[];for(let i=0;i<trX.length;i++){if(i===skip)continue;ds.push([d2(trX[i],q),i]);}
+    ds.sort((a,b)=>a[0]-b[0]);let s=0;for(let t=0;t<k;t++)s+=trY[ds[t][1]];return s/k;}
+  function cvAcc(X,Y,k){const n=X.length,r=mulberry32(9),ord=X.map((_,i)=>i);for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[ord[i],ord[j]]=[ord[j],ord[i]];}
+    let c=0;for(let f=0;f<5;f++){const te=ord.filter((_,i)=>i%5===f),trI=ord.filter((_,i)=>i%5!==f);const tX=trI.map(i=>X[i]),tY=trI.map(i=>Y[i]);
+      for(const i of te)if(((knnVote(tX,tY,X[i],Math.min(k,tX.length),-1)>0.5)?1:0)===Y[i])c++;}return c/n;}
+  const advCache={};
+  function adversarial(m){if(advCache[m])return advCache[m];const D=DS[m];const X=D.tr.X.concat(D.te.X.slice(0,NTR)),Y=X.map((_,i)=>i<NTR?0:1);
+    const n=X.length,r=mulberry32(13),ord=X.map((_,i)=>i);for(let i=n-1;i>0;i--){const j=Math.floor(r()*(i+1));[ord[i],ord[j]]=[ord[j],ord[i]];}
+    const sc=new Array(n);for(let f=0;f<5;f++){const te=ord.filter((_,i)=>i%5===f),trI=ord.filter((_,i)=>i%5!==f);const tX=trI.map(i=>X[i]),tY=trI.map(i=>Y[i]);for(const i of te)sc[i]=knnVote(tX,tY,X[i],15,-1);}
+    const feats=X[0].map((_,j)=>{const a=auc(X.map(x=>x[j]),Y);return Math.max(a,1-a);});
+    let fj=0;feats.forEach((v,j)=>{if(v>feats[fj])fj=j;});
+    return advCache[m]={auc:auc(sc,Y),fj,fa:feats[fj]};}
+  function render(){
+    const m=$("#gpM").value,k=+$("#gpK").value;$("#gpKOut").textContent=k;
+    const D=DS[m];
+    const trA=mean(D.tr.X.map((x,i)=>((knnVote(D.tr.X,D.tr.Y,x,k,-1)>0.5?1:0)===D.tr.Y[i])?1:0));
+    const cv=cvAcc(D.tr.X,D.tr.Y,k);
+    const teA=mean(D.te.X.map((x,i)=>((knnVote(D.tr.X,D.tr.Y,x,k,-1)>0.5?1:0)===D.te.Y[i])?1:0));
+    const base=Math.max(mean(D.te.Y),1-mean(D.te.Y));
+    const adv=adversarial(m);
+    // 분포 그림
+    const S=$("#gpSvg");clear(S);
+    const L=30,R=312,T=8,B=212,x0=-2,x1=3,y0=-1.5,y1=1.5;
+    const sx=a=>L+(a-x0)/(x1-x0)*(R-L),sy=b=>B-(b-y0)/(y1-y0)*(B-T);
+    el("rect",{x:L,y:T,width:R-L,height:B-T,class:"ax"},S);
+    const pts=[];for(let i=0;i<=100;i++){const a=x0+i/100*(x1-x0);pts.push(sx(a).toFixed(1)+","+sy(fb(a)).toFixed(1));}
+    D.te.X.slice(0,400).forEach(x=>el("circle",{cx:sx(x[0]).toFixed(1),cy:sy(x[1]).toFixed(1),r:2,class:"cg"},S));
+    D.tr.X.forEach((x,i)=>el("circle",{cx:sx(x[0]).toFixed(1),cy:sy(x[1]).toFixed(1),r:2.8,class:D.tr.Y[i]?"p1":"p0"},S));
+    el("polyline",{points:pts.join(" "),class:"trueb"},S);
+    for(let a=-2;a<=3;a++)el("text",{x:sx(a),y:B+14,"text-anchor":"middle","font-size":10.5,class:"mut"},S,minus(a));
+    el("text",{x:(L+R)/2,y:236,"text-anchor":"middle","font-size":11,class:"mut"},S,"가입 기간 (표준화) → · 세로축 = 월 이용량");
+    if(m==="leak")el("text",{x:R-4,y:T+14,"text-anchor":"end","font-size":11,class:"taf"},S,"그림에 없는 3번째 특징: 해지 상담 기록");
+    // 막대
+    const Bv=$("#gpBar");clear(Bv);
+    const bl=60,br=310,bt=10,bb=160,vals=[["훈련",trA],["5-폴드 CV",cv],["테스트",teA]];
+    const by=v=>bb-(v-0.4)/0.6*(bb-bt);
+    for(let v=0.4;v<=1.0001;v+=0.1){el("line",{x1:bl,y1:by(v),x2:br,y2:by(v),class:"gl"},Bv);el("text",{x:bl-6,y:by(v)+4,"text-anchor":"end","font-size":11,class:"mut"},Bv,Math.round(v*100)+"%");}
+    const bw=(br-bl)/3;
+    vals.forEach((q,i)=>{const x=bl+i*bw+bw*0.2;el("rect",{x,y:by(q[1]),width:bw*0.6,height:bb-by(q[1]),rx:3,class:i===2?"barm":"barp"},Bv);
+      el("text",{x:x+bw*0.3,y:by(q[1])-5,"text-anchor":"middle","font-size":12,"font-weight":700},Bv,pct(q[1]));
+      el("text",{x:x+bw*0.3,y:bb+16,"text-anchor":"middle","font-size":12},Bv,q[0]);});
+    el("line",{x1:bl,y1:by(base),x2:br,y2:by(base),class:"ln"},Bv);
+    el("text",{x:br,y:by(base)-4,"text-anchor":"end","font-size":10.5,class:"mut"},Bv,"다수 클래스 기준선 "+pct(base));
+    el("text",{x:(bl+br)/2,y:194,"text-anchor":"middle","font-size":11,class:"mut"},Bv,"훈련 정확도는 자기 자신도 이웃에 포함해 잰 값");
+    $("#gpAdv").textContent=adv.auc.toFixed(3);
+    $("#gpFeat").textContent=NAMES[adv.fj]+" (단독 AUC "+adv.fa.toFixed(2)+")";
+    const g1=trA-cv,g2=cv-teA;
+    let msg="훈련 "+pct(trA)+" · CV "+pct(cv)+" · 테스트 "+pct(teA)+". ";
+    if(g2>0.08&&adv.auc>0.7){
+      msg+="CV보다 테스트가 "+pp(g2)+" 낮고, 적대적 검증 AUC(0.5면 같은 분포)는 "+adv.auc.toFixed(2)+"입니다. 훈련과 테스트가 쉽게 구분된다는 뜻입니다. ";
+      if(g1>0.08)msg+="훈련−CV 격차("+pp(g1)+")도 커서 지금은 과적합까지 겹쳐 있습니다. k를 키우면 이 격차는 줄지만 CV−테스트 격차는 남습니다. ";
+      if(adv.fj===2)msg+="구분을 만든 특징은 '해지 상담 기록'입니다. 이 값은 고객이 이탈을 결정한 뒤에 생기므로 예측 시점에는 아직 없습니다(테스트에서는 모두 0 근처). 훈련에서는 정답을 거의 그대로 알려 주는 누수라 k를 키워도 훈련·CV가 높게 유지되고, 테스트는 "+(teA<base-0.02?"다수 클래스 기준선("+pct(base)+")보다도 낮게":"다수 클래스 기준선("+pct(base)+") 근처로")+" 떨어집니다. 규제로는 고칠 수 없고 특징을 빼야 합니다.";
+      else msg+="구분을 만든 특징은 '"+NAMES[adv.fj]+"'입니다. 테스트 고객의 가입 기간이 훈련에서 본 범위를 벗어나, 모델이 경계를 본 적 없는 구간에서 예측하고 있습니다. k를 바꿔도 테스트가 크게 나아지지 않는 것을 확인해 보세요. 최근 고객 데이터를 학습에 넣거나, 시간 순으로 나눈 검증으로 다시 평가해야 합니다.";
+    }else if(g1>0.08&&Math.abs(g2)<0.06){
+      msg+="훈련만 높고 CV와 테스트가 함께 낮습니다(훈련−CV "+pp(g1)+"). 적대적 검증 AUC가 0.5 근처("+adv.auc.toFixed(2)+")라 두 데이터는 같은 분포입니다. 학습 데이터를 외운 과적합이므로 k를 키워(모델을 단순하게) 보세요. CV와 테스트가 함께 올라갑니다.";
+    }else if(Math.abs(g2)<0.06&&adv.auc<=0.7){
+      msg+="세 점수가 비슷하고 두 데이터도 같은 분포입니다(적대적 검증 AUC "+adv.auc.toFixed(2)+", 0.5 근처). 라벨 잡음 10% 때문에 테스트 정확도의 상한은 약 90%입니다."+(k>=31?" k가 너무 크면 경계가 지나치게 매끄러워져 세 점수가 함께 내려가는 과소적합이 됩니다.":"");
+    }else{
+      msg+="적대적 검증 AUC "+adv.auc.toFixed(2)+". 훈련−CV "+pp(g1)+", CV−테스트 "+pp(g2)+"입니다. 두 격차를 따로 보면 과적합과 분포 차이를 나눠 진단할 수 있습니다.";
+    }
+    $("#gpMsg").textContent=msg;
+  }
+  $("#gpM").addEventListener("change",render);$("#gpK").addEventListener("input",render);
+  render();
+});
+
+/* ---------- 실험 5: 대출 거절 사유 ---------- */
+safe("loan",function(){
+  const F=[{n:"DTI",full:"소득 대비 부채 비율",u:"%",best:10,min:5,max:80,int:false,def:58,dn:"부채 비율(DTI)을 ",dv:" 낮추면"},
+           {n:"연체",full:"최근 2년 연체 횟수",u:"회",best:0,min:0,max:5,int:true,def:1,past:true,dn:"최근 2년 연체가 ",dv:"였다면"},
+           {n:"근속",full:"근속 연수",u:"년",best:20,min:0,max:20,int:false,def:3,up:"근속 연수가 "},
+           {n:"조회",full:"최근 6개월 신용 조회",u:"회",best:0,min:0,max:8,int:true,def:4,dn:"최근 6개월 신용 조회를 ",dv:" 줄이면"}];
+  const LATE=[0.70,0.15,0.08,0.04,0.02,0.01];
+  function person(r){const d=Math.min(80,Math.max(5,35+12*gauss(r)));let u=r(),l=0;while(l<5&&u>LATE[l]){u-=LATE[l];l++;}
+    const t=r()*20,q=Math.min(8,Math.floor(-Math.log(1-r())*1.5));return [d,l,t,q];}
+  const trueLogit=x=>-3.2+0.05*(x[0]-35)+0.04*Math.max(0,x[0]-45)+0.65*x[1]-0.07*(x[2]-5)+0.18*x[3];
+  function sample(n,s){const r=mulberry32(s);const X=[],Y=[];for(let i=0;i<n;i++){const x=person(r);X.push(x);Y.push(r()<sig(trueLogit(x))?1:0);}return {X,Y};}
+  const TEST=sample(2000,909);
+  function solve(A,b){const n=b.length,M=A.map((row,i)=>row.concat([b[i]]));
+    for(let c=0;c<n;c++){let p=c;for(let i=c+1;i<n;i++)if(Math.abs(M[i][c])>Math.abs(M[p][c]))p=i;[M[c],M[p]]=[M[p],M[c]];
+      for(let i=0;i<n;i++)if(i!==c){const f=M[i][c]/M[c][c];for(let j=c;j<=n;j++)M[i][j]-=f*M[c][j];}}
+    return M.map((row,i)=>row[n]/row[i]);}
+  function fitLogit(D){const d=5;let w=[Math.log(mean(D.Y)/(1-mean(D.Y))),0,0,0,0];
+    for(let it=0;it<30;it++){const Hm=[...Array(d)].map(()=>new Array(d).fill(0)),g=new Array(d).fill(0);
+      for(let i=0;i<D.X.length;i++){const x=[1].concat(D.X[i]);let z=0;for(let a=0;a<d;a++)z+=w[a]*x[a];const p=sig(z),e=D.Y[i]-p,ww=p*(1-p);
+        for(let a=0;a<d;a++){g[a]+=e*x[a];for(let b=0;b<d;b++)Hm[a][b]+=ww*x[a]*x[b];}}
+      for(let a=0;a<d;a++)Hm[a][a]+=1e-6;
+      const st=solve(Hm,g);w=w.map((v,a)=>v+st[a]);if(Math.max(...st.map(Math.abs))<1e-10)break;}
+    return w;}
+  const sLogit=(w,x)=>w[0]+w[1]*x[0]+w[2]*x[1]+w[3]*x[2]+w[4]*x[3];
+  function fitTree(D,maxD){const MINL=60;
+    function node(idx,depth){const n=idx.length;let pos=0;for(const i of idx)pos+=D.Y[i];const nd={n,pos,rate:pos/n};
+      if(depth>=maxD||n<2*MINL||pos===0||pos===n)return nd;
+      const gp=pos/n,g0=n*2*gp*(1-gp);let best=null;
+      for(let f=0;f<4;f++){const s=idx.slice().sort((a,b)=>D.X[a][f]-D.X[b][f]);let lp=0;
+        for(let k=0;k<n-1;k++){lp+=D.Y[s[k]];const nl=k+1,nr=n-nl;if(nl<MINL||nr<MINL)continue;const va=D.X[s[k]][f],vb=D.X[s[k+1]][f];if(va===vb)continue;
+          const pl=lp/nl,pr=(pos-lp)/nr,gi=nl*2*pl*(1-pl)+nr*2*pr*(1-pr);if(!best||gi<best.gi)best={gi,f,t:(va+vb)/2,k,s};}}
+      if(!best||best.gi>=g0-1e-9)return nd;
+      nd.f=best.f;nd.t=best.t;nd.l=node(best.s.slice(0,best.k+1),depth+1);nd.r=node(best.s.slice(best.k+1),depth+1);return nd;}
+    return node(D.X.map((_,i)=>i),0);}
+  const leaf=(t,x)=>{while(t.l)t=x[t.f]<=t.t?t.l:t.r;return t;};
+  function cond(f,t,le){const ft=F[f];if(ft.int){return le?ft.n+" ≤ "+Math.floor(t)+ft.u:ft.n+" ≥ "+(Math.floor(t)+1)+ft.u;}return ft.n+(le?" ≤ ":" > ")+t.toFixed(1)+ft.u;}
+  function treeReasons(t,x){const out=[];while(t.l){const le=x[t.f]<=t.t,c=le?t.l:t.r,o=le?t.r:t.l;
+    if(c.rate>o.rate){const k=out.findIndex(q=>q.f===t.f&&q.le===le);const it={f:t.f,le,txt:cond(t.f,t.t,le)};if(k>=0)out[k]=it;else out.push(it);}t=c;}return out;}
+  function scoreReasons(w,x){return F.map((ft,j)=>({f:j,lost:w[j+1]*(x[j]-ft.best)})).filter(o=>o.lost>1e-9).sort((a,b)=>b.lost-a.lost);}
+  function models(s,maxD){const D=sample(3000,s);return {w:fitLogit(D),tree:fitTree(D,maxD)};}
+  // 슬라이더
+  const host=$("#lnSl"),sl=[];
+  F.forEach((ft,j)=>{const lb=document.createElement("label");lb.setAttribute("for","lnS"+j);lb.innerHTML=ft.full+' <output id="lnO'+j+'" for="lnS'+j+'"></output>';
+    const inp=document.createElement("input");inp.type="range";inp.id="lnS"+j;inp.min=ft.min;inp.max=ft.max;inp.step=1;inp.value=ft.def;lb.appendChild(inp);host.appendChild(lb);sl.push(inp);inp.addEventListener("input",render);});
+  let seed=1,cur=null,prev=null,curD=3;
+  function rebuild(){curD=+$("#lnD").value;cur=models(1000+seed,curD);}
+  function rules(t,x){const lines=[];const hit=leaf(t,x);
+    (function walk(nd,path){if(!nd.l){const cut=+$("#lnCut").value;const s=(path.length?path.join(", "):"(전체)")+" → "+pct(nd.rate)+" ("+nd.n+"명) "+(nd.rate>=cut?"거절":"승인");lines.push({s,hit:nd===hit});return;}
+      walk(nd.l,path.concat([cond(nd.f,nd.t,true)]));walk(nd.r,path.concat([cond(nd.f,nd.t,false)]));})(t,[]);
+    return lines;}
+  function leaves(t){return t.l?leaves(t.l)+leaves(t.r):1;}
+  function compare(){if(!prev){$("#lnDec").textContent="다시 뽑기 전";$("#lnRs").textContent="다시 뽑기 전";return;}
+    const cut=+$("#lnCut").value,lc=Math.log(cut/(1-cut));let dS=0,dT=0,nS=0,nT=0,rS=0,rT=0;
+    for(const x of TEST.X){const a1=sLogit(prev.w,x)>=lc,a2=sLogit(cur.w,x)>=lc;if(a1!==a2)dS++;
+      if(a1&&a2){nS++;const p1=scoreReasons(prev.w,x),p2=scoreReasons(cur.w,x);if(!p1.length||!p2.length||p1[0].f!==p2[0].f)rS++;}
+      const b1=leaf(prev.tree,x).rate>=cut,b2=leaf(cur.tree,x).rate>=cut;if(b1!==b2)dT++;
+      if(b1&&b2){nT++;const q1=treeReasons(prev.tree,x),q2=treeReasons(cur.tree,x);if(!q1.length||!q2.length||q1[0].f!==q2[0].f)rT++;}}
+    const N=TEST.X.length;
+    $("#lnDec").textContent=pct(dS/N)+" / "+pct(dT/N);
+    $("#lnRs").textContent=(nS?pct(rS/nS):"–")+" / "+(nT?pct(rT/nT):"–");
+    return {dS:dS/N,dT:dT/N,rS:nS?rS/nS:0,rT:nT?rT/nT:0};}
+  function render(){
+    const x=sl.map((s,j)=>+s.value);F.forEach((ft,j)=>$("#lnO"+j).textContent=x[j]+ft.u);
+    const cut=+$("#lnCut").value,lc=Math.log(cut/(1-cut));
+    const w=cur.w,z=sLogit(w,x),ps=sig(z),rejS=ps>=cut;
+    $("#lnSP").innerHTML="부도 확률 "+pct(ps)+' <span class="badge '+(rejS?"b-fix":"b-add")+'">'+(rejS?"거절":"승인")+"</span>";
+    const rs=scoreReasons(w,x);
+    $("#lnSBody").innerHTML=F.map((ft,j)=>{const lost=w[j+1]*(x[j]-ft.best);return "<tr><td>"+ft.n+"</td><td>"+minus(w[j+1].toFixed(3))+"</td><td>"+(lost>1e-9?minus("+"+lost.toFixed(2)):"0")+"</td></tr>";}).join("");
+    $("#lnSR").innerHTML=rejS?rs.slice(0,2).map(o=>"<li>"+F[o.f].full+" ("+x[o.f]+F[o.f].u+")</li>").join(""):"<li>승인이라 사유 없음</li>";
+    let cf=[];
+    if(rejS){const need=z-lc;F.forEach((ft,j)=>{const b=w[j+1];if(Math.abs(b)<1e-9)return;let v=x[j]-need/b;
+        if(b>0){v=ft.int?Math.floor(v-1e-9):Math.floor(v*10)/10;if(v<ft.min)return;cf.push("<li>"+ft.dn+v+ft.u+" 이하"+(ft.past?"":"로")+ft.dv+(ft.past?" <span class=\"muted\">(과거 기록이라 당장 바꿀 수 없음)</span>":"")+"</li>");}
+        else{v=ft.int?Math.ceil(v+1e-9):Math.ceil(v*10)/10;if(v>ft.max)return;cf.push("<li>"+ft.up+v+ft.u+" 이상이면</li>");}});}
+    $("#lnSC").innerHTML=rejS?(cf.length?cf.join(""):"<li>특징 하나만 바꿔서는 승인되지 않음</li>"):"<li>이미 승인</li>";
+    const lf=leaf(cur.tree,x),rejT=lf.rate>=cut;
+    $("#lnTP").innerHTML="부도 확률 "+pct(lf.rate)+' <span class="badge '+(rejT?"b-fix":"b-add")+'">'+(rejT?"거절":"승인")+"</span>";
+    const ru=rules(cur.tree,x);const pre=$("#lnRules");pre.textContent="";
+    ru.forEach((q,i)=>{const s=document.createElement(q.hit?"span":"span");if(q.hit)s.className="hl";s.textContent=q.s;pre.appendChild(s);if(i<ru.length-1)pre.appendChild(document.createTextNode("\n"));});
+    const tr=treeReasons(cur.tree,x);
+    $("#lnTR").innerHTML=rejT?(tr.length?tr.map(o=>"<li>"+o.txt+"</li>").join(""):"<li>위험한 쪽 조건 없음</li>"):"<li>승인이라 사유 없음</li>";
+    const aS=auc(TEST.X.map(q=>sLogit(w,q)),TEST.Y),aT=auc(TEST.X.map(q=>leaf(cur.tree,q).rate),TEST.Y);
+    $("#lnAuc").textContent=aS.toFixed(3)+" / "+aT.toFixed(3);
+    $("#lnLv").textContent=leaves(cur.tree)+"개";
+    const cmp=compare();
+    const rootTxt=t=>t.l?cond(t.f,t.t,true):"(분할 없음)";
+    $("#lnRoot").textContent=(prev?rootTxt(prev.tree)+" → ":"")+rootTxt(cur.tree);
+    let msg="같은 신청자에게 점수표는 "+pct(ps)+", 트리는 "+pct(lf.rate)+"의 부도 확률을 냅니다. 트리는 리프 "+leaves(cur.tree)+"개 중 하나의 평균만 내므로 같은 리프의 신청자는 조건이 달라도 모두 같은 확률을 받습니다. 위험 순위를 거칠게 매기는 셈이라 테스트 AUC(점수표 "+aS.toFixed(3)+", 트리 "+aT.toFixed(3)+")도 트리가 "+(aT<aS?"더 낮습니다":"더 높습니다")+". ";
+    if(rejS!==rejT)msg+="지금은 두 모델의 결정이 다릅니다. 어느 모델을 쓰느냐가 이 고객의 대출 여부를 바꿉니다. ";
+    if(cmp){msg+="다시 학습했더니 결정이 바뀐 신청자는 점수표 "+pct(cmp.dS)+", 트리 "+pct(cmp.dT)+"입니다.";
+      if(cmp.dT>cmp.dS)msg+=" 표본만 바뀌었는데 트리의 분할 기준값이 움직여(루트 분할 칸 참고), 경계 근처 고객은 모델 버전에 따라 승인과 거절이 뒤바뀝니다. 점수표는 계수가 조금씩만 변해 결정이 훨씬 덜 바뀝니다.";
+      msg+=" 두 번 모두 거절된 사람 중 사유 1순위 항목이 바뀐 비율은 점수표 "+pct(cmp.rS)+", 트리 "+pct(cmp.rT)+"입니다."+(cmp.rT>cmp.rS+0.05?" 이번에는 트리의 위쪽 분할이 바뀌어 사유 항목까지 달라졌습니다.":" 사유 항목은 대체로 유지되고, 달라진 것은 고객에게 알려 줄 기준값입니다.");}
+    else msg+="'학습 데이터 다시 뽑기'를 눌러 재학습했을 때 사유가 얼마나 바뀌는지 비교해 보세요.";
+    msg+=" 이 데이터는 로지스틱에 가까운 규칙으로 만들었으므로 점수표에 유리합니다. 실제 데이터에서는 같은 지표로 직접 비교해야 합니다.";
+    $("#lnMsg").textContent=msg;
+  }
+  $("#lnCut").addEventListener("change",render);
+  $("#lnD").addEventListener("change",()=>{prev=null;rebuild();render();});
+  $("#lnNew").addEventListener("click",()=>{prev=cur;seed++;rebuild();render();});
+  rebuild();render();
+});
+
+/* ---------- 퀴즈 ---------- */
+safe("quiz",function(){
+  const Q={
+    q1:[
+      {q:"다음 중 머신러닝이지만 딥러닝은 아닌 것은?",o:["합성곱 신경망(CNN)으로 사진 분류","그래디언트 부스팅으로 대출 부도 예측","트랜스포머로 번역","LSTM으로 음성 인식"],a:1,e:"그래디언트 부스팅은 결정 트리를 순차로 더하는 머신러닝 모델이고 신경망 층으로 표현을 학습하지 않습니다. 나머지는 모두 여러 층의 신경망을 쓰는 딥러닝입니다."},
+      {q:"은닉층이 없고 시그모이드 출력 하나만 있는 신경망에 대한 설명으로 맞는 것은?",o:["층이 하나라도 신경망이므로 딥러닝이다","로지스틱 회귀와 같은 모델이라 '깊은' 표현 학습은 아니다","인공지능에 속하지 않는다","특징을 스스로 여러 단계로 학습한다"],a:1,e:"출력 = σ(wᵀx + b)이므로 로지스틱 회귀와 같습니다. 딥러닝의 '깊다'는 여러 층에 걸쳐 단계적으로 표현을 학습한다는 뜻입니다. 실험 1의 ①이 이 모델입니다."},
+      {q:"실험 1처럼 사람이 정확한 특징(x₁²+x₂²)을 알려 준 로지스틱 회귀가, 학습 데이터 30개에서 MLP보다 테스트 정확도가 높았다. 가장 알맞은 해석은?",o:["딥러닝은 원래 로지스틱 회귀보다 약하다","데이터가 적을 때는 올바른 사전 지식(특징)이 표현을 스스로 배워야 하는 큰 모델보다 유리하다","MLP는 원 모양 경계를 표현할 수 없다","특징 공학은 언제나 딥러닝보다 낫다"],a:1,e:"MLP도 원 경계를 표현할 수 있지만, 특징을 데이터에서 찾아야 하므로 데이터가 더 필요합니다. 데이터를 늘리면 MLP가 따라잡습니다. 반대로 사람이 좋은 특징을 모르는 이미지·음성 같은 문제에서 딥러닝이 강한 이유이기도 합니다."}
+    ],
+    q2:[
+      {q:"다음 중 하이퍼파라미터가 아닌 것은?",o:["학습률","드롭아웃 비율","첫 번째 층의 가중치 행렬","배치 크기"],a:2,e:"가중치와 편향은 학습 과정에서 경사 하강법이 정하는 파라미터입니다. 나머지는 학습 전에 사람이 정하고 검증 데이터로 고르는 하이퍼파라미터입니다."},
+      {q:"드롭아웃 p = 0.5인 Keras 모델로 model.predict()를 할 때 일어나는 일은?",o:["매번 뉴런의 절반을 무작위로 끄므로 예측이 매번 다르다","모든 뉴런을 그대로 쓴다. 학습 중 1/(1−p)배로 키워 두었기 때문에 따로 보정하지 않는다","학습 때 꺼진 뉴런은 영구히 삭제되어 있다","출력에 0.5를 곱한다"],a:1,e:"Keras와 PyTorch는 역 드롭아웃을 써서 학습 중 살아남은 출력을 1/(1−p)배로 키웁니다. 추론에서는 드롭아웃을 끄고 모든 뉴런을 그대로 씁니다. 뉴런을 실제로 없애는 것은 가지치기(pruning)입니다."},
+      {q:"시도 횟수가 9번으로 정해져 있고, 학습률이 성능을 거의 결정하며 드롭아웃은 영향이 작다. 가장 효율적인 탐색은?",o:["학습률 3개 × 드롭아웃 3개 격자 탐색","학습률을 로그 척도로, 드롭아웃은 균등하게 무작위로 9번 뽑는 랜덤 탐색","학습률을 10⁻⁵~10⁻¹에서 선형으로 9번 뽑기","드롭아웃만 9가지로 바꿔 보기"],a:1,e:"격자 3×3은 중요한 학습률을 3가지만 시도합니다. 랜덤 탐색은 같은 9번으로 학습률을 9가지 시도합니다(Bergstra & Bengio, 2012). 학습률을 선형으로 뽑으면 대부분이 10⁻²보다 큰 값이라 좋은 구간을 놓칩니다(실험 3)."}
+    ],
+    m1:[
+      {q:"훈련 99%, 훈련 데이터의 5-폴드 CV 98%, 테스트 70%다. 가장 먼저 의심할 것은?",o:["모델이 너무 복잡한 과적합","훈련과 테스트의 차이: 누수 특징이나 분포 변화","학습률이 너무 크다","테스트 데이터가 너무 많다"],a:1,e:"과적합이라면 훈련 데이터 안의 CV 점수도 테스트처럼 낮아야 합니다. CV가 높은데 테스트만 낮으면 훈련 데이터 안에서는 통하는 무언가가 테스트에는 없다는 뜻입니다. 예측 시점에 없는 특징(누수)이나 분포 변화를 적대적 검증으로 확인합니다."},
+      {q:"이진 분류 테스트 세트에서 음성이 70%, 양성이 30%다. 모델의 테스트 정확도가 70%라면?",o:["괜찮은 모델이다","모든 샘플을 음성으로 찍는 기준선과 같아서 사실상 아무것도 배우지 못했을 수 있다","과적합이 확실하다","정확도는 불균형의 영향을 받지 않는다"],a:1,e:"다수 클래스만 예측해도 70%가 나옵니다. 혼동행렬과 양성 재현율, PR-AUC 같은 지표로 다시 봐야 합니다."},
+      {q:"다음 중 '훈련은 높고 테스트만 낮은' 증상의 원인이 될 수 있는 것은?",o:["훈련과 테스트에 같은 행이 중복되어 있다","전체 데이터로 StandardScaler를 fit한 뒤 나눴다","행 자신의 정답이 포함된 타깃 인코딩을 out-of-fold 없이 만들었다","테스트 세트가 훈련 세트와 같은 분포다"],a:2,e:"①②는 테스트 정보가 학습 쪽으로 새는 누수라 테스트 점수를 부풀리는 방향입니다. ③은 훈련 행에서만 정답을 알려 주는 특징을 만들어 훈련(과 일반 CV) 점수만 부풀리므로, 테스트에서 크게 떨어집니다."}
+    ],
+    m2:[
+      {q:"깊이 3인 결정 트리의 경로가 '연체 ≤ 0회 → DTI > 47.5% → 조회 ≥ 4회 → 거절'이다. 고객에게 알려 줄 거절 사유로 알맞은 것은?",o:["경로의 세 조건 모두","DTI > 47.5%, 조회 ≥ 4회처럼 부도율이 높은 쪽으로 간 조건","연체 ≤ 0회","트리의 루트 분할 조건"],a:1,e:"'연체 0회'는 신청자에게 유리했던 조건이라 거절 사유가 아닙니다. 각 분할에서 위험이 큰 쪽으로 간 조건만 사유로 씁니다."},
+      {q:"그레이디언트 부스팅에 TreeSHAP으로 거절 사유를 만들 때의 설명으로 맞는 것은?",o:["SHAP 값은 모델의 결정 규칙 그 자체다","TreeSHAP은 트리 모델의 출력을 특징별 기여로 분해하지만, 결정 규칙은 아니며 배경 데이터와 특징 간 상관에 따라 값이 달라질 수 있다","SHAP을 쓰면 설명 의무를 자동으로 충족한다","SHAP은 선형 모델에만 쓸 수 있다"],a:1,e:"TreeSHAP은 트리 앙상블의 출력을 정확히 분해하지만 '이 조건이면 거절'이라는 규칙은 아닙니다. 이유 코드로 바꾸는 체계와, 사유가 모델 행동을 충실히 반영하는지·재학습에 안정적인지를 따로 검증해야 합니다."},
+      {q:"단일 결정 트리를 대출 모델로 쓸 때, 재학습할 때마다 같은 고객의 승인·거절 결과나 안내받는 기준값이 달라지기 쉬운 이유는?",o:["트리는 학습률이 너무 크기 때문","데이터가 조금만 바뀌어도 위쪽 분할이 바뀌면 그 아래 구조 전체가 바뀌는 불안정성(큰 분산) 때문","트리는 범주형 변수를 처리하지 못하기 때문","트리는 확률을 출력하지 않기 때문"],a:1,e:"위클리 3 실험 1에서 본 트리의 불안정성입니다. 실험 5의 '다시 뽑기'에서 트리는 분할 기준값이 움직여 결정이 바뀐 신청자 비율이 점수표보다 큽니다. 모델 교체 시 결정·사유가 바뀐 고객 비율을 점검 항목에 넣습니다."}
+    ]
+  };
+  document.querySelectorAll(".quiz").forEach(host=>{
+    const list=Q[host.dataset.quiz]||[];
+    list.forEach((it,qi)=>{
+      const box=document.createElement("div");box.className="qz";
+      const t=document.createElement("div");t.className="qt";t.innerHTML="<span>Q"+(qi+1)+".</span>";t.appendChild(document.createTextNode(it.q));box.appendChild(t);
+      const opts=document.createElement("div");opts.className="opts";box.appendChild(opts);
+      const exp=document.createElement("div");exp.className="exp";exp.hidden=true;exp.setAttribute("aria-live","polite");
+      const btns=it.o.map((o,oi)=>{const b=document.createElement("button");b.type="button";b.className="opt";b.textContent=String.fromCharCode(9312+oi)+" "+o;
+        b.addEventListener("click",()=>{btns.forEach((x,xi)=>{x.classList.remove("right","wrong");if(xi===it.a)x.classList.add("right");});if(oi!==it.a)b.classList.add("wrong");
+          exp.hidden=false;exp.innerHTML=(oi===it.a?'<b class="ok">정답입니다.</b> ':'<b class="no">오답입니다.</b> 정답은 '+String.fromCharCode(9312+it.a)+"번. ");exp.appendChild(document.createTextNode(it.e));});
+        opts.appendChild(b);return b;});
+      box.appendChild(exp);host.appendChild(box);
+    });
+  });
+});
+})();
+</script>
+</body></html>
