@@ -530,6 +530,14 @@ def train_step(x, y):
             <div class="stat"><div class="k">수치 미분 (ε = 10⁻⁶)</div><div class="v" id="dgNum">–</div></div>
             <div class="stat"><div class="k">tf.function 그래프 수 · Python float / 텐서</div><div class="v" id="dgTF">–</div></div>
           </div>
+          <div class="muted" style="font-size:12.5px;line-height:1.7">
+            <b>기록된 연산 수 읽는 법</b>
+            <ul style="margin:4px 0 0;padding-left:18px">
+              <li><b>x가 양수일 때</b> (예: x = 1.5): 3개 (2배 2번 + 제곱 1번)</li>
+              <li><b>x가 음수일 때</b> (예: x = −1.5): 3개 (2배 2번 + −3배 1번)</li>
+            </ul>
+            <span>"2배"는 |h|가 4 이상이 될 때까지 반복하므로, 그 횟수는 x의 크기에 따라 달라집니다.</span>
+          </div>
           <button type="button" class="btn" id="dgReset">시도 기록 지우기</button>
         </div>
       </div>
