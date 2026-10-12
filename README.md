@@ -1,6 +1,6 @@
 # ML·DL 스터디 문제
 
-머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 9편 공개)로 정리하는 곳입니다.
+머신러닝·딥러닝 기반 개념을 주차별 **위클리 페이퍼**(전체 18편 예정, 현재 10편 공개)로 정리하는 곳입니다.
 글로만 설명하지 않고, 값을 직접 조작하며 개념을 익힐 수 있는 **인터랙티브 실험**과 **핵심 퀴즈**를 함께 연결했습니다.
 
 👉 **웹페이지로 보기**: [https://lee-da-gyo.github.io/ml-dl-study/](https://lee-da-gyo.github.io/ml-dl-study/)
@@ -19,6 +19,7 @@
 | 06 | CNN 레이어 · 오토인코더 · 완전연결층과 위치 변화 | CNN을 구성하는 레이어의 역할 / 오토인코더와 인코더·디코더 / 완전연결층의 파라미터 폭증과 위치 민감성 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%206.%20CNN%20%EB%A0%88%EC%9D%B4%EC%96%B4%20%C2%B7%20%EC%98%A4%ED%86%A0%EC%9D%B8%EC%BD%94%EB%8D%94%20%C2%B7%20%EC%99%84%EC%A0%84%EC%97%B0%EA%B2%B0%EC%B8%B5%EA%B3%BC%20%EC%9C%84%EC%B9%98%20%EB%B3%80%ED%99%94.html) |
 | 07 | 리사이징·정규화 · 데이터 증강 · 전이 학습 · RNN · 오토인코더 | 이미지 리사이징과 정규화의 이유 / 데이터 증강과 이미지 증강 기법 / 전이 학습의 활용 / 긴 문장에서 RNN이 앞 단어를 잊는 이유 / 입력을 복사하는 오토인코더 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%207.%20%EB%A6%AC%EC%82%AC%EC%9D%B4%EC%A7%95%C2%B7%EC%A0%95%EA%B7%9C%ED%99%94%20%C2%B7%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%A6%9D%EA%B0%95%20%C2%B7%20%EC%A0%84%EC%9D%B4%20%ED%95%99%EC%8A%B5%20%C2%B7%20RNN%20%C2%B7%20%EC%98%A4%ED%86%A0%EC%9D%B8%EC%BD%94%EB%8D%94.html) |
 | 08 | YOLO · mAP · 새 이미지 성능 저하 · 소규모 의료 이미지 | YOLO의 특징과 장점 / mAP의 개념과 활용 / 학습 정확도는 높은데 새 이미지에서 성능 저하 / 의료 이미지 300장으로 처음부터 학습 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%208.%20YOLO%20%C2%B7%20mAP%20%C2%B7%20%EC%83%88%20%EC%9D%B4%EB%AF%B8%EC%A7%80%20%EC%84%B1%EB%8A%A5%20%EC%A0%80%ED%95%98%20%C2%B7%20%EC%86%8C%EA%B7%9C%EB%AA%A8%20%EC%9D%98%EB%A3%8C%20%EC%9D%B4%EB%AF%B8%EC%A7%80.html) |
+| 09 | Semantic Segmentation · FCN · GAN · Diffusion · 객체 탐지 | Semantic Segmentation과 이미지 분류 / FCN과 분류 CNN의 차이 / GAN의 생성자와 판별자 / Diffusion 모델의 활용과 장점 / CCTV 진열대 상품의 개수와 위치 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%209.%20Semantic%20Segmentation%20%C2%B7%20FCN%20%C2%B7%20GAN%20%C2%B7%20Diffusion%20%C2%B7%20%EA%B0%9D%EC%B2%B4%20%ED%83%90%EC%A7%80.html) |
 | 10 | Semantic·Instance Segmentation · Panoptic · 객체 추적 | 자율주행 영상에서 픽셀의 클래스 구분과 차량 개체 구별 | [웹페이지에서 보기](https://lee-da-gyo.github.io/ml-dl-study/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC/%EC%9C%84%ED%81%B4%EB%A6%AC%20%ED%8E%98%EC%9D%B4%ED%8D%BC%2010.%20Semantic%C2%B7Instance%20Segmentation%20%C2%B7%20Panoptic%20%C2%B7%20%EA%B0%9D%EC%B2%B4%20%EC%B6%94%EC%A0%81.html) |
 
 ## 위클리 페이퍼 01에서 해 볼 수 있는 것
@@ -101,6 +102,18 @@
 | IoU 기준을 바꾸며 AP와 mAP 계산 | 신뢰도 정렬 · 정답당 TP 하나 규칙, 11점 · 모든 점 · 101점 보간, mAP@50과 mAP@[.50:.95]에서 두 모델의 순위가 뒤집히는 경우 |
 | 무작위 분할 vs 제품 단위 분할 | 같은 제품의 연속 사진이 만드는 데이터 누수, 조명이 바뀐 새 라인에서의 분포 변화, 조명 증강의 효과와 한계 |
 | 300장으로 잰 성능의 신뢰도 | 질환 환자 수에 따른 민감도 신뢰구간(윌슨), 반복 평가에서의 측정값 흔들림, 불균형 데이터의 정확도 함정, 유병률에 따른 PPV |
+
+## 위클리 페이퍼 09에서 해 볼 수 있는 것
+
+| 실험 | 확인하는 개념 |
+| --- | --- |
+| 같은 장면, 네 가지 출력 | 분류·Semantic·Instance·Panoptic의 정답 형태, 맞닿은 두 자동차가 semantic 마스크에서 한 덩어리가 되어 영역 수로 대수를 셀 수 없는 이유 |
+| 픽셀 정확도 vs mIoU | 작은 물체를 통째로 놓쳐도 픽셀 정확도는 97%대이지만 클래스별 IoU와 mIoU는 크게 떨어지는 것 |
+| 예측 격자와 업샘플링 | 점수가 완벽해도 1/32·1/16 격자에서는 가는 물체가 사라지고 1/8 격자에서 살아나는 것, 스킵 연결이 필요한 이유 |
+| 전치 합성곱의 겹침 | 출력 크기 (n − 1)s − 2p + k, 커널이 stride의 배수가 아닐 때 칸마다 겹침 횟수가 달라지는 체커보드 |
+| 1차원 GAN 학습 | 봉우리 3개 분포를 생성자·판별자로 직접 학습해 모드 붕괴와 시드별 결과 차이, 원래 손실과 non-saturating 손실의 기울기 비교 |
+| 노이즈에서 군집 8개 만들기 | 정확한 노이즈 예측기로 DDPM·DDIM 샘플링, 단계 수에 따른 품질, 학습 점을 외운 모델이 학습 데이터를 복제하는 것 |
+| 상자 수로 개수 세기 | 신뢰도 임곗값과 NMS 임곗값, 진열 밀도에 따라 놓침·중복·오검출이 생기는 과정 |
 
 ## 위클리 페이퍼 10에서 해 볼 수 있는 것
 
