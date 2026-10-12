@@ -356,6 +356,7 @@ svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
 .card pre{font-size:12px;padding:10px 12px;white-space:pre-wrap}
 .speech{display:flex;flex-direction:column;gap:12px;line-height:1.85}
 .insight{line-height:1.85;white-space:pre-line}
+header.top p.flowline{color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 14px;width:fit-content;max-width:100%}
 .stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px;white-space:nowrap}
 /* 위클리 05 코드 색 (Python 문법 강조) */
 :root{--sy-k:#8a3ffc;--sy-s:#0f7a55;--sy-n:#b4460c;--sy-f:#2448c9;--sy-d:#a15c00}
@@ -376,7 +377,9 @@ pre .sy-f{color:var(--sy-f)} pre .sy-d{color:var(--sy-d);font-weight:600} pre .s
   <header class="top">
     <div class="eyebrow">WEEKLY PAPER 05 · 딥러닝 프레임워크, 텐서, 학습 안정성과 GPU 메모리</div>
     <h1>PyTorch·TensorFlow · 텐서 · 기울기 소실 · 배치 크기</h1>
-    <p>실습 해설 2문항과 면접 2문항을 정리했습니다. 각 문항은 <b>한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈</b> 순서로 읽으면 됩니다. 원래 답안(실습 해설과 작성 답안)에서 틀린 부분은 주황색 <b>정정</b>, 새로 더한 내용은 초록색 <b>보충</b>으로 표시했습니다. 프레임워크 상황은 2026년 10월 기준입니다.</p>
+    <p>실습 해설 2문항과 면접 2문항을 정리했습니다. 각 문항은 아래 순서로 읽으면 됩니다.</p>
+    <p class="flowline"><b>한 줄 요약 → 그림·표·실험 → 핵심 정리와 보충 → 면접 30초 답변 → 퀴즈</b></p>
+    <p>원래 답안(실습 해설과 작성 답안)을 고친 부분은 아래 표시로 구분했습니다.</p>
     <div class="legend">
       <span><span class="badge b-core">핵심</span> 꼭 알아야 할 개념</span>
       <span><span class="badge b-add">보충</span> 원래 답안에 새로 더한 내용</span>
