@@ -356,6 +356,7 @@ svg .lsel{stroke-width:3.5} svg .ldim{stroke-opacity:.35}
 .card pre{font-size:12px;padding:10px 12px;white-space:pre-wrap}
 .speech{display:flex;flex-direction:column;gap:12px;line-height:1.85}
 .insight{line-height:1.85;white-space:pre-line}
+.stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px;white-space:nowrap}
 /* 위클리 05 코드 색 (Python 문법 강조) */
 :root{--sy-k:#8a3ffc;--sy-s:#0f7a55;--sy-n:#b4460c;--sy-f:#2448c9;--sy-d:#a15c00}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--sy-k:#c4a1ff;--sy-s:#5fd4a4;--sy-n:#ffa36b;--sy-f:#8fb0ff;--sy-d:#f2c46d}}
@@ -1299,7 +1300,7 @@ safe("graph",function(){
     el("text",{x:W/2,y:by+16,"text-anchor":"middle","font-size":11.5,class:"taf"},svg,"backward(): 기록된 경로를 거꾸로 따라가며 국소 미분을 곱한다");
     el("text",{x:6,y:y+h+18,"font-size":10.5,class:"mut"},svg,"∂f/∂");
     const auto=R.g[0],eps=1e-6,num=(fx(x+eps)-fx(x-eps))/(2*eps);
-    $("#dgOps").textContent=(R.k+1)+"개 (2배 "+R.k+"번 + "+(R.br?"제곱":"−3배")+" 1번)";
+    $("#dgOps").innerHTML=(R.k+1)+'개<span class="sub">2배 '+R.k+"번 + "+(R.br?"제곱":"−3배")+" 1번</span>";
     $("#dgAuto").textContent=fv(auto);$("#dgNum").textContent=fv(num);
     $("#dgTF").textContent=tried.size+"개 / 1개";
     const mism=Math.abs(num-auto)>1e-3*Math.max(1,Math.abs(auto));
