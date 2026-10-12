@@ -243,14 +243,15 @@ html{scroll-behavior:smooth}
 </style>
 
 <div class="wrap">
+  <a href="../" style="font-size:14px;color:var(--accent);text-decoration:none;font-weight:600">← ML·DL 스터디 노트 목차</a>
   <header class="top">
-    <div class="eyebrow">WEEKLY PAPER · 머신러닝 기초</div>
+    <div class="eyebrow">WEEKLY PAPER 01 · 머신러닝 기초</div>
     <h1>선형대수 · EDA · 데이터 전처리</h1>
-    <p>각 질문은 <b>한 줄 요약 → 실험 → 핵심 정리 → 예시 답변 → 퀴즈</b> 순서입니다.</p>
+    <p>머신러닝을 시작할 때 꼭 짚고 넘어가야 할 세 가지 질문을, 숫자를 직접 바꿔 보는 실험으로 정리했습니다. 각 질문은 <b>한 줄 요약 → 실험 → 핵심 정리 → 면접 답변 → 퀴즈</b> 순서로 읽으면 됩니다.</p>
     <div class="legend">
-      <span><span class="badge b-core">핵심</span> 원래 답안의 핵심</span>
-      <span><span class="badge b-add">보충</span> 새로 추가한 내용</span>
-      <span><span class="badge b-fix">정정</span> 원래 답안에서 틀린 부분</span>
+      <span><span class="badge b-core">핵심</span> 꼭 알아야 할 개념</span>
+      <span><span class="badge b-add">심화</span> 한 단계 더 들어간 내용</span>
+      <span><span class="badge b-fix">오해</span> 자주 헷갈리는 부분</span>
       <span><span class="badge b-lab">실험</span> 값을 바꿔 보는 인터랙티브</span>
       <span><span class="tag-ex">예시</span> 설명용으로 만든 가상의 값</span>
       <span><span class="tag-real">실제 데이터</span> 출처가 있는 실제 값</span>
@@ -335,7 +336,7 @@ html{scroll-behavior:smooth}
     </div>
 
     <div class="block">
-      <h3><span class="badge b-add">보충</span> 머신러닝 개념 ↔ 선형대수 개념 대응표</h3>
+      <h3><span class="badge b-add">심화</span> 머신러닝 개념 ↔ 선형대수 개념 대응표</h3>
       <div class="tbl"><table>
         <thead><tr><th style="width:24%">머신러닝에서 하는 일</th><th style="width:26%">선형대수 도구</th><th>직관적 의미</th></tr></thead>
         <tbody>
@@ -387,7 +388,7 @@ html{scroll-behavior:smooth}
     </div>
 
     <div class="note fix">
-      <b class="t">정정 · 원래 답안의 "기울기 계산이 선형대수 기반"이라는 표현</b>
+      <b class="t">자주 하는 오해 · "기울기 계산은 선형대수로 한다"</b>
       <p>기울기(gradient)를 <b>구하는 것</b>은 미적분(편미분, 연쇄 법칙)이다. 선형대수는 그 기울기를 <b>벡터·행렬로 묶어서 표현하고 한꺼번에 계산하게</b> 해 준다. 역전파는 "연쇄 법칙(미적분)을 행렬 곱(선형대수)으로 층마다 거꾸로 전달하는 과정"이라고 말하는 것이 정확하다.</p>
     </div>
 
@@ -410,7 +411,7 @@ html{scroll-behavior:smooth}
     </div>
 
     <div class="block">
-      <h3><span class="badge b-add">보충</span> EDA는 보통 이 순서로 진행한다</h3>
+      <h3><span class="badge b-add">심화</span> EDA는 보통 이 순서로 진행한다</h3>
       <div class="flow">
         <div class="step"><b>구조 파악</b><span>행·열 수, 자료형, 샘플 확인</span><span><code>shape</code> <code>info()</code> <code>head()</code></span></div>
         <div class="step"><b>품질 점검</b><span>결측값, 중복, 잘못된 값 확인</span><span><code>isna().sum()</code> <code>duplicated()</code></span></div>
@@ -436,7 +437,7 @@ html{scroll-behavior:smooth}
     </div>
 
     <div class="block">
-      <h3><span class="badge b-add">보충</span> 무엇을 보고 싶을 때, 무엇을 쓰나</h3>
+      <h3><span class="badge b-add">심화</span> 무엇을 보고 싶을 때, 무엇을 쓰나</h3>
       <div class="tbl"><table>
         <thead><tr><th style="width:26%">알고 싶은 것</th><th style="width:22%">수치(요약 통계)</th><th style="width:22%">그래프</th><th>이걸로 발견하는 것</th></tr></thead>
         <tbody>
@@ -451,7 +452,7 @@ html{scroll-behavior:smooth}
     </div>
 
     <div class="block">
-      <h3><span class="badge b-core">핵심</span> 원래 답안의 고객 데이터 예시를 코드로</h3>
+      <h3><span class="badge b-core">핵심</span> 고객 데이터로 해 보는 EDA 코드</h3>
       <div class="codewrap">
         <div class="codecap"><span class="tag-ex">예시 코드</span> 컬럼 이름(purchase, age_group, frequency)은 설명용 가상의 고객 데이터입니다.</div>
 <pre><span class="c"># 1. 구조와 품질</span>
@@ -472,9 +473,9 @@ sns.heatmap(df.corr(numeric_only=True), annot=True)</pre>
     </div>
 
     <div class="mini">
-      <div class="card"><div class="k">보충 · 배경</div><h4>누가 만든 개념인가</h4><p>통계학자 존 튜키(John Tukey)가 1977년 저서 <i>Exploratory Data Analysis</i>로 정리. 가설을 먼저 세우고 검증하는 <b>확증적 분석(CDA)</b>과 달리, 데이터를 먼저 보고 가설을 <b>만들어 내는</b> 단계다.</p></div>
-      <div class="card"><div class="k">보충 · 주의</div><h4>요약 통계만 믿지 말 것</h4><p>위 실험 3처럼 평균·분산·상관계수가 같아도 그래프 모양은 완전히 다를 수 있다. 그래서 수치와 시각화를 <b>함께</b> 본다.</p></div>
-      <div class="card"><div class="k">보충 · 결과물</div><h4>EDA가 끝나면 남는 것</h4><p>① 전처리 할 일 목록 ② 파생 변수 아이디어 ③ 사용할 모델·평가지표 방향. 이게 없으면 그래프만 그리고 끝난 것이다.</p></div>
+      <div class="card"><div class="k">심화 · 배경</div><h4>누가 만든 개념인가</h4><p>통계학자 존 튜키(John Tukey)가 1977년 저서 <i>Exploratory Data Analysis</i>로 정리. 가설을 먼저 세우고 검증하는 <b>확증적 분석(CDA)</b>과 달리, 데이터를 먼저 보고 가설을 <b>만들어 내는</b> 단계다.</p></div>
+      <div class="card"><div class="k">심화 · 주의</div><h4>요약 통계만 믿지 말 것</h4><p>위 실험 3처럼 평균·분산·상관계수가 같아도 그래프 모양은 완전히 다를 수 있다. 그래서 수치와 시각화를 <b>함께</b> 본다.</p></div>
+      <div class="card"><div class="k">심화 · 결과물</div><h4>EDA가 끝나면 남는 것</h4><p>① 전처리 할 일 목록 ② 파생 변수 아이디어 ③ 사용할 모델·평가지표 방향. 이게 없으면 그래프만 그리고 끝난 것이다.</p></div>
     </div>
 
     <div class="speech">
@@ -513,7 +514,7 @@ sns.heatmap(df.corr(numeric_only=True), annot=True)</pre>
     <div class="block">
       <h3>① 결측값 처리</h3>
       <div class="grid">
-        <div class="card"><div class="k">보충 · 결측의 3가지 유형</div>
+        <div class="card"><div class="k">심화 · 결측의 3가지 유형</div>
           <ul>
             <li><b>MCAR</b> 완전 무작위: 예시) 설문지가 우연히 젖어서 지워짐 → 삭제해도 편향 적음</li>
             <li><b>MAR</b> 다른 관측 변수와 관련: 예시) 고령층이 소득 칸을 더 자주 비움 → 다른 변수로 예측 대체</li>
@@ -563,8 +564,8 @@ sns.heatmap(df.corr(numeric_only=True), annot=True)</pre>
 
     <div class="block">
       <div class="note fix">
-        <b class="t">정정 · <code>dropna(thresh=3)</code>의 의미</b>
-        <p>원래 답안의 "결측값이 3개 미만인 행만 남김"은 틀린 설명이다. <code>thresh=3</code>은 <b>결측이 아닌 값이 3개 이상인 행만 남긴다</b>는 뜻이다. 결측 개수가 아니라 <b>채워진 값의 개수</b>를 센다.</p>
+        <b class="t">자주 하는 오해 · <code>dropna(thresh=3)</code>의 의미</b>
+        <p>"결측값이 3개 미만인 행만 남긴다"로 이해하기 쉽지만 틀렸다. <code>thresh=3</code>은 <b>결측이 아닌 값이 3개 이상인 행만 남긴다</b>는 뜻이다. 결측 개수가 아니라 <b>채워진 값의 개수</b>를 센다.</p>
       </div>
       <figure class="fig">
         <div style="margin-bottom:8px"><span class="tag-ex">예시 표</span></div>
@@ -593,13 +594,13 @@ df['region'] = df['region'].fillna('Unknown')</pre>
     <div class="block">
       <h3>② 중복값 처리</h3>
       <div class="grid">
-        <div class="card"><div class="k">보충 · 두 종류의 중복</div>
+        <div class="card"><div class="k">심화 · 두 종류의 중복</div>
           <ul>
             <li><b>완전 중복</b>: 모든 컬럼이 같은 행. 수집·병합 과정에서 두 번 들어간 경우가 많다 → 하나만 남기고 삭제</li>
             <li><b>키 중복</b>: 같은 고객ID·주문번호인데 다른 값이 있는 행 → 최신 값 하나만 남길지, 합칠지 판단 필요</li>
           </ul>
         </div>
-        <div class="card"><div class="k">보충 · 지우면 안 되는 중복</div>
+        <div class="card"><div class="k">심화 · 지우면 안 되는 중복</div>
           <p>예시) 같은 날 같은 상품을 두 번 산 기록은 값이 같아도 <b>실제로 두 번 일어난 일</b>이다. 고유 ID나 타임스탬프가 없으면 진짜 중복인지 구분할 수 없으므로, 삭제 전에 데이터가 어떻게 수집됐는지 확인한다.</p>
         </div>
       </div>
@@ -616,7 +617,7 @@ df = df.sort_values('updated_at').drop_duplicates(subset='customer_id', keep='la
     <div class="block">
       <h3>③ 이상치 처리</h3>
       <div class="grid">
-        <div class="card"><div class="k">보충 · 탐지 방법</div>
+        <div class="card"><div class="k">심화 · 탐지 방법</div>
           <ul>
             <li><b>시각화</b>: 박스플롯, 산점도, 히스토그램</li>
             <li><b>IQR</b>: [Q1 − 1.5·IQR, Q3 + 1.5·IQR] 밖. 사분위수 기반이라 이상치 자체에 덜 휘둘림</li>
@@ -624,7 +625,7 @@ df = df.sort_values('updated_at').drop_duplicates(subset='customer_id', keep='la
             <li><b>모델 기반</b>: Isolation Forest, LOF. 여러 변수를 동시에 볼 때</li>
           </ul>
         </div>
-        <div class="card"><div class="k">보충 · 처리 방법</div>
+        <div class="card"><div class="k">심화 · 처리 방법</div>
           <ul>
             <li><b>삭제</b>: 명백한 입력 오류 (예시: 나이 250세, 음수 가격)</li>
             <li><b>클리핑(윈저화)</b>: 경계값으로 잘라냄. 데이터 수 유지</li>
@@ -681,7 +682,7 @@ df['purchase_log']  = np.log1p(df['purchase'])                     <span class="
     </div>
 
     <div class="note add">
-      <b class="t">보충 · 실무에서 자주 놓치는 두 가지</b>
+      <b class="t">심화 · 실무에서 자주 놓치는 두 가지</b>
       <p><b>1. 처리 순서</b>: 흔히 쓰는 순서는 중복 제거 → 이상치 확인 → 결측 대체다. 이상치가 남은 상태에서 평균으로 결측을 채우면 대체값이 왜곡되기 때문이다. 다만 정해진 규칙은 아니고, 데이터와 목적에 따라 바뀔 수 있다 (예: 중앙값으로 대체한다면 이상치의 영향이 작다).</p>
       <p><b>2. 데이터 누수(leakage)</b>: 대체에 쓰는 평균·중앙값, 이상치 경계는 <b>학습 데이터에서만</b> 계산하고 테스트 데이터에는 그 값을 그대로 적용한다. 전체 데이터로 계산하면 테스트 정보가 학습에 새어 들어가 성능이 실제보다 좋게 나온다. scikit-learn <code>Pipeline</code>을 쓰면 이 순서를 지키기 쉽다.</p>
     </div>
@@ -987,7 +988,7 @@ const minus=s=>String(s).replace("-","−");
     q1:[
       {q:"입력 벡터 x가 5차원이고 출력 뉴런이 3개인 층에서 y = Wx 로 계산할 때, W의 shape는?",o:["5 × 3","3 × 5","5 × 5","3 × 3"],a:1,e:"y가 3개이므로 W의 행이 3개, x가 5개이므로 열이 5개입니다. 실험 1의 W(2×3)와 같은 원리입니다. PyTorch의 nn.Linear(5, 3)도 weight를 (3, 5)로 저장합니다. 단, 데이터를 행 벡터로 두고 XW로 쓰는 표기에서는 5×3이 되므로 어떤 표기인지 함께 확인하세요."},
       {q:"PCA에서 첫 번째 주성분(PC1)은 무엇인가?",o:["데이터의 평균 벡터","공분산 행렬의 가장 큰 고유값에 대응하는 고유벡터","공분산 행렬의 가장 작은 고유값에 대응하는 고유벡터","원래 특성 중 상관계수가 가장 높은 특성"],a:1,e:"PC1은 투영했을 때 분산이 최대인 방향이며, 그 방향이 공분산 행렬의 가장 큰 고유값의 고유벡터입니다. 실험 2에서 분산 곡선의 꼭대기 값이 λ₁과 같았던 것이 이 관계입니다."},
-      {q:"역전파에서 각 파라미터의 기울기를 '구하는' 원리는?",o:["역행렬 계산","고유값 분해","미분의 연쇄 법칙","내적만으로 계산"],a:2,e:"기울기를 구하는 원리는 연쇄 법칙(미적분)입니다. 선형대수는 그 계산을 행렬 곱으로 묶어 효율적으로 수행하게 해 줍니다. 원래 답안에서 정정한 부분입니다."}
+      {q:"역전파에서 각 파라미터의 기울기를 '구하는' 원리는?",o:["역행렬 계산","고유값 분해","미분의 연쇄 법칙","내적만으로 계산"],a:2,e:"기울기를 구하는 원리는 연쇄 법칙(미적분)입니다. 선형대수는 그 계산을 행렬 곱으로 묶어 효율적으로 수행하게 해 줍니다. "기울기 계산 = 선형대수"로 뭉뚱그려 말하기 쉬운 부분입니다."}
     ],
     q2:[
       {q:"두 데이터셋의 평균·분산·상관계수가 모두 같다. 올바른 결론은?",o:["두 데이터의 분포는 같다","같은 모델을 써도 된다","분포 모양은 다를 수 있으므로 시각화로 확인해야 한다","상관계수가 같으므로 둘 다 선형 관계다"],a:2,e:"실험 3(앤스컴 콰르텟)이 바로 반례입니다. 요약 통계 다섯 가지가 같아도 곡선 관계, 이상치, 점 하나가 만든 가짜 상관처럼 전혀 다른 구조일 수 있습니다."},
@@ -995,7 +996,7 @@ const minus=s=>String(s).replace("-","−");
       {q:"EDA와 확증적 데이터 분석(CDA)의 차이로 옳은 것은?",o:["EDA는 가설을 만들고, CDA는 가설을 검증한다","EDA는 가설을 검증하고, CDA는 가설을 만든다","EDA는 시각화만, CDA는 통계만 사용한다","둘은 같은 말이다"],a:0,e:"튜키가 정리한 구분입니다. EDA는 데이터를 먼저 보며 패턴과 가설을 찾는 단계이고, CDA는 정해 둔 가설을 통계적 검정으로 확인하는 단계입니다. 두 단계 모두 수치와 그래프를 함께 사용할 수 있습니다."}
     ],
     q3:[
-      {q:"컬럼이 4개인 DataFrame에서 NaN이 2개인 행은 df.dropna(thresh=3) 후 어떻게 되나?",o:["남는다 (결측이 3개 미만이므로)","삭제된다 (채워진 값이 2개뿐이므로)","NaN이 0으로 바뀐다","에러가 난다"],a:1,e:"thresh는 '채워진 값(결측이 아닌 값)의 최소 개수'입니다. 4개 중 2개가 NaN이면 채워진 값은 2개로 3에 못 미쳐 삭제됩니다. '결측 3개 미만이면 남김'은 원래 답안의 틀린 설명입니다."},
+      {q:"컬럼이 4개인 DataFrame에서 NaN이 2개인 행은 df.dropna(thresh=3) 후 어떻게 되나?",o:["남는다 (결측이 3개 미만이므로)","삭제된다 (채워진 값이 2개뿐이므로)","NaN이 0으로 바뀐다","에러가 난다"],a:1,e:"thresh는 '채워진 값(결측이 아닌 값)의 최소 개수'입니다. 4개 중 2개가 NaN이면 채워진 값은 2개로 3에 못 미쳐 삭제됩니다. '결측 3개 미만이면 남김'으로 착각하기 쉬운 대표적인 함정입니다."},
       {q:"결측값을 채울 중앙값은 어느 데이터로 계산해야 하나?",o:["학습 + 테스트 전체 데이터","테스트 데이터","학습 데이터만 (같은 값을 테스트에 적용)","학습과 테스트에서 각각 따로"],a:2,e:"전체나 테스트 데이터로 계산하면 테스트 정보가 학습에 새어 들어가는 데이터 누수가 생깁니다. 학습 데이터로 fit하고 그 값을 테스트에 transform으로 적용하는 것이 원칙이며, scikit-learn의 Pipeline을 쓰면 이 순서를 지키기 쉽습니다."},
       {q:"극단값이 2개 이상일 때 Z-score(|z|>3)가 이상치를 놓칠 수 있는 이유는?",o:["Z-score는 범주형 데이터에만 쓰기 때문","극단값이 평균과 표준편차를 함께 키워 기준선이 밀려나기 때문","Z-score는 중앙값을 쓰기 때문","데이터가 15개보다 적어서만 생기는 문제라서"],a:1,e:"실험 5의 '극단값 2개 만들기'에서 확인한 가림 효과(masking)입니다. Z-score의 기준인 평균과 표준편차가 이상치 자체의 영향을 받습니다. 사분위수 기반인 IQR이나 중앙값·MAD 기반의 강건한 Z-score가 대안입니다."}
     ]
