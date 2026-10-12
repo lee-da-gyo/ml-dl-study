@@ -1291,7 +1291,7 @@ safe("graph",function(){
     el("text",{x:W/2,y:by+16,"text-anchor":"middle","font-size":11.5,class:"taf"},svg,"backward(): 기록된 경로를 거꾸로 따라가며 국소 미분을 곱한다");
     el("text",{x:6,y:y+h+18,"font-size":10.5,class:"mut"},svg,"∂f/∂");
     const auto=R.g[0],eps=1e-6,num=(fx(x+eps)-fx(x-eps))/(2*eps);
-    $("#dgOps").textContent=(R.k+1)+"개 (× 2 "+R.k+"번 + "+(R.br?"** 2":"× (−3)")+")";
+    $("#dgOps").textContent=(R.k+1)+"개 (2배 "+R.k+"번 + "+(R.br?"제곱":"−3배")+" 1번)";
     $("#dgAuto").textContent=fv(auto);$("#dgNum").textContent=fv(num);
     $("#dgTF").textContent=tried.size+"개 / 1개";
     const mism=Math.abs(num-auto)>1e-3*Math.max(1,Math.abs(auto));
