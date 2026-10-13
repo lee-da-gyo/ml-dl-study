@@ -1,5 +1,6 @@
 # 노트북이 실행 중 내려받는 데이터 (올리지 않음)
 UCI_HAR/
+data/MNIST/
 har.zip
 UCI HAR Dataset.zip
 .ipynb_checkpoints/
