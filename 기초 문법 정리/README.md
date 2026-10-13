@@ -1,6 +1,6 @@
 # 기초 문법 정리
 
-딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 17개 공개
+딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 18개 공개
 
 | 정리 | 내용 |
 | :-- | :-- |
@@ -21,6 +21,7 @@
 | [11_객체탐지 -1](11_객체탐지/객체탐지-1_박스·IoU·NMS·채점%28완성본%29.ipynb) | 객체인식 Day01 강의(D1-0 ~ D1-6 · D1-9 · D1-11) + 평가지표 보충(TP · FP · FN → PR → 보간 → AP → mAP)을 6개 대단원 · 18개 섹션으로 재구성 (분류 vs 탐지 · 박스 표기 xyxy · xywh · cxcywh · VOC XML · 크기 · 뒤집기와 박스 · target 약속 · IoU · 신뢰도 · NMS · 짝짓기 · 정밀도 · 재현율 · AP · AP50 · AP75 · AP@[.5:.95] · mAP · 평균 IoU 반례), IoU · NMS · AP를 손계산 → `box_iou` · `nms` · torchmetrics와 같은지 검증표로 확인, 사전학습 SSD로 사진 24장을 예측해 NMS 전후로 직접 채점한 AP와 torchmetrics AP를 비교하는 종합 실습 · 데이터(Oxford-IIIT Pet)는 kagglehub로 받고 올리지 않음 |
 | [12_세그멘테이션 -1](12_세그멘테이션/세그멘테이션-1_픽셀분류·U-Net%28완성본%29.ipynb) | 코드잇 Segmentation PDF(Semantic · FCN · U-Net) + 위클리 9(분할 부분)를 4개 대단원 · 10개 섹션으로 재구성 (분류 vs 탐지 vs 의미 · 인스턴스 분할 · 출력 (N, C, H, W) · long 마스크 vs one-hot · 픽셀 CE · ignore_index · nearest vs bilinear vs ConvTranspose2d vs Upsample+Conv · FCN 1×1 합성곱 · U-Net 모양 추적 손계산 · skip 연결 cat vs 더하기 · 픽셀 정확도 vs mIoU vs Dice 손계산 · CE vs Dice 손실), skip만 다른 U-Net 2개를 같은 조건으로 학습해 mIoU · Dice · 경계 정확도를 비교하는 종합 실습 · 수업 실행 코드가 없어 코드는 모두 보강, 데이터는 노트북 안에서 그린 도형(내려받기 없음) · GPU가 없어도 실행 |
 | [12_세그멘테이션 -2](12_세그멘테이션/세그멘테이션-2_실전·사전학습·Instance%28완성본%29.ipynb) | Oxford-IIIT Pet(배경 · 동물 · 경계) 실제 사진으로 위클리 10(Instance · Panoptic) + Segmentation PDF(Mask R-CNN)를 4개 대단원 · 9개 섹션으로 재구성 (trimap → 클래스 번호 · 이미지 bilinear vs 마스크 nearest · v2 + tv_tensors.Mask 함께 증강 · 일반 CE vs 가중 CE vs Dice · 사전학습 DeepLabV3 · FCN 분류기 교체 · 처음부터 vs 미세조정 · Mask R-CNN 박스 vs 마스크 · 의미 vs 인스턴스 vs 파놉틱), U-Net(처음부터) vs FCN · DeepLabV3(미세조정)를 같은 조건으로 비교하는 종합 실습 · 코드는 모두 보강, 내려받은 데이터 · 가중치는 올리지 않음(.gitignore) · GPU 두 번 실행 결과 동일 |
+| [13_생성모델 -1 (선택)](13_생성모델/생성모델-1_GAN·Diffusion%28완성본%29.ipynb) | 위클리 9(GAN 생성자 · 판별자, Diffusion) + 위클리 11(모드 붕괴 · 원인 · 대응 · 평가)을 3개 대단원 · 8개 섹션으로 재구성 (G · D 역할 · detach · non-saturating 손실 · 1차원 GAN 손실 곡선 읽기 · 판별자 강함 vs 약함 · 모드 붕괴 일부러 만들기 · 배치 다양성 진단 · Minibatch StdDev 대응 · Diffusion 노이즈 더하기 · 빼기 시각화 · 오토인코더 vs GAN vs Diffusion), MNIST 작은 GAN 정상 vs 생성자 과학습을 숫자 분포 · 다양성 · 선명도로 비교하는 종합 실습 · 코드는 모두 보강 · GPU 두 번 실행 결과 동일 |
 
 **섹션 구성** · 🎯 질문 → 💡 쉬운 설명 → 실행 흐름 → 먼저 예측 → 코드 → 예측 정답 · 결과 해설 → 차이 · 언제 쓰나 → ⚠️ 주의 → ✅ 한 줄 정리
 
