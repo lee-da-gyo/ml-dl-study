@@ -7,3 +7,10 @@ har.zip
 UCI HAR Dataset.zip
 .ipynb_checkpoints/
 __pycache__/
+
+# 모델 weights · 체크포인트 · ultralytics 결과 · 내려받은 탐지 데이터 (올리지 않음)
+*.pt
+*.pth
+**/runs/
+**/weights/
+**/datasets/
