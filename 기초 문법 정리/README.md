@@ -1,6 +1,6 @@
 # 기초 문법 정리
 
-딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 8개 공개
+딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 9개 공개
 
 | 정리 | 내용 |
 | :-- | :-- |
@@ -11,6 +11,7 @@
 | [05_머신러닝 -1](05_머신러닝/머신러닝-1_데이터분할·교차검증%28완성본%29.ipynb) | 머신러닝 intro + model_selection 노트북(빈칸 32칸을 직접 풀어 실행으로 검증)을 5개 대단원 · 15개 섹션으로 재구성 (fit · predict · score · 학습 데이터 채점 착시 · train_test_split · stratify · KFold vs StratifiedKFold · cross_val_score vs cross_validate · 모델 비교 mean ± std · 과적합 · GridSearchCV vs RandomizedSearchCV · 최종 test 1회 · train · val · test 3분할), 펭귄 품종 분류를 분할부터 최종 test까지 처음부터 끝까지 하는 종합 실습 |
 | [05_머신러닝 -2](05_머신러닝/머신러닝-2_전처리·누수·파이프라인%28완성본%29.ipynb) | 전처리 노트북 + 로지스틱 회귀 Part 2(타이타닉 전처리) + 미션 3 정답1의 Pipeline 부분을 5개 대단원 · 17개 섹션으로 재구성 (LabelEncoder vs OrdinalEncoder vs OneHotEncoder vs get_dummies · 가짜 순서 · CountVectorizer · Standard vs MinMax vs Robust · Normalizer · fit vs transform vs fit_transform · 누수 전처리 vs Pipeline · SimpleImputer · ColumnTransformer · 이름__설정 탐색 · train 통계로 이미지 정규화 · 범주 → 번호 → 임베딩), 타이타닉 모델별 전처리 파이프라인 종합 실습 · 실행에 쓴 수업 CSV(`train.csv`)는 올리지 않음, 결과는 저장된 출력으로 확인 |
 | [06_딥러닝기초 · PyTorch -1](06_딥러닝기초·PyTorch/딥러닝기초-1_텐서·경사하강%28완성본%29.ipynb) | 개론 PDF(퍼셉트론 · 손실 · 경사) + Day01 강의 + Day01 연습문제 P01 ~ P15를 7개 대단원 · 21개 섹션으로 재구성 (텐서 · shape · dtype · device · view/reshape · squeeze · cat/stack · broadcasting 함정 · 행렬 곱 · MSE · autograd · 경사하강 · 학습률), 직접 만든 선형 회귀를 경사하강으로 학습하고 학습률 3가지(느림 · 적절 · 발산)를 비교하는 종합 실습 · GPU가 없어도 실행 |
+| [08_RNN -1](08_RNN/RNN-1_순서데이터·RNN·LSTM·GRU%28완성본%29.ipynb) | 강의 '순서가 중요하다' + 수업 코드(과제 빈칸 3칸을 직접 풀어 실행으로 검증) + 레이어 실습의 레이어 모양 부분을 5개 대단원 · 12개 섹션으로 재구성 (합 · 평균 기준선 vs RNN · hidden state 손으로 펼치기 · 파라미터 공유 · one-hot · batch_first True vs False · out/h_n 모양 손계산 표 → 코드 검증 · 마지막 시점 vs 전체 시점 · 기울기 소실 · LSTM out/h_n/c_n · forget 문 · GRU 파라미터 손계산), UCI HAR로 RNN · LSTM · GRU를 같은 조건(hidden 64 · 파라미터 맞춤)으로 비교하는 종합 실습 + 과제 정답(hidden 크기 · 시드 5개 흔들림 · 순서 섞기 검사) · 데이터는 수업 코드 URL로 처음 한 번 내려받음(`UCI_HAR/`는 올리지 않음) · GPU가 없어도 실행 |
 | [12_세그멘테이션 -1](12_세그멘테이션/세그멘테이션-1_픽셀분류·U-Net%28완성본%29.ipynb) | 코드잇 Segmentation PDF(Semantic · FCN · U-Net) + 위클리 9(분할 부분)를 4개 대단원 · 10개 섹션으로 재구성 (분류 vs 탐지 vs 의미 · 인스턴스 분할 · 출력 (N, C, H, W) · long 마스크 vs one-hot · 픽셀 CE · ignore_index · nearest vs bilinear vs ConvTranspose2d vs Upsample+Conv · FCN 1×1 합성곱 · U-Net 모양 추적 손계산 · skip 연결 cat vs 더하기 · 픽셀 정확도 vs mIoU vs Dice 손계산 · CE vs Dice 손실), skip만 다른 U-Net 2개를 같은 조건으로 학습해 mIoU · Dice · 경계 정확도를 비교하는 종합 실습 · 수업 실행 코드가 없어 코드는 모두 보강, 데이터는 노트북 안에서 그린 도형(내려받기 없음) · GPU가 없어도 실행 |
 
 **섹션 구성** · 🎯 질문 → 💡 쉬운 설명 → 실행 흐름 → 먼저 예측 → 코드 → 예측 정답 · 결과 해설 → 차이 · 언제 쓰나 → ⚠️ 주의 → ✅ 한 줄 정리
