@@ -15,3 +15,5 @@ __pycache__/
 **/runs/
 **/weights/
 **/datasets/
+**/runs_*/
+**/checkpoints_*/
