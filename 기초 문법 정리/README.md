@@ -4,8 +4,8 @@
 
 | 정리 | 내용 |
 | :-- | :-- |
-| [01_Python 문법](01_Python%20문법/Python%20문법_전체%20정리.ipynb) | 기초 문법 22문제를 7개 대단원 · 20개 섹션으로 재구성 (변수 · 리스트 · 딕셔너리 · 함수 · 문자열 · 파일 · JSON), 폴더 속 이미지로 학습용 목록을 만드는 종합 실습 |
-| [02_Python 클래스](02_Python%20클래스/Python%20클래스_전체%20정리.ipynb) | 클래스 수업 노트북 4개를 4개 대단원 · 12개 섹션으로 재구성 (클래스 · self · 특수 메서드 · 상속 · super), PyTorch `Dataset` · `nn.Module`을 직접 만드는 종합 실습 |
+| [01_Python 문법](01_Python%20문법/Python%20문법_전체%20정리.ipynb) | 기초 문법 22문제를 7개 대단원 · 20개 섹션으로 재구성 (변수 · 리스트 · 딕셔너리 · 함수 · 문자열 · 파일 · JSON), 폴더 속 이미지로 학습용 목록을 만드는 종합 실습 · 폴더 안 전체 정리 다음에 **원본 파일별 정리 6권** (02-1 · 04-1 · 05-1 · 15-1 · 17-1 · 24-1 순서) |
+| [02_Python 클래스](02_Python%20클래스/Python%20클래스_전체%20정리.ipynb) | 클래스 수업 노트북 4개를 4개 대단원 · 12개 섹션으로 재구성 (클래스 · self · 특수 메서드 · 상속 · super), PyTorch `Dataset` · `nn.Module`을 직접 만드는 종합 실습 · 폴더 안 전체 정리 다음에 **원본 파일별 정리 3권** (강의노트 1 · 2 · 8 순서) |
 | [03_NumPy](03_NumPy/NumPy_전체%20정리.ipynb) | 강의자료를 뼈대로 연습문제 27문제를 7개 대단원 · 24개 섹션으로 재구성 (배열 · 모양 · 인덱싱 · 조건 · 계산 · 정렬과 축 · broadcasting), 신메뉴 수익 분석 종합 실습, 9장 딥러닝 데이터로 연결 (정규화 · HWC → CHW · 배치 · seed · 시계열 윈도우) |
 | [04_Pandas](04_Pandas/Pandas_전체%20정리.ipynb) | 수업 노트북 3개의 빈칸 48칸을 풀어 7개 대단원 · 23개 섹션으로 재구성 (표 살펴보기 · 선택 · 조건 · 계산과 정렬 · 결측 · 날짜 · 중복 정리 · groupby · merge), 처음 보는 판매 데이터 종합 실습, 9장 딥러닝 데이터로 연결 (라벨 → 번호 map · astype · concat · 날짜 index · resample · rolling · shift · to_numpy) · 실행에 쓴 수업 CSV(`data/`)는 올리지 않음, 결과는 저장된 출력으로 확인 |
 | [05_머신러닝 -1](05_머신러닝/머신러닝-1_데이터분할·교차검증%28완성본%29.ipynb) | 머신러닝 intro + model_selection 노트북(빈칸 32칸을 직접 풀어 실행으로 검증)을 5개 대단원 · 15개 섹션으로 재구성 (fit · predict · score · 학습 데이터 채점 착시 · train_test_split · stratify · KFold vs StratifiedKFold · cross_val_score vs cross_validate · 모델 비교 mean ± std · 과적합 · GridSearchCV vs RandomizedSearchCV · 최종 test 1회 · train · val · test 3분할), 펭귄 품종 분류를 분할부터 최종 test까지 처음부터 끝까지 하는 종합 실습 |
