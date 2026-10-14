@@ -1,6 +1,6 @@
 # 기초 문법 정리
 
-딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 21개 공개
+딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 22개 공개
 
 | 정리 | 내용 |
 | :-- | :-- |
@@ -8,6 +8,7 @@
 | [02_Python 클래스](02_Python%20클래스/Python%20클래스_전체%20정리.ipynb) | 클래스 수업 노트북 4개를 4개 대단원 · 12개 섹션으로 재구성 (클래스 · self · 특수 메서드 · 상속 · super), PyTorch `Dataset` · `nn.Module`을 직접 만드는 종합 실습 · 폴더 안 전체 정리 다음에 **원본 파일별 정리 4권** (강의노트 1 · 2 · 8 · 보강 11 순서) |
 | [03_NumPy](03_NumPy/NumPy_전체%20정리.ipynb) | 강의자료를 뼈대로 연습문제 27문제를 7개 대단원 · 24개 섹션으로 재구성 (배열 · 모양 · 인덱싱 · 조건 · 계산 · 정렬과 축 · broadcasting), 신메뉴 수익 분석 종합 실습, 9장 딥러닝 데이터로 연결 (정규화 · HWC → CHW · 배치 · seed · 시계열 윈도우) · 폴더 안 전체 정리 다음에 **원본 파일별 정리 3권** (강의자료 · B04 boolean · axis · B03 index · slice · copy 순서) |
 | [04_Pandas](04_Pandas/Pandas_전체%20정리.ipynb) | 수업 노트북 3개의 빈칸 48칸을 풀어 7개 대단원 · 23개 섹션으로 재구성 (표 살펴보기 · 선택 · 조건 · 계산과 정렬 · 결측 · 날짜 · 중복 정리 · groupby · merge), 처음 보는 판매 데이터 종합 실습, 9장 딥러닝 데이터로 연결 (라벨 → 번호 map · astype · concat · 날짜 index · resample · rolling · shift · to_numpy) · 실행에 쓴 수업 CSV(`data/`)는 올리지 않음, 결과는 저장된 출력으로 확인 · 폴더 안 전체 정리 다음에 **원본 파일별 정리 3권** (00 Foundations · 05 Final Challenge · 보강 03 Merge 순서) |
+| [04_통계·시각화](04_통계·시각화/통계_파일별%201_02_데이터%20요약과%20시각화.ipynb) | 통계 전체 정리는 아직 없음 · **원본 파일별 정리 2권** (강의 PDF '02 데이터 요약과 시각화' 131쪽을 코드로 다시 만듦 · coffee_q 그래프 실습 43문제 모범 답안) — 데이터 유형 · 도수분포표 · 평균 · 중앙값 · 분산 · 표준편차 · IQR · 그래프 5종 · matplotlib · seaborn · 속이는 그래프 |
 | [05_머신러닝 -1](05_머신러닝/머신러닝-1_데이터분할·교차검증%28완성본%29.ipynb) | 머신러닝 intro + model_selection 노트북(빈칸 32칸을 직접 풀어 실행으로 검증)을 5개 대단원 · 15개 섹션으로 재구성 (fit · predict · score · 학습 데이터 채점 착시 · train_test_split · stratify · KFold vs StratifiedKFold · cross_val_score vs cross_validate · 모델 비교 mean ± std · 과적합 · GridSearchCV vs RandomizedSearchCV · 최종 test 1회 · train · val · test 3분할), 펭귄 품종 분류를 분할부터 최종 test까지 처음부터 끝까지 하는 종합 실습 |
 | [05_머신러닝 -2](05_머신러닝/머신러닝-2_전처리·누수·파이프라인%28완성본%29.ipynb) | 전처리 노트북 + 로지스틱 회귀 Part 2(타이타닉 전처리) + 미션 3 정답1의 Pipeline 부분을 5개 대단원 · 17개 섹션으로 재구성 (LabelEncoder vs OrdinalEncoder vs OneHotEncoder vs get_dummies · 가짜 순서 · CountVectorizer · Standard vs MinMax vs Robust · Normalizer · fit vs transform vs fit_transform · 누수 전처리 vs Pipeline · SimpleImputer · ColumnTransformer · 이름__설정 탐색 · train 통계로 이미지 정규화 · 범주 → 번호 → 임베딩), 타이타닉 모델별 전처리 파이프라인 종합 실습 · 실행에 쓴 수업 CSV(`train.csv`)는 올리지 않음, 결과는 저장된 출력으로 확인 |
 | [05_머신러닝 -3](05_머신러닝/머신러닝-3_평가지표·로지스틱%28완성본%29.ipynb) | 평가지표 노트북 + 로지스틱 회귀 노트북을 6개 대단원 · 16개 섹션으로 재구성 (정확도의 함정 · 혼동행렬 · accuracy vs precision vs recall vs F1 · macro · weighted · 시그모이드 · predict vs predict_proba · 교차 엔트로피 · 계수 · 기본 0.5 vs 업무 기준 임곗값 · validation 선택 · ROC-AUC vs PR-AUC · BCEWithLogitsLoss · pos_weight), 타이타닉을 분할 → 파이프라인 → 교차검증 → 임곗값 선택 → 최종 test 1회로 끝내는 종합 실습 · 실행에 쓴 수업 CSV(`train.csv`)는 올리지 않음 |
