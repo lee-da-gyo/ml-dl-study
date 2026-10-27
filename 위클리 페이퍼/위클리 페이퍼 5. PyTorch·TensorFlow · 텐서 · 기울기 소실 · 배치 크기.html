@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 05 · PyTorch·TensorFlow · 텐서 · 기울기 소실 · 배치 크기 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 05</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -377,6 +378,9 @@ pre .sy-self{color:var(--sy-k);font-style:italic} pre .c{color:var(--muted)}
 .stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
 .stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
 .stat .v .sub{white-space:normal}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -465,7 +469,7 @@ pre .sy-self{color:var(--sy-k);font-style:italic} pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 기준별 비교 (2026년 10월 기준)</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="기준별 비교 (2026년 10월 기준)">
         <thead><tr><th style="width:15%">기준</th><th style="width:42%">PyTorch</th><th>TensorFlow (Keras)</th></tr></thead>
         <tbody>
           <tr><td><b>실행 방식</b></td><td>즉시 실행(define-by-run). 연산을 실행하는 순간 autograd가 그래프를 기록하고, <code>backward()</code> 뒤에 버린다</td><td>TF 1.x는 그래프를 먼저 정의하고 Session으로 실행(define-and-run). TF 2.x부터 즉시 실행이 기본</td></tr>
@@ -528,7 +532,7 @@ def train_step(x, y):
 
     <div class="demo" id="demo-graph">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 실행할 때마다 그래프가 새로 만들어진다 (define-by-run) <span class="tag-ex">예시 함수 · 이 페이지의 작은 autograd로 계산</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 실행할 때마다 그래프가 새로 만들어진다 (define-by-run) <span class="tag-ex">예시 함수 · 이 페이지의 작은 autograd로 계산</span></h3>
         <div class="how">
           <p>아래 함수는 입력 x에 따라 <b>while 반복 횟수</b>와 <b>if 분기</b>가 달라집니다. x를 바꾸면 이번 호출에서 <b>실제로 실행된 연산만</b> 그래프로 기록되고, 역전파는 그 경로를 거꾸로 따라갑니다.</p>
           <p>미분은 이 페이지 안의 작은 autograd(PyTorch와 같은 방식)로 계산해 <b>수치 미분</b> (f(x+ε) − f(x−ε)) / 2ε 과 비교합니다. 여러 x를 시도하면 TensorFlow <code>tf.function</code>이 그래프를 몇 개 만드는지도 셉니다.</p>
@@ -679,7 +683,7 @@ def train_step(x, y):
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 같은 점과 다른 점</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="같은 점과 다른 점">
         <thead><tr><th style="width:17%">기준</th><th style="width:37%"><code>torch.Tensor</code></th><th style="width:28%"><code>numpy.ndarray</code></th><th>실수하기 쉬운 지점</th></tr></thead>
         <tbody>
           <tr><td><b>기본 실수 dtype</b></td><td><code>float32</code> (<code>torch.tensor([1.0])</code>)</td><td><code>float64</code> (<code>np.array([1.0])</code>)</td><td><code>from_numpy</code>는 float64를 그대로 가져와 모델(float32)과 dtype 오류</td></tr>
@@ -694,7 +698,7 @@ def train_step(x, y):
 
     <div class="demo" id="demo-share">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 복사인가, 같은 메모리인가 <span class="tag-ex">PyTorch 규칙을 이 페이지에서 재현 · 공유는 실제로 같은 메모리 버퍼로 구현</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 복사인가, 같은 메모리인가 <span class="tag-ex">PyTorch 규칙을 이 페이지에서 재현 · 공유는 실제로 같은 메모리 버퍼로 구현</span></h3>
         <div class="how">
           <p>NumPy 배열 <code>a</code>를 여러 방법으로 텐서 <code>t</code>로 바꾼 뒤, 한쪽을 고쳐 보세요. 공유하는 경우에는 이 페이지에서도 두 변수가 <b>실제로 같은 메모리 버퍼</b>를 가리키므로 한쪽을 바꾸면 다른 쪽도 정말로 바뀝니다.</p>
           <p>아래 두 번째 칸에서는 텐서를 NumPy로 되돌리는 방법별로 <b>결과와 오류</b>를 확인합니다.</p>
@@ -837,7 +841,7 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
 
     <div class="demo" id="demo-vanish">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> 20층 신경망을 직접 학습해 층별 기울기와 가중치 변화 재기 <span class="tag-ex">예시 데이터 · 입력 8개, 이진 분류 512개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> 20층 신경망을 직접 학습해 층별 기울기와 가중치 변화 재기 <span class="tag-ex">예시 데이터 · 입력 8개, 이진 분류 512개</span></h3>
         <div class="how">
           <p>가중치 층 20개(은닉층 19개 × 뉴런 32개 + 출력층)인 신경망을 이 페이지에서 직접 학습해 두 값을 잽니다. 둘 다 <b>로그 축</b>입니다.</p>
           <ul>
@@ -858,8 +862,8 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
         <select id="vnO"><option value="sgd" selected>SGD</option><option value="adam">Adam</option></select>
       </div>
       <div class="panels">
-        <div class="panel"><h5>학습 전 층별 기울기 노름 (log₁₀)</h5><div class="svgbox"><svg id="vnG" viewBox="0 0 320 210" role="img" aria-label="층별 기울기 노름"></svg></div><div class="cap">층 1 = 입력 쪽, 층 20 = 출력층</div></div>
-        <div class="panel"><h5>200스텝 학습 후 가중치 변화율 (log₁₀)</h5><div class="svgbox"><svg id="vnU" viewBox="0 0 320 210" role="img" aria-label="층별 가중치 변화율"></svg></div><div class="cap">‖Wₗ − Wₗ⁽⁰⁾‖ / ‖Wₗ⁽⁰⁾‖ · "거의 그대로"를 수치로 본 것</div></div>
+        <div class="panel"><h4>학습 전 층별 기울기 노름 (log₁₀)</h4><div class="svgbox"><svg id="vnG" viewBox="0 0 320 210" role="img" aria-label="층별 기울기 노름"></svg></div><div class="cap">층 1 = 입력 쪽, 층 20 = 출력층</div></div>
+        <div class="panel"><h4>200스텝 학습 후 가중치 변화율 (log₁₀)</h4><div class="svgbox"><svg id="vnU" viewBox="0 0 320 210" role="img" aria-label="층별 가중치 변화율"></svg></div><div class="cap">‖Wₗ − Wₗ⁽⁰⁾‖ / ‖Wₗ⁽⁰⁾‖ · "거의 그대로"를 수치로 본 것</div></div>
       </div>
       <div class="stats">
         <div class="stat em"><div class="k">기울기 노름 비 (층 1 / 층 20)</div><div class="v" id="vnRatio">–</div></div>
@@ -873,7 +877,7 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 증상이 같아 보이는 원인 구분하기</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="증상이 같아 보이는 원인 구분하기">
         <thead><tr><th style="width:19%">관찰</th><th style="width:20%">의심 원인</th><th style="width:30%">확인 방법</th><th>해결</th></tr></thead>
         <tbody>
           <tr><td><b>기울기가 있지만 입력 쪽으로 갈수록 지수적으로 작다</b></td><td>기울기 소실</td><td>층별 ‖grad‖가 로그 축에서 직선으로 감소, 시그모이드 출력이 0·1 근처에 몰림</td><td>ReLU·GELU + He 초기화, 잔차 연결, 정규화 층</td></tr>
@@ -887,7 +891,7 @@ torch.cuda.synchronize()                    <span class="c"># GPU 시간 측정 
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 해결책이 듣는 이유</h3>
-      <div class="tbl"><table style="min-width:760px">
+      <div class="tbl"><table style="min-width:760px" aria-label="해결책이 듣는 이유">
         <thead><tr><th style="width:22%">방법</th><th style="width:44%">기울기 흐름에 미치는 효과</th><th>주의</th></tr></thead>
         <tbody>
           <tr><td><b>은닉층 ReLU·GELU</b></td><td>활성 구간의 미분이 1(또는 1 근처)이라 층마다 0.25씩 깎이지 않는다</td><td>출력층의 시그모이드·소프트맥스는 문제 유형으로 정해지므로 그대로 둔다</td></tr>
@@ -1000,7 +1004,7 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
 
     <div class="demo" id="demo-mem">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 4</span> GPU 메모리에 들어가는 배치 크기 계산하기 <span class="tag-ex">예시 · 단순화한 메모리 모델</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 4</span> GPU 메모리에 들어가는 배치 크기 계산하기 <span class="tag-ex">예시 · 단순화한 메모리 모델</span></h3>
         <div class="how">
           <p>학습 중 GPU 메모리를 두 부분으로 나눠 계산합니다.</p>
           <ul>
@@ -1041,7 +1045,7 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
 
     <div class="demo" id="demo-batch">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 5</span> 배치 크기와 학습률 규칙을 바꿔 같은 데이터로 학습하기 <span class="tag-ex">예시 데이터 · 특징 20개 로지스틱 회귀, 학습 8,192개 · 검증 4,096개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 5</span> 배치 크기와 학습률 규칙을 바꿔 같은 데이터로 학습하기 <span class="tag-ex">예시 데이터 · 특징 20개 로지스틱 회귀, 학습 8,192개 · 검증 4,096개</span></h3>
         <div class="how">
           <p>배치 크기 6가지 × 학습률 규칙 3가지를 이 페이지에서 미니배치 SGD로 학습하고(무작위 시작 3번 평균) 검증 loss를 비교합니다. 기준은 <b>배치 32에서 학습률 0.05</b>입니다.</p>
           <ul>
@@ -1062,8 +1066,8 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
         <select id="btB"><option value="8">8</option><option value="32">32</option><option value="128">128</option><option value="512" selected>512</option><option value="2048">2,048</option><option value="8192">8,192 (전체)</option></select>
       </div>
       <div class="panels">
-        <div class="panel"><h5>에포크 후 검증 loss</h5><div class="svgbox"><svg id="btL" viewBox="0 0 320 220" role="img" aria-label="배치 크기별 검증 loss"></svg></div><div class="cap">점선 = 실제 규칙으로 예측할 때의 loss(도달 가능한 하한)</div></div>
-        <div class="panel"><h5>미니배치 기울기와 전체 기울기의 코사인 유사도</h5><div class="svgbox"><svg id="btC" viewBox="0 0 320 220" role="img" aria-label="배치 크기별 기울기 코사인 유사도"></svg></div><div class="cap">1에 가까울수록 미니배치 기울기가 전체 방향과 같다(잡음이 작다)</div></div>
+        <div class="panel"><h4>에포크 후 검증 loss</h4><div class="svgbox"><svg id="btL" viewBox="0 0 320 220" role="img" aria-label="배치 크기별 검증 loss"></svg></div><div class="cap">점선 = 실제 규칙으로 예측할 때의 loss(도달 가능한 하한)</div></div>
+        <div class="panel"><h4>미니배치 기울기와 전체 기울기의 코사인 유사도</h4><div class="svgbox"><svg id="btC" viewBox="0 0 320 220" role="img" aria-label="배치 크기별 기울기 코사인 유사도"></svg></div><div class="cap">1에 가까울수록 미니배치 기울기가 전체 방향과 같다(잡음이 작다)</div></div>
       </div>
       <div class="keyrow">
         <span><span class="sw ln" style="background:var(--accent)"></span>고정 0.05</span>
@@ -1081,7 +1085,7 @@ for n, p in model.named_parameters():                   <span class="c"># 실제
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 배치가 너무 작을 때와 너무 클 때</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="배치가 너무 작을 때와 너무 클 때">
         <thead><tr><th style="width:14%">구분</th><th style="width:43%">문제</th><th>대응</th></tr></thead>
         <tbody>
           <tr><td><b>너무 작은 배치</b><br><span class="muted" style="font-size:12.5px">예: 1~8</span></td><td>GPU의 병렬 연산을 다 못 써서 초당 샘플 수가 낮고, 커널 실행·데이터 전송 같은 고정 비용 비중이 커진다. 기울기 잡음이 커서 학습률을 낮춰야 하고, 배치 정규화의 평균·분산 추정이 불안정하다</td><td>처리량이 포화될 때까지 키운다. 정규화는 레이어·그룹 정규화로, 원하는 배치가 안 들어가면 기울기 누적</td></tr>
@@ -1207,7 +1211,7 @@ for step, (x, y) in enumerate(loader, start=1):
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>Q1 PyTorch vs TensorFlow (실습 해설)</td><td><span class="badge b-fix">오류</span></td><td>PyTorch의 Pythonic한 사용성, TF 2.0 이후 Keras 통합</td><td>TorchServe는 유지보수 중단 상태. "TensorFlow가 확장성에서 유리"는 틀림(PyTorch도 대규모 분산 학습의 표준)</td></tr>

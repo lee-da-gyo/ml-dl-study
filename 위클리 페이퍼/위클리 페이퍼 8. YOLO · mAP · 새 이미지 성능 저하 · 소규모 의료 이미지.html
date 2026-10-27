@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 08 · YOLO · mAP · 새 이미지 성능 저하 · 소규모 의료 이미지 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 08</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -414,6 +415,9 @@ table.mapt tr.sep td{border-top:2px solid var(--line)}
 .sl4 output,.sl3 output{font-family:var(--f-mono);font-weight:600}
 .codecols>*,.codewrap{min-width:0}
 .demo-head .tag-ex{white-space:normal}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -522,7 +526,7 @@ table.mapt tr.sep td{border-top:2px solid var(--line)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 객체 탐지기의 세 갈래</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="객체 탐지기의 세 갈래">
         <thead><tr><th style="width:14%">구분</th><th style="width:29%">Two-stage (R-CNN 계열)</th><th style="width:29%">One-stage (YOLO · SSD · RetinaNet)</th><th>집합 예측 (DETR 계열)</th></tr></thead>
         <tbody>
           <tr><td><b>동작</b></td><td>① 객체가 있을 만한 후보 영역 생성(RPN 등) → ② 후보마다 특징을 잘라 분류 · 박스 보정</td><td>특징 맵의 모든 위치에서 박스와 클래스를 <b>한 번에</b> 예측</td><td>트랜스포머가 정해진 개수의 객체 쿼리로 박스 집합을 예측, 정답과 <b>일대일 매칭</b>(헝가리안)으로 학습</td></tr>
@@ -536,7 +540,7 @@ table.mapt tr.sep td{border-top:2px solid var(--line)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 원 논문의 실제 숫자 (PASCAL VOC 2007 테스트, Titan X)</h3>
-      <div class="tbl"><table class="num" style="min-width:560px">
+      <div class="tbl"><table class="num" style="min-width:560px" aria-label="원 논문의 실제 숫자 (PASCAL VOC 2007 테스트, Titan X)">
         <thead><tr><th>모델</th><th>mAP (%)</th><th>FPS</th><th>읽는 법</th></tr></thead>
         <tbody>
           <tr><td>Fast YOLO</td><td>52.7</td><td>155</td><td>가장 빠르지만 정확도는 낮음</td></tr>
@@ -550,7 +554,7 @@ table.mapt tr.sep td{border-top:2px solid var(--line)}
 
     <div class="demo" id="demo-grid">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 격자 하나가 맡을 수 있는 객체 수 <span class="tag-ex">예시 장면 · 448×448</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 격자 하나가 맡을 수 있는 객체 수 <span class="tag-ex">예시 장면 · 448×448</span></h3>
         <div class="how">
           <p>객체 중심이 떨어진 셀이 그 객체를 맡습니다. 셀 하나가 낼 수 있는 박스 수와 클래스 수에는 한계가 있으므로, 중심이 한 셀에 몰리면 일부 객체는 <b>학습을 아무리 해도 출력할 자리가 없습니다</b>.</p>
           <ul>
@@ -587,7 +591,7 @@ table.mapt tr.sep td{border-top:2px solid var(--line)}
 
     <div class="demo" id="demo-nms">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 신뢰도 임계값과 NMS 임계값 <span class="tag-ex">예시 예측 · 사람 6명</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 신뢰도 임계값과 NMS 임계값 <span class="tag-ex">예시 예측 · 사람 6명</span></h3>
         <div class="how">
           <p>탐지기는 같은 사람 주변에 박스를 여러 개 냅니다. 후처리는 두 단계입니다.</p>
           <ul>
@@ -622,7 +626,7 @@ table.mapt tr.sep td{border-top:2px solid var(--line)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> YOLO 계보: 한 팀의 순번이 아니다</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="YOLO 계보: 한 팀의 순번이 아니다">
         <thead><tr><th style="width:16%">버전 · 공개</th><th style="width:22%">만든 곳</th><th>핵심 변화</th></tr></thead>
         <tbody>
           <tr><td><b>v1</b> · 2015.06</td><td>Redmon 외 (워싱턴대)</td><td>탐지를 하나의 회귀 문제로, 7×7 격자</td></tr>
@@ -768,9 +772,9 @@ print(nms(boxes, scores, iou_threshold=0.3))   <span class="c"># tensor([0]) · 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> IoU 0.5는 생각보다 느슨하다</h3>
       <div class="tri">
-        <div class="panel"><h5>IoU 0.50</h5><div class="svgbox"><svg viewBox="0 0 200 150" role="img" aria-label="정답 박스와 오른쪽으로 33 이동한 예측 박스, IoU 0.5"><rect class="ioug" x="40" y="25" width="100" height="100"/><rect class="ioup" x="73.3" y="25" width="100" height="100"/><rect class="iouin" x="73.3" y="25" width="66.7" height="100"/></svg></div><div class="cap">같은 크기 정사각형이 한 변의 1/3만큼 어긋남. VOC 기준으로는 TP</div></div>
-        <div class="panel"><h5>IoU 0.75</h5><div class="svgbox"><svg viewBox="0 0 200 150" role="img" aria-label="정답 박스와 오른쪽으로 14 이동한 예측 박스, IoU 0.75"><rect class="ioug" x="40" y="25" width="100" height="100"/><rect class="ioup" x="54.3" y="25" width="100" height="100"/><rect class="iouin" x="54.3" y="25" width="85.7" height="100"/></svg></div><div class="cap">한 변의 1/7만큼 어긋남. 눈으로는 "거의 맞다"</div></div>
-        <div class="panel"><h5>IoU 0.90</h5><div class="svgbox"><svg viewBox="0 0 200 150" role="img" aria-label="정답 박스와 오른쪽으로 5 이동한 예측 박스, IoU 0.9"><rect class="ioug" x="40" y="25" width="100" height="100"/><rect class="ioup" x="45.3" y="25" width="100" height="100"/><rect class="iouin" x="45.3" y="25" width="94.7" height="100"/></svg></div><div class="cap">한 변의 약 5%만 어긋남. COCO의 높은 기준</div></div>
+        <div class="panel"><h4>IoU 0.50</h4><div class="svgbox"><svg viewBox="0 0 200 150" role="img" aria-label="정답 박스와 오른쪽으로 33 이동한 예측 박스, IoU 0.5"><rect class="ioug" x="40" y="25" width="100" height="100"/><rect class="ioup" x="73.3" y="25" width="100" height="100"/><rect class="iouin" x="73.3" y="25" width="66.7" height="100"/></svg></div><div class="cap">같은 크기 정사각형이 한 변의 1/3만큼 어긋남. VOC 기준으로는 TP</div></div>
+        <div class="panel"><h4>IoU 0.75</h4><div class="svgbox"><svg viewBox="0 0 200 150" role="img" aria-label="정답 박스와 오른쪽으로 14 이동한 예측 박스, IoU 0.75"><rect class="ioug" x="40" y="25" width="100" height="100"/><rect class="ioup" x="54.3" y="25" width="100" height="100"/><rect class="iouin" x="54.3" y="25" width="85.7" height="100"/></svg></div><div class="cap">한 변의 1/7만큼 어긋남. 눈으로는 "거의 맞다"</div></div>
+        <div class="panel"><h4>IoU 0.90</h4><div class="svgbox"><svg viewBox="0 0 200 150" role="img" aria-label="정답 박스와 오른쪽으로 5 이동한 예측 박스, IoU 0.9"><rect class="ioug" x="40" y="25" width="100" height="100"/><rect class="ioup" x="45.3" y="25" width="100" height="100"/><rect class="iouin" x="45.3" y="25" width="94.7" height="100"/></svg></div><div class="cap">한 변의 약 5%만 어긋남. COCO의 높은 기준</div></div>
       </div>
       <div class="keyrow">
         <span><span class="sw" style="background:var(--ink);opacity:.25;border:1px solid var(--ink)"></span>정답</span>
@@ -782,7 +786,7 @@ print(nms(boxes, scores, iou_threshold=0.3))   <span class="c"># tensor([0]) · 
 
     <div class="demo" id="demo-ap">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> IoU 기준을 바꾸며 AP와 mAP 계산하기 <span class="tag-ex">예시 예측 · 클래스 3개, 정답 46개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> IoU 기준을 바꾸며 AP와 mAP 계산하기 <span class="tag-ex">예시 예측 · 클래스 3개, 정답 46개</span></h3>
         <div class="how">
           <p>같은 정답(사람 24 · 자동차 14 · 자전거 8)에 대한 두 모델의 예측입니다.</p>
           <ul>
@@ -823,7 +827,7 @@ print(nms(boxes, scores, iou_threshold=0.3))   <span class="c"># tensor([0]) · 
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 논문과 도구에서 보는 표기</h3>
-      <div class="tbl"><table style="min-width:720px">
+      <div class="tbl"><table style="min-width:720px" aria-label="논문과 도구에서 보는 표기">
         <thead><tr><th style="width:26%">표기</th><th>의미</th></tr></thead>
         <tbody>
           <tr><td><code>mAP@50</code> · <code>AP50</code></td><td>IoU 0.5 기준. PASCAL VOC의 기본 지표</td></tr>
@@ -944,7 +948,7 @@ print(ev.stats[0], ev.stats[1], ev.stats[2])   <span class="c"># AP@[.50:.95], A
 
     <div class="demo" id="demo-split">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 4</span> 무작위 분할 vs 제품 단위 분할, 그리고 새 생산 라인 <span class="tag-ex">예시 데이터 · 5,000장 · 불량 10%</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 4</span> 무작위 분할 vs 제품 단위 분할, 그리고 새 생산 라인 <span class="tag-ex">예시 데이터 · 5,000장 · 불량 10%</span></h3>
         <div class="how">
           <p>제품 1,250개를 4번씩 찍은 5,000장(특징 8개)을 이 페이지에서 만들어 실제로 학습하고 세 점수를 잽니다. 같은 제품의 사진 4장은 거의 똑같습니다.</p>
           <ul>
@@ -972,7 +976,7 @@ print(ev.stats[0], ev.stats[1], ev.stats[2])   <span class="c"># AP@[.50:.95], A
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 세 점수로 원인 가르기</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="세 점수로 원인 가르기">
         <thead><tr><th style="width:24%">관찰</th><th style="width:20%">의심 원인</th><th style="width:27%">확인 방법</th><th>대응</th></tr></thead>
         <tbody>
           <tr><td><b>학습 높음 · 검증 낮음 · 새 이미지 낮음</b></td><td>과적합</td><td>학습 곡선에서 검증 loss가 다시 오르는 시점</td><td>사전 학습 모델, 조기 종료, weight decay, 현실적 증강, 더 작은 모델</td></tr>
@@ -1079,7 +1083,7 @@ train_tf = v2.Compose([
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 처음부터 학습할 때 생기는 문제</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="처음부터 학습할 때 생기는 문제">
         <thead><tr><th style="width:17%">문제</th><th style="width:40%">이유</th><th>결과</th></tr></thead>
         <tbody>
           <tr><td><b>과적합</b></td><td>ResNet-50만 해도 파라미터가 약 2,500만 개인데 이미지는 300장</td><td>학습 이미지를 외우고 새 환자에서 실패</td></tr>
@@ -1101,7 +1105,7 @@ train_tf = v2.Compose([
 
     <div class="demo" id="demo-ci">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 5</span> 300장으로 잰 성능 숫자는 얼마나 믿을 만한가 <span class="tag-ex">예시 · 윌슨 신뢰구간 · 반복 평가 시뮬레이션</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 5</span> 300장으로 잰 성능 숫자는 얼마나 믿을 만한가 <span class="tag-ex">예시 · 윌슨 신뢰구간 · 반복 평가 시뮬레이션</span></h3>
         <div class="how">
           <p>테스트 환자 수와 질환 비율, 측정된 민감도 · 특이도를 정하면 다음을 계산합니다.</p>
           <ul>
@@ -1121,8 +1125,8 @@ train_tf = v2.Compose([
         <label for="ciT">측정된 특이도: <output id="ciTOut" for="ciT">95%</output><input type="range" id="ciT" min="50" max="100" step="1" value="95"></label>
       </div>
       <div class="panels">
-        <div class="panel"><h5>민감도 95% 신뢰구간과 테스트 환자 수</h5><div class="svgbox"><svg id="ciBar" viewBox="0 0 320 200" role="img" aria-label="테스트 환자 수별 민감도 신뢰구간"></svg></div><div class="cap">같은 질환 비율 · 같은 민감도일 때, 굵은 줄 = 지금 고른 환자 수</div></div>
-        <div class="panel"><h5>다른 환자들로 다시 평가하면 (400번)</h5><div class="svgbox"><svg id="ciHist" viewBox="0 0 320 200" role="img" aria-label="반복 평가에서 측정된 민감도의 히스토그램"></svg></div><div class="cap">참 민감도가 측정값과 같다고 둘 때 나오는 측정값 분포, 주황 = 바깥 2.5%씩</div></div>
+        <div class="panel"><h4>민감도 95% 신뢰구간과 테스트 환자 수</h4><div class="svgbox"><svg id="ciBar" viewBox="0 0 320 200" role="img" aria-label="테스트 환자 수별 민감도 신뢰구간"></svg></div><div class="cap">같은 질환 비율 · 같은 민감도일 때, 굵은 줄 = 지금 고른 환자 수</div></div>
+        <div class="panel"><h4>다른 환자들로 다시 평가하면 (400번)</h4><div class="svgbox"><svg id="ciHist" viewBox="0 0 320 200" role="img" aria-label="반복 평가에서 측정된 민감도의 히스토그램"></svg></div><div class="cap">참 민감도가 측정값과 같다고 둘 때 나오는 측정값 분포, 주황 = 바깥 2.5%씩</div></div>
       </div>
       <div class="stats">
         <div class="stat"><div class="k">테스트의 질환 환자 수</div><div class="v" id="ciPos">–</div></div>
@@ -1217,7 +1221,7 @@ print("특이도", proportion_confint(tn, tn + fp, alpha=0.05, method="wilson"))
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>Q1 YOLO (실습 해설)</td><td><span class="badge b-fix">오류</span></td><td>한 번의 순전파로 위치와 클래스를 함께 예측, 실시간 응용, 작은 객체에 약함</td><td>"R-CNN보다 빠르면서 정확도도 높다"는 틀림(원 논문은 mAP 약 10%p 낮음). v3~v5는 최신이 아니고, 주류는 앵커 프리 · NMS 제거. 셀은 중심 가능성만이 아니라 박스 · 신뢰도 · 클래스 확률을 함께 예측. NMS 후처리가 남아 있었음</td></tr>

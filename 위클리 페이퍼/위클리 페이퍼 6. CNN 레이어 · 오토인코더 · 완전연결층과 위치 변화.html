@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 06 · CNN 레이어 · 오토인코더 · 완전연결층과 위치 변화 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 06</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -406,6 +407,9 @@ svg .mfc{stroke:var(--fix);stroke-width:2.5;fill:none} svg .mfl{stroke:var(--mut
 svg .dfc{fill:var(--fix)} svg .dfl{fill:var(--muted)} svg .dgap{fill:var(--accent)}
 #demo-conv .panels{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media (max-width:760px){#demo-conv .panels{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -502,7 +506,7 @@ svg .dfc{fill:var(--fix)} svg .dfl{fill:var(--muted)} svg .dgap{fill:var(--accen
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 레이어별 역할</h3>
-      <div class="tbl"><table style="min-width:880px">
+      <div class="tbl"><table style="min-width:880px" aria-label="레이어별 역할">
         <thead><tr><th style="width:16%">레이어</th><th style="width:27%">하는 일</th><th style="width:17%">크기 변화</th><th style="width:15%">학습 파라미터</th><th>헷갈리기 쉬운 점</th></tr></thead>
         <tbody>
           <tr><td><b>Convolution</b></td><td>작은 필터를 밀면서 지역 특징(엣지·무늬)을 찾아 특징 지도를 만든다</td><td>채널 수 → 필터 수, 가로·세로는 P·S로 결정</td><td>있음 (필터 + 편향)</td><td>필터 값은 사람이 정하지 않고 역전파로 학습된다</td></tr>
@@ -518,7 +522,7 @@ svg .dfc{fill:var(--fix)} svg .dfl{fill:var(--muted)} svg .dgap{fill:var(--accen
 
     <div class="demo" id="demo-conv">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 합성곱 → ReLU → 풀링을 한 칸씩 계산하기 <span class="tag-ex">예시 이미지 · 12×12 흑백</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 합성곱 → ReLU → 풀링을 한 칸씩 계산하기 <span class="tag-ex">예시 이미지 · 12×12 흑백</span></h3>
         <div class="how">
           <p>12×12 흑백 이미지에 3×3 필터 하나를 적용하고(편향 0), ReLU와 2×2 풀링을 차례로 거칩니다. <b>합성곱 출력의 칸을 누르면</b> 그 칸이 본 입력 창(주황 점선)과 곱셈 내역이 나옵니다.</p>
           <p><b>입력 이동</b>을 1칸·2칸으로 바꾸면, 같은 이미지를 오른쪽으로 옮겼을 때 각 단계의 출력이 어떻게 바뀌는지 비교합니다. 면접 1의 <b>등변성과 불변성</b>을 숫자로 확인하는 부분입니다.</p>
@@ -547,10 +551,10 @@ svg .dfc{fill:var(--fix)} svg .dfl{fill:var(--muted)} svg .dgap{fill:var(--accen
         </div>
       </div>
       <div class="panels">
-        <div class="panel"><h5>① 입력 (12×12)</h5><div class="svgbox"><svg id="cvIn" viewBox="0 0 200 200" role="img" aria-label="입력 이미지와 선택한 칸이 본 3×3 창"></svg></div><div class="cap">주황 점선 = 선택한 출력 칸이 본 3×3 창</div></div>
-        <div class="panel"><h5 id="cvOutT">② 합성곱 출력</h5><div class="svgbox"><svg id="cvOut" viewBox="0 0 200 200" role="img" aria-label="합성곱 출력 특징 지도, 칸을 누르면 계산 내역 표시"></svg></div><div class="cap">파랑 = 양수, 주황 = 음수 · 칸을 눌러 선택</div></div>
-        <div class="panel"><h5>③ ReLU 뒤</h5><div class="svgbox"><svg id="cvRelu" viewBox="0 0 200 200" role="img" aria-label="ReLU를 거친 특징 지도"></svg></div><div class="cap">음수가 0이 된다 · 초록 = 풀링 창에서 고른 값</div></div>
-        <div class="panel"><h5 id="cvPoolT">④ 풀링 뒤</h5><div class="svgbox"><svg id="cvPl" viewBox="0 0 200 200" role="img" aria-label="풀링을 거친 특징 지도"></svg></div><div class="cap">2×2 창, stride 2 · 남는 줄은 버린다</div></div>
+        <div class="panel"><h4>① 입력 (12×12)</h4><div class="svgbox"><svg id="cvIn" viewBox="0 0 200 200" role="img" aria-label="입력 이미지와 선택한 칸이 본 3×3 창"></svg></div><div class="cap">주황 점선 = 선택한 출력 칸이 본 3×3 창</div></div>
+        <div class="panel"><h4 id="cvOutT">② 합성곱 출력</h4><div class="svgbox"><svg id="cvOut" viewBox="0 0 200 200" role="img" aria-label="합성곱 출력 특징 지도, 칸을 누르면 계산 내역 표시"></svg></div><div class="cap">파랑 = 양수, 주황 = 음수 · 칸을 눌러 선택</div></div>
+        <div class="panel"><h4>③ ReLU 뒤</h4><div class="svgbox"><svg id="cvRelu" viewBox="0 0 200 200" role="img" aria-label="ReLU를 거친 특징 지도"></svg></div><div class="cap">음수가 0이 된다 · 초록 = 풀링 창에서 고른 값</div></div>
+        <div class="panel"><h4 id="cvPoolT">④ 풀링 뒤</h4><div class="svgbox"><svg id="cvPl" viewBox="0 0 200 200" role="img" aria-label="풀링을 거친 특징 지도"></svg></div><div class="cap">2×2 창, stride 2 · 남는 줄은 버린다</div></div>
       </div>
       <div class="calc" id="cvCalc" aria-live="polite"></div>
       <div class="stats">
@@ -565,7 +569,7 @@ svg .dfc{fill:var(--fix)} svg .dfl{fill:var(--muted)} svg .dgap{fill:var(--accen
 
     <div class="demo" id="demo-arch">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 층마다 출력 크기·파라미터·수용 영역 계산하기 <span class="tag-ex">공식으로 정확히 계산 · 편향 포함</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 층마다 출력 크기·파라미터·수용 영역 계산하기 <span class="tag-ex">공식으로 정확히 계산 · 편향 포함</span></h3>
         <div class="how">
           <p>모델 구조와 입력 크기, <b>분류 헤드</b>를 고르면 층마다 출력 모양, 파라미터 수, <b>수용 영역</b>(그 층의 한 칸이 입력에서 보는 범위)을 계산합니다. 합성곱은 모두 3×3, padding 1, stride 1이고 풀링은 2×2, stride 2입니다.</p>
           <ul>
@@ -589,7 +593,7 @@ svg .dfc{fill:var(--fix)} svg .dfl{fill:var(--muted)} svg .dgap{fill:var(--accen
         <span><span class="sw" style="background:var(--accent)"></span>합성곱층 파라미터</span>
         <span><span class="sw" style="background:var(--fix)"></span>분류 헤드 파라미터</span>
       </div>
-      <div class="tbl archbox"><table class="arch" id="arTbl"></table></div>
+      <div class="tbl archbox"><table class="arch" id="arTbl" aria-label="층마다 출력 크기·파라미터·수용 영역 계산하기"></table></div>
       <div class="stats">
         <div class="stat em"><div class="k">전체 파라미터</div><div class="v" id="arTot">–</div></div>
         <div class="stat warn"><div class="k">분류 헤드 비중</div><div class="v" id="arHead">–</div></div>
@@ -727,7 +731,7 @@ print(count(features), count(flatten_head), count(gap_head))   <span class="c">#
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 인코더와 디코더 비교</h3>
-      <div class="tbl"><table style="min-width:760px">
+      <div class="tbl"><table style="min-width:760px" aria-label="인코더와 디코더 비교">
         <thead><tr><th style="width:18%">기준</th><th style="width:41%">Encoder f</th><th>Decoder g</th></tr></thead>
         <tbody>
           <tr><td><b>입력 → 출력</b></td><td>데이터 x → 잠재 표현 z</td><td>잠재 표현 z → 복원 x̂</td></tr>
@@ -742,7 +746,7 @@ print(count(features), count(flatten_head), count(gap_head))   <span class="c">#
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 적합한 상황과 쓰는 방식</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="적합한 상황과 쓰는 방식">
         <thead><tr><th style="width:17%">상황</th><th style="width:43%">쓰는 방식</th><th>주의</th></tr></thead>
         <tbody>
           <tr><td><b>차원 축소·시각화</b></td><td>학습 후 인코더만 떼어 z를 시각화·군집·검색에 쓴다</td><td>선형 오토인코더는 PCA와 같은 부분공간을 배운다. 비선형 구조가 있을 때 의미가 있다</td></tr>
@@ -757,7 +761,7 @@ print(count(features), count(flatten_head), count(gap_head))   <span class="c">#
 
     <div class="demo" id="demo-ae">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> 오토인코더로 압축·복원하고 이상치 찾기 <span class="tag-ex">예시 데이터 · 휘어진 곡선 위 정상 점 400개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> 오토인코더로 압축·복원하고 이상치 찾기 <span class="tag-ex">예시 데이터 · 휘어진 곡선 위 정상 점 400개</span></h3>
         <div class="how">
           <p>정상 데이터는 곡선 y = 0.8 sin(1.6x) 근처의 점들이고, <b>가운데 구간(|x| &lt; 0.35)에는 정상 데이터가 없습니다</b>. 2차원 점을 잠재 표현 z로 줄였다가 복원하는 오토인코더를 이 페이지에서 직접 학습합니다(Adam, 전체 배치).</p>
           <ul>
@@ -781,8 +785,8 @@ print(count(features), count(flatten_head), count(gap_head))   <span class="c">#
         <span></span>
       </div>
       <div class="panels">
-        <div class="panel"><h5>데이터와 복원 결과</h5><div class="svgbox"><svg id="aeP" viewBox="0 0 320 230" role="img" aria-label="정상 데이터, 이상치, 디코더가 만드는 곡선"></svg></div><div class="cap">주황 선 = 이상치 x → 복원 x̂ · 검은 선 = 디코더 출력(점선은 학습 범위 밖 z)</div></div>
-        <div class="panel"><h5>복원 오차 분포 (log₁₀)</h5><div class="svgbox"><svg id="aeH" viewBox="0 0 320 230" role="img" aria-label="정상과 이상치의 복원 오차 히스토그램과 임계값"></svg></div><div class="cap">막대 높이 = 그룹 안 비율 · 점선 = 임계값</div></div>
+        <div class="panel"><h4>데이터와 복원 결과</h4><div class="svgbox"><svg id="aeP" viewBox="0 0 320 230" role="img" aria-label="정상 데이터, 이상치, 디코더가 만드는 곡선"></svg></div><div class="cap">주황 선 = 이상치 x → 복원 x̂ · 검은 선 = 디코더 출력(점선은 학습 범위 밖 z)</div></div>
+        <div class="panel"><h4>복원 오차 분포 (log₁₀)</h4><div class="svgbox"><svg id="aeH" viewBox="0 0 320 230" role="img" aria-label="정상과 이상치의 복원 오차 히스토그램과 임계값"></svg></div><div class="cap">막대 높이 = 그룹 안 비율 · 점선 = 임계값</div></div>
       </div>
       <div class="keyrow">
         <span><span class="sw c" style="background:var(--muted);opacity:.5"></span>학습용 정상</span>
@@ -924,7 +928,7 @@ is_anomaly = score(x_test) &gt; threshold</pre>
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 파라미터를 줄이는 두 단계</h3>
-      <div class="tbl"><table class="num" style="min-width:760px">
+      <div class="tbl"><table class="num" style="min-width:760px" aria-label="파라미터를 줄이는 두 단계">
         <thead><tr><th style="width:30%">구조 (입력 224×224×3)</th><th style="width:22%">파라미터 수</th><th>계산</th></tr></thead>
         <tbody>
           <tr><td>FC · 출력 뉴런 1,000개</td><td>150,529,000</td><td>150,528 × 1,000 + 1,000</td></tr>
@@ -947,7 +951,7 @@ is_anomaly = score(x_test) &gt; threshold</pre>
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 문제와 원인, CNN의 해결 원리</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="문제와 원인, CNN의 해결 원리">
         <thead><tr><th style="width:17%">문제</th><th style="width:30%">완전연결층에서의 원인</th><th style="width:30%">CNN의 해결 원리</th><th>남는 한계</th></tr></thead>
         <tbody>
           <tr><td><b>파라미터 폭증</b></td><td>입력 픽셀 수 × 출력 뉴런 수. 해상도가 2배면 픽셀이 4배, 파라미터도 4배</td><td>지역 연결 + 가중치 공유로 파라미터가 해상도와 무관</td><td>Flatten + FC 헤드를 쓰면 헤드에서 다시 커진다(실험 2)</td></tr>
@@ -960,7 +964,7 @@ is_anomaly = score(x_test) &gt; threshold</pre>
 
     <div class="demo" id="demo-shift">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 4</span> 물체를 처음 보는 위치로 옮기면? FC와 CNN 직접 학습하기 <span class="tag-ex">예시 데이터 · 16×16 이미지, '+' 대 '×'</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 4</span> 물체를 처음 보는 위치로 옮기면? FC와 CNN 직접 학습하기 <span class="tag-ex">예시 데이터 · 16×16 이미지, '+' 대 '×'</span></h3>
         <div class="how">
           <p>16×16 이미지에 5×5 크기의 <b>'+'</b> 또는 <b>'×'</b>를 넣고(밝기 0.7~1.0, 잡음 σ = 0.15) 둘을 구분하는 세 모델을 이 페이지에서 학습합니다(학습 600장, Adam, 40 에포크).</p>
           <ul>
@@ -978,10 +982,10 @@ is_anomaly = score(x_test) &gt; threshold</pre>
         <select id="sfCls"><option value="0" selected>+</option><option value="1">×</option></select>
       </div>
       <div><label for="sfPx" style="font-size:14px;font-weight:600">살펴볼 가로 위치 px: <output id="sfPxOut" for="sfPx">9</output></label><input type="range" id="sfPx" min="0" max="11" step="1" value="9"></div>
-      <div class="panel"><h5>위치별 시험 정확도 (위치마다 80장)</h5><div class="svgbox"><svg id="sfAcc" viewBox="0 0 640 240" role="img" aria-label="가로 위치별 세 모델의 시험 정확도"></svg></div><div class="cap">초록 배경 = 학습 때 물체가 놓인 위치 · 점선 = 아래에서 살펴보는 위치</div></div>
+      <div class="panel"><h4>위치별 시험 정확도 (위치마다 80장)</h4><div class="svgbox"><svg id="sfAcc" viewBox="0 0 640 240" role="img" aria-label="가로 위치별 세 모델의 시험 정확도"></svg></div><div class="cap">초록 배경 = 학습 때 물체가 놓인 위치 · 점선 = 아래에서 살펴보는 위치</div></div>
       <div class="panels">
-        <div class="panel"><h5>입력 이미지</h5><div class="svgbox"><svg id="sfImg" viewBox="0 0 200 200" role="img" aria-label="선택한 위치의 입력 이미지"></svg></div><div class="cap">점선 = 왼쪽만 학습할 때 물체가 지나가는 열(0~7)</div></div>
-        <div class="panel"><h5>Conv + GAP의 특징 지도</h5><div class="svgbox"><svg id="sfMap" viewBox="0 0 200 200" role="img" aria-label="가장 크게 반응한 필터의 특징 지도"></svg></div><div class="cap">가장 크게 반응한 필터 · 물체를 따라 이동(등변)</div></div>
+        <div class="panel"><h4>입력 이미지</h4><div class="svgbox"><svg id="sfImg" viewBox="0 0 200 200" role="img" aria-label="선택한 위치의 입력 이미지"></svg></div><div class="cap">점선 = 왼쪽만 학습할 때 물체가 지나가는 열(0~7)</div></div>
+        <div class="panel"><h4>Conv + GAP의 특징 지도</h4><div class="svgbox"><svg id="sfMap" viewBox="0 0 200 200" role="img" aria-label="가장 크게 반응한 필터의 특징 지도"></svg></div><div class="cap">가장 크게 반응한 필터 · 물체를 따라 이동(등변)</div></div>
       </div>
       <div class="keyrow">
         <span><span class="sw ln" style="background:var(--fix)"></span>FC</span>
@@ -1060,7 +1064,7 @@ print(torch.allclose(pool(y), pool(y1)))                 <span class="c"># False
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>Q1 CNN 레이어 (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>합성곱·풀링·FC의 기본 역할, 공간 구조를 보존하는 특징 추출, 활성화·정규화의 보조 역할</td><td>Max Pooling은 "가장 중요한 값"이 아니라 가장 큰 활성값. 풀링이 과적합을 직접 막지는 않음</td></tr>

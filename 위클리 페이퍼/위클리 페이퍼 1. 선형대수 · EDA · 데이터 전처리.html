@@ -10,8 +10,11 @@ nav.pager a:hover,nav.pager a:focus-visible{border-color:var(--accent);color:var
 nav.pager .home{border-color:var(--accent);color:var(--accent);font-weight:700}
 nav.pager .off{color:var(--muted);border-style:dashed;background:transparent}
 nav.pager .gap{flex:1 1 0;min-width:0;padding:0;border:0;background:none}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
-<title>위클리 페이퍼 Q1–Q3</title>
+<title>위클리 페이퍼 01</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -120,7 +123,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .s{font-size:12.5px;color:var(--muted);font-family:var(--f-mono);font-variant-numeric:tabular-nums;line-height:1.6}
 .panel .s b{color:var(--ink);font-weight:600}
 .panel .cap{font-size:12.5px;color:var(--muted)}
@@ -360,7 +363,7 @@ pre .c{color:var(--muted)}
     <!-- 실험 1: 행렬 곱 -->
     <div class="demo" id="demo-mm">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 신경망 한 층 = 행렬 곱 한 번 <span class="tag-ex">예시 값</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 신경망 한 층 = 행렬 곱 한 번 <span class="tag-ex">예시 값</span></h3>
         <div class="how">
           <p>칸의 숫자를 바꾸면 출력이 바로 다시 계산됩니다.</p>
           <ul>
@@ -394,7 +397,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-add">심화</span> 머신러닝 개념 ↔ 선형대수 개념 대응표</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="머신러닝 개념 ↔ 선형대수 개념 대응표">
         <thead><tr><th style="width:24%">머신러닝에서 하는 일</th><th style="width:26%">선형대수 도구</th><th>직관적 의미</th></tr></thead>
         <tbody>
           <tr><td>데이터 표현</td><td><b>벡터 · 행렬 · 텐서</b></td><td>샘플 1개 = 벡터, 데이터셋 = 행렬. 텍스트도 임베딩 벡터로 바꿔야 계산 가능</td></tr>
@@ -412,7 +415,7 @@ pre .c{color:var(--muted)}
     <!-- 실험 2: PCA -->
     <div class="demo" id="demo-pca">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> PCA 직접 해 보기: 분산이 가장 큰 축 찾기 <span class="tag-ex">예시 데이터 · 무작위 생성 40개 점</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> PCA 직접 해 보기: 분산이 가장 큰 축 찾기 <span class="tag-ex">예시 데이터 · 무작위 생성 40개 점</span></h3>
         <div class="how">
           <p>슬라이더로 축을 돌려 보세요. 점들이 축 위로 투영(그림자)되고, 그 그림자가 넓게 퍼질수록 <b>분산</b>이 큽니다.</p>
           <p>분산이 최대가 되는 각도가 <b>PC1</b>이며, 아래 수치는 모두 실제로 계산한 값입니다.</p>
@@ -491,7 +494,7 @@ pre .c{color:var(--muted)}
     <!-- 실험 3: Anscombe -->
     <div class="demo" id="demo-ans">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> 왜 그래프를 꼭 봐야 하나: 앤스컴 콰르텟 <span class="tag-real">실제 데이터 · Anscombe (1973)</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> 왜 그래프를 꼭 봐야 하나: 앤스컴 콰르텟 <span class="tag-real">실제 데이터 · Anscombe (1973)</span></h3>
         <div class="how">
           <p>통계학자 앤스컴이 만든 4개의 데이터셋(각 11개 점)입니다. 표의 수치는 페이지에서 직접 계산한 값입니다.</p>
           <ul>
@@ -500,7 +503,7 @@ pre .c{color:var(--muted)}
           </ul>
         </div>
       </div>
-      <div class="tbl"><table class="num" id="ansTable">
+      <div class="tbl"><table class="num" id="ansTable" aria-label="왜 그래프를 꼭 봐야 하나: 앤스컴 콰르텟 실제 데이터 · Anscombe (1973)">
         <thead><tr><th>데이터</th><th>x 평균</th><th>x 분산</th><th>y 평균</th><th>y 분산</th><th>상관계수 r</th><th>회귀선</th></tr></thead>
         <tbody></tbody>
       </table></div>
@@ -519,7 +522,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-add">심화</span> 무엇을 보고 싶을 때, 무엇을 쓰나</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="무엇을 보고 싶을 때, 무엇을 쓰나">
         <thead><tr><th style="width:26%">알고 싶은 것</th><th style="width:22%">수치(요약 통계)</th><th style="width:22%">그래프</th><th>이걸로 발견하는 것</th></tr></thead>
         <tbody>
           <tr><td>숫자 변수 하나의 분포</td><td>평균, 중앙값, 표준편차, 왜도</td><td>히스토그램, KDE</td><td>치우침(로그 변환 필요?), 이상한 봉우리</td></tr>
@@ -597,7 +600,7 @@ sns.heatmap(df.corr(numeric_only=True), annot=True)</pre>
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 한눈에 비교</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="한눈에 비교">
         <thead><tr><th style="width:13%"></th><th style="width:22%">결측값 (Missing)</th><th style="width:22%">중복값 (Duplicate)</th><th>이상치 (Outlier)</th></tr></thead>
         <tbody>
           <tr><td><b>정의</b></td><td>값이 비어 있음 (NaN, None)</td><td>같은 데이터가 여러 번 기록됨</td><td>다른 값들과 현저히 동떨어진 값</td></tr>
@@ -637,7 +640,7 @@ sns.heatmap(df.corr(numeric_only=True), annot=True)</pre>
     <!-- 실험 5: 결측 대체 -->
     <div class="demo" id="demo-miss">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 4</span> 결측 대체 방법 비교 <span class="tag-ex">예시 데이터 · 가상의 월 소득 200명 (만원, 50 단위 기록)</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 4</span> 결측 대체 방법 비교 <span class="tag-ex">예시 데이터 · 가상의 월 소득 200명 (만원, 50 단위 기록)</span></h3>
         <div class="how">
           <p>결측이 생기기 전의 전체 데이터(정답)를 알고 있는 예시라서, 각 대체 방법이 분포를 얼마나 바꾸는지 <b>정답과 비교</b>할 수 있습니다.</p>
           <p><span style="color:var(--fix);font-weight:600">주황 막대</span> = 채워 넣은 값입니다.</p>
@@ -675,7 +678,7 @@ sns.heatmap(df.corr(numeric_only=True), annot=True)</pre>
       </div>
       <figure class="fig">
         <div style="margin-bottom:8px"><span class="tag-ex">예시 표</span></div>
-        <table class="df">
+        <table class="df" aria-label="결측 대체 방법 비교">
           <thead><tr><th>행</th><th>나이</th><th>소득</th><th>지역</th><th>구매액</th><th>채워진 값</th><th>thresh=3 결과</th></tr></thead>
           <tbody>
             <tr><td>0</td><td>25</td><td>3200</td><td>서울</td><td>12</td><td>4개</td><td class="res">남음</td></tr>
@@ -747,7 +750,7 @@ df = df.sort_values('updated_at').drop_duplicates(subset='customer_id', keep='la
     <!-- 실험: 이상치 -->
     <div class="demo" id="demo-ol">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 5</span> 이상치 실험: 점을 끌어서 극단값 만들기 <span class="tag-ex">예시 데이터 · 가상의 고객 15명 월 구매액 (만원)</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 5</span> 이상치 실험: 점을 끌어서 극단값 만들기 <span class="tag-ex">예시 데이터 · 가상의 고객 15명 월 구매액 (만원)</span></h3>
         <div class="how">
           <p>아래 점들을 좌우로 드래그하세요. 키보드로는 점을 선택한 뒤 ← →를 누르고, Shift와 함께 누르면 10씩 움직입니다.</p>
           <p>평균·중앙값, 박스플롯, <b>IQR 경계</b>(주황 점선), <b>Z-score 경계</b>(초록 점선)가 바로 다시 계산됩니다.</p>
@@ -980,7 +983,7 @@ const minus=s=>String(s).replace("-","−");
     tr.innerHTML="<td>"+d.n+"</td><td>"+mx.toFixed(2)+"</td><td>"+vx.toFixed(2)+"</td><td>"+my.toFixed(2)+"</td><td>"+vy.toFixed(2)+"</td><td>"+r.toFixed(2)+"</td><td>y = "+b0.toFixed(2)+" + "+b1.toFixed(2)+"x</td>";
     tb.appendChild(tr);
     const p=document.createElement("div");p.className="panel";
-    p.innerHTML='<h5>데이터 '+d.n+'</h5>';
+    p.innerHTML='<h4>데이터 '+d.n+'</h4>';
     const box=document.createElement("div");box.className="svgbox";p.appendChild(box);
     const s=el("svg",{viewBox:"0 0 260 190",role:"img","aria-label":"앤스컴 데이터 "+d.n+" 산점도"},box);
     const X=x=>34+(x-2)*(216/18),Y=y=>166-(y-2)*(150/12);
@@ -1016,7 +1019,7 @@ const minus=s=>String(s).replace("-","−");
     sets.forEach((s,k)=>{
       const all=s.obs.concat(s.imp),m=mean(all),md=quantile(all,.5),sd=Math.sqrt(variance(all,0));res.push({m,md,sd});
       const pnl=document.createElement("div");pnl.className="panel";
-      const h=document.createElement("h5");h.textContent=s.t;pnl.appendChild(h);
+      const h=document.createElement("h4");h.textContent=s.t;pnl.appendChild(h);
       const cp=document.createElement("div");cp.className="cap";cp.textContent=s.sub;pnl.appendChild(cp);
       const bx=document.createElement("div");bx.className="svgbox";pnl.appendChild(bx);
       const svg=el("svg",{viewBox:"0 0 320 150",role:"img","aria-label":s.t+" 히스토그램"},bx);

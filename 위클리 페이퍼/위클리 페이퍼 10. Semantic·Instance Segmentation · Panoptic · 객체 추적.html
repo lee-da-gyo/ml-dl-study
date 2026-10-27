@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 10 · Semantic·Instance Segmentation · Panoptic · 객체 추적 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 10</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -382,6 +383,9 @@ pre .sy-self{color:var(--sy-k);font-style:italic} pre .c{color:var(--muted)}
 @media (max-width:620px){.panels.four{grid-template-columns:1fr}}
 table.pcl{min-width:520px}
 .stat .v.kr{font-family:var(--f-body);font-weight:700}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -431,17 +435,17 @@ table.pcl{min-width:520px}
       <h3><span class="badge b-core">핵심</span> 같은 장면, 세 가지 출력</h3>
       <p>아래 네 그림은 모두 같은 <b>40 × 20 픽셀</b> 장면이고, 칸 하나가 픽셀 하나입니다. 실험 1·2도 이 장면을 그대로 씁니다.</p>
       <div class="panels four">
-        <div class="panel"><h5>원본 이미지</h5><div class="svgbox"><svg id="scRaw" viewBox="0 0 400 200" role="img" aria-label="하늘, 인도, 도로 위에 사람 1명과 자동차 2대가 있는 장면"></svg></div><div class="cap">하늘·인도·도로 위에 사람 1명, 자동차 2대</div></div>
-        <div class="panel"><h5>① Semantic Segmentation</h5><div class="svgbox"><svg id="scSem" viewBox="0 0 400 200" role="img" aria-label="Semantic 결과: 두 자동차가 같은 색"></svg></div><div class="cap">모든 픽셀에 클래스 하나 · 두 차가 같은 색</div></div>
-        <div class="panel"><h5>② Instance Segmentation</h5><div class="svgbox"><svg id="scIns" viewBox="0 0 400 200" role="img" aria-label="Instance 결과: 개체마다 다른 색, 배경은 출력 없음"></svg></div><div class="cap">개체마다 마스크 · 배경 픽셀은 출력 없음(빈칸)</div></div>
-        <div class="panel"><h5>③ Panoptic Segmentation</h5><div class="svgbox"><svg id="scPan" viewBox="0 0 400 200" role="img" aria-label="Panoptic 결과: 배경은 클래스, 물체는 개체별 색"></svg></div><div class="cap">배경은 클래스만, 물체는 클래스 + 개체 ID</div></div>
+        <div class="panel"><h4>원본 이미지</h4><div class="svgbox"><svg id="scRaw" viewBox="0 0 400 200" role="img" aria-label="하늘, 인도, 도로 위에 사람 1명과 자동차 2대가 있는 장면"></svg></div><div class="cap">하늘·인도·도로 위에 사람 1명, 자동차 2대</div></div>
+        <div class="panel"><h4>① Semantic Segmentation</h4><div class="svgbox"><svg id="scSem" viewBox="0 0 400 200" role="img" aria-label="Semantic 결과: 두 자동차가 같은 색"></svg></div><div class="cap">모든 픽셀에 클래스 하나 · 두 차가 같은 색</div></div>
+        <div class="panel"><h4>② Instance Segmentation</h4><div class="svgbox"><svg id="scIns" viewBox="0 0 400 200" role="img" aria-label="Instance 결과: 개체마다 다른 색, 배경은 출력 없음"></svg></div><div class="cap">개체마다 마스크 · 배경 픽셀은 출력 없음(빈칸)</div></div>
+        <div class="panel"><h4>③ Panoptic Segmentation</h4><div class="svgbox"><svg id="scPan" viewBox="0 0 400 200" role="img" aria-label="Panoptic 결과: 배경은 클래스, 물체는 개체별 색"></svg></div><div class="cap">배경은 클래스만, 물체는 클래스 + 개체 ID</div></div>
       </div>
       <div class="keyrow" id="scKey"></div>
     </div>
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 세 방식 비교</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="세 방식 비교">
         <thead><tr><th style="width:14%">기준</th><th style="width:27%">Semantic Segmentation</th><th style="width:30%">Instance Segmentation</th><th>Panoptic Segmentation</th></tr></thead>
         <tbody>
           <tr><td><b>답하는 질문</b></td><td>이 픽셀은 무엇인가</td><td>이 물체는 어디까지이고, 몇 번째 개체인가</td><td>이 픽셀은 무엇이고, 물체라면 몇 번째인가</td></tr>
@@ -458,7 +462,7 @@ table.pcl{min-width:520px}
 
     <div class="demo" id="demo-cc">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> Semantic 결과만으로 차를 셀 수 있을까 <span class="tag-ex">예시 장면 · 40 × 20 픽셀</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> Semantic 결과만으로 차를 셀 수 있을까 <span class="tag-ex">예시 장면 · 40 × 20 픽셀</span></h3>
         <div class="how">
           <p>Semantic 결과에서 '차' 픽셀만 골라 서로 이어진 덩어리, 즉 <b>연결 요소(connected components)</b>로 나누면 차 수를 셀 수 있을 것처럼 보입니다. 두 차 사이 간격을 줄여 보세요.</p>
           <ul>
@@ -473,9 +477,9 @@ table.pcl{min-width:520px}
         <label for="ccDil">예측 경계 번짐<select id="ccDil"><option value="0" selected>없음 (정답과 같은 경계)</option><option value="1">1픽셀 번짐</option></select></label>
       </div>
       <div class="tri">
-        <div class="panel"><h5>Semantic 예측</h5><div class="svgbox"><svg id="ccSem" viewBox="0 0 400 200" role="img" aria-label="Semantic 예측"></svg></div><div class="cap">차 픽셀은 모두 같은 클래스</div></div>
-        <div class="panel"><h5>연결 요소로 나눈 결과</h5><div class="svgbox"><svg id="ccCC" viewBox="0 0 400 200" role="img" aria-label="연결 요소"></svg></div><div class="cap">덩어리마다 다른 색 = 센 차 수</div></div>
-        <div class="panel"><h5>Instance 정답</h5><div class="svgbox"><svg id="ccIns" viewBox="0 0 400 200" role="img" aria-label="Instance 정답"></svg></div><div class="cap">차마다 따로 그린 마스크</div></div>
+        <div class="panel"><h4>Semantic 예측</h4><div class="svgbox"><svg id="ccSem" viewBox="0 0 400 200" role="img" aria-label="Semantic 예측"></svg></div><div class="cap">차 픽셀은 모두 같은 클래스</div></div>
+        <div class="panel"><h4>연결 요소로 나눈 결과</h4><div class="svgbox"><svg id="ccCC" viewBox="0 0 400 200" role="img" aria-label="연결 요소"></svg></div><div class="cap">덩어리마다 다른 색 = 센 차 수</div></div>
+        <div class="panel"><h4>Instance 정답</h4><div class="svgbox"><svg id="ccIns" viewBox="0 0 400 200" role="img" aria-label="Instance 정답"></svg></div><div class="cap">차마다 따로 그린 마스크</div></div>
       </div>
       <div class="stats">
         <div class="stat"><div class="k">차로 분류된 픽셀</div><div class="v" id="ccPx">–</div></div>
@@ -488,7 +492,7 @@ table.pcl{min-width:520px}
 
     <div class="demo" id="demo-metric">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 같은 예측, 다른 점수: 픽셀 정확도 · mIoU · PQ <span class="tag-ex">예시 장면 · 실험 1의 간격 2칸</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 같은 예측, 다른 점수: 픽셀 정확도 · mIoU · PQ <span class="tag-ex">예시 장면 · 실험 1의 간격 2칸</span></h3>
         <div class="how">
           <p>정답 장면에 대표적인 오류를 하나씩 넣고, 세 지표를 이 페이지에서 직접 계산합니다.</p>
           <ul>
@@ -510,8 +514,8 @@ table.pcl{min-width:520px}
         </select>
       </div>
       <div class="panels">
-        <div class="panel"><h5>정답 (Panoptic)</h5><div class="svgbox"><svg id="mtG" viewBox="0 0 400 200" role="img" aria-label="정답 Panoptic 지도"></svg></div><div class="cap">색 = 배경 클래스 또는 개체</div></div>
-        <div class="panel"><h5>예측 (Panoptic)</h5><div class="svgbox"><svg id="mtP" viewBox="0 0 400 200" role="img" aria-label="예측 Panoptic 지도"></svg></div><div class="cap">× = 클래스가 틀린 픽셀</div></div>
+        <div class="panel"><h4>정답 (Panoptic)</h4><div class="svgbox"><svg id="mtG" viewBox="0 0 400 200" role="img" aria-label="정답 Panoptic 지도"></svg></div><div class="cap">색 = 배경 클래스 또는 개체</div></div>
+        <div class="panel"><h4>예측 (Panoptic)</h4><div class="svgbox"><svg id="mtP" viewBox="0 0 400 200" role="img" aria-label="예측 Panoptic 지도"></svg></div><div class="cap">× = 클래스가 틀린 픽셀</div></div>
       </div>
       <div class="stats">
         <div class="stat"><div class="k">픽셀 정확도</div><div class="v" id="mtAcc">–</div></div>
@@ -520,7 +524,7 @@ table.pcl{min-width:520px}
         <div class="stat"><div class="k">PQ (things: 차·사람)</div><div class="v" id="mtTh">–</div></div>
         <div class="stat"><div class="k">PQ (stuff: 하늘·인도·도로)</div><div class="v" id="mtSt">–</div></div>
       </div>
-      <div class="tbl"><table class="num pcl">
+      <div class="tbl"><table class="num pcl" aria-label="같은 예측, 다른 점수: 픽셀 정확도 · mIoU · PQ">
         <thead><tr><th>클래스</th><th>종류</th><th>IoU (mIoU용)</th><th>TP</th><th>FP</th><th>FN</th><th>PQ</th></tr></thead>
         <tbody id="mtTb"></tbody>
       </table></div>
@@ -539,7 +543,7 @@ table.pcl{min-width:520px}
 
     <div class="demo" id="demo-track">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> 가려졌다 다시 나타난 차에 같은 ID 붙이기 <span class="tag-ex">예시 · 단순화한 IoU 추적</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> 가려졌다 다시 나타난 차에 같은 ID 붙이기 <span class="tag-ex">예시 · 단순화한 IoU 추적</span></h3>
         <div class="how">
           <p>가까운 차선의 트럭 A가 먼 차선의 승용차 B를 추월하면서 화면에서 B를 가립니다. 추적기는 프레임마다 나온 개체(여기서는 박스)를 이전 프레임의 트랙과 <b>IoU가 큰 쌍부터</b> 짝지어 ID를 이어 붙입니다.</p>
           <ul>
@@ -719,7 +723,7 @@ def merge_panoptic(sem, instances, stuff_ids, overlap_thr=0.5, min_stuff_area=64
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:21%">검토 대상</th><th style="width:10%">판정</th><th style="width:33%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>문제 해석 · 한 줄 요약</td><td><span class="badge b-add">정확</span></td><td>픽셀의 클래스는 Semantic, 개체 분리는 Instance, 둘을 합친 Panoptic</td><td>없음</td></tr>

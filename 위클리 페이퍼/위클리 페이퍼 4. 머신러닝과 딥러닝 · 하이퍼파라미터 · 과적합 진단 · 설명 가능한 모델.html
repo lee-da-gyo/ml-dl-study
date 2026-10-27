@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 04 · 머신러닝과 딥러닝 · 하이퍼파라미터 · 과적합 진단 · 설명 가능한 모델 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 04</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -349,6 +350,9 @@ pre .c{color:var(--muted)}
 .stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
 .tri .panel .acc{display:flex;flex-direction:column;gap:2px}
 .tri .panel .acc>span{white-space:nowrap}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -438,7 +442,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-mldl">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 사람이 특징을 알려 줄 때 vs 신경망이 스스로 배울 때 <span class="tag-ex">예시 데이터 · 2차원 점, 학습 라벨 5% 잡음</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 사람이 특징을 알려 줄 때 vs 신경망이 스스로 배울 때 <span class="tag-ex">예시 데이터 · 2차원 점, 학습 라벨 5% 잡음</span></h3>
         <div class="how">
           <p>같은 데이터에 세 모델을 이 페이지에서 Adam으로 직접 학습합니다.</p>
           <ul>
@@ -457,9 +461,9 @@ pre .c{color:var(--muted)}
         <button type="button" class="btn pri" id="mdNew">학습 데이터 다시 뽑기</button>
       </div>
       <div class="tri">
-        <div class="panel"><h5>① 전통 ML · 원래 좌표</h5><div class="svgbox"><svg id="mdA" viewBox="0 0 200 200" role="img" aria-label="원래 좌표만 쓴 로지스틱 회귀의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccA">–</b></span><span>파라미터 3개</span></div></div>
-        <div class="panel"><h5>② 전통 ML · 사람이 만든 특징 추가</h5><div class="svgbox"><svg id="mdB" viewBox="0 0 200 200" role="img" aria-label="사람이 만든 특징을 더한 로지스틱 회귀의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccB">–</b></span><span>파라미터 4개</span></div></div>
-        <div class="panel"><h5>③ 딥러닝 · 원래 좌표만 받는 MLP</h5><div class="svgbox"><svg id="mdC" viewBox="0 0 200 200" role="img" aria-label="신경망의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccC">–</b></span><span>파라미터 65개</span></div></div>
+        <div class="panel"><h4>① 전통 ML · 원래 좌표</h4><div class="svgbox"><svg id="mdA" viewBox="0 0 200 200" role="img" aria-label="원래 좌표만 쓴 로지스틱 회귀의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccA">–</b></span><span>파라미터 3개</span></div></div>
+        <div class="panel"><h4>② 전통 ML · 사람이 만든 특징 추가</h4><div class="svgbox"><svg id="mdB" viewBox="0 0 200 200" role="img" aria-label="사람이 만든 특징을 더한 로지스틱 회귀의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccB">–</b></span><span>파라미터 4개</span></div></div>
+        <div class="panel"><h4>③ 딥러닝 · 원래 좌표만 받는 MLP</h4><div class="svgbox"><svg id="mdC" viewBox="0 0 200 200" role="img" aria-label="신경망의 결정 영역"></svg></div><div class="acc"><span>테스트 <b id="mdAccC">–</b></span><span>파라미터 65개</span></div></div>
       </div>
       <div class="keyrow">
         <span><span class="sw c" style="background:var(--add)"></span>양성 학습 데이터</span>
@@ -478,7 +482,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 전통적인 머신러닝과 딥러닝 비교 (경향)</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="전통적인 머신러닝과 딥러닝 비교 (경향)">
         <thead><tr><th style="width:17%">구분</th><th style="width:40%">전통적인 머신러닝</th><th>딥러닝</th></tr></thead>
         <tbody>
           <tr><td><b>대표 모델</b></td><td>선형·로지스틱 회귀, 결정 트리, SVM, k-NN, 랜덤 포레스트, GBDT</td><td>MLP, CNN, RNN, 트랜스포머</td></tr>
@@ -569,7 +573,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 하이퍼파라미터 네 묶음</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="하이퍼파라미터 네 묶음">
         <thead><tr><th style="width:11%">묶음</th><th style="width:18%">하이퍼파라미터</th><th style="width:40%">무엇을 바꾸나 · 주의점</th><th>흔한 시작점 · 탐색 범위</th></tr></thead>
         <tbody>
           <tr><td rowspan="3"><b>모델 구조</b></td><td>층 수 · 층별 뉴런(채널) 수</td><td>표현력. 작으면 과소적합, 크면 계산량이 늘고 규제 없이는 과적합하기 쉽다. 잔차 연결 없이 깊게만 쌓으면 훈련 오차부터 나빠진다</td><td>작은 모델에서 시작해 훈련 오차가 충분히 낮아질 때까지 키운다</td></tr>
@@ -596,7 +600,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-reg">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 은닉층 크기·드롭아웃·가중치 감쇠·학습률로 과적합 다루기 <span class="tag-ex">예시 데이터 · 반달 모양 2클래스, 학습 60개 · 검증 1,000개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 은닉층 크기·드롭아웃·가중치 감쇠·학습률로 과적합 다루기 <span class="tag-ex">예시 데이터 · 반달 모양 2클래스, 학습 60개 · 검증 1,000개</span></h3>
         <div class="how">
           <p>은닉층 하나짜리 신경망을 이 페이지에서 <b>1,500에포크</b> 학습합니다(전체 배치, AdamW). 아래 곡선에서 검증 loss가 가장 낮은 에포크가 <b>조기 종료 지점</b>입니다.</p>
           <ul>
@@ -646,7 +650,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-hps">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> 같은 시도 횟수, 격자 탐색 vs 랜덤 탐색 <span class="tag-ex">예시 · 가상의 검증 정확도 지형</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> 같은 시도 횟수, 격자 탐색 vs 랜덤 탐색 <span class="tag-ex">예시 · 가상의 검증 정확도 지형</span></h3>
         <div class="how">
           <p>검증 정확도가 <b>학습률에는 크게, 드롭아웃에는 조금만</b> 반응하는 지형을 가정했습니다(가장 좋은 값 0.920, 학습률 약 2.5×10⁻³ 근처).</p>
           <p>같은 횟수로 격자 탐색(■)과 랜덤 탐색(●)을 해 보고, 학습률을 선형 척도로 뽑으면 어떻게 되는지도 보세요. 랜덤 탐색의 평균 성능은 2,000번 반복해 계산합니다.</p>
@@ -813,7 +817,7 @@ best = min(results, key=lambda r: r[0])</pre>
 
     <div class="demo" id="demo-gap">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 4</span> 같은 "훈련 높음, 테스트 낮음"을 세 원인으로 만들어 구분하기 <span class="tag-ex">예시 데이터 · 가상의 이탈 예측, 학습 300명 · 테스트 1,000명, 라벨 잡음 10%</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 4</span> 같은 "훈련 높음, 테스트 낮음"을 세 원인으로 만들어 구분하기 <span class="tag-ex">예시 데이터 · 가상의 이탈 예측, 학습 300명 · 테스트 1,000명, 라벨 잡음 10%</span></h3>
         <div class="how">
           <p>특징은 가입 기간과 월 이용량(표준화한 값)이고, 이탈 여부는 곡선 경계로 정해집니다. 이 페이지에서 k-최근접 이웃(k-NN)을 학습하고 다음 네 값을 계산합니다.</p>
           <ul>
@@ -858,7 +862,7 @@ best = min(results, key=lambda r: r[0])</pre>
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 세 점수의 패턴으로 원인 좁히기</h3>
       <p class="muted" style="font-size:14px">증상과 원인이 1:1로 정해지지는 않습니다. 어디부터 볼지 정하는 진단 순서로 쓰고, 실제 원인은 확인 방법으로 검증합니다.</p>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="세 점수의 패턴으로 원인 좁히기">
         <thead><tr><th style="width:21%">패턴 (훈련 / CV / 테스트)</th><th style="width:22%">의심 원인</th><th style="width:28%">확인 방법</th><th>개선</th></tr></thead>
         <tbody>
           <tr><td><b>99 / 71 / 70</b><br><span class="muted" style="font-size:12.5px">CV ≈ 테스트</span></td><td>과적합 (분산이 큼)</td><td>복잡도별 검증 곡선, 데이터 수별 학습 곡선. 데이터를 늘릴수록 격차가 줄면 데이터 추가가 효과적</td><td>복잡도 줄이기(깊이·층·k), 드롭아웃·감쇠, 조기 종료, 증강·데이터 추가, 앙상블</td></tr>
@@ -959,7 +963,7 @@ print(pd.Series(adv.feature_importances_, X_adv.columns).nlargest(5))   <span cl
 
     <div class="demo" id="demo-loan">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 5</span> 한 신청자의 거절 사유를 두 모델로 만들어 보기 <span class="tag-ex">예시 데이터 · 가상의 대출 신청자 3,000명, 특징 4개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 5</span> 한 신청자의 거절 사유를 두 모델로 만들어 보기 <span class="tag-ex">예시 데이터 · 가상의 대출 신청자 3,000명, 특징 4개</span></h3>
         <div class="how">
           <p>이 페이지에서 같은 데이터로 두 모델을 학습합니다.</p>
           <ul>
@@ -982,7 +986,7 @@ print(pd.Series(adv.feature_importances_, X_adv.columns).nlargest(5))   <span cl
         <div class="verdict">
           <div class="k">로지스틱 점수표</div>
           <div class="big" id="lnSP">–</div>
-          <div class="tbl"><table class="contrib"><thead><tr><th>특징</th><th>계수 β</th><th>최선 대비 위험 증가 (로그 오즈)</th></tr></thead><tbody id="lnSBody"></tbody></table></div>
+          <div class="tbl"><table class="contrib" aria-label="한 신청자의 거절 사유를 두 모델로 만들어 보기"><thead><tr><th>특징</th><th>계수 β</th><th>최선 대비 위험 증가 (로그 오즈)</th></tr></thead><tbody id="lnSBody"></tbody></table></div>
           <div class="k">거절 사유 (위험 증가가 큰 순)</div><ol id="lnSR"></ol>
           <div class="k">이 값만 바꾸면 승인 (반사실 설명)</div><ul id="lnSC"></ul>
         </div>
@@ -1006,7 +1010,7 @@ print(pd.Series(adv.feature_importances_, X_adv.columns).nlargest(5))   <span cl
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 후보 모델 비교</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="후보 모델 비교">
         <thead><tr><th style="width:17%">모델</th><th style="width:23%">설명 방식</th><th style="width:21%">장점</th><th style="width:21%">약점</th><th>거절 사유의 일관성</th></tr></thead>
         <tbody>
           <tr><td><b>깊이 제한 결정 트리</b></td><td>모델 자체가 규칙. 도착한 리프까지의 경로</td><td>설명이 모델과 정확히 일치한다. 그림 한 장으로 감사 가능</td><td>정확도가 낮고, 리프 수만큼의 거친 위험 등급만 낸다. 재학습 때 구조가 크게 바뀔 수 있다</td><td>한 모델 안에서는 완전히 일관적. 모델 버전 사이에서는 불안정</td></tr>
@@ -1045,7 +1049,7 @@ print(pd.Series(adv.feature_importances_, X_adv.columns).nlargest(5))   <span cl
 
     <div class="block">
       <h3><span class="badge b-add">보충</span> 설명 의무의 근거 (2026년 10월 기준 요약)</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="설명 의무의 근거 (2026년 10월 기준 요약)">
         <thead><tr><th style="width:22%">지역 · 법령</th><th>내용</th></tr></thead>
         <tbody>
           <tr><td><b>한국 · 신용정보법 제36조의2</b></td><td>개인신용평가회사 등에 자동화평가를 하는지, 그 결과·주요 기준·기초정보의 개요를 설명해 달라고 요구할 수 있고, 유리한 정보를 내거나 기초정보의 정정·삭제를 요구해 결과를 다시 산출하게 할 수 있다.</td></tr>
@@ -1094,7 +1098,7 @@ sv = shap.TreeExplainer(gbm).shap_values(X_rejected)</pre>
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>Q1 머신러닝·딥러닝 (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>딥러닝은 머신러닝의 하위 분야, 모든 딥러닝은 머신러닝</td><td>"딥러닝은 사람이 특징을 설계하지 않아도 된다", "머신러닝은 특징 설계가 필요하다"는 과장. 정형 데이터는 GBDT가 강함</td></tr>

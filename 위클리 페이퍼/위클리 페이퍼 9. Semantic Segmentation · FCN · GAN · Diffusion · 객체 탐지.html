@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 09 · Semantic Segmentation · FCN · GAN · Diffusion · 객체 탐지 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 09</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -409,6 +410,9 @@ table.num.small{min-width:420px;font-size:13.5px}
 table.num.small th{font-family:var(--f-body)}
 .stat .v .kt{font-family:var(--f-body);font-weight:600}
 svg .fbk{stroke:var(--fix);stroke-width:1.8;stroke-dasharray:5 4;fill:none}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -460,7 +464,7 @@ svg .fbk{stroke:var(--fix);stroke-width:1.8;stroke-dasharray:5 4;fill:none}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 작업별로 출력이 어떻게 다른가</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="작업별로 출력이 어떻게 다른가">
         <thead><tr><th style="width:17%">작업</th><th style="width:27%">출력 (한 장 기준)</th><th style="width:20%">답하는 질문</th><th style="width:16%">같은 클래스 객체 구분</th><th>대표 모델</th></tr></thead>
         <tbody>
           <tr><td><b>이미지 분류</b></td><td>클래스 점수 벡터 <code>[C]</code></td><td>무엇이 있나</td><td>위치 정보 없음</td><td>ResNet, ViT</td></tr>
@@ -474,7 +478,7 @@ svg .fbk{stroke:var(--fix);stroke-width:1.8;stroke-dasharray:5 4;fill:none}
 
     <div class="demo" id="demo-seg">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 같은 장면, 네 가지 출력 <span class="tag-ex">예시 장면 · 32 × 20 픽셀</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 같은 장면, 네 가지 출력 <span class="tag-ex">예시 장면 · 32 × 20 픽셀</span></h3>
         <div class="how">
           <p>도로 장면 하나를 네 가지 작업의 <b>정답 형태</b>로 바꿔 보여 줍니다. 버튼으로 출력 형태를 바꾸고, 슬라이더로 <b>두 자동차 사이의 간격</b>을 줄여 보세요.</p>
           <p>Semantic 마스크에서 자동차 픽셀이 몇 덩어리로 이어지는지(<b>연결 영역 수</b>, 상하좌우 이웃 기준)를 이 페이지에서 직접 셉니다. 영역 수로 대수를 셀 수 있는지 확인하는 실험입니다.</p>
@@ -491,8 +495,8 @@ svg .fbk{stroke:var(--fix);stroke-width:1.8;stroke-dasharray:5 4;fill:none}
         <input type="range" id="sgGap" min="0" max="3" step="1" value="2" style="max-width:200px">
       </div>
       <div class="panels">
-        <div class="panel"><h5>입력 이미지</h5><div class="svgbox"><svg id="sgIn" viewBox="0 0 320 200" role="img" aria-label="하늘, 건물, 도로, 자동차 두 대, 사람이 있는 픽셀 그림"></svg></div><div class="cap">하늘 · 건물 · 도로 · 자동차 2대 · 사람 1명</div></div>
-        <div class="panel"><h5 id="sgOutT">출력</h5><div class="svgbox"><svg id="sgOut" viewBox="0 0 320 200" role="img" aria-label="선택한 작업의 정답 출력"></svg></div><div class="cap" id="sgOutCap">–</div></div>
+        <div class="panel"><h4>입력 이미지</h4><div class="svgbox"><svg id="sgIn" viewBox="0 0 320 200" role="img" aria-label="하늘, 건물, 도로, 자동차 두 대, 사람이 있는 픽셀 그림"></svg></div><div class="cap">하늘 · 건물 · 도로 · 자동차 2대 · 사람 1명</div></div>
+        <div class="panel"><h4 id="sgOutT">출력</h4><div class="svgbox"><svg id="sgOut" viewBox="0 0 320 200" role="img" aria-label="선택한 작업의 정답 출력"></svg></div><div class="cap" id="sgOutCap">–</div></div>
       </div>
       <div class="keyrow" id="sgKey"></div>
       <div class="stats">
@@ -505,7 +509,7 @@ svg .fbk{stroke:var(--fix);stroke-width:1.8;stroke-dasharray:5 4;fill:none}
 
     <div class="demo" id="demo-miou">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 픽셀 정확도 97%면 좋은 모델일까 <span class="tag-ex">예시 예측 · 실험 1 장면(간격 2칸)</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 픽셀 정확도 97%면 좋은 모델일까 <span class="tag-ex">예시 예측 · 실험 1 장면(간격 2칸)</span></h3>
         <div class="how">
           <p>정답 마스크와 예측 마스크를 비교해 두 지표를 직접 계산합니다.</p>
           <ul>
@@ -525,11 +529,11 @@ svg .fbk{stroke:var(--fix);stroke-width:1.8;stroke-dasharray:5 4;fill:none}
         </select>
       </div>
       <div class="panels">
-        <div class="panel"><h5>정답 마스크</h5><div class="svgbox"><svg id="mqGt" viewBox="0 0 320 200" role="img" aria-label="정답 클래스 맵"></svg></div><div class="cap">사람 픽셀은 전체의 2.8% (18개)</div></div>
-        <div class="panel"><h5>예측 마스크</h5><div class="svgbox"><svg id="mqPr" viewBox="0 0 320 200" role="img" aria-label="예측 클래스 맵, 틀린 픽셀에 X 표시"></svg></div><div class="cap">× 표시 = 정답과 다른 픽셀</div></div>
+        <div class="panel"><h4>정답 마스크</h4><div class="svgbox"><svg id="mqGt" viewBox="0 0 320 200" role="img" aria-label="정답 클래스 맵"></svg></div><div class="cap">사람 픽셀은 전체의 2.8% (18개)</div></div>
+        <div class="panel"><h4>예측 마스크</h4><div class="svgbox"><svg id="mqPr" viewBox="0 0 320 200" role="img" aria-label="예측 클래스 맵, 틀린 픽셀에 X 표시"></svg></div><div class="cap">× 표시 = 정답과 다른 픽셀</div></div>
       </div>
       <div class="keyrow seg-legend" id="mqKey"></div>
-      <div class="tbl"><table class="iou">
+      <div class="tbl"><table class="iou" aria-label="픽셀 정확도 97%면 좋은 모델일까">
         <thead><tr><th>클래스</th><th>하늘</th><th>건물</th><th>도로</th><th>자동차</th><th>사람</th></tr></thead>
         <tbody><tr id="mqRow"><td><b>IoU</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr></tbody>
       </table></div>
@@ -680,7 +684,7 @@ def miou(pred, target, num_classes, ignore_index=255):
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 분류 CNN과 FCN 비교</h3>
-      <div class="tbl"><table style="min-width:660px">
+      <div class="tbl"><table style="min-width:660px" aria-label="분류 CNN과 FCN 비교">
         <thead><tr><th style="width:17%">구분</th><th style="width:38%">분류 CNN (예: VGG16)</th><th>FCN</th></tr></thead>
         <tbody>
           <tr><td><b>출력</b></td><td>클래스 점수 벡터 <code>[C]</code></td><td>클래스 점수 지도 <code>[C, H, W]</code></td></tr>
@@ -733,7 +737,7 @@ class FCN8sHead(nn.Module):
 
     <div class="demo" id="demo-stride">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> 예측 격자가 거칠면 무엇이 사라지나 <span class="tag-ex">예시 장면 · 256 × 256 픽셀</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> 예측 격자가 거칠면 무엇이 사라지나 <span class="tag-ex">예시 장면 · 256 × 256 픽셀</span></h3>
         <div class="how">
           <p>모델이 격자 칸마다 <b>완벽한 점수</b>(그 칸 안의 클래스별 픽셀 비율)를 낸다고 가정하고, 그 점수 지도를 업샘플링해 argmax로 픽셀 클래스를 정합니다.</p>
           <p>점수가 완벽해도 생기는 오차는 오직 <b>격자 해상도</b> 때문입니다. 즉 이 실험의 IoU는 그 격자로 얻을 수 있는 <b>상한</b>입니다. 폭 7픽셀짜리 기둥이 격자에 따라 어떻게 되는지 보세요.</p>
@@ -751,9 +755,9 @@ class FCN8sHead(nn.Module):
         <select id="stU"><option value="bil" selected>bilinear 보간</option><option value="nn">최근접 (칸 복제)</option></select>
       </div>
       <div class="tri">
-        <div class="panel"><h5>정답</h5><div class="cvbox"><canvas id="stGt" width="256" height="256" role="img" aria-label="정답 클래스 맵: 사람, 자동차, 가는 기둥"></canvas></div><div class="cap">사람 · 자동차 · 폭 7픽셀 기둥</div></div>
-        <div class="panel"><h5>업샘플링 후 예측</h5><div class="cvbox"><canvas id="stPr" width="256" height="256" role="img" aria-label="격자 점수를 업샘플링한 예측"></canvas></div><div class="cap" id="stCap">–</div></div>
-        <div class="panel"><h5>틀린 픽셀</h5><div class="cvbox"><canvas id="stEr" width="256" height="256" role="img" aria-label="틀린 픽셀 표시"></canvas></div><div class="cap">진한 색 = 틀린 픽셀</div></div>
+        <div class="panel"><h4>정답</h4><div class="cvbox"><canvas id="stGt" width="256" height="256" role="img" aria-label="정답 클래스 맵: 사람, 자동차, 가는 기둥"></canvas></div><div class="cap">사람 · 자동차 · 폭 7픽셀 기둥</div></div>
+        <div class="panel"><h4>업샘플링 후 예측</h4><div class="cvbox"><canvas id="stPr" width="256" height="256" role="img" aria-label="격자 점수를 업샘플링한 예측"></canvas></div><div class="cap" id="stCap">–</div></div>
+        <div class="panel"><h4>틀린 픽셀</h4><div class="cvbox"><canvas id="stEr" width="256" height="256" role="img" aria-label="틀린 픽셀 표시"></canvas></div><div class="cap">진한 색 = 틀린 픽셀</div></div>
       </div>
       <div class="keyrow">
         <span><span class="sw" style="background:var(--k4)"></span>사람</span>
@@ -767,7 +771,7 @@ class FCN8sHead(nn.Module):
         <div class="stat"><div class="k">사람 IoU</div><div class="v" id="stPer">–</div></div>
         <div class="stat"><div class="k">자동차 IoU</div><div class="v" id="stCar">–</div></div>
       </div>
-      <div class="tbl"><table class="num small" id="stTbl">
+      <div class="tbl"><table class="num small" id="stTbl" aria-label="예측 격자가 거칠면 무엇이 사라지나">
         <thead><tr><th>예측 격자</th><th>격자 칸 수</th><th>mIoU</th><th>기둥 IoU</th><th>사람 IoU</th><th>자동차 IoU</th></tr></thead>
         <tbody></tbody>
       </table></div>
@@ -776,7 +780,7 @@ class FCN8sHead(nn.Module):
 
     <div class="demo" id="demo-tconv">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 4</span> 전치 합성곱은 출력 칸마다 몇 번 겹치나 <span class="tag-ex">입력 4 × 4 · 모든 값과 가중치가 1</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 4</span> 전치 합성곱은 출력 칸마다 몇 번 겹치나 <span class="tag-ex">입력 4 × 4 · 모든 값과 가중치가 1</span></h3>
         <div class="how">
           <p>전치 합성곱은 입력 칸 하나하나가 커널 크기의 조각을 출력에 <b>stride 간격으로 찍고, 겹치는 곳은 더하는</b> 연산입니다. 입력과 커널을 모두 1로 두면 출력 값이 곧 <b>그 칸에 찍힌 횟수</b>가 됩니다.</p>
           <p>출력 크기는 <code>(n − 1) × s − 2p + k</code>입니다(output_padding 0 기준). 커널 크기와 stride를 바꿔 겹침이 고르게 되는 조건을 찾아보세요.</p>
@@ -920,7 +924,7 @@ class FCN8sHead(nn.Module):
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 역할 비교</h3>
-      <div class="tbl"><table style="min-width:640px">
+      <div class="tbl"><table style="min-width:640px" aria-label="역할 비교">
         <thead><tr><th style="width:16%">구분</th><th style="width:42%">생성자 G</th><th>판별자 D</th></tr></thead>
         <tbody>
           <tr><td><b>입력</b></td><td>잠재 벡터 z (조건부 GAN이면 클래스 · 문장 · 이미지 같은 조건 y도)</td><td>진짜 x 또는 가짜 G(z) (조건부면 y도)</td></tr>
@@ -934,7 +938,7 @@ class FCN8sHead(nn.Module):
 
     <div class="demo" id="demo-gan">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 5</span> 1차원 GAN을 직접 학습하기 <span class="tag-ex">예시 데이터 · 봉우리 3개인 혼합 정규분포</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 5</span> 1차원 GAN을 직접 학습하기 <span class="tag-ex">예시 데이터 · 봉우리 3개인 혼합 정규분포</span></h3>
         <div class="how">
           <p>진짜 데이터는 −3, 0, 3을 중심으로 하는 정규분포 세 개(표준편차 0.3)를 같은 비율로 섞은 1차원 분포입니다. 생성자(1 → 16 → 16 → 1, tanh)와 판별자(1 → 16 → 16 → 1, Leaky ReLU)를 이 페이지에서 Adam(학습률 0.002, β₁ = 0.5, 배치 64)으로 번갈아 <b>2,000단계</b> 학습합니다.</p>
           <ul>
@@ -1064,7 +1068,7 @@ for real in loader:
 
     <div class="demo" id="demo-diff">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 6</span> 순수한 노이즈에서 군집 8개 만들기 <span class="tag-ex">예시 데이터 · 2차원 혼합 정규분포</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 6</span> 순수한 노이즈에서 군집 8개 만들기 <span class="tag-ex">예시 데이터 · 2차원 혼합 정규분포</span></h3>
         <div class="how">
           <p>데이터는 반지름 1인 원 위의 8개 점을 중심으로 하는 정규분포(표준편차 0.05) 8개를 섞은 2차원 분포입니다. 이런 분포는 x<sub>t</sub>의 분포도 식으로 구할 수 있어서, 신경망을 학습하는 대신 <b>가장 잘 학습된 노이즈 예측기 ε*(x<sub>t</sub>, t)</b>를 정확히 계산해 씁니다. 노이즈 일정은 DDPM과 같습니다.</p>
           <ul>
@@ -1083,8 +1087,8 @@ for real in loader:
         <select id="dfN"><option value="1000" selected>1,000</option><option value="100">100</option><option value="20">20</option><option value="5">5</option><option value="1">1</option></select>
       </div>
       <div class="panels">
-        <div class="panel"><h5>전방향: x₀에 노이즈 더하기</h5><label class="in" for="dfT"><span>t = <output id="dfTOut" for="dfT">0</output></span><input type="range" id="dfT" min="0" max="1000" step="10" value="0"></label><div class="svgbox"><svg id="dfF" viewBox="0 0 300 300" role="img" aria-label="전방향 과정에서 노이즈가 섞인 데이터 산점도"></svg></div><div class="cap" id="dfFCap">–</div></div>
-        <div class="panel"><h5>역방향: 노이즈에서 생성</h5><label class="in" for="dfP"><span>생성 진행: <output id="dfPOut" for="dfP">100%</output></span><input type="range" id="dfP" min="0" max="100" step="5" value="100"></label><div class="svgbox"><svg id="dfR" viewBox="0 0 300 300" role="img" aria-label="역방향 생성 중인 샘플 산점도"></svg></div><div class="cap">검은 점 = 학습 점 24개 · 초록 점선 = 군집 중심에서 0.15</div></div>
+        <div class="panel"><h4>전방향: x₀에 노이즈 더하기</h4><label class="in" for="dfT"><span>t = <output id="dfTOut" for="dfT">0</output></span><input type="range" id="dfT" min="0" max="1000" step="10" value="0"></label><div class="svgbox"><svg id="dfF" viewBox="0 0 300 300" role="img" aria-label="전방향 과정에서 노이즈가 섞인 데이터 산점도"></svg></div><div class="cap" id="dfFCap">–</div></div>
+        <div class="panel"><h4>역방향: 노이즈에서 생성</h4><label class="in" for="dfP"><span>생성 진행: <output id="dfPOut" for="dfP">100%</output></span><input type="range" id="dfP" min="0" max="100" step="5" value="100"></label><div class="svgbox"><svg id="dfR" viewBox="0 0 300 300" role="img" aria-label="역방향 생성 중인 샘플 산점도"></svg></div><div class="cap">검은 점 = 학습 점 24개 · 초록 점선 = 군집 중심에서 0.15</div></div>
       </div>
       <div class="stats">
         <div class="stat"><div class="k">ᾱₜ (왼쪽 t)</div><div class="v" id="dfAb">–</div></div>
@@ -1092,7 +1096,7 @@ for real in loader:
         <div class="stat em"><div class="k">군집 안 샘플 비율 (중심에서 0.15 이내)</div><div class="v" id="dfIn">–</div></div>
         <div class="stat warn"><div class="k">학습 점 복제 비율 (학습 점에서 0.01 이내)</div><div class="v" id="dfCopy">–</div></div>
       </div>
-      <div class="tbl"><table class="num small" id="dfTbl">
+      <div class="tbl"><table class="num small" id="dfTbl" aria-label="순수한 노이즈에서 군집 8개 만들기">
         <thead><tr><th>단계 수</th><th>신경망 호출</th><th>군집 안 비율</th><th>학습 점 복제 비율</th><th>최근접 학습 점까지 평균 거리</th></tr></thead>
         <tbody></tbody>
       </table></div>
@@ -1101,7 +1105,7 @@ for real in loader:
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> GAN · VAE · Diffusion 비교</h3>
-      <div class="tbl"><table style="min-width:860px">
+      <div class="tbl"><table style="min-width:860px" aria-label="GAN · VAE · Diffusion 비교">
         <thead><tr><th style="width:14%">항목</th><th style="width:28%">GAN</th><th style="width:28%">VAE</th><th>Diffusion</th></tr></thead>
         <tbody>
           <tr><td><b>학습 목표</b></td><td>판별자와의 미니맥스 게임</td><td>재구성 오차 + KL (ELBO 최대화)</td><td>넣은 노이즈를 맞히는 MSE (ELBO와 연결)</td></tr>
@@ -1227,7 +1231,7 @@ def sample(shape):
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 요구사항별로 어떤 작업이 맞나</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="요구사항별로 어떤 작업이 맞나">
         <thead><tr><th style="width:22%">요구사항</th><th style="width:19%">이미지 분류</th><th style="width:19%">다중 라벨 분류</th><th style="width:19%">객체 탐지</th><th>Instance Segmentation</th></tr></thead>
         <tbody>
           <tr><td><b>어떤 상품이 있나</b></td><td>하나만</td><td>여러 개 가능</td><td>가능</td><td>가능</td></tr>
@@ -1241,7 +1245,7 @@ def sample(shape):
 
     <div class="demo" id="demo-nms">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 7</span> 상자 수로 개수를 셀 때 NMS가 하는 일 <span class="tag-ex">예시 검출 결과 · 진열대 상품 10개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 7</span> 상자 수로 개수를 셀 때 NMS가 하는 일 <span class="tag-ex">예시 검출 결과 · 진열대 상품 10개</span></h3>
         <div class="how">
           <p>탐지기는 보통 상품 하나에 상자를 여러 개 냅니다. 그래서 개수를 세기 전에 두 단계를 거칩니다.</p>
           <ul>
@@ -1275,7 +1279,7 @@ def sample(shape):
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 개수를 틀리게 만드는 원인과 대응</h3>
-      <div class="tbl"><table style="min-width:680px">
+      <div class="tbl"><table style="min-width:680px" aria-label="개수를 틀리게 만드는 원인과 대응">
         <thead><tr><th style="width:22%">원인</th><th style="width:36%">증상</th><th>대응</th></tr></thead>
         <tbody>
           <tr><td><b>밀집 진열</b></td><td>이웃 상품 상자끼리 많이 겹쳐 NMS가 진짜 상품을 지움 → 적게 셈</td><td>NMS 임곗값 조정, Soft-NMS, NMS가 없는 DETR 계열, Instance Segmentation</td></tr>
@@ -1369,7 +1373,7 @@ def stable_counts(zone):
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>Q1 Semantic Segmentation (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>픽셀 단위 분류라는 정의, 분류와의 출력 단위 차이, 자율주행 · 의료 · 위성 활용</td><td>픽셀에 붙는 것은 "어떤 객체"가 아니라 "어떤 클래스". 같은 클래스 객체는 구분하지 않음(Instance Segmentation 필요), 다중 라벨 분류, mIoU 평가 추가</td></tr>

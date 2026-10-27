@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 11 · GAN 모드 붕괴 · 원인 · 대응 · 평가 지표 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 11</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -383,6 +384,9 @@ svg .feye{fill:var(--ink)}
 svg .fmouth{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round}
 svg .fmouth.fill{fill:var(--ink)}
 svg .fglass{fill:none;stroke:var(--ink);stroke-width:1.2}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -433,7 +437,7 @@ svg .fglass{fill:none;stroke:var(--ink);stroke-width:1.2}
         <div class="svgbox"><svg viewBox="0 0 680 240" role="img" aria-label="정상 GAN은 서로 다른 잠재벡터마다 다른 얼굴을 만들고, 모드 붕괴가 생긴 GAN은 잠재벡터가 달라도 거의 같은 얼굴을 만든다"><text x="158" y="20" text-anchor="middle" font-size="13.5" font-weight="700">정상</text><text x="158" y="37" text-anchor="middle" font-size="11.5" class="mut">z가 다르면 얼굴도 다르다</text><rect x="12" y="58" width="36" height="24" rx="6" class="boxa"/><text x="30" y="74.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₁</text><path class="arr" d="M48,70 C70,70 78,142 100,142"/><path class="arr" d="M176,142 C198,142 206,70 224,70"/><g transform="rotate(0 246 70)"><circle cx="246" cy="70" r="16" class="fhead"/><path class="c0" d="M230,67 Q229,51 246,51 Q263,51 262,67 Q252,58 230,67Z"/><circle cx="240" cy="71" r="1.8" class="feye"/><circle cx="252" cy="71" r="1.8" class="feye"/><path class="fmouth" d="M240,77 Q246,82 252,77"/></g><text x="272" y="74.5" font-size="12">얼굴 A</text><rect x="12" y="106" width="36" height="24" rx="6" class="boxa"/><text x="30" y="122.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₂</text><path class="arr" d="M48,118 C70,118 78,142 100,142"/><path class="arr" d="M176,142 C198,142 206,118 224,118"/><g transform="rotate(0 246 118)"><path class="c2" d="M225,134 Q222,96 246,95 Q270,96 267,134 L261,134 L261,114 L231,114 L231,134Z"/><circle cx="246" cy="118" r="16" class="fhead"/><path class="c2" d="M230,116 Q231,100 246,100 Q261,100 262,116 Q246,108 230,116Z"/><circle cx="240" cy="119" r="1.8" class="feye"/><circle cx="252" cy="119" r="1.8" class="feye"/><path class="fmouth" d="M241,127 L251,127"/></g><text x="272" y="122.5" font-size="12">얼굴 B</text><rect x="12" y="154" width="36" height="24" rx="6" class="boxa"/><text x="30" y="170.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₃</text><path class="arr" d="M48,166 C70,166 78,142 100,142"/><path class="arr" d="M176,142 C198,142 206,166 224,166"/><g transform="rotate(0 246 166)"><circle cx="246" cy="166" r="16" class="fhead"/><circle cx="246" cy="145" r="6" class="c1"/><path class="c1" d="M230,164 Q231,149 246,149 Q261,149 262,164 Q246,157 230,164Z"/><circle cx="240" cy="167" r="1.8" class="feye"/><circle cx="252" cy="167" r="1.8" class="feye"/><path class="fmouth fill" d="M242,174 Q246,179 250,174Z"/></g><text x="272" y="170.5" font-size="12">얼굴 C</text><rect x="12" y="202" width="36" height="24" rx="6" class="boxa"/><text x="30" y="218.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₄</text><path class="arr" d="M48,214 C70,214 78,142 100,142"/><path class="arr" d="M176,142 C198,142 206,214 224,214"/><g transform="rotate(0 246 214)"><circle cx="246" cy="214" r="16" class="fhead"/><path class="cg" d="M230,210 Q231,194 246,194 Q261,194 262,210Z"/><rect x="246" y="208" width="22" height="4" rx="2" class="cg"/><circle cx="240" cy="215" r="1.8" class="feye"/><circle cx="252" cy="215" r="1.8" class="feye"/><g class="fglass"><circle cx="240" cy="215" r="4.5"/><circle cx="252" cy="215" r="4.5"/><line x1="244.5" y1="215" x2="247.5" y2="215"/></g><path class="fmouth" d="M240,221 Q246,226 252,221"/></g><text x="272" y="218.5" font-size="12">얼굴 D</text><rect x="100" y="118" width="76" height="48" rx="10" class="boxg"/><text x="138" y="139" text-anchor="middle" font-size="12.5" font-weight="700">생성자</text><text x="138" y="155" text-anchor="middle" font-size="12" font-family="var(--f-mono)">G(z)</text><line x1="342" y1="12" x2="342" y2="232" class="gl" stroke-dasharray="4 4"/><text x="506" y="20" text-anchor="middle" font-size="13.5" font-weight="700" class="taf">모드 붕괴</text><text x="506" y="37" text-anchor="middle" font-size="11.5" class="mut">z가 달라도 거의 같은 얼굴</text><rect x="360" y="58" width="36" height="24" rx="6" class="boxa"/><text x="378" y="74.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₁</text><path class="arr" d="M396,70 C418,70 426,142 448,142"/><path class="arr" d="M524,142 C546,142 554,70 572,70"/><g transform="rotate(0 594 70)"><path class="c2" d="M573,86 Q570,48 594,47 Q618,48 615,86 L609,86 L609,66 L579,66 L579,86Z"/><circle cx="594" cy="70" r="16" class="fhead"/><path class="c2" d="M578,68 Q579,52 594,52 Q609,52 610,68 Q594,60 578,68Z"/><circle cx="588" cy="71" r="1.8" class="feye"/><circle cx="600" cy="71" r="1.8" class="feye"/><path class="fmouth" d="M588,77 Q594,82 600,77"/></g><text x="620" y="74.5" font-size="12" class="taf">얼굴 A</text><rect x="360" y="106" width="36" height="24" rx="6" class="boxa"/><text x="378" y="122.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₂</text><path class="arr" d="M396,118 C418,118 426,142 448,142"/><path class="arr" d="M524,142 C546,142 554,118 572,118"/><g transform="rotate(-4 594 118)"><path class="c2" d="M573,134 Q570,96 594,95 Q618,96 615,134 L609,134 L609,114 L579,114 L579,134Z"/><circle cx="594" cy="118" r="16" class="fhead"/><path class="c2" d="M578,116 Q579,100 594,100 Q609,100 610,116 Q594,108 578,116Z"/><circle cx="588" cy="119" r="1.8" class="feye"/><circle cx="600" cy="119" r="1.8" class="feye"/><path class="fmouth" d="M588,125 Q594,130 600,125"/></g><text x="620" y="122.5" font-size="12" class="taf">얼굴 A′</text><rect x="360" y="154" width="36" height="24" rx="6" class="boxa"/><text x="378" y="170.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₃</text><path class="arr" d="M396,166 C418,166 426,142 448,142"/><path class="arr" d="M524,142 C546,142 554,166 572,166"/><g transform="rotate(3 594 166)"><path class="c2" d="M573,182 Q570,144 594,143 Q618,144 615,182 L609,182 L609,162 L579,162 L579,182Z"/><circle cx="594" cy="166" r="16" class="fhead"/><path class="c2" d="M578,164 Q579,148 594,148 Q609,148 610,164 Q594,156 578,164Z"/><circle cx="588" cy="167" r="1.8" class="feye"/><circle cx="600" cy="167" r="1.8" class="feye"/><path class="fmouth" d="M588,173 Q594,178 600,173"/></g><text x="620" y="170.5" font-size="12" class="taf">얼굴 A″</text><rect x="360" y="202" width="36" height="24" rx="6" class="boxa"/><text x="378" y="218.5" text-anchor="middle" font-size="12.5" font-family="var(--f-mono)">z₄</text><path class="arr" d="M396,214 C418,214 426,142 448,142"/><path class="arr" d="M524,142 C546,142 554,214 572,214"/><g transform="rotate(0 594 214)"><path class="c2" d="M573,230 Q570,192 594,191 Q618,192 615,230 L609,230 L609,210 L579,210 L579,230Z"/><circle cx="594" cy="214" r="16" class="fhead"/><path class="c2" d="M578,212 Q579,196 594,196 Q609,196 610,212 Q594,204 578,212Z"/><circle cx="588" cy="215" r="1.8" class="feye"/><circle cx="600" cy="215" r="1.8" class="feye"/><path class="fmouth" d="M588,221 Q594,226 600,221"/></g><text x="620" y="218.5" font-size="12" class="taf">얼굴 A</text><rect x="448" y="118" width="76" height="48" rx="10" class="boxf"/><text x="486" y="139" text-anchor="middle" font-size="12.5" font-weight="700">생성자</text><text x="486" y="155" text-anchor="middle" font-size="12" font-family="var(--f-mono)">G(z)</text></svg></div>
         <figcaption><b>모드(mode)</b>는 데이터 분포에서 확률이 높은 봉우리, 즉 대표적인 유형입니다. 얼굴 데이터라면 표정 · 얼굴 방향 · 나이대 · 머리 모양의 조합이 서로 다른 모드가 됩니다. 생성자는 이 봉우리를 모두 덮어야 하는데, 붕괴가 생기면 z가 무엇이든 몇 개의 봉우리에만 샘플을 보냅니다.</figcaption>
       </figure>
-      <div class="tbl"><table style="min-width:700px">
+      <div class="tbl"><table style="min-width:700px" aria-label="정상 GAN과 모드 붕괴">
         <thead><tr><th style="width:20%">형태</th><th style="width:42%">보이는 모습</th><th>확인 방법</th></tr></thead>
         <tbody>
           <tr><td><b>완전 붕괴</b></td><td>모든 z가 거의 같은 얼굴 하나를 만든다</td><td>무작위 z 64개의 결과를 한 장에 모아 보면 바로 보인다</td></tr>
@@ -459,7 +463,7 @@ svg .fglass{fill:none;stroke:var(--ink);stroke-width:1.2}
 
     <div class="demo" id="demo-kl">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 봉우리 두 개를 가우시안 하나로 맞추면: 목적함수마다 고르는 해가 다르다 <span class="tag-ex">예시 분포 · 1차원</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 봉우리 두 개를 가우시안 하나로 맞추면: 목적함수마다 고르는 해가 다르다 <span class="tag-ex">예시 분포 · 1차원</span></h3>
         <div class="how">
           <p>실제 분포(P<sub>r</sub>)는 −d와 +d에 있는 봉우리 두 개(표준편차 1)입니다. 생성 분포는 가우시안 하나 N(μ, σ)라서 둘을 동시에 정확히 맞출 수 없습니다. 네 가지 목적함수를 각각 최소로 만드는 μ, σ를 이 페이지에서 격자 탐색으로 찾습니다.</p>
           <ul>
@@ -492,7 +496,7 @@ svg .fglass{fill:none;stroke:var(--ink);stroke-width:1.2}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 관찰로 원인 좁히기</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="관찰로 원인 좁히기">
         <thead><tr><th style="width:27%">관찰</th><th style="width:28%">해석</th><th>확인 방법</th></tr></thead>
         <tbody>
           <tr><td><b>학습 첫 스텝부터 출력이 비슷하다</b></td><td>붕괴보다 <b>구현 오류</b> 가능성이 크다</td><td>z를 배치마다 새로 뽑는지(<code>torch.randn</code>을 루프 밖에서 한 번만 부르지 않았는지), 데이터 로더가 같은 배치를 반복하지 않는지, 학습 데이터 자체가 단조롭지 않은지</td></tr>
@@ -507,7 +511,7 @@ svg .fglass{fill:none;stroke:var(--ink);stroke-width:1.2}
 
     <div class="demo" id="demo-gan">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 작은 GAN을 직접 학습시켜 모드가 사라지는 과정 보기 <span class="tag-ex">예시 데이터 · 1차원, 봉우리 4개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 작은 GAN을 직접 학습시켜 모드가 사라지는 과정 보기 <span class="tag-ex">예시 데이터 · 1차원, 봉우리 4개</span></h3>
         <div class="how">
           <p>실제 데이터는 −3, −1, 1, 3에 있는 봉우리 4개(표준편차 0.15)입니다. 생성자(z 1개 → 은닉 16 · 16 → 출력 1)와 판별자(입력 1 → 은닉 16 · 16 → 점수 1)를 이 페이지에서 비포화 손실과 Adam(학습률 0.001, β₁ = 0.5)으로 3,000스텝 학습합니다. 배치는 64개입니다.</p>
           <ul>
@@ -527,8 +531,8 @@ svg .fglass{fill:none;stroke:var(--ink);stroke-width:1.2}
         <select id="gnS"><option value="0" selected>1</option><option value="1">2</option><option value="2">3</option><option value="3">4</option></select>
       </div>
       <div class="panels">
-        <div class="panel"><h5>학습 경과: 생성 샘플의 위치 (진할수록 많음)</h5><div class="svgbox"><svg id="gnH" viewBox="0 0 320 220" role="img" aria-label="학습 스텝에 따른 생성 샘플 분포의 변화"></svg></div><div class="cap">가로 = 학습 스텝, 세로 = 생성된 값 · 점선 = 실제 봉우리 위치</div></div>
-        <div class="panel"><h5>3,000스텝 후 생성 분포와 실제 분포</h5><div class="svgbox"><svg id="gnF" viewBox="0 0 320 220" role="img" aria-label="학습 후 생성 샘플의 히스토그램과 실제 밀도"></svg></div><div class="cap">막대 = 생성 샘플 1,000개 히스토그램 · 선 = 실제 밀도</div></div>
+        <div class="panel"><h4>학습 경과: 생성 샘플의 위치 (진할수록 많음)</h4><div class="svgbox"><svg id="gnH" viewBox="0 0 320 220" role="img" aria-label="학습 스텝에 따른 생성 샘플 분포의 변화"></svg></div><div class="cap">가로 = 학습 스텝, 세로 = 생성된 값 · 점선 = 실제 봉우리 위치</div></div>
+        <div class="panel"><h4>3,000스텝 후 생성 분포와 실제 분포</h4><div class="svgbox"><svg id="gnF" viewBox="0 0 320 220" role="img" aria-label="학습 후 생성 샘플의 히스토그램과 실제 밀도"></svg></div><div class="cap">막대 = 생성 샘플 1,000개 히스토그램 · 선 = 실제 밀도</div></div>
       </div>
       <div class="stats">
         <div class="stat em"><div class="k">잡은 모드 (이 시드)</div><div class="v" id="gnMode">–</div></div>
@@ -542,7 +546,7 @@ svg .fglass{fill:none;stroke:var(--ink);stroke-width:1.2}
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 대응 기법 지도</h3>
       <p>원인이 여러 겹이므로 한꺼번에 다 넣지 말고 <b>점검 → 균형 → 손실 · 정규화 → 다양성 장치 → 데이터</b> 순서로 하나씩 바꾸며 비교해야 무엇이 효과였는지 알 수 있습니다.</p>
-      <div class="tbl"><table style="min-width:840px">
+      <div class="tbl"><table style="min-width:840px" aria-label="대응 기법 지도">
         <thead><tr><th style="width:12%">단계</th><th style="width:20%">기법</th><th style="width:38%">원리</th><th>주의</th></tr></thead>
         <tbody>
           <tr><td><b>점검</b></td><td>데이터 · 로더 · z 샘플링</td><td>붕괴처럼 보이는 구현 오류를 먼저 걸러 낸다</td><td>고정 z와 무작위 z를 둘 다 본다. 고정 z만 보면 전체 다양성을 판단할 수 없다</td></tr>
@@ -617,7 +621,7 @@ def diversity_log():
 
     <div class="demo" id="demo-metric">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> FID · Precision · Recall이 각각 무엇을 놓치는지 보기 <span class="tag-ex">예시 데이터 · 2차원, 봉우리 8개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> FID · Precision · Recall이 각각 무엇을 놓치는지 보기 <span class="tag-ex">예시 데이터 · 2차원, 봉우리 8개</span></h3>
         <div class="how">
           <p>실제 데이터는 반지름 2인 원 위의 봉우리 8개(표준편차 0.1)입니다. 생성 분포를 골라 세 지표를 이 페이지에서 계산합니다. 실제 FID는 Inception 신경망의 2,048차원 특징으로 계산하지만, 여기서는 <b>좌표 자체를 특징</b>으로 씁니다.</p>
           <ul>
@@ -718,7 +722,7 @@ def diversity_log():
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>Q1 문제 해석 · 원인 (작성 답안)</td><td><span class="badge b-core">보완</span></td><td>모드 붕괴라는 진단, 모드의 뜻, 비슷한 출력만으로 확정하지 말고 데이터 · 구현부터 확인하라는 점</td><td>손실에 다양성 항이 없다는 근본 원인, 비포화 손실의 역방향 KL 성향(Arjovsky &amp; Bottou 2017), 완전 붕괴 · 모드 누락 · 모드 호핑 구분 추가</td></tr>

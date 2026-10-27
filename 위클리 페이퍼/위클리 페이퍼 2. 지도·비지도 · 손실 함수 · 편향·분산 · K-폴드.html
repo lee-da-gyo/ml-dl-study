@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 02 · 지도·비지도 학습 · 손실 함수 · 편향과 분산 · K-폴드 교차 검증 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 02</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -273,6 +274,9 @@ pre .c{color:var(--muted)}
 .stat .v .nw{white-space:nowrap}
 .stat .v .pr{display:flex;justify-content:space-between;align-items:baseline;gap:8px;white-space:nowrap}
 .stat .v .pl{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -322,7 +326,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-sup">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 같은 데이터, 두 가지 학습 <span class="tag-ex">예시 데이터 · 가상의 고객 60명</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 같은 데이터, 두 가지 학습 <span class="tag-ex">예시 데이터 · 가상의 고객 60명</span></h3>
         <div class="how">
           <p>같은 점 60개를 두 가지 방식으로 학습합니다.</p>
           <ul>
@@ -333,13 +337,13 @@ pre .c{color:var(--muted)}
       </div>
       <div class="panels">
         <div class="panel">
-          <h5>지도 학습 · 정답이 있다</h5>
+          <h4>지도 학습 · 정답이 있다</h4>
           <div class="svgbox"><svg id="supL" viewBox="0 0 300 300" role="img" aria-label="정답 색으로 칠한 점과 학습된 경계"></svg></div>
           <div class="keyrow"><span><span class="sw c" style="background:var(--accent)"></span>VIP</span><span><span class="sw c" style="background:var(--add)"></span>일반</span><span><span class="sw c" style="background:var(--fix)"></span>휴면</span><span>배경 = 학습한 경계</span></div>
           <div class="cap">정답 등급을 보고 경계를 학습했으므로, 새 고객이 오면 어느 등급인지 예측할 수 있고 정답과 비교해 정확도를 잴 수 있습니다.</div>
         </div>
         <div class="panel">
-          <h5>비지도 학습 · 정답이 없다</h5>
+          <h4>비지도 학습 · 정답이 없다</h4>
           <div class="svgbox"><svg id="supR" viewBox="0 0 300 300" role="img" aria-label="K-평균 군집화 과정"></svg></div>
           <div class="keyrow"><span><span class="sw c" style="background:var(--muted)"></span>아직 배정 안 됨</span><span>✕ = 군집 중심</span></div>
           <div class="ctrls">
@@ -359,7 +363,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 한눈에 비교</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="한눈에 비교">
         <thead><tr><th style="width:16%"></th><th style="width:42%">지도 학습 (Supervised)</th><th>비지도 학습 (Unsupervised)</th></tr></thead>
         <tbody>
           <tr><td><b>학습 데이터</b></td><td>입력 X와 정답 y의 쌍</td><td>입력 X만</td></tr>
@@ -447,7 +451,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-loss">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 직선을 움직여 손실 줄이기, 그리고 이상치 하나의 힘 <span class="tag-ex">예시 데이터 · 광고비와 매출 8개 점</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 직선을 움직여 손실 줄이기, 그리고 이상치 하나의 힘 <span class="tag-ex">예시 데이터 · 광고비와 매출 8개 점</span></h3>
         <div class="how">
           <p>기울기 w와 절편 b를 움직이면 주황 선(오차)과 MSE·MAE가 바로 다시 계산됩니다. 최소 직선 버튼의 값은 이 페이지에서 직접 계산한 <b>정확한 최적값</b>입니다.</p>
           <p><b>이상치</b>를 켜고 두 최적 직선이 얼마나 움직이는지 비교해 보세요.</p>
@@ -486,7 +490,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 대표 손실 함수</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="대표 손실 함수">
         <thead><tr><th style="width:18%">손실 함수</th><th style="width:12%">과제</th><th style="width:26%">식</th><th>특징</th></tr></thead>
         <tbody>
           <tr><td><b>MSE</b> 평균 제곱 오차</td><td>회귀</td><td><code>mean((y − ŷ)²)</code></td><td>큰 오차를 제곱해 크게 벌한다. 이상치에 민감하다. 상수 하나로 예측하면 <b>평균</b>이 최적이다.</td></tr>
@@ -512,7 +516,7 @@ pre .c{color:var(--muted)}
     </div>
 
     <div class="block">
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="대표 손실 함수">
         <thead><tr><th style="width:18%"></th><th style="width:41%">손실 함수</th><th>평가 지표</th></tr></thead>
         <tbody>
           <tr><td><b>언제</b></td><td>학습하는 동안</td><td>학습이 끝난 뒤, 모델을 비교하고 고를 때</td></tr>
@@ -580,7 +584,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-bv">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> 다항식 차수를 바꾸며 편향과 분산 직접 재기 <span class="tag-ex">예시 데이터 · 실제 규칙 y = sin(πx) + 잡음</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> 다항식 차수를 바꾸며 편향과 분산 직접 재기 <span class="tag-ex">예시 데이터 · 실제 규칙 y = sin(πx) + 잡음</span></h3>
         <div class="how">
           <p>같은 규칙에서 학습 데이터를 <b>60번</b> 새로 뽑아 각각 다항식을 학습합니다. 아래 수치는 이 60개 모델로 직접 계산한 값입니다.</p>
           <ul>
@@ -626,7 +630,7 @@ pre .c{color:var(--muted)}
     </div>
 
     <div class="block">
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="다항식 차수를 바꾸며 편향과 분산 직접 재기">
         <thead><tr><th style="width:18%"></th><th style="width:41%">고편향 · 과소적합 경향</th><th>고분산 · 과적합 경향</th></tr></thead>
         <tbody>
           <tr><td><b>모델</b></td><td>너무 단순하다 (예: 곡선 관계에 직선)</td><td>너무 복잡하다 (예: 점 15개에 10차 다항식)</td></tr>
@@ -708,7 +712,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-kf">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 4</span> K와 분할 방식 바꿔 보기 <span class="tag-ex">예시 데이터 · 20개 샘플, 소수 클래스 4개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 4</span> K와 분할 방식 바꿔 보기 <span class="tag-ex">예시 데이터 · 20개 샘플, 소수 클래스 4개</span></h3>
         <div class="how">
           <p>한 줄이 한 번의 학습입니다. 데이터가 클래스 순서대로 정렬되어 있다고 가정했습니다.</p>
           <ul>
@@ -744,7 +748,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> K 값에 따라 달라지는 것 <span class="tag-ex">예시 · 데이터 1,000개</span></h3>
-      <div class="tbl"><table class="num">
+      <div class="tbl"><table class="num" aria-label="K 값에 따라 달라지는 것">
         <thead><tr><th>K</th><th>학습 횟수</th><th>한 번에 학습하는 데이터</th><th>검증 폴드 크기</th><th>두 학습 세트의 겹침</th><th>성능 추정의 편향</th></tr></thead>
         <tbody>
           <tr><td>2</td><td>2</td><td>500 (50%)</td><td>500</td><td>0%</td><td>큼 (성능을 낮게 추정하기 쉬움)</td></tr>
@@ -786,7 +790,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-add">보충</span> K보다 먼저 정할 것: 데이터 구조에 맞는 분할 방식</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="K보다 먼저 정할 것: 데이터 구조에 맞는 분할 방식">
         <thead><tr><th style="width:30%">데이터 상황</th><th style="width:26%">분할 방식</th><th>이유</th></tr></thead>
         <tbody>
           <tr><td>클래스 불균형</td><td><code>StratifiedKFold</code></td><td>폴드마다 클래스 비율을 비슷하게 유지한다</td></tr>
@@ -846,7 +850,7 @@ print(f"F1 {scores.mean():.3f} ± {scores.std():.3f}")   <span class="c"># 평�
 
     <div class="demo" id="demo-ops">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 5</span> 리스트 검색과 set 검색의 연산 횟수 <span class="tag-ex">고객 n = 100만 명</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 5</span> 리스트 검색과 set 검색의 연산 횟수 <span class="tag-ex">고객 n = 100만 명</span></h3>
         <div class="how">
           <p>고객 100만 명마다 <code>if cid in 목록</code>을 검사한다고 할 때, 목록 크기 m에 따라 필요한 연산 수를 계산합니다. 막대는 <b>로그 눈금</b>입니다.</p>
           <p>실제 실행 시간은 하드웨어와 데이터에 따라 다르므로, 이 그림은 몇 배 차이가 나는지 감을 잡는 용도입니다.</p>
@@ -859,7 +863,7 @@ print(f"F1 {scores.mean():.3f} ± {scores.std():.3f}")   <span class="c"># 평�
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 느린 코드에서 자주 보이는 원인</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="느린 코드에서 자주 보이는 원인">
         <thead><tr><th style="width:34%">원인</th><th style="width:33%">왜 느린가</th><th>바꿀 방법</th></tr></thead>
         <tbody>
           <tr><td>반복문 안의 <code>if x in some_list</code></td><td>검색 한 번에 리스트 전체를 훑는다. n번 반복 × 길이 m → O(n·m)</td><td><code>set</code>이나 <code>dict</code>로 바꿔 평균 O(1) 조회, pandas는 <code>isin</code></td></tr>
@@ -979,7 +983,7 @@ np.testing.assert_allclose(np.array(result), df["final"].to_numpy())</pre>
 
     <div class="demo" id="demo-skew">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 6</span> 평균은 똑같이 5만 원, 치우침만 바꿔 보기 <span class="tag-ex">예시 · 로그정규분포를 가정한 가상의 구매 금액</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 6</span> 평균은 똑같이 5만 원, 치우침만 바꿔 보기 <span class="tag-ex">예시 · 로그정규분포를 가정한 가상의 구매 금액</span></h3>
         <div class="how">
           <p>평균을 <b>5만 원으로 고정</b>하고 치우침 정도만 바꿉니다. 다음 세 값이 얼마나 달라지는지 보세요.</p>
           <ul>
@@ -1009,7 +1013,7 @@ np.testing.assert_allclose(np.array(result), df["final"].to_numpy())</pre>
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 목적에 따라 맞는 지표가 다르다</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="목적에 따라 맞는 지표가 다르다">
         <thead><tr><th style="width:34%">알고 싶은 것</th><th style="width:30%">맞는 지표</th><th>이유</th></tr></thead>
         <tbody>
           <tr><td>다음 분기 총매출 예측</td><td><b>평균</b> × 예상 고객 수</td><td>총합을 다룰 때는 평균이 정확하다. 팀장님 숫자가 틀린 게 아니다</td></tr>
@@ -1104,8 +1108,8 @@ np.log1p(s).plot.hist(bins=50)                    <span class="c"># 로그 축�
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 작은 예시로 따라가기 <span class="tag-ex">예시 데이터</span></h3>
       <div class="panels">
-        <div class="panel"><h5>A팀 (마케팅)</h5>
-          <div class="tbl"><table class="df" style="min-width:420px">
+        <div class="panel"><h4>A팀 (마케팅)</h4>
+          <div class="tbl"><table class="df" style="min-width:420px" aria-label="작은 예시로 따라가기">
             <thead><tr><th>customer_id</th><th>phone</th><th>email</th><th>updated_at</th></tr></thead>
             <tbody>
               <tr><td>C001</td><td>010-1234-5678</td><td>kim@ex.com</td><td>2026-08-01</td></tr>
@@ -1116,8 +1120,8 @@ np.log1p(s).plot.hist(bins=50)                    <span class="c"># 로그 축�
           </table></div>
           <div class="cap">C002가 두 번 나옵니다. 고객 마스터이므로 최신 행만 남깁니다(취소선).</div>
         </div>
-        <div class="panel"><h5>B팀 (고객센터)</h5>
-          <div class="tbl"><table class="df" style="min-width:420px">
+        <div class="panel"><h4>B팀 (고객센터)</h4>
+          <div class="tbl"><table class="df" style="min-width:420px" aria-label="작은 예시로 따라가기">
             <thead><tr><th>customer_id</th><th>phone</th><th>email</th><th>updated_at</th></tr></thead>
             <tbody>
               <tr><td>C001</td><td>010-1234-9999</td><td>KIM@EX.COM</td><td>2026-09-10</td></tr>
@@ -1128,7 +1132,7 @@ np.log1p(s).plot.hist(bins=50)                    <span class="c"># 로그 축�
           <div class="cap">C001의 이메일은 대소문자만 다릅니다. 표준화하면 충돌이 아닙니다.</div>
         </div>
       </div>
-      <div class="tbl"><table class="df">
+      <div class="tbl"><table class="df" aria-label="작은 예시로 따라가기">
         <thead><tr><th>customer_id</th><th>phone</th><th>email</th><th>_merge</th><th>처리 내용</th></tr></thead>
         <tbody>
           <tr><td>C001</td><td><span class="chg">01012349999</span></td><td>kim@ex.com</td><td>both</td><td class="memo">전화번호가 실제로 다름 → 더 최신인 B 채택, 충돌 로그에 기록. 이메일은 소문자화 후 같음</td></tr>
@@ -1240,7 +1244,7 @@ print(m["_merge"].value_counts())</pre>
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:17%">검토 대상</th><th style="width:11%">판정</th><th style="width:36%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>Q1 지도·비지도</td><td><span class="badge b-add">정확</span></td><td>레이블로 입력→정답 관계 학습 / 레이블 없이 구조 발견</td><td>과제 이름이 아니라 레이블 사용 여부로 구분</td></tr>

@@ -1,4 +1,5 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="위클리 페이퍼 03 · 결정 트리 · 부스팅 · PCA와 요인 분석 — 실습 해설과 면접 문항을 그림, 인터랙티브 실험, 퀴즈로 정리한 ML·DL 학습 노트">
 <title>위클리 페이퍼 03</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +108,7 @@ input[type=range]{accent-color:var(--accent);width:100%}
 .panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 @media (max-width:620px){.panels{grid-template-columns:1fr}}
 .panel{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:6px}
-.panel h5{font-size:14px}
+.panel h5,.panel h4{font-size:14px}
 .panel .cap{font-size:12.5px;color:var(--muted)}
 .svgbox svg{width:100%;height:auto;display:block}
 .keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);align-items:center}
@@ -322,6 +323,9 @@ pre .c{color:var(--muted)}
 .stat{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:4px;align-content:start}
 .stat .v .sub{display:block;font-family:var(--f-body);font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.5;margin-top:2px}
 .stat .v .nw{white-space:nowrap}
+/* 휴대폰 폭 넘침 방지: 코드 2열 상자와 실험 제목의 예시 태그 */
+.codecols>.codewrap{min-width:0}
+.demo-head .t .tag-ex{white-space:normal;line-height:1.5}
 </style>
 </head><body>
 
@@ -373,7 +377,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-tree">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 1</span> 깊이를 키우며 과적합과 불안정성 직접 보기 <span class="tag-ex">예시 데이터 · 가상의 방문 고객 150명</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 1</span> 깊이를 키우며 과적합과 불안정성 직접 보기 <span class="tag-ex">예시 데이터 · 가상의 방문 고객 150명</span></h3>
         <div class="how">
           <p>실제 규칙은 점선(방문 횟수와 체류 시간이 함께 클수록 구매)이고, 경계 근처에는 잡음이 섞여 있습니다. 이 페이지에서 <b>CART(지니 불순도)</b>로 트리를 직접 학습합니다.</p>
           <ul>
@@ -430,7 +434,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 장점과 단점, 그리고 이유</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="장점과 단점, 그리고 이유">
         <thead><tr><th style="width:24%">장점</th><th>이유 · 예시</th></tr></thead>
         <tbody>
           <tr><td><b>해석하기 쉽다</b></td><td>예측 경로가 if-then 규칙이라 "방문 14회 초과이고 체류 9분 초과라서 구매로 예측"처럼 근거를 설명할 수 있다. 얕은 트리는 그림 하나로 공유할 수 있다.</td></tr>
@@ -439,7 +443,7 @@ pre .c{color:var(--muted)}
           <tr><td><b>분류와 회귀 모두 가능하고 빠르다</b></td><td>리프에서 다수결(분류) 또는 평균(회귀)을 낸다. 예측은 깊이만큼만 비교하면 된다.</td></tr>
         </tbody>
       </table></div>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="장점과 단점, 그리고 이유">
         <thead><tr><th style="width:24%">단점</th><th style="width:44%">이유 · 예시</th><th>대응</th></tr></thead>
         <tbody>
           <tr><td><b>과적합하기 쉽다</b></td><td>깊이를 제한하지 않으면 리프마다 샘플 한두 개가 남을 때까지 나눠 잡음까지 외운다. 실험 1에서 깊이 12의 훈련 정확도를 보자.</td><td><code>max_depth</code>, <code>min_samples_leaf</code>, <code>max_leaf_nodes</code>, 비용 복잡도 가지치기 <code>ccp_alpha</code></td></tr>
@@ -560,7 +564,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-gb">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 2</span> 그래디언트 부스팅을 한 그루씩 쌓기 <span class="tag-ex">예시 데이터 · y = sin(2πx) + 잡음, 학습 50개</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 2</span> 그래디언트 부스팅을 한 그루씩 쌓기 <span class="tag-ex">예시 데이터 · y = sin(2πx) + 잡음, 학습 50개</span></h3>
         <div class="how">
           <p>이 페이지에서 회귀 트리를 직접 학습합니다. 트리 수 M을 움직이면 다음이 보입니다.</p>
           <ul>
@@ -572,12 +576,12 @@ pre .c{color:var(--muted)}
       </div>
       <div class="panels">
         <div class="panel">
-          <h5>지금까지의 모델 F<sub>M</sub></h5>
+          <h4>지금까지의 모델 F<sub>M</sub></h4>
           <div class="svgbox"><svg id="gbA" viewBox="0 0 360 220" role="img" aria-label="학습 데이터와 부스팅 모델"></svg></div>
           <div class="keyrow"><span><span class="sw c" style="background:var(--muted)"></span>학습 데이터</span><span><span class="sw dash"></span>실제 규칙</span><span><span class="sw ln" style="background:var(--accent)"></span>F<sub>M</sub></span></div>
         </div>
         <div class="panel">
-          <h5>M번째 트리가 학습한 것</h5>
+          <h4>M번째 트리가 학습한 것</h4>
           <div class="svgbox"><svg id="gbB" viewBox="0 0 360 220" role="img" aria-label="잔차와 새 트리"></svg></div>
           <div class="keyrow"><span><span class="sw c" style="background:var(--fix)"></span>잔차 y − F<sub>M−1</sub></span><span><span class="sw ln" style="background:var(--add)"></span>트리 h<sub>M</sub> (η 곱하기 전)</span></div>
         </div>
@@ -606,7 +610,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 주요 부스팅 모델 비교</h3>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="주요 부스팅 모델 비교">
         <thead><tr><th style="width:13%">모델</th><th style="width:27%">핵심 아이디어</th><th style="width:22%">장점</th><th style="width:22%">단점</th><th>잘 맞는 상황</th></tr></thead>
         <tbody>
           <tr><td><b>AdaBoost</b><br><span class="muted" style="font-size:12.5px">1995~97</span></td><td>틀린 샘플의 가중치를 키우고, 정확한 학습기에 큰 발언권 α = ½·ln((1−ε)/ε)을 준다. 지수 손실을 최소화하는 것과 같다.</td><td>원리가 단순하고 스텀프만으로도 성능이 크게 오른다.</td><td>지수 손실이라 이상치와 잘못된 라벨에 가중치가 폭주한다.</td><td>잡음이 적은 작은 분류 문제, 원리 학습용</td></tr>
@@ -685,7 +689,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-add">보충</span> 세 라이브러리에서 같은 역할의 하이퍼파라미터</h3>
-      <div class="tbl"><table style="min-width:760px">
+      <div class="tbl"><table style="min-width:760px" aria-label="세 라이브러리에서 같은 역할의 하이퍼파라미터">
         <thead><tr><th style="width:26%">역할</th><th style="width:25%">XGBoost</th><th style="width:25%">LightGBM</th><th>CatBoost</th></tr></thead>
         <tbody>
           <tr><td><b>한 그루의 기여 크기</b> (작을수록 트리가 더 필요)</td><td><code>learning_rate</code> (eta)</td><td><code>learning_rate</code></td><td><code>learning_rate</code></td></tr>
@@ -768,7 +772,7 @@ pre .c{color:var(--muted)}
 
     <div class="demo" id="demo-fa">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 3</span> 같은 성적 데이터에 PCA와 요인 분석을 각각 적용하기 <span class="tag-ex">예시 데이터 · 가상의 학생 600명, 6과목</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 3</span> 같은 성적 데이터에 PCA와 요인 분석을 각각 적용하기 <span class="tag-ex">예시 데이터 · 가상의 학생 600명, 6과목</span></h3>
         <div class="how">
           <p>'언어 능력'과 '수리 능력' 두 잠재 요인으로 6과목 점수를 만들었습니다(실제 설정 열). 이 페이지에서 상관행렬을 계산하고 두 방법을 직접 실행합니다.</p>
           <ul>
@@ -784,7 +788,7 @@ pre .c{color:var(--muted)}
         <label for="faScale" style="font-weight:600">PCA 입력</label>
         <select id="faScale"><option value="corr" selected>표준화한 점수 (상관행렬)</option><option value="cov">원 점수 그대로, 수학만 10배 척도 (공분산)</option></select>
       </div>
-      <div class="tbl"><table class="ldt">
+      <div class="tbl"><table class="ldt" aria-label="같은 성적 데이터에 PCA와 요인 분석을 각각 적용하기">
         <thead>
           <tr><th rowspan="2">과목</th><th colspan="2" class="grp">실제 설정 (언어, 수리)</th><th colspan="2" class="grp">PCA 성분 가중치 (변수 → 성분)</th><th colspan="4" class="grp">요인 분석 적재량 (요인 → 변수)</th></tr>
           <tr><th class="gl">언어</th><th>수리</th><th class="gl">PC1</th><th>PC2</th><th class="gl" id="faH1">요인 1</th><th id="faH2">요인 2</th><th>공통성 h²</th><th>고유 분산 ψ</th></tr>
@@ -801,7 +805,7 @@ pre .c{color:var(--muted)}
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 한눈에 비교</h3>
-      <div class="tbl"><table>
+      <div class="tbl"><table aria-label="한눈에 비교">
         <thead><tr><th style="width:18%">기준</th><th style="width:41%">주성분 분석 (PCA)</th><th>요인 분석 (FA)</th></tr></thead>
         <tbody>
           <tr><td><b>목적</b></td><td>정보를 최대한 남기며 변수 수 줄이기 (압축)</td><td>변수들의 상관을 만든 숨은 구조 찾기 (해석)</td></tr>
@@ -911,7 +915,7 @@ fa.noise_variance_                                <span class="c"># 변수별 �
 
     <div class="demo" id="demo-nan">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 4</span> "줄다가 커지다가 NaN"을 직접 재현하기 <span class="tag-ex">예시 손실 · L = ½(1·w₁² + 50·w₂²)</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 4</span> "줄다가 커지다가 NaN"을 직접 재현하기 <span class="tag-ex">예시 손실 · L = ½(1·w₁² + 50·w₂²)</span></h3>
         <div class="how">
           <p>완만한 방향(곡률 1)과 가파른 방향(곡률 50)이 섞인 손실에서 경사 하강법을 300스텝 돌립니다. 시작점은 완만한 방향의 오차가 크고, 가파른 방향의 오차는 0.001로 아주 작습니다.</p>
           <p>학습률이 <b>2/50 = 0.04</b>를 넘으면 무슨 일이 생기는지 보세요.</p>
@@ -944,7 +948,7 @@ fa.noise_variance_                                <span class="c"># 변수별 �
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 증상으로 원인 범위 좁히기</h3>
       <p class="muted" style="font-size:14px">증상과 원인이 1:1로 정해지는 규칙은 아닙니다. 어디부터 확인할지 정하는 진단 우선순위로 쓰고, 실제 원인은 오른쪽 확인 방법으로 검증합니다.</p>
-      <div class="tbl"><table style="min-width:820px">
+      <div class="tbl"><table style="min-width:820px" aria-label="증상으로 원인 범위 좁히기">
         <thead><tr><th style="width:19%">증상</th><th style="width:27%">1순위 의심 원인</th><th style="width:28%">확인 방법</th><th>대응</th></tr></thead>
         <tbody>
           <tr><td><b>줄다가 점점 커지다 NaN</b><br><span class="muted" style="font-size:12.5px">이번 질문</span></td><td>학습률이 안정 한계를 넘음, 스케줄러·warm-up 이후 학습률 상승, 기울기 폭발 (깊은 망·RNN)</td><td>스텝별 학습률과 gradient norm 기록. 학습률 1/3, 1/10로 같은 시드 재실행</td><td>학습률 낮추기, warm-up, <code>clipnorm</code>, 정규화 레이어, 초기화 점검</td></tr>
@@ -1036,7 +1040,7 @@ model.fit(X_train, y_train, callbacks=[tf.keras.callbacks.TerminateOnNaN()])</pr
 
     <div class="demo" id="demo-ord">
       <div class="demo-head">
-        <div class="t"><span class="badge b-lab">실험 5</span> 같은 예측 분포, 어떤 점수를 내놓을까 <span class="tag-ex">예시 · 한 고객에 대한 모델의 점수별 확률</span></div>
+        <h3 class="t"><span class="badge b-lab">실험 5</span> 같은 예측 분포, 어떤 점수를 내놓을까 <span class="tag-ex">예시 · 한 고객에 대한 모델의 점수별 확률</span></h3>
         <div class="how">
           <p>모델이 어떤 고객의 점수를 아래 확률로 예상한다고 합시다. 학습 방식에 따라 내놓는 점수가 다릅니다.</p>
           <ul>
@@ -1063,7 +1067,7 @@ model.fit(X_train, y_train, callbacks=[tf.keras.callbacks.TerminateOnNaN()])</pr
         </div>
         <div class="side">
           <div class="sl5" id="odSl"></div>
-          <div class="tbl"><table class="dec" style="min-width:420px">
+          <div class="tbl"><table class="dec" style="min-width:420px" aria-label="같은 예측 분포, 어떤 점수를 내놓을까">
             <thead><tr><th>선택 규칙</th><th>예측</th><th>기대 MAE</th><th>기대 RMSE</th><th>정확히 맞힐 확률</th></tr></thead>
             <tbody id="odBody"></tbody>
           </table></div>
@@ -1074,7 +1078,7 @@ model.fit(X_train, y_train, callbacks=[tf.keras.callbacks.TerminateOnNaN()])</pr
 
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 세 가지 방식 비교</h3>
-      <div class="tbl"><table style="min-width:760px">
+      <div class="tbl"><table style="min-width:760px" aria-label="세 가지 방식 비교">
         <thead><tr><th style="width:15%"></th><th style="width:28%">회귀</th><th style="width:28%">5-클래스 분류</th><th>순서형 회귀</th></tr></thead>
         <tbody>
           <tr><td><b>출력</b></td><td>3.72 같은 연속값 하나</td><td>점수별 확률 5개</td><td>점수별 확률 5개 (누적 확률에서 계산)</td></tr>
@@ -1091,7 +1095,7 @@ model.fit(X_train, y_train, callbacks=[tf.keras.callbacks.TerminateOnNaN()])</pr
     <div class="block">
       <h3><span class="badge b-core">핵심</span> 평가는 오답의 거리까지 본다: Quadratic Weighted Kappa</h3>
       <div class="split">
-        <div class="tbl"><table class="heat" id="qwkT"></table></div>
+        <div class="tbl"><table class="heat" id="qwkT" aria-label="평가는 오답의 거리까지 본다: Quadratic Weighted Kappa"></table></div>
         <div class="side">
           <div class="formula">κ = 1 − Σ wᵢⱼ·Oᵢⱼ / Σ wᵢⱼ·Eᵢⱼ ,  wᵢⱼ = (i − j)² / (K − 1)²</div>
           <p style="font-size:14.5px">표는 실제 i점을 j점으로 예측했을 때의 벌점 w입니다. 1점을 5점으로 틀리면 1점을 2점으로 틀린 것보다 <b>16배</b> 크게 벌합니다.</p>
@@ -1154,7 +1158,7 @@ for name, p in [("회귀", y_reg), ("순서형", y_ord)]:
   <!-- ===================== 총정리 ===================== -->
   <section class="q" id="sum">
     <div class="qhead"><div class="qnum iv">총정리</div><div class="min"><div class="kind">검토 결과</div><h2>원래 답안 검토표</h2></div></div>
-    <div class="tbl"><table>
+    <div class="tbl"><table aria-label="원래 답안 검토표">
       <thead><tr><th style="width:19%">검토 대상</th><th style="width:11%">판정</th><th style="width:35%">정확한 핵심 내용</th><th>반드시 고칠 부분</th></tr></thead>
       <tbody>
         <tr><td>Q1 결정 트리 (실습 해설)</td><td><span class="badge b-core">보완</span></td><td>해석이 쉽고 전처리가 적다 / 과적합과 불안정성</td><td>"범주형을 그대로 처리"는 구현에 따라 다름(scikit-learn은 인코딩 필요). 축에 평행한 경계, 외삽 불가 추가</td></tr>
