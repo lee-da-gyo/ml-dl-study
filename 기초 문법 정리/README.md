@@ -1,6 +1,6 @@
 # 기초 문법 정리
 
-딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 22개 공개
+딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 23개 공개
 
 | 정리 | 내용 |
 | :-- | :-- |
@@ -26,6 +26,7 @@
 | [12_세그멘테이션 -1](12_세그멘테이션/세그멘테이션-1_픽셀분류·U-Net%28완성본%29.ipynb) | 코드잇 Segmentation PDF(Semantic · FCN · U-Net) + 위클리 9(분할 부분)를 4개 대단원 · 10개 섹션으로 재구성 (분류 vs 탐지 vs 의미 · 인스턴스 분할 · 출력 (N, C, H, W) · long 마스크 vs one-hot · 픽셀 CE · ignore_index · nearest vs bilinear vs ConvTranspose2d vs Upsample+Conv · FCN 1×1 합성곱 · U-Net 모양 추적 손계산 · skip 연결 cat vs 더하기 · 픽셀 정확도 vs mIoU vs Dice 손계산 · CE vs Dice 손실), skip만 다른 U-Net 2개를 같은 조건으로 학습해 mIoU · Dice · 경계 정확도를 비교하는 종합 실습 · 수업 실행 코드가 없어 코드는 모두 보강, 데이터는 노트북 안에서 그린 도형(내려받기 없음) · GPU가 없어도 실행 |
 | [12_세그멘테이션 -2](12_세그멘테이션/세그멘테이션-2_실전·사전학습·Instance%28완성본%29.ipynb) | Oxford-IIIT Pet(배경 · 동물 · 경계) 실제 사진으로 위클리 10(Instance · Panoptic) + Segmentation PDF(Mask R-CNN)를 4개 대단원 · 9개 섹션으로 재구성 (trimap → 클래스 번호 · 이미지 bilinear vs 마스크 nearest · v2 + tv_tensors.Mask 함께 증강 · 일반 CE vs 가중 CE vs Dice · 사전학습 DeepLabV3 · FCN 분류기 교체 · 처음부터 vs 미세조정 · Mask R-CNN 박스 vs 마스크 · 의미 vs 인스턴스 vs 파놉틱), U-Net(처음부터) vs FCN · DeepLabV3(미세조정)를 같은 조건으로 비교하는 종합 실습 · 코드는 모두 보강, 내려받은 데이터 · 가중치는 올리지 않음(.gitignore) · GPU 두 번 실행 결과 동일 · 폴더 안 세그멘테이션-1 · -2 다음에 **원본 파일별 정리 2권** (코드잇 Segmentation 강의: 픽셀 분류 · 업샘플링 손계산 · FCN skip · U-Net 572 → 388 · RoIAlign / Day02: 3클래스 · 증강 · CE vs Dice · 오류 분석 · Mask R-CNN · 미션 데이터 준비) |
 | [13_생성모델 -1](13_생성모델/생성모델-1_GAN·Diffusion%28완성본%29.ipynb) | 수업 Day01 이미지 생성(D1-1 ~ D1-7) + 코드잇 GAN 알아보기 + 위클리 9 · 11을 5개 대단원 · 16개 섹션으로 재구성 (점 무리 규칙 배워 뽑기 · 784칸 칸마다 뽑기 · 평균 그림이 흐린 이유 · AE vs VAE 디코더 · 판별자 · BCE 짝 · 학습 한 단계 · MNIST GAN 첫 학습 · 기울기 쌓임 · detach 빼기 · oG에 D 넘기기 · 1차원 손실 곡선 · DCGAN · 세는 도구 점검 · 판별자 강함 vs 약함 · 모드 붕괴 진단 · Minibatch StdDev · Diffusion 더하기 · 빼기), MNIST 작은 GAN 정상 vs 생성자 과학습을 숫자 분포 · 다양성 · 선명도로 비교하는 종합 실습 · 수업 장면은 **코드 재현**(수업 html은 출력만 있음), 나머지는 보강 · GPU 두 번 실행 결과 동일 |
+| [13_생성모델 -2](13_생성모델/생성모델-2_cGAN·생성평가%28완성본%29.ipynb) | 수업 Day01 D1-8 · Day02 이미지 생성(D2-1 ~ D2-7) + 코드잇 cGAN 구현하기 실습을 5개 대단원 · 13개 섹션으로 재구성 (번호 그대로 vs one-hot vs nn.Embedding · torch.cat으로 라벨 줄 · 판별자 라벨 판 · 조건부 두 차례 · eval · no_grad · 판별자 라벨 있음 vs 없음 · 도구 점검 · 일치율 · 베끼기 점검 · 라벨 안 다양성 · 혼동 행렬 · 꼼수 점검표 · FID · IS · 손잡이 하나씩 · Diffusion 정방향 · 세 축), 판별자 라벨 없음 vs 있음을 seed만 바꿔 다시 하는 종합 실습 · 수업 장면은 **코드 재현**, 실습은 실습 코드 · GPU 두 번 실행 결과 동일 |
 
 **섹션 구성** · 🎯 질문 → 💡 쉬운 설명 → 실행 흐름 → 먼저 예측 → 코드 → 예측 정답 · 결과 해설 → 차이 · 언제 쓰나 → ⚠️ 주의 → ✅ 한 줄 정리
 
