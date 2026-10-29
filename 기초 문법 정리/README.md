@@ -1,6 +1,46 @@
 # 기초 문법 정리
 
-딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 현재 23개 공개
+딥러닝 코드를 읽기 위한 기초 문법을 주제별로 정리한 노트북 · 모두 **68권** = 주제별 정리 22권 + 원본 파일별 정리 46권
+
+## 처음 보는 사람을 위한 읽는 순서
+
+한 폴더 안에서는 **필수 → 보강 → 참고** 순서로 읽습니다.
+
+1. **필수** · `전체 정리` 또는 `-1 · -2 … (완성본)` — 여러 수업 자료를 섹션 순서로 다시 짠 본문, 이것만 읽어도 흐름이 이어짐
+2. **보강** · `파일별 n` — 원본 수업 파일 하나를 그대로 따라가며 정리, 본문에서 막힌 부분을 원래 맥락으로 다시 볼 때
+3. **참고** · `파일별 보강n` · 각 노트북 끝의 `전체 코드` · `최종 요약표` — 추가 연습과 복습용
+
+폴더는 아래 순서로 읽습니다. 화살표는 앞 폴더 내용을 알아야 뒤 폴더가 읽힌다는 뜻입니다.
+
+```text
+01 Python 문법 → 02 Python 클래스 → 03 NumPy → 04 Pandas ─┬─→ 05 머신러닝 → 06 딥러닝기초·PyTorch
+                                                         └─ 04 통계·시각화 (참고)
+06 딥러닝기초·PyTorch ─┬─→ 07 CNN ─┬─→ 09 오토인코더 → 13 생성모델
+                      │           ├─→ 11 객체탐지
+                      │           └─→ 12 세그멘테이션
+                      └─→ 08 RNN (순서 데이터 · 텍스트)
+```
+
+## 폴더 구조
+
+```text
+기초 문법 정리/
+├─ 01_Python 문법/          전체 정리 1 + 파일별 10 (6 + 보강 4) = 11권
+├─ 02_Python 클래스/        전체 정리 1 + 파일별 4 (3 + 보강 1)  =  5권
+├─ 03_NumPy/                전체 정리 1 + 파일별 3               =  4권
+├─ 04_Pandas/               전체 정리 1 + 파일별 3 (2 + 보강 1)  =  4권
+├─ 04_통계·시각화/           파일별 2 (전체 정리 없음)            =  2권
+├─ 05_머신러닝/             완성본 3 + 파일별 10 (7 + 보강 3)    = 13권
+├─ 06_딥러닝기초·PyTorch/    완성본 1 + 파일별 3                  =  4권
+├─ 07_CNN/                  완성본 2 + 파일별 2                  =  4권
+├─ 08_RNN/                  완성본 3 + 파일별 2                  =  5권
+├─ 09_오토인코더/            완성본 2 + 파일별 2                  =  4권
+├─ 11_객체탐지/              완성본 3 + 파일별 3                  =  6권
+├─ 12_세그멘테이션/          완성본 2 + 파일별 2                  =  4권
+└─ 13_생성모델/              완성본 2                             =  2권
+```
+
+## 폴더별 내용
 
 | 정리 | 내용 |
 | :-- | :-- |
@@ -11,7 +51,7 @@
 | [04_통계·시각화](04_통계·시각화/통계_파일별%201_02_데이터%20요약과%20시각화.ipynb) | 통계 전체 정리는 아직 없음 · **원본 파일별 정리 2권** (강의 PDF '02 데이터 요약과 시각화' 131쪽을 코드로 다시 만듦 · coffee_q 그래프 실습 43문제 모범 답안) — 데이터 유형 · 도수분포표 · 평균 · 중앙값 · 분산 · 표준편차 · IQR · 그래프 5종 · matplotlib · seaborn · 속이는 그래프 |
 | [05_머신러닝 -1](05_머신러닝/머신러닝-1_데이터분할·교차검증%28완성본%29.ipynb) | 머신러닝 intro + model_selection 노트북(빈칸 32칸을 직접 풀어 실행으로 검증)을 5개 대단원 · 15개 섹션으로 재구성 (fit · predict · score · 학습 데이터 채점 착시 · train_test_split · stratify · KFold vs StratifiedKFold · cross_val_score vs cross_validate · 모델 비교 mean ± std · 과적합 · GridSearchCV vs RandomizedSearchCV · 최종 test 1회 · train · val · test 3분할), 펭귄 품종 분류를 분할부터 최종 test까지 처음부터 끝까지 하는 종합 실습 |
 | [05_머신러닝 -2](05_머신러닝/머신러닝-2_전처리·누수·파이프라인%28완성본%29.ipynb) | 전처리 노트북 + 로지스틱 회귀 Part 2(타이타닉 전처리) + 미션 3 정답1의 Pipeline 부분을 5개 대단원 · 17개 섹션으로 재구성 (LabelEncoder vs OrdinalEncoder vs OneHotEncoder vs get_dummies · 가짜 순서 · CountVectorizer · Standard vs MinMax vs Robust · Normalizer · fit vs transform vs fit_transform · 누수 전처리 vs Pipeline · SimpleImputer · ColumnTransformer · 이름__설정 탐색 · train 통계로 이미지 정규화 · 범주 → 번호 → 임베딩), 타이타닉 모델별 전처리 파이프라인 종합 실습 · 실행에 쓴 수업 CSV(`train.csv`)는 올리지 않음, 결과는 저장된 출력으로 확인 |
-| [05_머신러닝 -3](05_머신러닝/머신러닝-3_평가지표·로지스틱%28완성본%29.ipynb) | 평가지표 노트북 + 로지스틱 회귀 노트북을 6개 대단원 · 16개 섹션으로 재구성 (정확도의 함정 · 혼동행렬 · accuracy vs precision vs recall vs F1 · macro · weighted · 시그모이드 · predict vs predict_proba · 교차 엔트로피 · 계수 · 기본 0.5 vs 업무 기준 임곗값 · validation 선택 · ROC-AUC vs PR-AUC · BCEWithLogitsLoss · pos_weight), 타이타닉을 분할 → 파이프라인 → 교차검증 → 임곗값 선택 → 최종 test 1회로 끝내는 종합 실습 · 실행에 쓴 수업 CSV(`train.csv`)는 올리지 않음 |
+| [05_머신러닝 -3](05_머신러닝/머신러닝-3_평가지표·로지스틱%28완성본%29.ipynb) | 평가지표 노트북 + 로지스틱 회귀 노트북을 6개 대단원 · 16개 섹션으로 재구성 (정확도의 함정 · 혼동행렬 · accuracy vs precision vs recall vs F1 · macro · weighted · 시그모이드 · predict vs predict_proba · 교차 엔트로피 · 계수 · 기본 0.5 vs 업무 기준 임곗값 · validation 선택 · ROC-AUC vs PR-AUC · BCEWithLogitsLoss · pos_weight), 타이타닉을 분할 → 파이프라인 → 교차검증 → 임곗값 선택 → 최종 test 1회로 끝내는 종합 실습 · 실행에 쓴 수업 CSV(`train.csv`)는 올리지 않음 · 폴더 안 머신러닝-1 · -2 · -3 다음에 **원본 파일별 정리 10권** (iris quickstart · 펭귄 실습 · 전처리 · 평가지표 · 로지스틱 회귀 · decision tree · ensemble · 보강 KNN · 건포도 과제 · ensemble part2 순서) |
 | [06_딥러닝기초 · PyTorch -1](06_딥러닝기초·PyTorch/딥러닝기초-1_텐서·경사하강%28완성본%29.ipynb) | 개론 PDF(퍼셉트론 · 손실 · 경사) + Day01 강의 + Day01 연습문제 P01 ~ P15를 7개 대단원 · 21개 섹션으로 재구성 (텐서 · shape · dtype · device · view/reshape · squeeze · cat/stack · broadcasting 함정 · 행렬 곱 · MSE · autograd · 경사하강 · 학습률), 직접 만든 선형 회귀를 경사하강으로 학습하고 학습률 3가지(느림 · 적절 · 발산)를 비교하는 종합 실습 · GPU가 없어도 실행 · 폴더 안 전체 정리 다음에 **원본 파일별 정리 3권** (딥러닝 개론 · 01_pytorch · 02_pytorch 순서) |
 | [07_CNN -1](07_CNN/CNN-1_합성곱·크기계산%28완성본%29.ipynb) | CNN DAY01 슬라이드(실습 노트북 없음 → 슬라이드 코드 조각을 실행 코드로 재구성)를 7개 대단원 · 19개 섹션으로 재구성 (이미지 텐서 `(N, C, H, W)` · 채널 · ToTensor · 배치 수 · Flatten · Linear 크기 · 첫 loss 2.3 점검 · Dense의 위치 문제 · 합성곱 손계산 · 커널 크기 · stride · padding · 출력 크기 공식 손계산표 · 다채널 필터 · weight 모양 · 파라미터 수), 작은 CNN과 파라미터가 거의 같은 MLP를 MNIST로 학습해 정확도와 옮긴 이미지 정확도를 비교하는 종합 실습 · GPU가 없어도 실행 · 내려받는 MNIST(`data/`)는 올리지 않음 |
 | [07_CNN -2](07_CNN/CNN-2_풀링·구조·ResNet%28완성본%29.ipynb) | CNN DAY02 슬라이드(실습 노트북 없음 → 슬라이드 코드 조각을 실행 코드로 재구성)를 6개 대단원 · 19개 섹션으로 재구성 (MaxPool · AvgPool · GAP · Flatten 머리 vs GAP 머리 · 단계별 shape 추적표 · 파라미터 수 계산표 · 모양 에러 읽기 · Dropout · BatchNorm의 train/eval · LeNet → AlexNet · VGG 3×3 반복 · 1×1 · residual · projection · stage), CIFAR-10으로 얕은 일반 · 깊은 일반 · 깊은 residual CNN을 같은 조건으로 학습해 degradation과 shortcut 효과를 비교하는 종합 실습 · GPU가 없어도 실행 · 내려받는 CIFAR-10(`data/`)은 올리지 않음 · 폴더 안 CNN-1 · 2 다음에 **원본 파일별 정리 2권** (02_이미지분류 강의 1 · 2일차 → 02_이미지분류_Day01 실습 순서 · 직접 학습해 강의 장면 재현 · GPU 권장) |
