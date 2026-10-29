@@ -1437,11 +1437,11 @@ safe("ap",function(){
     rows.push('<tr class="sep'+(cur(0.5)?" cur":"")+'"><td>mAP@50</td><td'+best(a50,b50)+">"+a50.toFixed(3)+"</td><td"+best(b50,a50)+">"+b50.toFixed(3)+"</td></tr>");
     rows.push("<tr"+cur(0.75)+"><td>mAP@75</td><td"+best(a75,b75)+">"+a75.toFixed(3)+"</td><td"+best(b75,a75)+">"+b75.toFixed(3)+"</td></tr>");
     rows.push("<tr><td>mAP@[.50:.95]</td><td"+best(RANGE.A,RANGE.B)+">"+RANGE.A.toFixed(3)+"</td><td"+best(RANGE.B,RANGE.A)+">"+RANGE.B.toFixed(3)+"</td></tr>");
-    $("#apMap").innerHTML='<table class="mapt"><thead><tr><th>지표 (101점 보간)</th><th>모델 A</th><th>모델 B</th></tr></thead><tbody>'+rows.join("")+"</tbody></table>";
+    $("#apMap").innerHTML='<table class="mapt" aria-label="모델 A와 모델 B의 AP 및 mAP 비교"><thead><tr><th>지표 (101점 보간)</th><th>모델 A</th><th>모델 B</th></tr></thead><tbody>'+rows.join("")+"</tbody></table>";
     // 예측 목록
     const n=Math.min(12,dets.length);const tr=[];
     for(let i=0;i<n;i++){const d=dets[i];tr.push("<tr><td>"+(i+1)+"</td><td>"+d.s.toFixed(2)+"</td><td>"+(d.gt<0?"배경":"#"+(d.gt+1))+"</td><td>"+(d.gt<0?"–":d.iou.toFixed(2))+'</td><td class="'+(o.flag[i]?"tp":"fp")+'">'+(o.flag[i]?"TP":(d.gt<0?"FP · 배경":(d.iou<t-1e-9?"FP · IoU 미달":"FP · 중복")))+"</td><td>"+o.P[i].toFixed(3)+"</td><td>"+o.R[i].toFixed(3)+"</td></tr>");}
-    $("#apDets").innerHTML='<table class="dets"><thead><tr><th>순위</th><th>신뢰도</th><th>겹친 정답</th><th>IoU</th><th>판정 (기준 '+t.toFixed(2)+')</th><th>누적 P</th><th>누적 R</th></tr></thead><tbody>'+tr.join("")+"</tbody></table>";
+    $("#apDets").innerHTML='<table class="dets" aria-label="신뢰도 순 예측 판정과 누적 정밀도 및 재현율"><thead><tr><th>순위</th><th>신뢰도</th><th>겹친 정답</th><th>IoU</th><th>판정 (기준 '+t.toFixed(2)+')</th><th>누적 P</th><th>누적 R</th></tr></thead><tbody>'+tr.join("")+"</tbody></table>";
     // 해석
     const msg=[];
     const lead=(x,y)=>x>y?"A":"B";
