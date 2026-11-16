@@ -17,3 +17,10 @@ __pycache__/
 **/datasets/
 **/runs_*/
 **/checkpoints_*/
+
+# OS · 가상환경 · 비밀값
+.DS_Store
+Thumbs.db
+.venv/
+venv/
+.env
