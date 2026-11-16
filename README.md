@@ -211,7 +211,7 @@
 
 | 파일 | 출처 |
 | --- | --- |
-| `스프린트 미션/미션 2_호텔 예약 취소 분석/hotel_data_modified.csv` | 코드잇 AI 스프린트 미션 제공 데이터 (원본을 과제용으로 수정한 파일) |
+| `스프린트 미션/미션 2_호텔 예약 취소 분석/hotel_data_modified.csv.gz` | 코드잇 AI 스프린트 미션 제공 데이터 (원본을 과제용으로 수정한 파일, gzip 압축 · `pd.read_csv`가 그대로 읽음) |
 | `스프린트 미션/미션 3_타이타닉 생존 예측/titanic_train.csv` | Kaggle [Titanic - Machine Learning from Disaster](https://www.kaggle.com/c/titanic) 학습 데이터 (스프린트 미션 제공) |
 
 노트북을 다시 실행할 수 있도록 미션 데이터를 함께 두었습니다. 데이터의 권리는 각 제공처에 있으며 이용 조건도 제공처를 따릅니다.
